@@ -1,0 +1,37 @@
+---
+# title: "econobits"
+---
+
+![](images/landing_images/keynes.png){#landing-image}
+
+```{=html}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const images = [
+    'images/landing_images/keynes.png',
+    'images/landing_images/pacman.png',
+    'images/landing_images/smith.png',
+    'images/landing_images/tetris.png',
+    'images/landing_images/zelda.png'
+  ];
+  
+  const today = new Date();
+  const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+  const index = ((dayOfYear - 1) % images.length);
+  const selectedImage = images[index];
+  
+  const imageElement = document.getElementById('landing-image');
+  if (imageElement) {
+    imageElement.src = selectedImage;
+  }
+});
+</script>
+```
+
+Ongoing courses:
+
+[MIE37](mie37_2026.qmd)
+
+[ECO309](eco309_2026.qmd)
+
+[SciencesPo](scpo_2026.qmd)

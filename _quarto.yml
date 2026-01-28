@@ -1,0 +1,29 @@
+project:
+  type: website
+  resources:
+    - images/landing_images/
+
+website:
+  title: "econobits"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+    logo: images/logo_full2.png
+    title: false
+    collapse-below: lg
+    page-navigation: true
+    search: false
+  # sidebar:
+  #   logo: images/logo_short.png
+  #   search: false
+
+format:
+  html:
+    theme:
+      - cosmo
+      # - brand # ++
+      # - cerulean
+    css: styles.css
+    toc: true
