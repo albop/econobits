@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 Ongoing courses:
 
-[MIE37](mie37_2026.qmd)
+[MIE37](mie37/index_2026.qmd)
 
-[ECO309](eco309_2026.qmd)
+[ECO309](eco309/index_2026.qmd)
 
-[SciencesPo](scpo_2026.qmd)
+[SciencesPo](scpo/index_2026.qmd)

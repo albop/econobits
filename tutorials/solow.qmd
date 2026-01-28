@@ -1,0 +1,80 @@
+---
+title: Solow Model
+author: Pablo Winant
+format:
+  html: default
+  ipynb: default
+execute: 
+  enabled: false
+---
+
+::: {.callout-tip title="Prerequisites" collapse="true"}
+
+This tutorial refers to the lecture on the [convergence of sequences](../lectures/convergence/).
+
+Also, make sure you went through the [Julia Basics](./Julia_Basics.qmd) before.
+
+:::
+
+# Tutorial: Convergence
+
+
+### Solow Model
+
+A representative agent uses capital $k_t$ to produce $y_t$ using the following production function:
+
+$$y_t = k_t^{\alpha}$$
+
+He chooses to consume an amount $c_t \in ]0, y_t]$ and invests what remains:
+
+$$i_t = y_t - c_t$$ 
+
+He accumulates capital $k_t$ according to:
+
+$$k_{t+1} = \left( 1-\delta \right) k_{t} + i_{t}$$
+
+where $\delta$ is the depreciation rate and $i_t$ is the amount invested.
+
+The goal of the representative agent is to maximize:
+
+$$\sum_{t\geq 0} \beta^t U(c_t)$$
+
+where $U(x)=\frac{x^{1-\gamma}}{1-\gamma}$ and $\beta<1$ is the discount factor.
+
+For now, we ignore the objective and assume that the saving rate $s=\frac{c_t}{y_t}$ is constant over time.
+
+__Create a `NamedTuple` to hold parameter values $\beta=0.96$, $\delta=0.1$, $\alpha=0.3$, $\gamma=4$.__ 
+
+```{julia}
+# your code here
+```
+
+__Write down the formula of function $f$ such that $k_{t+1}$: $k_{t+1} = f(k_t)$.__
+
+```{julia}
+# your text here
+```
+
+__Define a function `f(k::Float64, p::NamedTuple)::Float64` to represent $f$ for a given calibration__
+
+```{julia}
+# your code here
+```
+
+__Write a function `simulate(k0::Float64, T::Int, p::NamedTuple)::Vector{Float64}` to compute the simulation over `T` periods starting from initial capital level `k0`.__
+
+```{julia}
+# your code here
+```
+
+__Make a nice plot to illustrate the convergence. Do we get convergence from any initial level of capital?__
+
+```{julia}
+# your code here
+```
+
+__Suppose you were interested in using `f` to compute the steady-state. What would you propose to measure convergence speed? To speed-up convergence? Implement these ideas.__
+
+```{julia}
+# your code here
+```
