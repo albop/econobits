@@ -1,0 +1,330 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: Convergence of Sequences\n",
+        "author: Pablo Winant\n",
+        "format:\n",
+        "  html: default\n",
+        "  ipynb: default\n",
+        "execute: \n",
+        "  enabled: false\n",
+        "---\n",
+        "\n",
+        "\n",
+        "# Tutorial: Convergence\n",
+        "\n",
+        "### Solow Model\n",
+        "\n",
+        "A representative agent uses capital $k_t$ to produce $y_t$ using the following production function:\n",
+        "\n",
+        "$$y_t = k_t^{\\alpha}$$\n",
+        "\n",
+        "He chooses to consume an amount $c_t \\in ]0, y_t]$ and invests what remains:\n",
+        "\n",
+        "$$i_t = y_t - c_t$$ \n",
+        "\n",
+        "He accumulates capital $k_t$ according to:\n",
+        "\n",
+        "$$k_{t+1} = \\left( 1-\\delta \\right) k_{t} + i_{t}$$\n",
+        "\n",
+        "where $\\delta$ is the depreciation rate and $i_t$ is the amount invested.\n",
+        "\n",
+        "The goal of the representative agent is to maximize:\n",
+        "\n",
+        "$$\\sum_{t\\geq 0} \\beta^t U(c_t)$$\n",
+        "\n",
+        "where $U(x)=\\frac{x^{1-\\gamma}}{1-\\gamma}$ and $\\beta<1$ is the discount factor.\n",
+        "\n",
+        "For now, we ignore the objective and assume that the saving rate $s=\\frac{c_t}{y_t}$ is constant over time.\n",
+        "\n",
+        "__Create a `NamedTuple` to hold parameter values $\\beta=0.96$, $\\delta=0.1$, $\\alpha=0.3$, $\\gamma=4$.__ "
+      ],
+      "id": "73f86a26"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "α = 0.3\n",
+        "β = 0.96\n",
+        "γ = 4.0\n",
+        "δ = 0.1\n",
+        "s = 0.2"
+      ],
+      "id": "f86f05e9",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "struct SolowModel\n",
+        "    α::Float64\n",
+        "    β::Float64\n",
+        "    γ::Float64\n",
+        "    δ::Float64\n",
+        "end"
+      ],
+      "id": "fb3b802e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sm = SolowModel(\n",
+        "0.3::Float64,\n",
+        "0.96::Float64,\n",
+        "4.0::Float64,\n",
+        "0.1::Float64,\n",
+        ")"
+      ],
+      "id": "677e33ed",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# dictionary (symbol=>float)\n",
+        "d = Dict(\n",
+        "    :α => 0.3,\n",
+        "    :β => 0.96,\n",
+        "    :γ => 4.0,\n",
+        "    :δ => 0.1\n",
+        ")"
+      ],
+      "id": "ae752f9b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "d[:α]"
+      ],
+      "id": "243d959e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# namedtuple\n",
+        "\n",
+        "model = (; α=0.3, β=0.96, γ=4.0, δ=0.1, s=0.2)"
+      ],
+      "id": "1c95c18f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#unpack values with keywords\n",
+        "α = model.α\n",
+        "β = model.β\n",
+        "\n",
+        "(;α,β) = model"
+      ],
+      "id": "7fc7abcf",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "__Write down the formula of function $f$ such that $k_{t+1}$: $k_{t+1} = f(k_t)$.__\n",
+        "\n",
+        "\n",
+        "__Define a function `f(k::Float64, p::NamedTuple)::Float64` to represent $f$ for a given calibration__"
+      ],
+      "id": "e345dedf"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# add saving rate\n",
+        "function f(k,p)\n",
+        "    \n",
+        "    (;α, β, γ, δ, s) = p\n",
+        "\n",
+        "    # production\n",
+        "\n",
+        "    y = k^α\n",
+        "    i = s*y\n",
+        "\n",
+        "    K = (1-δ)*k  + i\n",
+        "\n",
+        "    return K\n",
+        "end"
+      ],
+      "id": "5c83cc8c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "@time f(2.0, model)"
+      ],
+      "id": "b85fd496",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "__Write a function `simulate(k0::Float64, T::Int, p::NamedTuple)::Vector{Float64}` to compute the simulation over `T` periods starting from initial capital level `k0`.__"
+      ],
+      "id": "2e8b273c"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function simulate(k0, T, p)\n",
+        "\n",
+        "    res = [k0]\n",
+        "    for t=1:T\n",
+        "        k = res[end]\n",
+        "        K = f(k, p)\n",
+        "        push!(res, K)\n",
+        "    end\n",
+        "    return res\n",
+        "end"
+      ],
+      "id": "c13a418f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "T = 50\n",
+        "res = simulate(2.0, T, model)"
+      ],
+      "id": "1bf96843",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "__Make a nice plot to illustrate the convergence. Do we get convergence from any initial level of capital?__"
+      ],
+      "id": "53302164"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "using Plots   # all exported functions become available including `plot``"
+      ],
+      "id": "87123f42",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import Plots\n",
+        "Plots.dosomething"
+      ],
+      "id": "c9b52ce7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "tvec = 0:T\n",
+        "plot(tvec, res; title=\"Solow Model\")"
+      ],
+      "id": "8c446de5",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# make the plot with different capital levels\n",
+        "T = 80\n",
+        "res_1 = simulate(1.0, T, model)\n",
+        "res_2 = simulate(2.0, T, model)\n",
+        "res_3 = simulate(3.0, T, model);"
+      ],
+      "id": "a0023c1a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "tvec = 0:T\n",
+        "pl = plot(tvec, res_1; title=\"Solow Model\", label=\"\\$k_0=1.0\\$\");\n",
+        "plot!(pl, tvec, res_2; label=\"\\$k_0=2.0\\$\");\n",
+        "plot!(pl, tvec, res_3; label=\"\\$k_0=3.0\\$\");\n",
+        "pl"
+      ],
+      "id": "51c67372",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# what about other value of svaing rates ?\n",
+        "res_1 = simulate(2.0, T, merge(model, (;s=0.1)))\n",
+        "res_2 = simulate(2.0, T, merge(model, (;s=0.2)))\n",
+        "res_3 = simulate(2.0, T, merge(model, (;s=0.3)));\n",
+        "pl = plot(tvec, res_1; title=\"Solow Model\", label=\"\\$s=1.0\\$\", xlabel=\"\\$t\\$\");\n",
+        "plot!(pl, tvec, res_2; label=\"\\$s=2.0\\$\");\n",
+        "plot!(pl, tvec, res_3; label=\"\\$s=3.0\\$\");\n",
+        "pl"
+      ],
+      "id": "9ff310f0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "__Suppose you were interested in using `f` to compute the steady-state. What would you propose to measure convergence speed? To speed-up convergence? Implement these ideas.__\n"
+      ],
+      "id": "265661ec"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "julia-1.9",
+      "language": "julia",
+      "display_name": "Julia 1.9.4",
+      "path": "/home/pablo/.local/share/jupyter/kernels/julia-1.9"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

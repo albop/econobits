@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Pablo Winant">
   <title>econobits – Convergence of Sequences (1)</title>
@@ -160,7 +160,7 @@ even better: understand convergence properties (information about the model)</li
 </section>
 <section id="recursive-sequence" class="slide level2">
 <h2>Recursive sequence</h2>
-<p>Consider a function <span class="math inline">\(f: R^n\rightarrow R^n\)</span> and a recursive sequence <span class="math inline">\((x_n)\)</span> defined by <span class="math inline">\(x_0\in R^n\)</span> and <span class="math inline">\(x_n = f(x_{n-1})\)</span>.</p>
+<p>Consider a function <span class="math inline">\(f: \mathbb{R}^n\rightarrow \mathbb{R}^n\)</span> and a recursive sequence <span class="math inline">\((x_n)\)</span> defined by <span class="math inline">\(x_0\in \mathbb{R}^n\)</span> and <span class="math inline">\(x_n = f(x_{n-1})\)</span>.</p>
 <p>We want to compute a fixed point of <span class="math inline">\(f\)</span> and study its properties.</p>
 <p>&nbsp;&nbsp;</p>
 <div class="fragment">
@@ -170,7 +170,7 @@ even better: understand convergence properties (information about the model)</li
 <div class="fragment">
 <p><strong>Another day</strong>:</p>
 <ul>
-<li>the matrix case: <span class="math inline">\(x_n = A^n x_0\)</span> whre <span class="math inline">\(A\in R^n \times R^n\)</span></li>
+<li>the matrix case: <span class="math inline">\(x_n = A^n x_0\)</span> where <span class="math inline">\(A\in \mathbb{R}^{n\times n}\)</span></li>
 <li>the finite nonlinear case: <span class="math inline">\(x_n = f(x_{n-1})\)</span></li>
 </ul>
 </div>
@@ -178,20 +178,31 @@ even better: understand convergence properties (information about the model)</li
 <section id="example-growth-model" class="slide level2">
 <h2>Example: growth model</h2>
 <div class="columns">
-<div class="column" style="width:30%;">
-<ul>
-<li>Solow growth model:
-<ul>
-<li>capital accumulation: <span class="math display">\[k_t = (1-\delta)k_{t-1} + i_{t-1}\]</span></li>
-<li>production: <span class="math display">\[y_t = k_t^\alpha\]</span></li>
-<li>consumption: <span class="math display">\[c_t = (1-{\color{red}s})y_t\]</span> <span class="math display">\[i_t = s y_t\]</span></li>
-</ul></li>
-</ul>
-</div><div class="column" style="width:30%;">
-<p><img class="fragment" src="solow.png" width="100%" data-fragment-index="2"></p>
-</div><div class="column" style="width:30%;">
-<div class="r-stack">
-<div class="fragment current-visible" data-fragment-index="2">
+<div class="column" style="width:40%;">
+<p><img class="fragment" src="solow_generated.png" width="100%" data-fragment-index="2"></p>
+<p>Solow growth model:</p>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td>capital accumulation</td>
+<td><span class="math inline">\(k_t = (1-\delta)k_{t-1} + i_{t-1}\)</span></td>
+</tr>
+<tr class="even">
+<td>production</td>
+<td><span class="math inline">\(y_t = k_t^\alpha\)</span></td>
+</tr>
+<tr class="odd">
+<td>consumption</td>
+<td><span class="math inline">\(c_t = (1-{\color{red}s})y_t\)</span></td>
+</tr>
+<tr class="even">
+<td>investment</td>
+<td><span class="math inline">\(i_t = s y_t\)</span></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:60%;">
+<div class="fragment">
 <p>For a given value of <span class="math inline">\({\color{red} s}\in\mathbb{R}^{+}\)</span> ( <span class="math inline">\({\color{red} s}\)</span> is a <strong>decision rule</strong>) <span class="math display">\[k_{t+1} = f(k_t, {\color{red} s})\]</span></p>
 <ul>
 <li><strong>backward-looking</strong> iterations</li>
@@ -199,7 +210,7 @@ even better: understand convergence properties (information about the model)</li
 </ul>
 </div>
 <div class="fragment">
-<p>Questions:</p>
+<p><em>Questions</em>:</p>
 <ul>
 <li>What is the steady-state?</li>
 <li>Can we characterize the transition back the steady-state?</li>
@@ -207,48 +218,38 @@ even better: understand convergence properties (information about the model)</li
 <li>what is the optimal <span class="math inline">\(s\)</span> ?</li>
 </ul>
 </div>
-</div>
 </div></div>
 </section>
 <section id="another-example-linear-new-keynesian-model" class="slide level2">
 <h2>Another example: linear new keynesian model</h2>
 <div class="columns">
-<div class="column">
+<div class="column" style="width:45%;">
+<p>Basic New Keynesian model (<a href="https://www.crei.cat/wp-content/uploads/users/pages/ch3_slides_june2015(1).pdf">full derivation</a> if curious )</p>
 <ul>
-<li>Basic New Keynesian model (<a href="https://www.crei.cat/wp-content/uploads/users/pages/ch3_slides_june2015(1).pdf">full derivation</a> if curious )
-<ul>
-<li>new philips curve (PC):<span class="math display">\[\pi_t = \beta \mathbb{E}_t \pi_{t+1} + \kappa y_t\]</span></li>
+<li>new Phillips curve (PC):<span class="math display">\[\pi_t = \beta \mathbb{E}_t \pi_{t+1} + \kappa y_t\]</span></li>
 <li>dynamic investment-saving equation (IS):<span class="math display">\[y_t = \beta \mathbb{E}_t y_{t+1} - \frac{1}{\sigma}(i_t - \mathbb{E}_t(\pi_{t+1}) ) - {\color{green} z_t}\]</span></li>
 <li>interest rate setting (taylor rule): <span class="math display">\[i_t = \alpha_{\pi} \pi_t + \alpha_{y} y_t\]</span></li>
-</ul></li>
-<li><!-- .element class="fragment" -->
-Solving the system:
-<ul>
-<li>solution: <span class="math inline">\(\begin{bmatrix}\pi_t \\\\ y_t \end{bmatrix} = {\color{red} c} z_t\)</span></li>
-</ul></li>
 </ul>
-</div><div class="column">
 <div class="fragment">
-<ul>
-<li><em>forward looking</em>:
-<ul>
-<li>take <span class="math inline">\(\begin{bmatrix}\pi_{t+1} \\\\ y_{t+1} \end{bmatrix} = {\color{red} {c_n}} z_{t+1}\)</span></li>
-<li>deduce <span class="math inline">\(\begin{bmatrix}\pi_{t} \\\\ y_{t} \end{bmatrix} = {\color{red} {c_{n+1}}} z_{t}\)</span></li>
-<li><span class="math inline">\(\mathcal{T}: \underbrace{c_{n}}_{t+1: \; \text{tomorrow}} \rightarrow \underbrace{c_{n+1}}_{t: \text{today}}\)</span> is the <strong>time-iteration</strong> operator (a.k.a. <strong>Coleman</strong> operator)</li>
-</ul></li>
-</ul>
+<p>Solving the system: <span class="math inline">\(\begin{bmatrix}\pi_t \\\\ y_t \end{bmatrix} = {\color{red} c} z_t\)</span></p>
 </div>
+</div><div class="column" style="width:55%;">
 <div class="fragment">
+<p>The system is <em>forward looking</em>:</p>
 <ul>
-<li><!-- .element class="fragment" -->
-Questions:
+<li>take <span class="math inline">\(\begin{bmatrix}\pi_{t+1} \\\\ y_{t+1} \end{bmatrix} = {\color{red} {c_n}} z_{t+1}\)</span> → deduce <span class="math inline">\(\begin{bmatrix}\pi_{t} \\\\ y_{t} \end{bmatrix} = {\color{red} {c_{n+1}}} z_{t}\)</span></li>
+</ul>
+<p><span class="math inline">\(\mathcal{T}: \underbrace{c_{n}}_{t+1: \; \text{tomorrow}} \rightarrow \underbrace{c_{n+1}}_{t: \text{today}}\)</span> is the <strong>time-iteration</strong> operator (a.k.a. <strong>Coleman</strong> operator)</p>
+</div>
+<p>&nbsp;</p>
+<div class="fragment">
+<p><em>Questions</em>:</p>
 <ul>
-<li>What is the limit to <span class="math inline">\(c_{t+1} = \mathcal{T} c_n\)</span> ?</li>
-<li>Under wich conditions (on <span class="math inline">\(\alpha_{\pi}, \alpha_y\)</span>) is it convergent ?
+<li>What is the limit to <span class="math inline">\(c_{t+1} = \mathcal{T} c_n\)</span>?</li>
+<li>Under which conditions (on <span class="math inline">\(\alpha_{\pi}, \alpha_y\)</span>) is it convergent?
 <ul>
 <li>determinacy conditions</li>
 <li>interpretation: does the central bank manage to control inflation expectations?</li>
-</ul></li>
 </ul></li>
 </ul>
 </div>
@@ -256,30 +257,38 @@ Questions:
 </section>
 <section id="recursive-sequence-2" class="slide level2">
 <h2>Recursive sequence (2)</h2>
+<p>🤔 Wait: does a fixed point exist?</p>
+<div class="fragment">
 <ul>
-<li class="fragment"><p>Wait: does a fixed point exist?</p>
-<ul>
-<li class="fragment">we’re not very concerned by the existence problem here</li>
-<li class="fragment">we’ll be happy with local conditions (existence, uniqueness) around a solution</li>
-</ul></li>
-<li class="fragment"><p>In theoretical work, there are many fixed-point theorems to choose from.</p></li>
-<li class="fragment"><p>For instance, we can assume there is an interval such that <span class="math inline">\(f([a,b])\subset[a,b]\)</span>. Then we know there exists <span class="math inline">\(x\)</span> in <span class="math inline">\([a,b]\)</span> such that <span class="math inline">\(f(x)=x\)</span>. But there can be many such points.</p></li>
+<li>we’re not very concerned by the existence problem here</li>
+<li>we’ll be happy with local conditions (existence, uniqueness) around a solution</li>
 </ul>
+</div>
+<div class="fragment">
+<p>In theoretical work, there are many fixed-point theorems to choose from.</p>
+</div>
+<div class="fragment">
+<p>&nbsp;</p>
+<p>For example:</p>
+<p><br>
+</p>
+<p><em>Brouwer</em> fixed point: assume <span class="math inline">\(f\)</span> is continuous and there is an interval such that <span class="math inline">\(f([a,b])\subset[a,b]\)</span>. Then we know there exists <span class="math inline">\(x\)</span> in <span class="math inline">\([a,b]\)</span> such that <span class="math inline">\(f(x)=x\)</span>. (There can be many such points.)</p>
+</div>
 </section>
 <section id="example-growth-model-with-multiple-fixed-points" class="slide level2">
 <h2>Example: growth model with multiple fixed points</h2>
 
-<img data-src="growth_multiple_equilibria.jpg" style="width:40.0%" class="r-stretch quarto-figure-center"><p class="caption">Multiple equilibria in the growth model</p><p>In the growth model, if we change the production function: <span class="math inline">\(y=k^{\alpha}\)</span> for a nonconvex/nonmonotonic one, we can get multiple fixed points.</p>
+<img data-src="solow_multiple_fixed_points.png" style="width:55.0%" class="r-stretch quarto-figure-center"><p class="caption">Multiple equilibria in the growth model</p><p>In the growth model, if we change the production function: <span class="math inline">\(y=k^{\alpha}\)</span> for a nonconvex/nonmonotonic one, we can get multiple fixed points.</p>
 </section>
 <section id="convergence" class="slide level2">
 <h2>Convergence</h2>
+<p>Given <span class="math inline">\(f: \mathbb{R} \rightarrow \mathbb{R}\)</span> consider the sequence <span class="math inline">\(x_n = f(x_{n-1})\)</span></p>
 <ul>
-<li><p>Given <span class="math inline">\(f: R \rightarrow R\)</span></p></li>
-<li><p>How do we characterize behaviour around <span class="math inline">\(x\)</span> such that <span class="math inline">\(f(x)=x\)</span>?</p></li>
+<li>How do we characterize behaviour around <span class="math inline">\(x\)</span> such that <span class="math inline">\(f(x)=x\)</span>?</li>
 </ul>
 <div class="fragment">
 <ul>
-<li><p>Stability criterium:</p>
+<li><p>Stability criterion:</p>
 <ul>
 <li>if <span class="math inline">\(|f^{\prime}(x)|&gt;1\)</span>: sequence is unstable and will not converge to <span class="math inline">\(x\)</span> except by chance</li>
 <li>if <span class="math inline">\(|f^{\prime}(x)|&lt;1\)</span>: <span class="math inline">\(x\)</span> is a stable fixed point</li>
@@ -288,36 +297,33 @@ Questions:
 </ul>
 </div>
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
-<p>To get the intution about local convergence assume, you have an initial point <span class="math inline">\(x_n\)</span> close to the steady state and consider the following expresion:</p>
-<p><span class="math inline">\(x_{n+1} - x = f(x_n) - f(x) = f^{\prime}(x) (x_n-x) + o( (x_n-x) )\)</span></p>
-<p>If one sets aside the error term (which one can do with full mathematical rigour), the dynamics for very small perturbations are given by:</p>
-<p><span class="math inline">\(|x_{n+1} - x| = |f^{\prime}(x)| |x_n-x|\)</span></p>
-<p>When <span class="math inline">\(|f^{\prime}(x)|&lt;1\)</span>, the distance to the target decreases at each iteration and we have convergence. When <span class="math inline">\(|f^{\prime}(x)|&gt;1\)</span> there is local divergence.</p>
-</section>
-<section id="section-1" class="slide level2">
-<h2></h2>
-<!-- ::: columns
+<section id="convergence-cobweb-intuition" class="slide level2">
+<h2>Convergence (Cobweb intuition)</h2>
+<p>Think of the graph of <span class="math inline">\(y=f(x)\)</span> and the 45-degree line <span class="math inline">\(y=x\)</span>.</p>
 
-:::: column -->
-<p>What about the case <span class="math inline">\(|f^{\prime}(x)=1|\)</span>? Many cases are possible. To distinguish between them, one needs to inspect higher order derivatives.</p>
-<ul>
-<li>when <span class="math inline">\(|f^{\prime}(x)=1|\)</span>, <span class="math inline">\(|f^{\prime\prime}(x)|\neq 0\)</span> the series will convergence, only if <span class="math inline">\((x_0-x)f^{\prime\prime}(x)&lt;0\)</span>, i.e.&nbsp;starting from one side of the fixed point. The steady-state is not stable.</li>
-<li>When <span class="math inline">\(|f^{\prime}(x)=1|\)</span>, <span class="math inline">\(|f^{\prime\prime}(x)| = 0\)</span>, <span class="math inline">\(|f^{\prime \prime\prime}(x)|\neq 0\)</span> the series will converge, only if <span class="math inline">\(f^{\prime}(x)(f^{\prime\prime\prime}(x))&lt;1\)</span></li>
+<img data-src="cobweb_intuition.png" style="width:85.0%" class="r-stretch"><ul>
+<li class="fragment">If <span class="math inline">\(0&lt;f'(x^*)&lt;1\)</span>: iterates approach <span class="math inline">\(x^*\)</span> monotonically.</li>
+<li class="fragment">If <span class="math inline">\(-1&lt;f'(x^*)&lt;0\)</span>: iterates approach <span class="math inline">\(x^*\)</span> but typically oscillate (alternating sides).</li>
+<li class="fragment">If <span class="math inline">\(|f'(x^*)|&gt;1\)</span>: you generically move away from <span class="math inline">\(x^*\)</span>.</li>
 </ul>
-<p>In general, there is stability only if the function <span class="math inline">\(f\)</span> is crossing the 45 degrees line (when <span class="math inline">\(f^ {\prime}(x)=1)\)</span>, or the -45 degrees line (when <span class="math inline">\(f^ {\prime}(x)=1\)</span>)</p>
-<p>Mathematically, this involves, that:</p>
+</section>
+<section id="convergence-first-order-approximation" class="slide level2">
+<h2>Convergence (first order approximation)</h2>
+<p>To get the intuition about local convergence, assume you have an initial point <span class="math inline">\(x_n\)</span> close to the steady state and consider the following expression:</p>
+<p><span class="math display">\[x_{n+1} - x = f(x_n) - f(x) = f^{\prime}(x) (x_n-x) + o(x_n-x)\]</span></p>
+<p>If one sets aside the error term (which one can do with full mathematical rigour), the dynamics for very small perturbations are given by:</p>
+<p><span class="math display">\[|x_{n+1} - x| \approx  |f^{\prime}(x)| |x_n-x|\]</span></p>
+<p>When <span class="math inline">\(|f^{\prime}(x)|&lt;1\)</span>, the distance to the target decreases at each iteration and we have convergence.</p>
+<p>When <span class="math inline">\(|f^{\prime}(x)|&gt;1\)</span> there is local divergence.</p>
+<p>This is conform to Cobweb intuition.</p>
+</section>
+<section id="borderline-case-fx1" class="slide level2">
+<h2>Borderline case <span class="math inline">\(|f'(x^*)|=1\)</span></h2>
+<p>When <span class="math inline">\(|f'(x^*)|=1\)</span>, the linear approximation does not tell you whether you converge.</p>
 <ul>
-<li>the first non-zero coefficient <span class="math inline">\(f^{k}(x)\)</span> with <span class="math inline">\(k&gt;1\)</span> has odd order (<span class="math inline">\(k\)</span> odd)</li>
-<li>it has the right sign</li>
+<li class="fragment">You must look at higher-order terms (Taylor expansion), and behavior can depend on the side you start from.</li>
+<li class="fragment">In practice, treat this as a warning sign: add damping, change the iteration, or switch to a root-finding method.</li>
 </ul>
-<!-- ::::
-:::: column -->
-<!-- [TODO: add graph] -->
-<!-- :::: -->
-<!-- ::: -->
-<!--  -->
 </section>
 <section id="change-the-problem" class="slide level2">
 <h2>Change the problem</h2>
@@ -340,6 +346,16 @@ Questions:
 </ul>
 </div>
 </section>
+<section id="contraction-mapping-why-fixed-point-iteration-works" class="slide level2">
+<h2>Contraction mapping (why fixed-point iteration works)</h2>
+<p>Suppose there exists an interval <span class="math inline">\(I=[a,b]\)</span> such that <span class="math inline">\(f(I)\subseteq I\)</span> and <span class="math display">\[\sup_{x\in I} |f'(x)| \le L &lt; 1.\]</span></p>
+<ul>
+<li class="fragment">Then there is a unique fixed point <span class="math inline">\(x^*\in I\)</span>.</li>
+<li class="fragment">For any <span class="math inline">\(x_0\in I\)</span>, iterating <span class="math inline">\(x_{n+1}=f(x_n)\)</span> converges to <span class="math inline">\(x^*\)</span>.</li>
+<li class="fragment">The error shrinks at least linearly: <span class="math inline">\(|x_{n+1}-x^*|\le L\,|x_n-x^*|\)</span>.</li>
+</ul>
+<p>This is the one-dimensional version of the contraction logic used for many “time-iteration” operators in macro.</p>
+</section>
 <section id="dynamics-around-a-stable-point" class="slide level2">
 <h2>Dynamics around a stable point</h2>
 <ul>
@@ -358,12 +374,12 @@ Questions:
 </section>
 <section id="how-do-we-improve-convergence" class="slide level2">
 <h2>How do we improve convergence ?</h2>
-<p><span class="math display">\[\frac{|x_{t-1} - x_{t-2}|} {|x_t - x_{t-1}|} \sim |f^{\prime}(x_{t-1})|  \]</span></p>
+<p><span class="math display">\[\frac{|x_t - x_{t-1}|} {|x_{t-1} - x_{t-2}|} \sim |f^{\prime}(x_{t-1})|  \]</span></p>
 <p>corresponds to the case of <strong>linear</strong> convergence (kind of slow).</p>
 </section>
 <section id="aitkens-extrapolation" class="slide level2">
 <h2>Aitken’s extrapolation</h2>
-<p>When convergence is geometric, we have: <span class="math display">\[ \lim_{x\rightarrow \infty}\frac{ x_{t+1}-x}{x_t-x} = \lambda \in \mathbb{R}^{\star}\]</span></p>
+<p>When convergence is geometric, we have: <span class="math display">\[ \lim_{t\rightarrow \infty}\frac{ x_{t+1}-x}{x_t-x} = \lambda \in \mathbb{R}^{\star}\]</span></p>
 <p>Which implies:</p>
 <p><span class="math display">\[\frac{ x_{t+1}-x}{x_t-x} \sim \frac{ x_{t}-x}{x_{t-1}-x}\]</span></p>
 </section>
@@ -395,8 +411,19 @@ Questions:
 </section>
 <section id="convergence-speed-1" class="slide level2">
 <h2>Convergence speed</h2>
-<p>Remark: in the case of linear convergence:</p>
-<p><span class="math display">\[{\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x_t|}{|x_{t}-x_{t-1}|} = \mu \in R^+ \iff {\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|}=\frac{1}{1-\mu}\]</span></p>
+<p>Remark: in the case of linear convergence with <span class="math inline">\(\mu\in(0,1)\)</span>,</p>
+<p><span class="math display">\[\mu = {\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|} = {\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x_t|}{|x_t-x_{t-1}|}.\]</span></p>
+<p>Moreover, asymptotically one has the useful heuristic bound <span class="math display">\[|x_t-x^{\star}| \approx \frac{1}{1-\mu}\,|x_{t+1}-x_t|.\]</span></p>
+</section>
+<section id="damping-relaxation-in-practice" class="slide level2">
+<h2>Damping / relaxation in practice</h2>
+<p>Consider the relaxed iteration <span class="math display">\[x_{n+1}=g(x_n)=(1-\lambda)x_n+\lambda f(x_n).\]</span></p>
+<p>Locally around a fixed point <span class="math inline">\(x^*\)</span>, <span class="math display">\[g'(x^*) = 1-\lambda+\lambda f'(x^*).\]</span></p>
+<ul>
+<li class="fragment">If you can estimate <span class="math inline">\(f'(x^*)\approx a\)</span>, choose <span class="math inline">\(\lambda\)</span> to make <span class="math inline">\(|g'(x^*)|\)</span> small.</li>
+<li class="fragment">The “ideal” choice (unconstrained) is <span class="math inline">\(\lambda^* = \frac{1}{1-a}\)</span>, which gives <span class="math inline">\(g'(x^*)=0\)</span>.</li>
+<li class="fragment">In practice you often restrict <span class="math inline">\(\lambda\in(0,1]\)</span> (safeguard), so you clamp <span class="math inline">\(\lambda\)</span> to that range.</li>
+</ul>
 </section>
 <section id="in-practice" class="slide level2">
 <h2>In practice</h2>
@@ -424,6 +451,67 @@ what kind of convergence? (if <span class="math inline">\(|\lambda_n|&lt;1\)</sp
 </ul></li>
 </ul></li>
 </ul>
+</section>
+<section id="quick-diagnostic-patterns" class="slide level2">
+<h2>Quick diagnostic patterns</h2>
+<ul>
+<li class="fragment"><span class="math inline">\(\eta_n\downarrow\)</span> but <span class="math inline">\(\epsilon_n\)</span> flat: “false convergence” / stagnation (bad scaling, poor conditioning, wrong stopping rule).</li>
+<li class="fragment"><span class="math inline">\(\epsilon_n\downarrow\)</span> but <span class="math inline">\(\eta_n\)</span> does not: cycling / non-contractive map / numerical noise.</li>
+<li class="fragment"><span class="math inline">\(\lambda_n\)</span> is informative only after a burn-in; early iterations can be chaotic.</li>
+</ul>
+</section>
+<section id="summary-methods-at-a-glance" class="slide level2">
+<h2>Summary: methods at a glance</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Needs</th>
+<th>Typical rate (local)</th>
+<th>Common failure mode</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fixed-point <span class="math inline">\(x\leftarrow f(x)\)</span></td>
+<td>function eval</td>
+<td>linear if <span class="math inline">\(|f'(x^*)|&lt;1\)</span></td>
+<td>diverges / cycles if not contractive</td>
+</tr>
+<tr class="even">
+<td>Relaxed <span class="math inline">\((1-\lambda)x+\lambda f(x)\)</span></td>
+<td>function eval + choose <span class="math inline">\(\lambda\)</span></td>
+<td>linear, often faster</td>
+<td>too small <span class="math inline">\(\lambda\)</span> (slow), too large (diverge)</td>
+</tr>
+<tr class="odd">
+<td>Newton on <span class="math inline">\(f(x)-x=0\)</span></td>
+<td>derivative (or approx)</td>
+<td>quadratic near solution</td>
+<td>bad initial guess; derivative near 1 makes step unstable</td>
+</tr>
+<tr class="even">
+<td>Steffensen (Aitken-accelerated)</td>
+<td>extra evals</td>
+<td>quadratic (often)</td>
+<td>noisy/flat denominator; not robust far from solution</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="check-yourself" class="slide level2">
+<h2>Check yourself</h2>
+<ol type="1">
+<li>Suppose <span class="math inline">\(\lambda_n\approx 0.8\)</span> and <span class="math inline">\(|x_{n+1}-x_n|\approx 10^{-4}\)</span>. Use <span class="math inline">\(|x_n-x^*|\approx \frac{1}{1-\lambda_n}|x_{n+1}-x_n|\)</span> to estimate the remaining error.</li>
+<li>You observe oscillations in <span class="math inline">\(x_n\)</span> but the amplitude shrinks. What does that suggest about the sign of <span class="math inline">\(f'(x^*)\)</span>?</li>
+</ol>
+<p>:::</p>
 
 
 </section>

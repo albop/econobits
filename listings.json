@@ -2,7 +2,13 @@
   {
     "listing": "/mie37/index_2026.html",
     "items": [
-      "/lectures/convergence/index.html"
+      "/lectures/convergence/index.html",
+      "/lectures/discretization.html",
+      "/lectures/interpolation.html",
+      "/lectures/time_iteration.html",
+      "/tutorials/epidemiology.html",
+      "/tutorials/Julia_Basics.html",
+      "/tutorials/solow.html"
     ]
   }
 ]

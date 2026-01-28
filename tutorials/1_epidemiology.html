@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>index_2026 – econobits</title>
+<title>Epidemiology Models – econobits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -69,6 +104,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -109,23 +173,117 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#simple-sir-model" id="toc-simple-sir-model" class="nav-link active" data-scroll-target="#simple-sir-model">Simple SIR model</a></li>
+  <li><a href="#a-spatial-sir-model" id="toc-a-spatial-sir-model" class="nav-link" data-scroll-target="#a-spatial-sir-model">A Spatial SIR model</a></li>
+  <li><a href="#additional-questions" id="toc-additional-questions" class="nav-link" data-scroll-target="#additional-questions">Additional questions</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="1_epidemiology.ipynb" download="1_epidemiology.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/wip.png" class="img-fluid figure-img"></p>
-<figcaption>Work in Progress</figcaption>
-</figure>
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Epidemiology Models</h1>
 </div>
 
 
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>H.W. Heathcote: epidemiologic models are <em>deterministic models for infectious diseases which are spread by direct person-to-person contact in a population</em>.</p>
+<p>This kind of models has been used since by a few decades by economist, for matters that have nothing to do with health.</p>
+<ul>
+<li>diffusion of information, or opinions on social medias</li>
+<li>asset prices and fads</li>
+<li>expectation formation for macroeconomic outcomes (ex: <em>The Epidemiology of Macroeconomic Expectations</em> by Chris Carroll)</li>
+</ul>
+<p>Epidemiologic models have two features that depart from standard economic models:</p>
+<ul>
+<li>Agent’s behaviour does not take the full system into account. It is irrational in the sense that it isn’t forward looking. Instead, an agent is given a behavioural heuristic.</li>
+<li>The transitions of the whole system can be determined without solving for complex interactions first.</li>
+</ul>
+<p>Understanding why these two assumptions are very costly for economists will keep us busy during a big part of the course. Here we just consider two simple models as small programming exercises.</p>
+<section id="simple-sir-model" class="level3">
+<h3 class="anchored" data-anchor-id="simple-sir-model">Simple SIR model</h3>
+<p>There is a continuum of agents of mass <span class="math inline">\(1\)</span>. Each agent can be either “Susceptible” (S), “Infected” (I) or “Recovered” (R). In each period, one agent meets another agent drawn randomly. During a meeting Susceptible agents who meet an infected agent, will always catch the disease (or the fad) but are not contagious. Infected agents, have a probability <span class="math inline">\(\pi\)</span> of being recovered. Nothing happens to Recovered agents who meet other people. No distinction is made between recovering as a healthy or a dead person.</p>
+<p>We’re interested in the evolution in the number infected persons, both the speed of infection and the total amount of infected people in every period.</p>
+<p><strong>Write down the transition equations for <span class="math inline">\(n_I\)</span>, the number of infected people, for <span class="math inline">\(n_R\)</span> the number of recovered people and <span class="math inline">\(n_S\)</span> the number of susceptible people.</strong></p>
+<pre class="{markdown}"><code># your text here</code></pre>
+<p><strong>Compute the transition function <code>f</code> for the vector state <span class="math inline">\(s_t\)</span> returning <span class="math inline">\(s_{t+1}\)</span>.</strong></p>
+<div id="5e42c0bf" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Compute the transitions over <span class="math inline">\(T\)</span> periods. Plot the result using Plots.jl. (bonus: check against closed form solution)</strong></p>
+<div id="3f75374a" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>We now assume a Susceptible person who meets an infected one has a probability <span class="math inline">\(\mu\)</span> of catching the disease. Update the transition function. Update function <span class="math inline">\(f\)</span> and write a function of <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\pi\)</span> which returns the simulation. Compare different values of the parameters. How would you interpret “social distancing”? How would you choose parameters <span class="math inline">\(\Pi\)</span> and <span class="math inline">\(\mu\)</span></strong></p>
+<div id="27eedd13" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="a-spatial-sir-model" class="level3">
+<h3 class="anchored" data-anchor-id="a-spatial-sir-model">A Spatial SIR model</h3>
+<p>We now consider another version of the model where agents evolve in the space <span class="math inline">\(\mathcal{S}=[0,1]\times[0,1]\)</span>. There are <span class="math inline">\(N\in\mathbb{N}\)</span> agent. At any date, each agent <span class="math inline">\(n \in [0,1]\)</span> is located at <span class="math inline">\((x_n,y_n)\in \mathcal{S}\)</span>.</p>
+<p>Each agent moves follows a random walk bounded by <span class="math inline">\(\mathcal{S}\)</span>: <span class="math display">\[x_t = \min(\max( x_{t-1} + \epsilon_t, 0), 1)\]</span> <span class="math display">\[y_t = \min(\max( y_{t-1} + \eta_t, 0), 1)\]</span> where <span class="math inline">\(\epsilon_t\)</span> and <span class="math inline">\(\eta_t\)</span> are both normally distributed with standard deviation <span class="math inline">\(\sigma\)</span>.</p>
+<p>At any date, the individual state of an agent is <span class="math inline">\(s_t=(x_t, y_t, h_t)\)</span> where <span class="math inline">\(h_t\)</span> is either “S”, “I” or “R”. <span class="math inline">\(v_t\)</span> denotes the states of all agents (for instance <span class="math inline">\(v_t=(s_{n,t})_n\)</span>. The health status of each agent is updated in the following way:</p>
+<ul>
+<li>Agents <span class="math inline">\(R\)</span> stay <span class="math inline">\(R\)</span>.</li>
+<li>Agents <span class="math inline">\(I\)</span> have probability <span class="math inline">\(\pi\)</span> to become <span class="math inline">\(R\)</span>. They stay <span class="math inline">\(I\)</span> otherwise.</li>
+<li>An agent of type <span class="math inline">\(S\)</span> in position <span class="math inline">\((x,y)\)</span> has a probability <span class="math inline">\(prob(x,y,S)\)</span> to be infected that is <span class="math inline">\(\mu\)</span> if there is another infected agent within a radius <span class="math inline">\(r&gt;0\)</span>.</li>
+</ul>
+<p><strong>Define a type <code>Agent</code>, which holds the type of an agent. The state of the whole system will be held in a <code>Vector[Agent]</code> type.</strong></p>
+<div id="b8e03c9e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Write a function <code>spatial_transition(S::Vector{Agent})::Vector{Agent}</code> to compute the transition of the positions. Write another function <code>random_guess(T=100)</code> which simulates for <span class="math inline">\(T\)</span> periods in order to find a good initial guess.</strong></p>
+<div id="0f735eba" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Write a function <code>show_population</code> to plot all agents with different colors for different health status.</strong></p>
+<div id="cca68597" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Write a function <code>evolve(S::Vector[Agent])::Vector[Agent]</code> which takes the population in a given state and returns the same population with updated health status.</strong></p>
+<div id="340f73bb" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Write a function <code>simulate(S0::Vector[Agent], k=1)</code> to simulate the economy starting from an initially random position with <code>k</code> infected individuals. The returned object should be of type <code>Vector[Vector[Agent]]</code>.</strong></p>
+<div id="882bb4b2" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Compute statistics along a simulated path for <span class="math inline">\(n_I\)</span>, <span class="math inline">\(n_S\)</span>, <span class="math inline">\(n_R\)</span>. Plot and compare with the basic SIR model</strong></p>
+<div id="c98ed8c1" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="additional-questions" class="level3">
+<h3 class="anchored" data-anchor-id="additional-questions">Additional questions</h3>
+<p>Have fun by trying to answer one of these questions:</p>
+<ul>
+<li>change probability of infection so that it depends on the number of infected people in the vincinity (with some suitable functional formulation for)</li>
+<li>compute an animation of the transition</li>
+<li>compute an interactive visualisation (with <code>Interact.jl</code> if available)</li>
+</ul>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -201,7 +359,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/albop\.github\.io\/econobits\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

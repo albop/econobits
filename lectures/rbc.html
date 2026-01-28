@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>index_2026 – econobits</title>
+<title>rbc – econobits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -69,6 +69,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -109,8 +138,20 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#real-business-cycles-with-dolo" id="toc-real-business-cycles-with-dolo" class="nav-link active" data-scroll-target="#real-business-cycles-with-dolo">Real Business Cycles, with Dolo</a>
+  <ul class="collapse">
+  <li><a href="#advanced-macro-numerical-methods-2021-mie37" id="toc-advanced-macro-numerical-methods-2021-mie37" class="nav-link" data-scroll-target="#advanced-macro-numerical-methods-2021-mie37">Advanced Macro: Numerical Methods, 2021 (MIE37)</a>
+  <ul class="collapse">
+  <li><a href="#the-rbc-model-planner-version" id="toc-the-rbc-model-planner-version" class="nav-link" data-scroll-target="#the-rbc-model-planner-version">The RBC Model: planner version</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
@@ -118,14 +159,296 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<section id="real-business-cycles-with-dolo" class="level1">
+<h1>Real Business Cycles, with Dolo</h1>
+<section id="advanced-macro-numerical-methods-2021-mie37" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-macro-numerical-methods-2021-mie37">Advanced Macro: Numerical Methods, 2021 (MIE37)</h2>
+<hr>
+<ul>
+<li>Like the neo-classical growth model</li>
+<li>With shocks</li>
+<li>With labour</li>
+<li>With a decentralized interpretation</li>
+</ul>
+<hr>
+<section id="the-rbc-model-planner-version" class="level3">
+<h3 class="anchored">The RBC Model: planner version</h3>
+<div class="container">
+<div class="col">
+<ul>
+<li><p>states:</p>
+<ul>
+<li>productivity: <span class="math inline">\(z_t\)</span></li>
+<li>capital: <span class="math inline">\(k_t\)</span></li>
+</ul></li>
+<li><p>two independent control variables:</p>
+<ul>
+<li>consumption: <span class="math inline">\(c_t \in [0,y_t], c_t\geq 0, c_t\leq y_t\)</span></li>
+<li>labor: <span class="math inline">\(n_t\)</span></li>
+</ul></li>
+<li><p>shock:</p>
+<ul>
+<li>tfp shock: <span class="math inline">\(\epsilon_t \sim \mathcal{N}(0,\sigma)\)</span></li>
+</ul></li>
+<li><p>objective: <span class="math display">\[\max_{\begin{matrix}c_t, n_t\\\\c_t \geq 0, y_t \geq c_t, n_t \geq 0, 1 \geq n_t\end{matrix}} \mathbb{E}_0 \left[ \sum \beta^t \left( U(c_t) + \chi V(1-n_t) \right) \right]\]</span></p></li>
+<li><p>U and V satisfy Inada conditions, ie <span class="math inline">\(U^{\prime}&gt;0, U^{\prime \prime}&lt;0, U^{\prime}(0)=\infty\)</span></p></li>
+</ul>
+</div>
+<div class="col">
+<ul>
+<li>definitions:
+<ul>
+<li>production: <span class="math display">\[y_t  = \exp(z_t) k_t^{\alpha} n^{1-\alpha} + i_t\]</span></li>
+<li>investment: <span class="math display">\[i_t = y_t - c_t\]</span></li>
+</ul></li>
+<li>transitions: <span class="math display">\[\begin{eqnarray}
+z_t = (1-\rho) z_{t-1} + \epsilon_t\\\\
+k_t = (1-\delta) k_{t-1} + i_{t-1}
+\end{eqnarray}\]</span></li>
+</ul>
+</div>
+<hr>
+<section id="lagrangian" class="level3">
+<h3 class="anchored" data-anchor-id="lagrangian">Lagrangian</h3>
+<ul>
+<li>Two variables optimization: <span class="math display">\[\max_{\begin{matrix}c_1, c_2\\\\p_1 c_1 + p_2 c_t \leq B\end{matrix}} U(c_1, c_2)\]</span></li>
+<li>Deterministic opimization (finite horizon) <span class="math display">\[\max_{\begin{matrix}c_0, c_1, c_2, ... c_T \\\\ c_0 + c_1 + \cdots + c_T \leq B\\\\c_0\geq0, \cdots c_T \geq 0 \end{matrix}} \sum_{i=1}^{T} \beta^i U(c_i)\]</span></li>
+<li>Deterministic opimization (infinite horizon) <span class="math display">\[\max_{\begin{matrix}c_0, c_1, ... \\\\ c_0 + c_1 + \cdots \leq B\\\\c_0\geq0, c_1\geq 0, \cdots \end{matrix}} \sum_{i=1}^{\infty} \beta^i U(c_i)\]</span></li>
+</ul>
+<hr>
+</section>
+<section id="lagrangian-stochastic" class="level3">
+<h3 class="anchored" data-anchor-id="lagrangian-stochastic">Lagrangian (stochastic)</h3>
+<div class="container">
+<div class="col">
+<ul>
+<li>exogenous process defines an event <strong>tree</strong> <span class="math inline">\((s)\)</span>
+<ul>
+<li>it is a very useful concept to understand stochastic optimization, complete markets, etc.</li>
+<li>math for continuous processes a bit involved (filtrations, …), but most intuition can be gained from discrete process</li>
+</ul></li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../images/wip.png" class="img-fluid figure-img"></p>
-<figcaption>Work in Progress</figcaption>
+<p><img src="head_tail.png" class="img-fluid figure-img"></p>
+<figcaption>head or tail</figcaption>
 </figure>
 </div>
+</div>
+<div class="col">
+<ul>
+<li>consider a discrete process (for instance <span class="math inline">\(\epsilon_t \in [ \overline{\epsilon}, \underline{\epsilon}]\)</span>)
+<ul>
+<li>an event is defined as the history of the shocks so far</li>
+<li>ex: <span class="math inline">\((\overline{\epsilon} , \overline{\epsilon}, \underline{\epsilon}, \overline{\epsilon})\)</span></li>
+</ul></li>
+<li>if <span class="math inline">\(s^{\prime}\)</span> is the sucessor of <span class="math inline">\(s\)</span> we denote <span class="math inline">\(s \subset s^{\prime}\)</span>
+<ul>
+<li><span class="math inline">\(s\)</span> is in the history of <span class="math inline">\(s^{\prime}\)</span></li>
+<li>transition probabilities <span class="math inline">\(\tau(s,s^{\prime})\)</span>
+<ul>
+<li><span class="math inline">\(1 = \sum_{s^{\prime} | s\subset s^{\prime}} \tau(s, s^{\prime})\)</span></li>
+</ul></li>
+</ul></li>
+<li>each node has a given probability <span class="math inline">\(p(s)\)</span>. By construction:
+<ul>
+<li><span class="math inline">\(p(s^{\prime}) = p(s) \tau(s,s^{\prime})\)</span></li>
+</ul></li>
+<li>sometimes, we keep time subscript:
+<ul>
+<li>ex: <span class="math inline">\(s_4 = (\overline{\epsilon} , \overline{\epsilon}, \underline{\epsilon}, \overline{\epsilon})\)</span></li>
+<li>but for each <span class="math inline">\(t\)</span> there are many possible <span class="math inline">\(s_t\)</span></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+<section id="lagrangian-stochastic-2" class="level3">
+<h3 class="anchored" data-anchor-id="lagrangian-stochastic-2">Lagrangian (stochastic 2)</h3>
+<ul>
+<li><p>Stochastic optimization (infinite horizon) <span class="math display">\[\max_{ c_t } \mathbb{E_0} \left[ \sum_{t=1}^{\infty} \beta^i U(c_t) \right]\]</span></p></li>
+<li><p>What it really means (<span class="math inline">\(|s|\)</span> is time of event <span class="math inline">\(s\)</span>) <span class="math display">\[\max_{ \forall s,  c(s)} \sum_{s} p(s) \beta^{|s|} U(c(s))\]</span></p></li>
+<li><p>Or: <span class="math display">\[\max_{ c(s_t) } \sum_{t}  \beta^{t} \sum_{s_t} p(s_t)U(c(s_t))\]</span></p></li>
+<li><p>Think of it as a regular sum</p></li>
+<li><p>When you differentiate the lagrangian, you are differentiating w.r.t. all <span class="math inline">\(c(s_t)\)</span>, i.e the values of <span class="math inline">\(c\)</span> on each of the nodes.</p></li>
+<li><p>Example: cake eating</p></li>
+</ul>
+<hr>
+</section>
+<section id="back-to-rbc" class="level3">
+<h3 class="anchored" data-anchor-id="back-to-rbc">Back to RBC</h3>
+<p><span class="math display">\[\max_{\begin{matrix}c_t, n_t\\\\c_t \geq 0\\\\ y_t \geq c_t\\\\n_t \geq 0\\\\1 \geq n_t\end{matrix}} \mathbb{E}_0 \left[ \sum \beta^t \left( U(c_t) + \chi V(1-n_t) \right) \right]\]</span></p>
+<ul>
+<li>We know that optimally <span class="math inline">\(c_t&gt;0\)</span>, <span class="math inline">\(c_t&lt;y_t\)</span> and <span class="math inline">\(n_t&gt;0\)</span>
+<ul>
+<li>equality cases lead to zero production, i.e.&nbsp;infinite marginal utility</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="back-to-rbc-2" class="level3">
+<h3 class="anchored" data-anchor-id="back-to-rbc-2">Back to RBC (2)</h3>
+<p><span class="math display">\[\max_{\begin{matrix}c_t, n_t\\\\c_t \geq 0\\\\ k_{t+1} \geq 0 \\\\n_t \geq 0\\\\1 \geq n_t \\\\ y_t \geq c_t - i_t  \\\\ k_{t+1} = (1-\delta) k_t  + i_t \\\\ y_t = e^{z_t} k_t^{\alpha} n_t^{1-\alpha} \end{matrix}} \mathbb{E}_0 \left[ \sum_t \beta^t \left( U(c_t) + \chi V(1-n_t) \right) \right]\]</span></p>
+<ul>
+<li>We know that optimally <span class="math inline">\(c_t&gt;0\)</span>, and <span class="math inline">\(n_t&gt;0\)</span>, <span class="math inline">\(k_{t+1}&gt;0\)</span>
+<ul>
+<li>equality cases lead to zero production, i.e.&nbsp;infinite marginal utility</li>
+<li>we can drop the corresponding constraints</li>
+</ul></li>
+<li>We <em>assume</em> <span class="math inline">\(n_t=1\)</span> is never binding (this would correspond to unemployment)</li>
+</ul>
+<hr>
+</section>
+<section id="back-to-rbc-3" class="level3">
+<h3 class="anchored" data-anchor-id="back-to-rbc-3">Back to RBC (3)</h3>
+<p><span class="math display">\[\mathcal{L} = \mathbb{E}\_0 \left[ \sum_t \beta^t \left\\{ \begin{matrix} U(c_t) + \chi V(1-n_t) \\\\ + \lambda_t (y_t - c_t) \\\\  + q_t (k\_{t+1} - (1-\delta) k_t - i_{t} ) \\\\ + \nu_t (y_t - e^{z_t} k_t^{\alpha}n_t^{1-\alpha})  \end{matrix} \right\\} \right]\]</span></p>
+<ul>
+<li>Let’s derive w.r.t. all nonpredetermined values within the sum:
+<ul>
+<li>… explain</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="rbc-first-order-conditions" class="level3">
+<h3 class="anchored" data-anchor-id="rbc-first-order-conditions">RBC first order conditions:</h3>
+<p><span class="math display">\[\begin{eqnarray}
+U^{\prime}(c_t) &amp; = &amp; \beta \mathbb{E}\_t \left[  U^{\prime} (c_{t+1}) \left(
+         (1-\delta) + \alpha e^{z\_{t+1}} k\_{t+1}^{\alpha-1} n\_{t+1}^{1-\alpha}
+             \right) \right] \\\\
+\chi V^{\prime} (1-n_t) &amp; = &amp;  (1-\alpha) e^{z_t} k_t^{\alpha} (n_t)^{-\alpha} U^{\prime}(c_t)
+\end{eqnarray}\]</span></p>
+<hr>
+</section>
+<section id="exercise" class="level3">
+<h3 class="anchored" data-anchor-id="exercise">Exercise:</h3>
+<ul>
+<li>Set <span class="math inline">\(U(x) = \frac{c_t^{1-\gamma}}{1-\gamma}\)</span>, <span class="math inline">\(V(x) = \frac{(1-x)^{1-\eta}}{1-\eta}\)</span></li>
+<li>Try to find the steady state
+<ul>
+<li>it is impossible to do so in closed-form</li>
+</ul></li>
+<li>Set <span class="math inline">\(\overline{n} = 0.33\)</span> and adjust <span class="math inline">\(\chi\)</span> so that it is a steady-state</li>
+</ul>
+<hr>
+</section>
+<section id="the-decentralized-story" class="level2">
+<h2 class="anchored" data-anchor-id="the-decentralized-story">The decentralized story</h2>
+<hr>
+<section id="planner-vs-decentralized" class="level3">
+<h3 class="anchored" data-anchor-id="planner-vs-decentralized">Planner vs decentralized</h3>
+<ul>
+<li>So far, we have assumed, that the same agent decides on consumption and labour supply</li>
+<li>What if some decisions are taken in some decentralized markets?</li>
+<li>New structure:
+<ul>
+<li>decentralized <em>competitive</em> firms
+<ul>
+<li>rent capital and workers</li>
+<li>sell goods</li>
+</ul></li>
+<li>a representative household
+<ul>
+<li>supplies labour</li>
+<li>accumulates capital and rents it to firms</li>
+<li>consume goods</li>
+</ul></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="the-firms" class="level3">
+<h3 class="anchored" data-anchor-id="the-firms">The firms</h3>
+<ul>
+<li>Firm <span class="math inline">\(i\)</span>
+<ul>
+<li>chooses capital <span class="math inline">\(k^i\)</span> and labour <span class="math inline">\(n^i\)</span></li>
+</ul></li>
+<li>Cobb Douglas production: <span class="math inline">\(y_i = f(k_i, n_i) = (k_i)^{\alpha} (n_i)^(1-\alpha)\)</span></li>
+<li>Since there is only one good, its price can be set to <span class="math inline">\(1\)</span></li>
+<li>Firm takes wages <span class="math inline">\(w\)</span> and rental price of capital <span class="math inline">\(r\)</span> as given: <span class="math display">\[max_{k_i, n_i} \pi(k_i, n_i) =  f(k_i, n_i) - r  k_i - w n_i\]</span></li>
+<li>Optimally:
+<ul>
+<li><span class="math inline">\(f_k^{\prime}(k_i, n_i) = \alpha k_i^{\alpha-1} n_i^{1-\alpha}  = r\)</span></li>
+<li><span class="math inline">\(f_n^{\prime}(k_i, n_i) = (1-\alpha) k_i^{\alpha-1} n_i^{-\alpha}  = w\)</span></li>
+</ul></li>
+<li>Remark:
+<ul>
+<li>capital share: <span class="math inline">\(\frac{r k_i}{y_i} = \alpha\)</span></li>
+<li>labour share: <span class="math inline">\(\frac{w n_i}{y_i} = 1- \alpha\)</span></li>
+<li>profits are zero</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="aggregation" class="level3">
+<h3 class="anchored" data-anchor-id="aggregation">Aggregation</h3>
+<ul>
+<li>What is the production of all firms if total capital is <span class="math inline">\(K\)</span> and total labour is <span class="math inline">\(L\)</span> ?</li>
+<li>Note that for each firm <span class="math display">\[(1 - \alpha) \frac{k_i}{l_i} = \alpha \frac{w}{r}\]</span></li>
+<li>We can sum over all firms to get: <span class="math display">\[(1-\alpha){K} = \alpha \frac{w}{r}L\]</span></li>
+<li>we can write: <span class="math display">\[y_i = (k_i)^{\alpha} (n_i)^{1-\alpha} = k_i \left( \frac{k_i}{n_i} \right)^{1-\alpha} = k_i (K/L)^{1-\alpha}\]</span></li>
+<li>and sum over all firms: <span class="math display">\[Y = K (K/L)^{1-\alpha} = K^\alpha L ^{1-\alpha}\]</span></li>
+<li>The sum of many cobb douglas-firms is a big cobb-douglas firm !</li>
+</ul>
+<hr>
+</section>
+<section id="representative-agent" class="level3">
+<h3 class="anchored" data-anchor-id="representative-agent">Representative agent</h3>
+<ul>
+<li>Our representative agent takes <span class="math inline">\(w_t\)</span> and <span class="math inline">\(r_t\)</span> as given.</li>
+<li>He supplies labour and capital, and decides how much to save so as to maximize: <span class="math display">\[\max_{\begin{matrix} c_t, n_t \\\\ c_t \leq \pi_t + r_t k_t + w_t n_t - i_t \\\\ k_{t+1} = (1-\delta) k_t + i_t \\\\ c_t \geq 0 \end{matrix}} \sum_t \beta^t \left(U(c_t)  + V(n_t) \right)\]</span></li>
+<li><!-- .element class="fragment" -->
+Result: <span class="math display">\[\begin{eqnarray} \beta
+U^{\prime}(c_t) &amp; = &amp; \beta \mathbb{E}\_t \left[  U^{\prime} (c_{t+1}) \left( (1-\delta) + r_{t+1}\right) \right] \\\\
+\chi V^{\prime} (1-n_t) &amp; = &amp; w_t U^{\prime}(c_t)
+\end{eqnarray}\]</span></li>
+<li><!-- .element class="fragment" -->
+Result:
+<ul>
+<li>exactly the same equations as in the central planner version (in this case)</li>
+<li>this formulation can be used to study distortionary taxes:
+<ul>
+<li>ex: labour income tax <span class="math inline">\(\tau\)</span></li>
+</ul></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="labour-tax" class="level3">
+<h3 class="anchored" data-anchor-id="labour-tax">Labour tax</h3>
+<ul>
+<li>Our representative agent takes <span class="math inline">\(w_t\)</span> and <span class="math inline">\(r_t\)</span> as given.</li>
+<li>He supplies labour and capital, and decides how much to save so as to maximize: <span class="math display">\[\max_{\begin{matrix} c_t, n_t \\\\ c_t \leq \pi_t + (1-\tau) w_t n_t + r_t k_t - i_t + g_t \\\\ k_{t+1} = (1-\delta) k_t + i_t \\\\ c_t \geq 0 \end{matrix}} \sum_t \beta^t \left(U(c_t)  + V(n_t) \right)\]</span></li>
+<li>Note the new budget constraint
+<ul>
+<li>labour income is taxed, but a lump-sum subsidy ensures nothing is destroyed</li>
+<li><span class="math inline">\(g_t =\tau w_t k_t\)</span> is not taken into account for intertemporal optimization</li>
+</ul></li>
+<li><!-- .element class="fragment" -->
+Result: <span class="math display">\[\begin{eqnarray} \beta
+U^{\prime}(c_t) &amp; = &amp; \beta \mathbb{E}\_t \left[  U^{\prime} (c_{t+1}) \left( (1-\delta) + r_{t+1}\right) \right] \\\\
+\chi V^{\prime} (1-n_t) &amp; = &amp; (1-\tau) w_t U^{\prime}(c_t)
+\end{eqnarray}\]</span></li>
+<li><!-- .element class="fragment" -->
+Result:
+<ul>
+<li>exactly the same equations as in the central planner version (in this case)</li>
+<li>this formulation can be used to study distortionary taxes:
+<ul>
+<li>ex: labour income tax <span class="math inline">\(\tau\)</span></li>
+</ul></li>
+</ul></li>
+</ul>
 
 
+</section>
+</section>
+</div>
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -1,0 +1,2505 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: Julia Basics\n",
+        "author: Pablo Winant\n",
+        "format:\n",
+        "  html: default\n",
+        "  ipynb: default\n",
+        "execute: \n",
+        "  enabled: false\n",
+        "---\n",
+        "\n",
+        "\n",
+        "### What is Julia\n",
+        "\n",
+        "- developped at MIT on top of __opensource__ technologies\n",
+        "    - linux / git / llvm\n",
+        "- syntax inspired by Matlab but:\n",
+        "    - more consistent\n",
+        "    - lots of features from high level languages\n",
+        "- everything is JIT-compiled\n",
+        "    - interpreted vs compiled treadeoff\n",
+        "    - -> very fast\n",
+        "    - most of the base library is written in Julia\n",
+        "- opensource/free + vibrant community\n",
+        "\n",
+        "Some useful links from QuantEcon:\n",
+        "\n",
+        "* [Julia cheatsheet](https://cheatsheets.quantecon.org/julia-cheatsheet.html)\n",
+        "* [Julia-Matlab comparison](https://cheatsheets.quantecon.org/index.html)\n",
+        "* [Julia essentials](https://lectures.quantecon.org/jl/julia_essentials.html)\n",
+        "* [Vectors, arrays and matrices](https://lectures.quantecon.org/jl/julia_arrays.html)\n",
+        "\n",
+        "Excellent resources at: [julialang](https://julialang.org/learning/)\n",
+        "- checkout JuliaAcademy, it's free\n",
+        "- ongoing [MOOC](https://computationalthinking.mit.edu/Spring21/) at MIT\n",
+        "\n",
+        "### an example of what you shouldn't do in Matlab\n",
+        "\n",
+        "How I learnt: interpreted code is slow, so vectorize your coe."
+      ],
+      "id": "21a327ac"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function stupid_loop(I,J,K)\n",
+        "    t = 0.0\n",
+        "    for i=1:I\n",
+        "        for j=1:J\n",
+        "            for k = 1:K\n",
+        "                t += 1.0\n",
+        "            end        \n",
+        "        end\n",
+        "    end\n",
+        "    return t\n",
+        "end\n",
+        "@time [ stupid_loop(1000,1000,i) for i =1:10]"
+      ],
+      "id": "cc515d54",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "stupid_loop(1000,1000,1000)"
+      ],
+      "id": "3d9b3234",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Code is translated to LLVM code then to instructions for the processor. Note that processor instructions are shorter than LLVM code."
+      ],
+      "id": "521258b2"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "@code_llvm stupid_loop(10,10,10)"
+      ],
+      "id": "8277f130",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "@code_native stupid_loop(10,10,10)"
+      ],
+      "id": "3c51209c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Syntax Review\n",
+        "\n",
+        "#### Variable assignment\n",
+        "\n",
+        "Assignement operator is = (equality is ==, identity is ===)"
+      ],
+      "id": "033cb6ab"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Assign the value 10 to the variable x\n",
+        "x = 10"
+      ],
+      "id": "ea3431db",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "x"
+      ],
+      "id": "d892c19e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "2 == 3"
+      ],
+      "id": "e12a30a2",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Variable names can have Unicode characters\n",
+        "# To get ϵ in the REPL, type \\epsilon<TAB>\n",
+        "a = 20\n",
+        "α = 10\n",
+        "🐳 = 0.1\n",
+        "🦈 = 0.1 * 🐳\n",
+        "σ = 34\n",
+        "ϵ = 1e-4"
+      ],
+      "id": "fcbcd1a6",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Default semantic is pass-by-reference:"
+      ],
+      "id": "0c24d978"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a = [1,2,3,4]\n",
+        "b = a\n",
+        "a[1] = 10\n",
+        "b"
+      ],
+      "id": "28f20bf4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "To work on a copy: `copy` or `deepcopy`"
+      ],
+      "id": "75d9ff1e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a = [1,2,3,4]\n",
+        "b = copy(a)\n",
+        "a[1]=10\n",
+        "b"
+      ],
+      "id": "a2785e7a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a .== b"
+      ],
+      "id": "3fd2070f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "c = b"
+      ],
+      "id": "cf3f368f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "b = [1,2,3,4]"
+      ],
+      "id": "62ef1007",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a .== b"
+      ],
+      "id": "425b2939",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "c === b"
+      ],
+      "id": "00908864",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### Basic types"
+      ],
+      "id": "1ab46cc4"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# for any object `typeof` returns the type\n",
+        "\n",
+        "typeof(a)"
+      ],
+      "id": "0169ae88",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "[1,2,3]"
+      ],
+      "id": "b4928b27",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "typeof(randn(3,3))  == Array{Float64, 2}"
+      ],
+      "id": "5f6809b3",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### Numbers"
+      ],
+      "id": "673ec3d6"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "y = 2 + 2"
+      ],
+      "id": "46d69513",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "-y"
+      ],
+      "id": "ed051447",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "0.34*23"
+      ],
+      "id": "b3386c46",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "3/4"
+      ],
+      "id": "b3cba82d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "3//4"
+      ],
+      "id": "b9abe785",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "3//4 + 2//3"
+      ],
+      "id": "decb74f2",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "typeof(3//4 + 2//3)"
+      ],
+      "id": "72a9215a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Scalar multiplication doesn't require *\n",
+        "3(4 - 2) "
+      ],
+      "id": "717df1d9",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "x = 4\n",
+        "2*x + 2x^2"
+      ],
+      "id": "bc38542a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "typeof(x)"
+      ],
+      "id": "8a4ff171",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sizeof(x)"
+      ],
+      "id": "a8d8b392",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "typeof(10)"
+      ],
+      "id": "71bdd429",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "(big(100))//big(1000)"
+      ],
+      "id": "0d35e266",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "bitstring(10)"
+      ],
+      "id": "82168b79",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### Booleans\n",
+        "\n",
+        "Equality"
+      ],
+      "id": "53d9f5c0"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "0 == 1"
+      ],
+      "id": "d464a6b8",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "2 != 3"
+      ],
+      "id": "f3d58790",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "3 < 4"
+      ],
+      "id": "2fbff343",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "true == false"
+      ],
+      "id": "27362d09",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Identity"
+      ],
+      "id": "f380f5b6"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a = [34, 35]\n",
+        "b = [34, 35]\n",
+        "c = a"
+      ],
+      "id": "0b442960",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "c === a"
+      ],
+      "id": "2e3a8ed4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "b === a"
+      ],
+      "id": "67d413e0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Boolean operator"
+      ],
+      "id": "9b0c7f91"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "true && false"
+      ],
+      "id": "64e0037e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "true || false"
+      ],
+      "id": "5f5349b2",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "!true"
+      ],
+      "id": "b60bce85",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a  = 2\n",
+        "b = 3\n",
+        "\n",
+        "(a > b) && (factorial(100) > 10)"
+      ],
+      "id": "f9f3502c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### Strings"
+      ],
+      "id": "5c3c0444"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Strings are written using double quotes\n",
+        "str = \"This is a string\""
+      ],
+      "id": "5eb2ca57",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "ch = '🦆' # this is a character"
+      ],
+      "id": "e209cebb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Strings can also contain Unicode characters\n",
+        "fancy_str = \"α is a string\""
+      ],
+      "id": "74197193",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "n = 10\n",
+        "println(\"Iteration : \", n)"
+      ],
+      "id": "2c3ce06f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# String interpolation using $\n",
+        "# The expression in parentheses is evaluated and the result is \n",
+        "# inserted into the string\n",
+        "a = 2+2\n",
+        "\"2 + 2 = $(a+1)\""
+      ],
+      "id": "3f312885",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "println(\"It took me $(a) iterations\")"
+      ],
+      "id": "28c5e564",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# String concatenation using *\n",
+        "\"hello\" * \"world\""
+      ],
+      "id": "309036fe",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "print(\"1\")\n",
+        "print(\"2\")\n",
+        "print(\"3\")"
+      ],
+      "id": "85f123d2",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "println(\"1\")\n",
+        "println(\"2\")\n",
+        "println(\"3\")"
+      ],
+      "id": "14f9cfd0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "println(\"hello \", \"world\")"
+      ],
+      "id": "da16162b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### Arrays\n",
+        "\n",
+        "Julia has one-dimensional arrays. They are also called Vector."
+      ],
+      "id": "30957349"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "A = [1, 2]"
+      ],
+      "id": "fd16c5c3",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "All elements have the type:"
+      ],
+      "id": "ab5e9c8c"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "A = [1, 1.4]"
+      ],
+      "id": "72711188",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "typeof(A) == Vector{Int64}"
+      ],
+      "id": "d0fd741b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "A''"
+      ],
+      "id": "1973484a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "To get the size of an array:"
+      ],
+      "id": "efed885f"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "length(A)"
+      ],
+      "id": "14b6cdc8",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "size(A)"
+      ],
+      "id": "beb1faae",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Arrays are *mutable*"
+      ],
+      "id": "0f594928"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "A[1] = 10"
+      ],
+      "id": "5d4a7372",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "A"
+      ],
+      "id": "d1989f8d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Julia has one-based indexing: you refer to the first element as 1 ($\\neq$ zero-based indexing in C or Python)"
+      ],
+      "id": "f9bf02cc"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "A[2]"
+      ],
+      "id": "b93f4197",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Arrays are mutable and their size can be changed too:"
+      ],
+      "id": "748bb274"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "push!(A, 29)\n",
+        "A"
+      ],
+      "id": "4f0225d5",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "A"
+      ],
+      "id": "66746065",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "prepend!(A, 28)"
+      ],
+      "id": "4f42ecdb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Two comments:\n",
+        "- the `push!` operation is *fast*\n",
+        "- `!` is a julia convention to express the fact that `push!` mutates its first argument"
+      ],
+      "id": "eaeaaab3"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "[\"a\", \"b\"]"
+      ],
+      "id": "23f05545",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "[\"a\", 1]"
+      ],
+      "id": "3c25e17d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### tuples"
+      ],
+      "id": "6c65a500"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "size(A)  # is a tuple"
+      ],
+      "id": "99b653fb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "(5,)"
+      ],
+      "id": "f14d86a4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# you can create tuples with (,,,)\n",
+        "t = (1,2,3,4)"
+      ],
+      "id": "50ca37fa",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "t"
+      ],
+      "id": "5437eb9d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "tuples differ from arrays in two ways:\n",
+        "- they are immutable\n",
+        "- they can contain non-homogenous objects"
+      ],
+      "id": "542267ef"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "t[1]"
+      ],
+      "id": "0bb98d53",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "t[1] = 2"
+      ],
+      "id": "bde2f88d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "typeof((1, \"1\", [1]))"
+      ],
+      "id": "50973e49",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "2d arrays are also called matrices... and can be used for matrix multiplications."
+      ],
+      "id": "e8270928"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "[3 4; 5 6]"
+      ],
+      "id": "0e6c76d9",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "[ [3, 4];; [5, 6]] # concatenate along second dimension"
+      ],
+      "id": "09114290",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a1 = [1,2,3,4]\n",
+        "a2 = [1,2,3,4]  .+ 4\n",
+        "[a1 ;; a2]\n",
+        "cat(a1, a2; dims=2)"
+      ],
+      "id": "448273f1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "b = [1 0.6 0]"
+      ],
+      "id": "7980de0c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "B = [0.1 0.2 0.3; 4 5 6]"
+      ],
+      "id": "7e78816a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Other ways to construct arrays:"
+      ],
+      "id": "f3b8b16a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# zero array\n",
+        "t = zeros(2,3)\n",
+        "t[1,2] = 23.2\n",
+        "t"
+      ],
+      "id": "82adf6ee",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# zero array\n",
+        "t = zeros(Int64,2,3)\n",
+        "# t[1,2] = 23.2\n",
+        "t"
+      ],
+      "id": "27979626",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# random array (uniform distribution)\n",
+        "t= rand(3,3)\n",
+        "t"
+      ],
+      "id": "6ff5e2bf",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# random array (normal distribution)\n",
+        "t= randn(3,3)\n",
+        "t"
+      ],
+      "id": "cd3452a0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Vectorized operations take a ., even comparisons (pointwise operations)"
+      ],
+      "id": "60cfd257"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "B = [1 2;3 4]"
+      ],
+      "id": "2d51d4b8",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "B*B"
+      ],
+      "id": "0eca0cb7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "B .* B"
+      ],
+      "id": "e37ebebc",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "f(x) = x^2+1"
+      ],
+      "id": "3af5a559",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "f(43)"
+      ],
+      "id": "cc20887f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# [ f(e) for e in [1,2,3,4,5] ]\n",
+        "f.([1,2,3,4,5])"
+      ],
+      "id": "6de8357f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Elements are always accessed with square brackets:"
+      ],
+      "id": "fb935e1e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "B = [1 2 3; 4 5 6]"
+      ],
+      "id": "21533ab4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "You get element $B_{ij}$ with `B[i,j]`"
+      ],
+      "id": "e49ec079",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "B[1,2]"
+      ],
+      "id": "592fae2b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "You select a whole row/column with `:`"
+      ],
+      "id": "5bea6889"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "B[1,:]"
+      ],
+      "id": "4679d43e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "B[:,1]"
+      ],
+      "id": "4cbd7a07",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "B[:,1:2]"
+      ],
+      "id": "1f190728",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "B[:,1:end-1]"
+      ],
+      "id": "0d3b3da4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### Control flow\n",
+        "\n",
+        "Conditions"
+      ],
+      "id": "9c242404"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "x = 0\n",
+        "if x<0\n",
+        "    # block\n",
+        "    println(\"x is negative\")\n",
+        "elseif (x > 0) # optional and unlimited\n",
+        "    println(\"x is positive\")\n",
+        "else         # optional\n",
+        "    println(\"x is zero\")\n",
+        "end"
+      ],
+      "id": "8c4ebe20",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "While"
+      ],
+      "id": "0eff3893"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "i = 3\n",
+        "while i > 0\n",
+        "    println(i)\n",
+        "    i -= 1 # decrement\n",
+        "end"
+      ],
+      "id": "a11f7be0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "For loops: your iterate over any iterable object:\n",
+        "- range   `i1:i2`\n",
+        "- vector\n",
+        "- tuple"
+      ],
+      "id": "7f4ff4d6"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Iterate through ranges of numbers\n",
+        "for i ∈ (1:3)\n",
+        "    println(i)\n",
+        "end"
+      ],
+      "id": "8a714646",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Iterate through arrays\n",
+        "cities = [\"Boston\", \"New York\", \"Philadelphia\"]\n",
+        "for city ∈ cities\n",
+        "    println(city)\n",
+        "end"
+      ],
+      "id": "f64ba92d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "cities"
+      ],
+      "id": "c455500a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "states = [\"Massachussets\", \"New York\", \"Pennsylvania\"]"
+      ],
+      "id": "49b960a0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "two_by_two_iterable = zip(cities, states)"
+      ],
+      "id": "4edc9f15",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "typeof(two_by_two_iterable)"
+      ],
+      "id": "9ff6d9d5",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "collect(two_by_two_iterable)"
+      ],
+      "id": "1e078f53",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "[two_by_two_iterable...]"
+      ],
+      "id": "02496317",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Iterate through arrays of tuples using zip\n",
+        "for kw in zip(cities, states)\n",
+        "    println(kw)\n",
+        "end"
+      ],
+      "id": "96ac0c98",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Iterate through arrays of tuples using zip\n",
+        "for (city, state) in zip(cities, states)\n",
+        "    println(\"City: $city | State: $state\")\n",
+        "end"
+      ],
+      "id": "6f32639f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Iterate through arrays and their indices using enumerate\n",
+        "for (i, city) in enumerate(cities)\n",
+        "    println(\"City $i is $city\")\n",
+        "end"
+      ],
+      "id": "2e66abff",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### List comprehensions"
+      ],
+      "id": "0711e486"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "[1:10 ...] # unpack operator"
+      ],
+      "id": "9fb62094",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "[i^2 for i  in 1:10] # collect with comprehension syntax"
+      ],
+      "id": "162b1265",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "[i^2 for i=1:10000000 if mod(i,2)==0] ;"
+      ],
+      "id": "fc8a0faa",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "@time sum( [i^2 for i=1:10000000000 if mod(i,2)==0] )"
+      ],
+      "id": "0654384f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function fun()\n",
+        "    t = 0\n",
+        "    for  i=1:10000000000\n",
+        "        if mod(i,2)==0\n",
+        "            t += i^2\n",
+        "        end\n",
+        "    end\n",
+        "    return t\n",
+        "end"
+      ],
+      "id": "8b8122b5",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "@time fun()"
+      ],
+      "id": "7185957b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "gen = (i^2 for i=1:10000000000 if mod(i,2)==0)"
+      ],
+      "id": "3a4a3e53",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "@time sum(gen)"
+      ],
+      "id": "ed7408e4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "## Named Tuples"
+      ],
+      "id": "a541acba",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "t = (;a=1,b=2,c=3)"
+      ],
+      "id": "75d73f13",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "t[1] # indexed like tuple\n",
+        "# t[1] = 2 # immutable\n",
+        "t.a # access fields using names"
+      ],
+      "id": "754bc061",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "model = (;\n",
+        "    α = 0.3,\n",
+        "    β = 0.96\n",
+        ")"
+      ],
+      "id": "1a3f65ce",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "merge(model, (;β=0.9, γ=0.2))"
+      ],
+      "id": "a6592994",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# unpack values from a tuple\n",
+        "\n",
+        "α = model[1]\n",
+        "β = model[2]"
+      ],
+      "id": "e35b1cce",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# unpack values from a namedtuple\n",
+        "\n",
+        "α = model.α\n",
+        "β = model.β"
+      ],
+      "id": "a50f9536",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# namedtuple unpacking\n",
+        "\n",
+        "(;α, β) = model\n",
+        "α"
+      ],
+      "id": "35d7ecf0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Data Types and multiple dispatch\n",
+        "\n",
+        "#### Composite types\n",
+        "\n",
+        "A **composite type** is a collection of named fields that can be treated as a single value. They bear a passing resemblance to MATLAB structs.\n",
+        "\n",
+        "All fields must be declared ahead of time. The double colon, `::`, constrains a field to contain values of a certain type. This is optional for any field."
+      ],
+      "id": "98568b63"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Type definition with 4 fields\n",
+        "struct ParameterFree\n",
+        "    value  \n",
+        "    transformation  \n",
+        "    tex_label\n",
+        "    description \n",
+        "end"
+      ],
+      "id": "c7285b99",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "pf = ParameterFree(\"1\", x->x^2, \"\\\\sqrt{1+x^2}\", (\"a\",1))"
+      ],
+      "id": "ecb69107",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "pf.value"
+      ],
+      "id": "802fb6d7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Two reasons to create structures:\n",
+        "- syntactic shortcut (you access the fields with .)\n",
+        "- specify the types of the fields"
+      ],
+      "id": "e3e3a378"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Type definition\n",
+        "struct Parameter\n",
+        "    value ::Float64\n",
+        "    transformation ::Function # Function is a type!\n",
+        "    tex_label::String\n",
+        "    description::String\n",
+        "end"
+      ],
+      "id": "2cea194b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "p = Parameter(\"1\", x->x^2, \"\\\\sqrt{1+x^2}\", (\"a\",1))"
+      ],
+      "id": "a93e1b9d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "p = Parameter(0.43, x->x^2, \"\\\\sqrt{1+x^2}\", \"This is a description\")"
+      ],
+      "id": "f3ab9f5c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "p.value"
+      ],
+      "id": "3c5d5d2d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "When a type with $n$ fields is defined, a constructor (function that creates an instance of that type) that takes $n$ ordered arguments is automatically created. Additional constructors can be defined for convenience."
+      ],
+      "id": "fca12256"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Creating an instance of the Parameter type using the default\n",
+        "# constructor\n",
+        "β = Parameter(0.9, identity, \"\\\\beta\", \"Discount rate\")"
+      ],
+      "id": "fa04f595",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function Parameter(value)\n",
+        "    return Parameter(value, x->x, \"x\", \"Anonymous\")\n",
+        "end"
+      ],
+      "id": "99dbc1ca",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "Parameter(0.4)"
+      ],
+      "id": "cb758e55",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "Parameter(value, transformation, tex) = Parameter(value, transformation, tex, \"no description\")"
+      ],
+      "id": "ea5db827",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "methods( Parameter )"
+      ],
+      "id": "4bcfa80c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Alternative constructors end with an appeal to the default\n",
+        "# constructor\n",
+        "function Parameter(value::Float64, tex_label::String)\n",
+        "    transformation = identity\n",
+        "    description = \"No description available\"\n",
+        "    return Parameter(value, transformation, tex_label, description)\n",
+        "end\n",
+        "\n",
+        "α = Parameter(0.5, \"\\alpha\")"
+      ],
+      "id": "96406d9e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Now the function `Parameter` has two different `methods` with different signatures:"
+      ],
+      "id": "b5f1818d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "methods(Parameter)"
+      ],
+      "id": "3f182d7b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We have seen that a function can have several implementations, called methods, for different number of arguments, \n",
+        "or for different types of arguments."
+      ],
+      "id": "a8a9dd47"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "fun(x::Int64, y::Int64) = x^3 + y"
+      ],
+      "id": "544c7259",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "fun(x::Float64, y::Int64) = x/2 + y"
+      ],
+      "id": "b2982151",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "fun(2, 2)"
+      ],
+      "id": "833e1311",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "fun(2.0, 2)"
+      ],
+      "id": "78d2e855",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "α.tex_label"
+      ],
+      "id": "25d83c9a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Access a particular field using .\n",
+        "α.value"
+      ],
+      "id": "dc785894",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Fields are modifiable and can be assigned to, like \n",
+        "# ordinary variables\n",
+        "α.value = 0.75"
+      ],
+      "id": "22b61952",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Mutable vs non mutable types\n",
+        "\n",
+        "by default structures in Julia are non-mutable"
+      ],
+      "id": "e9c5e6ae"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "p.value = 3.0"
+      ],
+      "id": "cac6ae9b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "mutable struct Params\n",
+        "    x:: Float64\n",
+        "    y:: Float64\n",
+        "end"
+      ],
+      "id": "c3f980cd",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "pos = Params(0.4, 0.2)"
+      ],
+      "id": "72bcf500",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "pos.x = 0.5"
+      ],
+      "id": "186f6320",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Parameterized Types\n",
+        "\n",
+        "**Parameterized types** are data types that are defined to handle values identically regardless of the type of those values.\n",
+        "\n",
+        "Arrays are a familiar example. An `Array{T,1}` is a one-dimensional array filled with objects of any type `T` (e.g. `Float64`, `String`)."
+      ],
+      "id": "b2c4339f"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Defining a parametric point\n",
+        "struct Duple{T} # T is a parameter to the type Duple\n",
+        "    x::T\n",
+        "    y::T\n",
+        "end"
+      ],
+      "id": "47f432d9",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "Duple(3, 3)"
+      ],
+      "id": "ee554d2a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "Duple(3, -1.0)"
+      ],
+      "id": "0e422961",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "struct Truple{T}\n",
+        "    x::Duple{T}\n",
+        "    z::T\n",
+        "end"
+      ],
+      "id": "b901c744",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "This single declaration defines an unlimited number of new types: `Duple{String}`, `Duple{Float64}`, etc. are all immediately usable."
+      ],
+      "id": "2c151233"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sizeof(3.0)"
+      ],
+      "id": "5acad741",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sizeof( Duple(3.0, -15.0) )"
+      ],
+      "id": "910bc283",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# What happens here?\n",
+        "Duple(1.5, 3)"
+      ],
+      "id": "67079425",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "struct Truple3{T,S}\n",
+        "    x::Tuple{T,S}\n",
+        "    z::S\n",
+        "end"
+      ],
+      "id": "860f5eed",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "We can also restrict the type parameter `T`:"
+      ],
+      "id": "3b5d87df"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "typeof(\"S\") <: Number"
+      ],
+      "id": "7f6d3782",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "typeof(4) <: Number"
+      ],
+      "id": "ca003966",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# T can be any subtype of Number, but nothing else\n",
+        "struct PlanarCoordinate{T<:Number}\n",
+        "    x::T\n",
+        "    y::T\n",
+        "end"
+      ],
+      "id": "27d1a985",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "PlanarCoordinate(\"4th Ave\", \"14th St\")"
+      ],
+      "id": "7eb1c293",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "PlanarCoordinate(2//3, 8//9)"
+      ],
+      "id": "512b23a8",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Arrays are an exemple of mutable, parameterized types\n",
+        "\n",
+        "### Why Use Types?\n",
+        "\n",
+        "You can write all your code without thinking about types at all. If you do this, however, you’ll be missing out on some of the biggest benefits of using Julia.\n",
+        "\n",
+        "If you understand types, you can:\n",
+        "\n",
+        "- Write faster code\n",
+        "- Write expressive, clear, and well-structured programs (keep this in mind when we talk about functions)\n",
+        "- Reason more clearly about how your code works\n",
+        "\n",
+        "Even if you only use built-in functions and types, your code still takes advantage of Julia’s type system. That’s why it’s important to understand what types are and how to use them."
+      ],
+      "id": "28932e61"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Example: writing type-stable functions\n",
+        "function sumofsins_unstable(n::Integer)  \n",
+        "    sum = 0:: Integer\n",
+        "    for i in 1:n  \n",
+        "        sum += sin(3.4)  \n",
+        "    end  \n",
+        "    return sum \n",
+        "end  \n",
+        "\n",
+        "function sumofsins_stable(n::Integer)  \n",
+        "    sum = 0.0 :: Float64\n",
+        "    for i in 1:n  \n",
+        "        sum += sin(3.4)  \n",
+        "    end  \n",
+        "    return sum \n",
+        "end\n",
+        "\n",
+        "# Compile and run\n",
+        "sumofsins_unstable(Int(1e5))\n",
+        "sumofsins_stable(Int(1e5))"
+      ],
+      "id": "2a65283f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "@time sumofsins_unstable(Int(1e5))"
+      ],
+      "id": "4e5f8e72",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "@time sumofsins_stable(Int(1e5))"
+      ],
+      "id": "3c9ae9c4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "In `sumofsins_stable`, the compiler is guaranteed that `sum` is of type `Float64` throughout; therefore, it saves time and memory. On the other hand, in `sumofsins_unstable`, the compiler must check the type of `sum` at each iteration of the loop. Let's look at the LLVM [intermediate representation](http://www.johnmyleswhite.com/notebook/2013/12/06/writing-type-stable-code-in-julia/).\n",
+        "\n",
+        "### Multiple Dispatch\n",
+        "\n",
+        "So far we have defined functions over argument lists of any type. Methods allow us to define functions “piecewise”. For any set of input arguments, we can define a **method**, a definition of one possible behavior for a function."
+      ],
+      "id": "33517a77"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Define one method of the function print_type\n",
+        "function print_type(x::Number)\n",
+        "    println(\"$x is a number\")\n",
+        "end"
+      ],
+      "id": "721a0232",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Define another method\n",
+        "function print_type(x::String)\n",
+        "    println(\"$x is a string\")\n",
+        "end"
+      ],
+      "id": "541f448c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Define yet another method\n",
+        "function print_type(x::Number, y::Number)\n",
+        "    println(\"$x and $y are both numbers\")\n",
+        "end"
+      ],
+      "id": "f505ffb1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# See all methods for a given function\n",
+        "methods(print_type)"
+      ],
+      "id": "7e05b9ed",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Julia uses **multiple dispatch** to decide which **method** of a **function** to execute when a function is applied. In particular, Julia compares the types of _all_ arguments to the signatures of the function’s methods in order to choose the applicable one, not just the first (hence \"multiple\")."
+      ],
+      "id": "c9ce01b7"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "print_type(5)"
+      ],
+      "id": "591e916a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "print_type(\"foo\")"
+      ],
+      "id": "a30faf6c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "print_type([1, 2, 3])"
+      ],
+      "id": "345544c1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### Other types of functions\n",
+        "\n",
+        "Julia supports a short function definition for one-liners"
+      ],
+      "id": "6bfec4ca"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "f(x::Float64) = x^2.0\n",
+        "f(x::Int64) = x^3"
+      ],
+      "id": "7edaa4ec",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "As well as a special syntax for anonymous functions"
+      ],
+      "id": "361a0cac"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "u->u^2"
+      ],
+      "id": "7593a320",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "map(u->u^2, [1,2,3,4])"
+      ],
+      "id": "2fde89ce",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Keyword arguments and optional arguments"
+      ],
+      "id": "b10ca303"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "f(a,b,c=true; algo=\"newton\")"
+      ],
+      "id": "aec4183e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Packing/unpacking"
+      ],
+      "id": "4f974d17"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "t = (1,2,4)"
+      ],
+      "id": "dd7b48a8",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a,b,c = t"
+      ],
+      "id": "3adfd7e7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "[(1:10)...]"
+      ],
+      "id": "bd51de04",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "cat([4,3], [0,1]; dims=1)"
+      ],
+      "id": "63821325",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "l = [[4,3], [0,1], [0, 0], [1, 1]]\n",
+        "# how do I concatenate it ?\n",
+        "\n",
+        "cat(l...; dims=1) ### see python's f(*s)"
+      ],
+      "id": "abbd7464",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Writing Julian Code\n",
+        "\n",
+        "As we've seen, you can use Julia just like you use MATLAB and get faster code. However, to write faster and _better_ code, attempt to write in a “Julian” manner:\n",
+        "\n",
+        "- Define composite types as logically needed\n",
+        "- Write type-stable functions for best performance\n",
+        "- Take advantage of multiple dispatch to write code that looks like math\n",
+        "- Add methods to existing functions\n",
+        "\n",
+        "### Just-in-Time Compilation\n",
+        "\n",
+        "How is Julia so fast? Julia is just-in-time (JIT) compiled, which  means (according to [this StackExchange answer](http://stackoverflow.com/questions/95635/what-does-a-just-in-time-jit-compiler-do)):\n",
+        "\n",
+        "> A JIT compiler runs after the program has started and compiles the code (usually bytecode or some kind of VM instructions) on the fly (or just-in-time, as it's called) into a form that's usually faster, typically the host CPU's native instruction set. _A JIT has access to dynamic runtime information whereas a standard compiler doesn't and can make better optimizations like inlining functions that are used frequently._\n",
+        "\n",
+        "> This is in contrast to a traditional compiler that compiles all the code to machine language before the program is first run.\n",
+        "\n",
+        "In particular, Julia uses type information at runtime to optimize how your code is compiled. This is why writing type-stable code makes such a difference in speed!\n",
+        "\n",
+        "## Additional Exercises\n",
+        "\n",
+        "Taken from QuantEcon's [Julia Essentials](https://lectures.quantecon.org/jl/julia_essentials.html) and [Vectors, Arrays, and Matrices](https://lectures.quantecon.org/jl/julia_arrays.html) lectures.\n",
+        "\n",
+        "1. Consider the polynomial $$p(x) = \\sum_{i=0}^n a_0 x^0$$ Using `enumerate`, write a function `p` such that `p(x, coeff)` computes the value of the polynomial with coefficients `coeff` evaluated at `x`.\n",
+        "\n",
+        "\n",
+        "2. Write a function `solve_discrete_lyapunov` that solves the discrete Lyapunov equation $$S = ASA' + \\Sigma \\Sigma'$$ using the iterative procedure $$S_0 = \\Sigma \\Sigma'$$ $$S_{t+1} = A S_t A' + \\Sigma \\Sigma'$$ taking in as arguments the $n \\times n$ matrix $A$, the $n \\times k$ matrix $\\Sigma$, and a number of iterations.\n"
+      ],
+      "id": "84d4d384"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "julia-1.9",
+      "language": "julia",
+      "display_name": "Julia 1.9.4",
+      "path": "/home/pablo/.local/share/jupyter/kernels/julia-1.9"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

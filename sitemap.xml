@@ -1,43 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://albop.github.io/econobits/eco309/index_2026.html</loc>
-    <lastmod>2026-01-28T16:45:49.020Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/optimization/index.html</loc>
+    <lastmod>2026-01-28T18:23:03.047Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/interpolation.html</loc>
+    <lastmod>2026-01-28T18:23:03.027Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/optimization.html</loc>
+    <lastmod>2026-01-28T18:23:03.044Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/rbc.html</loc>
+    <lastmod>2026-01-28T18:23:03.050Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/time_iteration.html</loc>
+    <lastmod>2026-01-28T18:23:03.050Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/optimization copy.html</loc>
+    <lastmod>2026-01-28T18:23:03.044Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/index.html</loc>
-    <lastmod>2026-01-28T16:45:49.046Z</lastmod>
-  </url>
-  <url>
-    <loc>https://albop.github.io/econobits/lectures/discrete_dynamic_programming/index.html</loc>
-    <lastmod>2026-01-28T16:45:49.076Z</lastmod>
-  </url>
-  <url>
-    <loc>https://albop.github.io/econobits/lectures/perturbation/index.html</loc>
-    <lastmod>2026-01-28T16:45:49.112Z</lastmod>
-  </url>
-  <url>
-    <loc>https://albop.github.io/econobits/scpo/index_2026.html</loc>
-    <lastmod>2026-01-28T16:45:49.113Z</lastmod>
-  </url>
-  <url>
-    <loc>https://albop.github.io/econobits/about.html</loc>
-    <lastmod>2026-01-28T16:45:49.020Z</lastmod>
-  </url>
-  <url>
-    <loc>https://albop.github.io/econobits/lectures/convergence/index.html</loc>
-    <lastmod>2026-01-28T16:45:49.056Z</lastmod>
-  </url>
-  <url>
-    <loc>https://albop.github.io/econobits/lectures/optimization/index.html</loc>
-    <lastmod>2026-01-28T16:45:49.109Z</lastmod>
-  </url>
-  <url>
-    <loc>https://albop.github.io/econobits/lectures/introduction/index.html</loc>
-    <lastmod>2026-01-28T16:45:49.101Z</lastmod>
+    <lastmod>2026-01-28T22:53:22.408Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/mie37/index_2026.html</loc>
-    <lastmod>2026-01-28T16:46:32.876Z</lastmod>
+    <lastmod>2026-01-28T22:31:16.323Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/eco309/index_2026.html</loc>
+    <lastmod>2026-01-28T18:23:02.986Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/tutorials/Julia_Basics.html</loc>
+    <lastmod>2026-01-28T22:40:09.541Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/tutorials/solow.html</loc>
+    <lastmod>2026-01-28T22:37:58.472Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/tutorials/epidemiology.html</loc>
+    <lastmod>2026-01-28T22:26:56.119Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/about.html</loc>
+    <lastmod>2026-01-28T18:23:02.986Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/scpo/index_2026.html</loc>
+    <lastmod>2026-01-28T18:23:03.050Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/discrete_dynamic_programming/index.html</loc>
+    <lastmod>2026-01-28T18:23:03.024Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/zero_to_ayiagari.html</loc>
+    <lastmod>2026-01-28T18:23:03.050Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/introduction/index.html</loc>
+    <lastmod>2026-01-28T18:23:03.041Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/discretization.html</loc>
+    <lastmod>2026-01-28T18:23:03.026Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/perturbation/index.html</loc>
+    <lastmod>2026-01-28T18:23:03.050Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/convergence/index.html</loc>
+    <lastmod>2026-01-28T22:11:18.681Z</lastmod>
   </url>
 </urlset>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -39,10 +39,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-35fca2dc47c5b16e98149a8aff378f5d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-1cd7b8e680c3b9cc8632e22c6f4c6d56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,7 +73,35 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-course-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-lectures-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-lectures-listing'] = new List('listing-lectures-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-tutorials-listing .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
@@ -86,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-course-listing'] = new List('listing-course-listing', options);
+    window['quarto-listings']['listing-tutorials-listing'] = new List('listing-tutorials-listing', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -178,7 +206,11 @@ window.Quarto = {
 
 
 
-<div id="listing-course-listing" class="quarto-listing quarto-listing-container-table">
+
+
+
+
+<div class="quarto-listing quarto-listing-container-table" id="listing-lectures-listing">
 <table class="quarto-listing-table table">
 <thead>
 <tr>
@@ -191,9 +223,30 @@ Lectures
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1769618749056" data-listing-reading-time-sort="7" data-listing-word-count-sort="1304" data-listing-title-sort="Convergence of Sequences (1)" data-listing-filename-sort="index.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1769638278681" data-listing-reading-time-sort="9" data-listing-word-count-sort="1662" data-listing-title-sort="Convergence of Sequences (1)" data-listing-filename-sort="index.qmd">
 <td>
 <a href="../lectures/convergence/index.html" class="title listing-title">Convergence of Sequences (1)</a>
+</td>
+
+</tr>
+
+<tr data-index="1" data-listing-date-sort="1744840800000" data-listing-file-modified-sort="1769624583026" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1428" data-listing-title-sort="Discretization" data-listing-filename-sort="discretization.qmd">
+<td>
+<a href="../lectures/discretization.html" class="title listing-title">Discretization</a>
+</td>
+
+</tr>
+
+<tr data-index="2" data-listing-date-sort="1744840800000" data-listing-file-modified-sort="1769624583027" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1423" data-listing-title-sort="Interpolation" data-listing-filename-sort="interpolation.qmd">
+<td>
+<a href="../lectures/interpolation.html" class="title listing-title">Interpolation</a>
+</td>
+
+</tr>
+
+<tr data-index="3" data-listing-date-sort="1744840800000" data-listing-file-modified-sort="1769624583050" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1674" data-listing-title-sort="Time Iteration" data-listing-filename-sort="time_iteration.qmd">
+<td>
+<a href="../lectures/time_iteration.html" class="title listing-title">Time Iteration</a>
 </td>
 
 </tr>
@@ -201,24 +254,44 @@ Lectures
 </tbody>
 </table>
 <div class="listing-no-matching d-none">No matching items</div>
-</div>
-<p><em>Communication</em></p>
-<ul>
-<li>Zulip (best)</li>
-<li>Email to <code>pwinant@escp.eu</code> starting with <code>[mie37]</code></li>
-<li><a href="https://github.com/albop/econobits">Github</a> issues (PR also welcome)</li>
-</ul>
-<p><em>Coursework</em></p>
-<ul>
-<li>tutorials (optional)</li>
-<li>projects x2 (mandatory) (50%)</li>
-<li>final exam (50%)</li>
-</ul>
+</div><div class="quarto-listing quarto-listing-container-table" id="listing-tutorials-listing">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
 
+<th>
+Tutorials
+</th>
 
+</tr>
+</thead>
+<tbody class="list">
 
+<tr data-index="0" data-listing-file-modified-sort="1769639216119" data-listing-reading-time-sort="4" data-listing-word-count-sort="728" data-listing-title-sort="Epidemiology Models" data-listing-filename-sort="epidemiology.qmd">
+<td>
+<a href="../tutorials/epidemiology.html" class="title listing-title">Epidemiology Models</a>
+</td>
 
-</main> <!-- /main -->
+</tr>
+
+<tr data-index="1" data-listing-file-modified-sort="1769640009541" data-listing-reading-time-sort="12" data-listing-word-count-sort="2216" data-listing-title-sort="Julia Basics" data-listing-filename-sort="Julia_Basics.qmd">
+<td>
+<a href="../tutorials/Julia_Basics.html" class="title listing-title">Julia Basics</a>
+</td>
+
+</tr>
+
+<tr data-index="2" data-listing-file-modified-sort="1769639878472" data-listing-reading-time-sort="2" data-listing-word-count-sort="226" data-listing-title-sort="Solow Model" data-listing-filename-sort="solow.qmd">
+<td>
+<a href="../tutorials/solow.html" class="title listing-title">Solow Model</a>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+<div class="listing-no-matching d-none">No matching items</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

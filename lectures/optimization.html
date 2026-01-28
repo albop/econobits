@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-html/tabby.min.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.26">
 
-  <meta name="author" content="Pablo Winant">
-  <meta name="dcterms.date" content="2025-03-21">
+  <meta name="author" content="Year 2023-2024 (MIE37)">
+  <meta name="dcterms.date" content="2025-04-04">
   <title>econobits – Optimization</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -30,11 +30,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
-  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -129,16 +129,20 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Optimization</h1>
+  <p class="subtitle">Macroeconomics: Numerical Methods</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Pablo Winant 
+Year 2023-2024 (MIE37) 
 </div>
 </div>
 </div>
 
-  <p class="date">2025-03-21</p>
+  <p class="date">2025-04-04</p>
+</section>
+<section class="slide level2">
+
 </section>
 <section>
 <section id="introduction" class="title-slide slide level1 center">
@@ -160,8 +164,12 @@ Pablo Winant
 </ul></li>
 </ul>
 </section>
-<section id="two-kinds-of-optimization-problem" class="slide level2">
-<h2>Two kinds of optimization problem:</h2>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="two-kinds-of-optimization-problem" class="title-slide slide level1 center">
+<h1>Two kinds of optimization problem:</h1>
 <ul>
 <li><p>root finding: <span class="math inline">\(\text{find  $x$ in $X$ such that $f(x)=0$}\)</span></p></li>
 <li><p>minimization/maximization <span class="math inline">\(\min_{x\in X} f(x)\)</span> or <span class="math inline">\(\max_{x\in X} f(x)\)</span></p></li>
@@ -180,10 +188,13 @@ Pablo Winant
 <li>constrained optimization</li>
 <li>constrained root-finding</li>
 </ul>
+</section>
+<section class="slide level2">
+
 </section></section>
 <section>
-<section id="general-considerations" class="title-slide slide level1 center">
-<h1>General considerations</h1>
+<section id="general-considerationsre" class="title-slide slide level1 center">
+<h1>General considerationsre</h1>
 
 </section>
 <section id="optimization-tasks-come-in-many-flavours" class="slide level2">
@@ -291,6 +302,9 @@ Pablo Winant
 </ul></li>
 <li>then you can just switch the various options, when you use a library…</li>
 </ul>
+</section>
+<section class="slide level2">
+
 </section></section>
 <section>
 <section id="one-dimensional-root-finding" class="title-slide slide level1 center">
@@ -396,6 +410,10 @@ Proof that convergence is quadratic
 </ul></li>
 </ul>
 </section>
+<section class="slide level2">
+
+<p>(some graphs of failed Newton convergence)</p>
+</section>
 <section id="backtracking" class="slide level2">
 <h2>Backtracking</h2>
 <ul>
@@ -406,6 +424,9 @@ Proof that convergence is quadratic
 <li>set <span class="math inline">\(x_{n+1}=x_n-\Delta/2^k\)</span></li>
 </ul></li>
 </ul>
+</section>
+<section class="slide level2">
+
 </section></section>
 <section>
 <section id="one-dimensional-minimization" class="title-slide slide level1 center">
@@ -440,8 +461,12 @@ Proof that convergence is quadratic
 <li>Remark that bisection is not enough</li>
 </ul>
 </section>
-<section id="gradient-descent" class="slide level2">
-<h2>Gradient Descent</h2>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="gradient-descent" class="title-slide slide level1 center">
+<h1>Gradient Descent</h1>
 <ul>
 <li>Minimize <span class="math inline">\(f(x)\)</span> for <span class="math inline">\(x \in R\)</span> given initial guess <span class="math inline">\(x_0\)</span></li>
 <li>Algorithm:
@@ -452,8 +477,12 @@ Proof that convergence is quadratic
 </ul></li>
 </ul>
 </section>
-<section id="gradient-descent-2" class="slide level2">
-<h2>Gradient Descent (2)</h2>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="gradient-descent-2" class="title-slide slide level1 center">
+<h1>Gradient Descent (2)</h1>
 <ul>
 <li>Uses local information
 <ul>
@@ -468,8 +497,12 @@ Proof that convergence is quadratic
 </ul></li>
 </ul>
 </section>
-<section id="newton-raphson-method" class="slide level2">
-<h2>Newton-Raphson method</h2>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="newton-raphson-method" class="title-slide slide level1 center">
+<h1>Newton-Raphson method</h1>
 <ul>
 <li>Minimize <span class="math inline">\(f(x)\)</span> for <span class="math inline">\(x \in R\)</span> given initial guess <span class="math inline">\(x_0\)</span></li>
 <li>Build a local model of <span class="math inline">\(f\)</span> around <span class="math inline">\(x_0\)</span> <span class="math display">\[f(x) = f(x_0) + f^{\prime}(x_0)(x-x_0) + f^{\prime\prime}(x_0)\frac{(x-x_0)^2}{2} + o(x-x_0)^2\]</span></li>
@@ -488,6 +521,14 @@ Proof that convergence is quadratic
 </ul></li>
 <li>Convergence: <em>quadratic</em></li>
 </ul>
+</section>
+<section class="slide level2">
+
+<!-- ## Newton-Raphson Algorithm (3)
+
+[proof of quadratic speed ?]
+
+--- -->
 </section></section>
 <section>
 <section id="unconstrained-multidimensional-optimization" class="title-slide slide level1 center">
@@ -514,11 +555,14 @@ Proof that convergence is quadratic
 <h2>Quick terminology</h2>
 <p>Function <span class="math inline">\(f: R^p \rightarrow R^q\)</span></p>
 <ul>
-<li><p><em>Jacobian</em>: <span class="math inline">\(J(x)\)</span> or <span class="math inline">\(f^{\prime}_x(x)\)</span>, <span class="math inline">\(p\times q\)</span> matrix such that: <span class="math display">\[J(x)_{ij} = \frac{\partial f(x)_i}{\partial x_j}\]</span></p></li>
+<li><p><em>Jacobian</em>: <span class="math inline">\(J(x)\)</span> or <span class="math inline">\(f^{\prime}\_x(x)\)</span>, <span class="math inline">\(p\times q\)</span> matrix such that: <span class="math display">\[J(x)\_{ij} = \frac{\partial f(x)\_i}{\partial x_j}\]</span></p></li>
 <li><p><em>Gradient</em>: <span class="math inline">\(\nabla f(x) = J(x)\)</span>, gradient when <span class="math inline">\(q=1\)</span></p></li>
-<li><p><em>Hessian</em>: denoted by <span class="math inline">\(H(x)\)</span> or <span class="math inline">\(f^{\prime\prime}_{xx}(x)\)</span> when <span class="math inline">\(q=1\)</span>: <span class="math display">\[H(x)_{jk} = \frac{\partial f(x)}{\partial x_j\partial x_k}\]</span></p></li>
+<li><p><em>Hessian</em>: denoted by <span class="math inline">\(H(x)\)</span> or <span class="math inline">\(f^{\prime\prime}\_{xx}(x)\)</span> when <span class="math inline">\(q=1\)</span>: <span class="math display">\[H(x)\_{jk} = \frac{\partial f(x)}{\partial x_j\partial x_k}\]</span></p></li>
 <li><p>In the following explanations, <span class="math inline">\(|x|\)</span> denotes the supremum norm, but most of the following explanations also work with other norms.</p></li>
 </ul>
+</section>
+<section class="slide level2">
+
 </section></section>
 <section>
 <section id="unconstrained-multidimensional-root-finding" class="title-slide slide level1 center">
@@ -553,6 +597,9 @@ Proof that convergence is quadratic
 <li><em>linesearch</em>: choose <span class="math inline">\(\lambda\in[0,1]\)</span> so that <span class="math inline">\(|f(x_n-\lambda\Delta_n)|\)</span> is minimal</li>
 </ul></li>
 </ul>
+</section>
+<section class="slide level2">
+
 </section></section>
 <section>
 <section id="unconstrained-multidimensional-minimization" class="title-slide slide level1 center">
@@ -625,7 +672,7 @@ Proof that convergence is quadratic
 <section id="gauss-newton-minimization" class="slide level2">
 <h2>Gauss-Newton Minimization</h2>
 <ul>
-<li>Restrict to least-square minimization: <span class="math inline">\(min_x \sum_i f(x)_i^2 \in R\)</span></li>
+<li>Restrict to least-square minimization: $min_x _i f(x)_i^2 R $</li>
 <li>Then up to first order, <span class="math inline">\(H(x_n)\approx J(x_n)^{\prime}J(x_n)\)</span></li>
 <li>Use the step: <span class="math inline">\(({J(x_n)^{\prime}J(x_n)})^{-1}\color{\green}{ J(x_n)}\)</span></li>
 <li>Convergence:
@@ -638,7 +685,7 @@ Proof that convergence is quadratic
 <section id="levenberg-marquardt" class="slide level2">
 <h2>Levenberg-Marquardt</h2>
 <ul>
-<li><p>Least-square minimization: <span class="math inline">\(min_x \sum_i f(x)_i^2 \in R\)</span></p></li>
+<li><p>Least-square minimization: $min_x _i f(x)_i^2 R $</p></li>
 <li><p>replace <span class="math inline">\({J(x_n)^{\prime}J(x_n)}^{-1}\)</span> by <span class="math inline">\({J(x_n)^{\prime}J(x_n)}^{-1} +\mu I\)</span></p>
 <ul>
 <li>adjust <span class="math inline">\(\lambda\)</span> depending on progress</li>
@@ -647,6 +694,9 @@ Proof that convergence is quadratic
 <li><p>equivalent to Gauss-Newton close to the solution (<span class="math inline">\(\mu\)</span> small)</p></li>
 <li><p>equivalent to Gradient far from solution (<span class="math inline">\(\mu\)</span> high)</p></li>
 </ul>
+</section>
+<section class="slide level2">
+
 </section></section>
 <section>
 <section id="constrained-optimization-and-complementarity-conditions" class="title-slide slide level1 center">
@@ -682,7 +732,7 @@ Proof that convergence is quadratic
 <h2>Consumption optimization (2)</h2>
 <ul>
 <li>Another method, which keeps the symmetry. Constraint is binding, trying to minimize along the budget line yields an implicit relation between <span class="math inline">\(d x_1\)</span> and <span class="math inline">\(d x_2\)</span> <span class="math display">\[p_1 d {x_1} + p_2 d {x_2} = 0\]</span></li>
-<li>At the optimal: <span class="math inline">\(U^{\prime}_{x_1}(x_1, x_2)d {x_1} + U^{\prime}_{x_2}(x_1, x_2)d {x_2} = 0\)</span></li>
+<li>At the optimal: <span class="math inline">\(U^{\prime}\_{x_1}(x_1, x_2)d {x_1} + U^{\prime}\_{x_2}(x_1, x_2)d {x_2} = 0\)</span></li>
 <li>Eliminate <span class="math inline">\(d {x_1}\)</span> and <span class="math inline">\(d {x_2}\)</span> to get <em>one</em> condition which characterizes optimal choices for all possible budgets. Combine with the budget constraint to get a <em>second</em> condition.</li>
 </ul>
 </section>
@@ -759,8 +809,12 @@ Proof that convergence is quadratic
 </ul></li>
 </ul>
 </section>
-<section id="smooth-method" class="slide level2">
-<h2>Smooth method</h2>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="smooth-method" class="title-slide slide level1 center">
+<h1>Smooth method</h1>
 <ul>
 <li>Consider the <em>Fisher-Burmeister</em> function <span class="math display">\[\phi(a,b) = a+b-\sqrt{a^2+b^2}\]</span></li>
 <li>It is infinitely differentiable, except at <span class="math inline">\((0,0)\)</span></li>
@@ -770,6 +824,9 @@ Proof that convergence is quadratic
 <li>fun fact: the formulation with a <span class="math inline">\(\min\)</span> is nonsmooth but also works quite often</li>
 </ul></li>
 </ul>
+</section>
+<section class="slide level2">
+
 </section></section>
 <section>
 <section id="practicalities" class="title-slide slide level1 center">
@@ -818,19 +875,19 @@ Results of Nonlinear Solver Algorithm
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
