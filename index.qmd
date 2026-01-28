@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     'images/landing_images/keynes.png',
     'images/landing_images/pacman.png',
     'images/landing_images/smith.png',
+    'images/landing_images/identification.png',
     'images/landing_images/tetris.png',
     'images/landing_images/zelda.png'
   ];
