@@ -1,19 +1,26 @@
 ---
 listing:
-  id: course-listing
-  type: table
-  fields: [title]
-  sort-ui: false
-  filter-ui: false
-  field-display-names: 
-    title: "Lectures"
-  contents:
-    - /lectures/convergence/index.qmd
-    - /lectures/discretization.qmd
-    - /lectures/interpolation.qmd
-    - /lectures/time_iteration.qmd
+  - id: lectures-listing
+    type: table
+    fields: [title]
+    sort-ui: false
+    filter-ui: false
+    field-display-names: 
+      title: "Lectures"
+    contents:
+      - ../lectures/convergence/index.qmd
+      - ../lectures/discretization.qmd
+      - ../lectures/interpolation.qmd
+      - ../lectures/time_iteration.qmd
+  - id: tutorials-listing
+    type: table
+    fields: [title]
+    sort-ui: false
+    filter-ui: false
+    field-display-names: 
+      title: "Tutorials"
+    contents:
+      - ../tutorials/Julia_Basics.qmd
+      - ../tutorials/solow.qmd
+      - ../tutorials/epidemiology.qmd
 ---
-
-
-
-

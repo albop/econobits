@@ -1,0 +1,1125 @@
+---
+title: Julia Basics
+author: Pablo Winant / QuantEcon
+format:
+  html: default
+  ipynb: default
+execute: 
+  enabled: false
+---
+
+
+### What is Julia
+
+- developped at MIT on top of __opensource__ technologies
+    - linux / git / llvm
+- syntax inspired by Matlab but:
+    - more consistent
+    - lots of features from high level languages
+- everything is JIT-compiled
+    - interpreted vs compiled treadeoff
+    - -> very fast
+    - most of the base library is written in Julia
+- opensource/free + vibrant community
+
+Some useful links from QuantEcon:
+
+* [Julia cheatsheet](https://cheatsheets.quantecon.org/julia-cheatsheet.html)
+* [Julia-Matlab comparison](https://cheatsheets.quantecon.org/index.html)
+* [Vectors, arrays and matrices](https://lectures.quantecon.org/jl/julia_arrays.html)
+
+Excellent resources at: [julialang](https://julialang.org/learning/)
+
+- checkout JuliaAcademy, it's free
+- ongoing [MOOC](https://computationalthinking.mit.edu/Spring21/) at MIT
+
+### an example of what you shouldn't do in Matlab
+
+How I learnt: interpreted code is slow, so vectorize your code.
+
+```{julia}
+function stupid_loop(I,J,K)
+    t = 0.0
+    for i=1:I
+        for j=1:J
+            for k = 1:K
+                t += 1.0
+            end        
+        end
+    end
+    return t
+end
+@time [ stupid_loop(1000,1000,i) for i =1:10]
+```
+
+```{julia}
+stupid_loop(1000,1000,1000)
+```
+
+Code is translated to LLVM code then to instructions for the processor. Note that processor instructions are shorter than LLVM code.
+
+```{julia}
+@code_llvm stupid_loop(10,10,10)
+```
+
+```{julia}
+@code_native stupid_loop(10,10,10)
+```
+
+### Syntax Review
+
+#### Variable assignment
+
+Assignement operator is = (equality is ==, identity is ===)
+
+```{julia}
+# Assign the value 10 to the variable x
+x = 10
+```
+
+```{julia}
+x
+```
+
+```{julia}
+2 == 3
+```
+
+```{julia}
+# Variable names can have Unicode characters
+# To get ϵ in the REPL, type \epsilon<TAB>
+a = 20
+α = 10
+🐳 = 0.1
+🦈 = 0.1 * 🐳
+σ = 34
+ϵ = 1e-4
+```
+
+Default semantic is pass-by-reference:
+
+```{julia}
+a = [1,2,3,4]
+b = a
+a[1] = 10
+b
+```
+
+To work on a copy: `copy` or `deepcopy`
+
+```{julia}
+a = [1,2,3,4]
+b = copy(a)
+a[1]=10
+b
+```
+
+```{julia}
+a .== b
+```
+
+```{julia}
+c = b
+```
+
+```{julia}
+b = [1,2,3,4]
+```
+
+```{julia}
+a .== b
+```
+
+```{julia}
+c === b
+```
+
+#### Basic types
+
+```{julia}
+# for any object `typeof` returns the type
+
+typeof(a)
+```
+
+```{julia}
+[1,2,3]
+```
+
+```{julia}
+typeof(randn(3,3))  == Array{Float64, 2}
+```
+
+#### Numbers
+
+```{julia}
+y = 2 + 2
+```
+
+```{julia}
+-y
+```
+
+```{julia}
+0.34*23
+```
+
+```{julia}
+3/4
+```
+
+```{julia}
+3//4
+```
+
+```{julia}
+3//4 + 2//3
+```
+
+```{julia}
+typeof(3//4 + 2//3)
+```
+
+```{julia}
+# Scalar multiplication doesn't require *
+3(4 - 2) 
+```
+
+```{julia}
+x = 4
+2*x + 2x^2
+```
+
+```{julia}
+typeof(x)
+```
+
+```{julia}
+sizeof(x)
+```
+
+```{julia}
+typeof(10)
+```
+
+```{julia}
+(big(100))//big(1000)
+```
+
+```{julia}
+bitstring(10)
+```
+
+#### Booleans
+
+Equality
+
+```{julia}
+0 == 1
+```
+
+```{julia}
+2 != 3
+```
+
+```{julia}
+3 < 4
+```
+
+```{julia}
+true == false
+```
+
+Identity
+
+```{julia}
+a = [34, 35]
+b = [34, 35]
+c = a
+```
+
+```{julia}
+c === a
+```
+
+```{julia}
+b === a
+```
+
+Boolean operator
+
+```{julia}
+true && false
+```
+
+```{julia}
+true || false
+```
+
+```{julia}
+!true
+```
+
+```{julia}
+a  = 2
+b = 3
+
+(a > b) && (factorial(100) > 10)
+```
+
+#### Strings
+
+```{julia}
+# Strings are written using double quotes
+str = "This is a string"
+```
+
+```{julia}
+ch = '🦆' # this is a character
+```
+
+```{julia}
+# Strings can also contain Unicode characters
+fancy_str = "α is a string"
+```
+
+```{julia}
+n = 10
+println("Iteration : ", n)
+```
+
+```{julia}
+# String interpolation using $
+# The expression in parentheses is evaluated and the result is 
+# inserted into the string
+a = 2+2
+"2 + 2 = $(a+1)"
+```
+
+```{julia}
+println("It took me $(a) iterations")
+```
+
+```{julia}
+# String concatenation using *
+"hello" * "world"
+```
+
+```{julia}
+print("1")
+print("2")
+print("3")
+```
+
+```{julia}
+println("1")
+println("2")
+println("3")
+```
+
+```{julia}
+println("hello ", "world")
+```
+
+#### Arrays
+
+Julia has one-dimensional arrays. They are also called Vector.
+
+```{julia}
+A = [1, 2]
+```
+
+All elements have the type:
+
+```{julia}
+A = [1, 1.4]
+```
+
+```{julia}
+typeof(A) == Vector{Int64}
+```
+
+```{julia}
+A''
+```
+
+To get the size of an array:
+
+```{julia}
+length(A)
+```
+
+```{julia}
+size(A)
+```
+
+Arrays are *mutable*
+
+```{julia}
+A[1] = 10
+```
+
+```{julia}
+A
+```
+
+Julia has one-based indexing: you refer to the first element as 1 ($\neq$ zero-based indexing in C or Python)
+
+```{julia}
+A[2]
+```
+
+Arrays are mutable and their size can be changed too:
+
+```{julia}
+push!(A, 29)
+A
+```
+
+```{julia}
+A
+```
+
+```{julia}
+prepend!(A, 28)
+```
+
+Two comments:
+- the `push!` operation is *fast*
+- `!` is a julia convention to express the fact that `push!` mutates its first argument
+
+```{julia}
+["a", "b"]
+```
+
+```{julia}
+["a", 1]
+```
+
+#### tuples
+
+```{julia}
+size(A)  # is a tuple
+```
+
+```{julia}
+(5,)
+```
+
+```{julia}
+# you can create tuples with (,,,)
+t = (1,2,3,4)
+```
+
+```{julia}
+t
+```
+
+tuples differ from arrays in two ways:
+- they are immutable
+- they can contain non-homogenous objects
+
+```{julia}
+t[1]
+```
+
+```{julia}
+t[1] = 2
+```
+
+```{julia}
+typeof((1, "1", [1]))
+```
+
+2d arrays are also called matrices... and can be used for matrix multiplications.
+
+```{julia}
+[3 4; 5 6]
+```
+
+```{julia}
+[ [3, 4];; [5, 6]] # concatenate along second dimension
+```
+
+```{julia}
+a1 = [1,2,3,4]
+a2 = [1,2,3,4]  .+ 4
+[a1 ;; a2]
+cat(a1, a2; dims=2)
+```
+
+```{julia}
+b = [1 0.6 0]
+```
+
+```{julia}
+B = [0.1 0.2 0.3; 4 5 6]
+```
+
+Other ways to construct arrays:
+
+```{julia}
+# zero array
+t = zeros(2,3)
+t[1,2] = 23.2
+t
+```
+
+```{julia}
+# zero array
+t = zeros(Int64,2,3)
+# t[1,2] = 23.2
+t
+```
+
+```{julia}
+# random array (uniform distribution)
+t= rand(3,3)
+t
+```
+
+```{julia}
+# random array (normal distribution)
+t= randn(3,3)
+t
+```
+
+Vectorized operations take a ., even comparisons (pointwise operations)
+
+```{julia}
+B = [1 2;3 4]
+```
+
+```{julia}
+B*B
+```
+
+```{julia}
+B .* B
+```
+
+```{julia}
+f(x) = x^2+1
+```
+
+```{julia}
+f(43)
+```
+
+```{julia}
+# [ f(e) for e in [1,2,3,4,5] ]
+f.([1,2,3,4,5])
+```
+
+Elements are always accessed with square brackets:
+
+```{julia}
+B = [1 2 3; 4 5 6]
+```
+
+```{julia}
+You get element $B_{ij}$ with `B[i,j]`
+```
+
+```{julia}
+B[1,2]
+```
+
+You select a whole row/column with `:`
+
+```{julia}
+B[1,:]
+```
+
+```{julia}
+B[:,1]
+```
+
+```{julia}
+B[:,1:2]
+```
+
+```{julia}
+B[:,1:end-1]
+```
+
+#### Control flow
+
+Conditions
+
+```{julia}
+x = 0
+if x<0
+    # block
+    println("x is negative")
+elseif (x > 0) # optional and unlimited
+    println("x is positive")
+else         # optional
+    println("x is zero")
+end
+```
+
+While
+
+```{julia}
+i = 3
+while i > 0
+    println(i)
+    i -= 1 # decrement
+end
+```
+
+For loops: your iterate over any iterable object:
+- range   `i1:i2`
+- vector
+- tuple
+
+```{julia}
+# Iterate through ranges of numbers
+for i ∈ (1:3)
+    println(i)
+end
+```
+
+```{julia}
+# Iterate through arrays
+cities = ["Boston", "New York", "Philadelphia"]
+for city ∈ cities
+    println(city)
+end
+```
+
+```{julia}
+cities
+```
+
+```{julia}
+states = ["Massachussets", "New York", "Pennsylvania"]
+```
+
+```{julia}
+two_by_two_iterable = zip(cities, states)
+```
+
+```{julia}
+typeof(two_by_two_iterable)
+```
+
+```{julia}
+collect(two_by_two_iterable)
+```
+
+```{julia}
+[two_by_two_iterable...]
+```
+
+```{julia}
+# Iterate through arrays of tuples using zip
+for kw in zip(cities, states)
+    println(kw)
+end
+```
+
+```{julia}
+# Iterate through arrays of tuples using zip
+for (city, state) in zip(cities, states)
+    println("City: $city | State: $state")
+end
+```
+
+
+```{julia}
+# Iterate through arrays and their indices using enumerate
+for (i, city) in enumerate(cities)
+    println("City $i is $city")
+end
+```
+
+#### List comprehensions
+
+```{julia}
+[1:10 ...] # unpack operator
+```
+
+```{julia}
+[i^2 for i  in 1:10] # collect with comprehension syntax
+```
+
+```{julia}
+[i^2 for i=1:10000000 if mod(i,2)==0] ;
+```
+
+```{julia}
+@time sum( [i^2 for i=1:10000000000 if mod(i,2)==0] )
+```
+
+```{julia}
+function fun()
+    t = 0
+    for  i=1:10000000000
+        if mod(i,2)==0
+            t += i^2
+        end
+    end
+    return t
+end
+```
+
+```{julia}
+@time fun()
+```
+
+```{julia}
+gen = (i^2 for i=1:10000000000 if mod(i,2)==0)
+```
+
+```{julia}
+@time sum(gen)
+```
+
+```{julia}
+## Named Tuples
+```
+
+```{julia}
+t = (;a=1,b=2,c=3)
+```
+
+```{julia}
+t[1] # indexed like tuple
+# t[1] = 2 # immutable
+t.a # access fields using names
+```
+
+```{julia}
+model = (;
+    α = 0.3,
+    β = 0.96
+)
+```
+
+```{julia}
+merge(model, (;β=0.9, γ=0.2))
+```
+
+```{julia}
+# unpack values from a tuple
+
+α = model[1]
+β = model[2]
+```
+
+```{julia}
+# unpack values from a namedtuple
+
+α = model.α
+β = model.β
+```
+
+```{julia}
+# namedtuple unpacking
+
+(;α, β) = model
+α
+```
+
+
+### Data Types and multiple dispatch
+
+#### Composite types
+
+A **composite type** is a collection of named fields that can be treated as a single value. They bear a passing resemblance to MATLAB structs.
+
+All fields must be declared ahead of time. The double colon, `::`, constrains a field to contain values of a certain type. This is optional for any field.
+
+```{julia}
+# Type definition with 4 fields
+struct ParameterFree
+    value  
+    transformation  
+    tex_label
+    description 
+end
+```
+
+```{julia}
+pf = ParameterFree("1", x->x^2, "\\sqrt{1+x^2}", ("a",1))
+```
+
+```{julia}
+pf.value
+```
+
+Two reasons to create structures:
+- syntactic shortcut (you access the fields with .)
+- specify the types of the fields
+
+```{julia}
+# Type definition
+struct Parameter
+    value ::Float64
+    transformation ::Function # Function is a type!
+    tex_label::String
+    description::String
+end
+```
+
+```{julia}
+p = Parameter("1", x->x^2, "\\sqrt{1+x^2}", ("a",1))
+```
+
+```{julia}
+p = Parameter(0.43, x->x^2, "\\sqrt{1+x^2}", "This is a description")
+```
+
+```{julia}
+p.value
+```
+
+When a type with $n$ fields is defined, a constructor (function that creates an instance of that type) that takes $n$ ordered arguments is automatically created. Additional constructors can be defined for convenience.
+
+```{julia}
+# Creating an instance of the Parameter type using the default
+# constructor
+β = Parameter(0.9, identity, "\\beta", "Discount rate")
+```
+
+```{julia}
+function Parameter(value)
+    return Parameter(value, x->x, "x", "Anonymous")
+end
+```
+
+```{julia}
+Parameter(0.4)
+```
+
+```{julia}
+Parameter(value, transformation, tex) = Parameter(value, transformation, tex, "no description")
+```
+
+```{julia}
+methods( Parameter )
+```
+
+```{julia}
+# Alternative constructors end with an appeal to the default
+# constructor
+function Parameter(value::Float64, tex_label::String)
+    transformation = identity
+    description = "No description available"
+    return Parameter(value, transformation, tex_label, description)
+end
+
+α = Parameter(0.5, "\alpha")
+```
+
+Now the function `Parameter` has two different `methods` with different signatures:
+
+```{julia}
+methods(Parameter)
+```
+
+We have seen that a function can have several implementations, called methods, for different number of arguments, 
+or for different types of arguments.
+
+```{julia}
+fun(x::Int64, y::Int64) = x^3 + y
+```
+
+```{julia}
+fun(x::Float64, y::Int64) = x/2 + y
+```
+
+```{julia}
+fun(2, 2)
+```
+
+```{julia}
+fun(2.0, 2)
+```
+
+```{julia}
+α.tex_label
+```
+
+```{julia}
+# Access a particular field using .
+α.value
+```
+
+```{julia}
+# Fields are modifiable and can be assigned to, like 
+# ordinary variables
+α.value = 0.75
+```
+
+### Mutable vs non mutable types
+
+by default structures in Julia are non-mutable
+
+```{julia}
+p.value = 3.0
+```
+
+```{julia}
+mutable struct Params
+    x:: Float64
+    y:: Float64
+end
+```
+
+```{julia}
+pos = Params(0.4, 0.2)
+```
+
+```{julia}
+pos.x = 0.5
+```
+
+### Parameterized Types
+
+**Parameterized types** are data types that are defined to handle values identically regardless of the type of those values.
+
+Arrays are a familiar example. An `Array{T,1}` is a one-dimensional array filled with objects of any type `T` (e.g. `Float64`, `String`).
+
+```{julia}
+# Defining a parametric point
+struct Duple{T} # T is a parameter to the type Duple
+    x::T
+    y::T
+end
+```
+
+```{julia}
+Duple(3, 3)
+```
+
+```{julia}
+Duple(3, -1.0)
+```
+
+```{julia}
+struct Truple{T}
+    x::Duple{T}
+    z::T
+end
+```
+
+This single declaration defines an unlimited number of new types: `Duple{String}`, `Duple{Float64}`, etc. are all immediately usable.
+
+```{julia}
+sizeof(3.0)
+```
+
+```{julia}
+sizeof( Duple(3.0, -15.0) )
+```
+
+```{julia}
+# What happens here?
+Duple(1.5, 3)
+```
+
+```{julia}
+struct Truple3{T,S}
+    x::Tuple{T,S}
+    z::S
+end
+```
+
+We can also restrict the type parameter `T`:
+
+```{julia}
+typeof("S") <: Number
+```
+
+```{julia}
+typeof(4) <: Number
+```
+
+```{julia}
+# T can be any subtype of Number, but nothing else
+struct PlanarCoordinate{T<:Number}
+    x::T
+    y::T
+end
+```
+
+```{julia}
+PlanarCoordinate("4th Ave", "14th St")
+```
+
+```{julia}
+PlanarCoordinate(2//3, 8//9)
+```
+
+Arrays are an exemple of mutable, parameterized types
+
+### Why Use Types?
+
+You can write all your code without thinking about types at all. If you do this, however, you’ll be missing out on some of the biggest benefits of using Julia.
+
+If you understand types, you can:
+
+- Write faster code
+- Write expressive, clear, and well-structured programs (keep this in mind when we talk about functions)
+- Reason more clearly about how your code works
+
+Even if you only use built-in functions and types, your code still takes advantage of Julia’s type system. That’s why it’s important to understand what types are and how to use them.
+
+```{julia}
+# Example: writing type-stable functions
+function sumofsins_unstable(n::Integer)  
+    sum = 0:: Integer
+    for i in 1:n  
+        sum += sin(3.4)  
+    end  
+    return sum 
+end  
+
+function sumofsins_stable(n::Integer)  
+    sum = 0.0 :: Float64
+    for i in 1:n  
+        sum += sin(3.4)  
+    end  
+    return sum 
+end
+
+# Compile and run
+sumofsins_unstable(Int(1e5))
+sumofsins_stable(Int(1e5))
+```
+
+```{julia}
+@time sumofsins_unstable(Int(1e5))
+```
+
+```{julia}
+@time sumofsins_stable(Int(1e5))
+```
+
+In `sumofsins_stable`, the compiler is guaranteed that `sum` is of type `Float64` throughout; therefore, it saves time and memory. On the other hand, in `sumofsins_unstable`, the compiler must check the type of `sum` at each iteration of the loop. Let's look at the LLVM [intermediate representation](http://www.johnmyleswhite.com/notebook/2013/12/06/writing-type-stable-code-in-julia/).
+
+### Multiple Dispatch
+
+So far we have defined functions over argument lists of any type. Methods allow us to define functions “piecewise”. For any set of input arguments, we can define a **method**, a definition of one possible behavior for a function.
+
+```{julia}
+# Define one method of the function print_type
+function print_type(x::Number)
+    println("$x is a number")
+end
+```
+
+```{julia}
+# Define another method
+function print_type(x::String)
+    println("$x is a string")
+end
+```
+
+```{julia}
+# Define yet another method
+function print_type(x::Number, y::Number)
+    println("$x and $y are both numbers")
+end
+```
+
+```{julia}
+# See all methods for a given function
+methods(print_type)
+```
+
+Julia uses **multiple dispatch** to decide which **method** of a **function** to execute when a function is applied. In particular, Julia compares the types of _all_ arguments to the signatures of the function’s methods in order to choose the applicable one, not just the first (hence "multiple").
+
+```{julia}
+print_type(5)
+```
+
+```{julia}
+print_type("foo")
+```
+
+```{julia}
+print_type([1, 2, 3])
+```
+
+#### Other types of functions
+
+Julia supports a short function definition for one-liners
+
+```{julia}
+f(x::Float64) = x^2.0
+f(x::Int64) = x^3
+```
+
+As well as a special syntax for anonymous functions
+
+```{julia}
+u->u^2
+```
+
+```{julia}
+map(u->u^2, [1,2,3,4])
+```
+
+### Keyword arguments and optional arguments
+
+```{julia}
+f(a,b,c=true; algo="newton")
+```
+
+### Packing/unpacking
+
+```{julia}
+t = (1,2,4)
+```
+
+```{julia}
+a,b,c = t
+```
+
+```{julia}
+[(1:10)...]
+```
+
+```{julia}
+cat([4,3], [0,1]; dims=1)
+```
+
+```{julia}
+l = [[4,3], [0,1], [0, 0], [1, 1]]
+# how do I concatenate it ?
+
+cat(l...; dims=1) ### see python's f(*s)
+```
+
+### Writing Julian Code
+
+As we've seen, you can use Julia just like you use MATLAB and get faster code. However, to write faster and _better_ code, attempt to write in a “Julian” manner:
+
+- Define composite types as logically needed
+- Write type-stable functions for best performance
+- Take advantage of multiple dispatch to write code that looks like math
+- Add methods to existing functions
+
+### Just-in-Time Compilation
+
+How is Julia so fast? Julia is just-in-time (JIT) compiled, which  means (according to [this StackExchange answer](http://stackoverflow.com/questions/95635/what-does-a-just-in-time-jit-compiler-do)):
+
+> A JIT compiler runs after the program has started and compiles the code (usually bytecode or some kind of VM instructions) on the fly (or just-in-time, as it's called) into a form that's usually faster, typically the host CPU's native instruction set. _A JIT has access to dynamic runtime information whereas a standard compiler doesn't and can make better optimizations like inlining functions that are used frequently._
+
+> This is in contrast to a traditional compiler that compiles all the code to machine language before the program is first run.
+
+In particular, Julia uses type information at runtime to optimize how your code is compiled. This is why writing type-stable code makes such a difference in speed!
+
+## Additional Exercises
+
+Taken from QuantEcon's [Julia Essentials](https://lectures.quantecon.org/jl/julia_essentials.html) and [Vectors, Arrays, and Matrices](https://lectures.quantecon.org/jl/julia_arrays.html) lectures.
+
+1. Consider the polynomial $$p(x) = \sum_{i=0}^n a_0 x^0$$ Using `enumerate`, write a function `p` such that `p(x, coeff)` computes the value of the polynomial with coefficients `coeff` evaluated at `x`.
+
+
+2. Write a function `solve_discrete_lyapunov` that solves the discrete Lyapunov equation $$S = ASA' + \Sigma \Sigma'$$ using the iterative procedure $$S_0 = \Sigma \Sigma'$$ $$S_{t+1} = A S_t A' + \Sigma \Sigma'$$ taking in as arguments the $n \times n$ matrix $A$, the $n \times k$ matrix $\Sigma$, and a number of iterations.
+
