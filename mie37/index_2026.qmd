@@ -24,3 +24,25 @@ listing:
       - ../tutorials/solow.qmd
       - ../tutorials/epidemiology.qmd
 ---
+
+
+::: {.callout-tip title="Installing Julia" collapse="true"}
+
+This assumes that you don't have any version of Julia on your computer. If you have one, please consult with a higher authority.
+
+To get a very nice working installation:
+
+- install [JuliaUp](https://github.com/JuliaLang/juliaup): keep Julia versions up to date
+- install [VSCode](https://code.visualstudio.com/)
+- inside VSCode, install the Julia extension
+
+:::
+
+
+::: {.callout-important title="Homework" collapse="false"}
+
+For next time:
+
+- install Julia (***)
+
+:::

@@ -1,7 +1,6 @@
 ---
 title: Introduction
-date: 2025/02/6
-subtitle: "Advanced Macro: Numerical Methods (MIE37)"
+subtitle: "Numerical Methods"
 author: Pablo Winant
 format:
   revealjs:
@@ -13,8 +12,10 @@ format:
 
 ### Communication for this Course
 
-- Github repository for the course: https://github.com/albop/mie37
-- Join on [Zulip](econforge.zulipchat.org) : we'll communicate in the `mie37` room
+- Website: [econobits](http://econobits.org)
+- Github repository for the course: [repo](https://github.com/albop/econobits)
+  - 1 PR = 1 free coffee/tea!
+- Join on [Zulip](econforge.zulipchat.org) : we'll communicate in the `mie37_2026` room
   - you're welcome to ask questions and answer other's questions (nicely)
   - outside of the course hours, I'll answer when I can
 - Formal or infrequent communication: `pwinant@escp.eu` with subject starting by `[mie37]`
@@ -23,10 +24,11 @@ format:
 
 ### Assignments and Final Exam
 
--  Hands-on tutorial started in class must be (reasonably) completed by Wednesday night.
+-  Hands-on tutorial started in class can be completed and sent by Wednesday night.
+  - if you wish to have a correction, please ask expicitely
 - There will be two special assignments with 14 days to complete each of them.
 - Groupwork is OK.
-- Final Exam will take place in the latest session.
+- Final Exam will take place in the last session.
   - It will consists of a few simple programming questions and a small model to solve yourself.
 - Final Grade will weight everything.
 
@@ -75,7 +77,7 @@ format:
 
 ### Content of the course
 
-<img src=vain_diagram.jpg width=30%>
+<img src=assets/vain_diagram.jpg width=30%>
 
 - Computational Economics is made of:
   - Applied Math (theory)
@@ -190,14 +192,3 @@ format:
   - ask on mailing lists or online chats (Julia users, quantecon, dynare, ...)
   - open issues (for instance against Dolo [https://github.com/EconForge/Dolo.jl/issues](https://github.com/EconForge/Dolo.jl/issues)
   - participating is also a great occasion to learn
-
----
-
-### Setup
-
-- Plan A: use your own laptop. You will need:
-  - Julia 1.11.x (install using [JuliaUp](https://github.com/JuliaLang/juliaup))
-  - visual studio code
-  - julia extension to VSCode
-  - git
-- Plan B: use the mybinder links from the courses repository.
