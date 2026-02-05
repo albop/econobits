@@ -6,12 +6,11 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Pablo Winant">
-  <meta name="dcterms.date" content="2025-03-06">
-  <title>econobits – Perturbation Analysis</title>
+  <title>econobits – Perturbation Analysis (f-g version)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -194,8 +193,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Perturbation Analysis</h1>
-  <p class="subtitle">Advanced Macro: Numerical Methods (MIE37)</p>
+  <h1 class="title">Perturbation Analysis (f-g version)</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -205,7 +203,6 @@ Pablo Winant
 </div>
 </div>
 
-  <p class="date">2025-03-06</p>
 </section>
 <section id="today" class="slide level2">
 <h2>Today</h2>
@@ -386,7 +383,7 @@ q_t:\quad &amp;  k_{t+1} &amp; = &amp; (1-\delta) k_{t} + i_{t}
 <ul>
 <li>multiplier can have any sign</li>
 </ul></li>
-<li>inequality formulation is sometimes found too:
+<li>inequality formulation is sometimes used too:
 <ul>
 <li><span class="math inline">\(c_t \leq \exp(z_t) k_t^{\alpha}  - i_t\)</span> ( you can destroy production insead of eating or investing it)</li>
 <li><span class="math inline">\(k_{t+1} \leq (1-\delta) k_{t} + i_{t}\)</span> (you can destroy capital instead of investing it)</li>
@@ -959,9 +956,8 @@ F(X, \tilde{X}) &amp; = &amp; (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&amp;
 <li>We can now compute the model evolution following initial deviation in the state: <span class="math display">\[\Delta s_t = \underbrace{(F + G X)}_{P} \Delta s_{t-1}\]</span>
 <ul>
 <li><span class="math inline">\(P\)</span> is the simulation operator</li>
-<li>it is a <em>backward</em> operator (TODO: example of a reaction to a shock)</li>
+<li>it is a <em>backward</em> operator c- The system is stable if the biggest eigenvalue of <span class="math inline">\(P\)</span> is smaller than one…</li>
 </ul></li>
-<li>The system is stable if the biggest eigenvalue of <span class="math inline">\(P\)</span> is smaller than one…</li>
 <li>… or if its spectral radius is smaller than 1: <span class="math display">\[\rho(P)&lt;1\]</span></li>
 <li>This condition is called <em>backward</em> stability
 <ul>
