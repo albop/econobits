@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Pablo Winant">
 
-<title>index_2026 – econobits</title>
+<title>Perturbation of Neoclassical Model – econobits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +66,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -70,63 +104,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-lectures-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-lectures-listing'] = new List('listing-lectures-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-tutorials-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-tutorials-listing'] = new List('listing-tutorials-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -197,135 +174,96 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    </div>
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="perturbation.ipynb" download="perturbation.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
 
-
-
-
-<div class="callout callout-style-default callout-tip callout-titled" title="Installing Julia">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Perturbation of Neoclassical Model</h1>
 </div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Installing Julia
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>This assumes that you don’t have any version of Julia on your computer. If you have one, please consult with a higher authority.</p>
-<p>To get a very nice working installation:</p>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Pablo Winant </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Our goal here is to compute a linear approximation of solution to the neoclassical model, close ot the steady-state.</p>
+<p><strong>Warm-up: install the <code>ForwardDiff</code> library. Use it to differentiate the function below. Check the jacobian function.</strong></p>
+<p>Note: the signature of function <code>f</code> needs to be fixed first to allow for dual numbers as arguments.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function f(x::Vector{T}) where T &lt;: Number</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">f</span>(x)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> x[<span class="fl">1</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> x[<span class="fl">2</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> a<span class="op">+</span>b</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span> <span class="fu">a*exp</span>(b)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [x1,x2]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Create a NamedTuple to hold the model parameters.</strong></p>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Define two functions:</strong></p>
 <ul>
-<li>install <a href="https://github.com/JuliaLang/juliaup">JuliaUp</a>: keep Julia versions up to date</li>
-<li>install <a href="https://code.visualstudio.com/">VSCode</a></li>
-<li>inside VSCode, install the Julia extension</li>
+<li><p><code>transition(z::Number, k::Number, i::Number, p)::Tuple{Number}</code> which returns productivity and capital at date <code>t+1</code> as a function of productivity, capital and investment at date <code>t</code></p></li>
+<li><p><code>arbitrage(z::Number, k::Number, i::Number, Z::Number, K::Number, I::Number, p)::Number</code> which returns the residual of the euler equation (lower case variable for date t, upper case for date t+1)</p></li>
 </ul>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-important callout-titled" title="Homework">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Homework
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<p>For next time:</p>
+<pre class="{julia}"><code></code></pre>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Using multiple dispatch, define two variants of the same functions, that take vectors as input and output arguments:</strong></p>
 <ul>
-<li>install Julia (***)</li>
+<li><code>arbitrage(s::Vector{T}, x::Vector{T}, S::Vector{T}, X::Vector{T}, p) where T&lt;:Number</code></li>
+<li><code>transition(s::Vector{T}, x::Vector{T}, p) where T&lt;:Number</code></li>
 </ul>
-</div>
-</div>
-</div>
+<pre class="{julia}"><code></code></pre>
+<pre class="{julia}"><code></code></pre>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Write a function <code>steady_state(p)::Tuple{Vector,Vector}</code> which computes the steady-state of the model computed by hand.</strong> It returns two vectors, one for the states, one for the controls. Check that the steady-state satisfies the model equations.</p>
+<pre class="{julia}"><code></code></pre>
+<pre class="{julia}"><code></code></pre>
+<p>The first order system satisfies: <span class="math display">\[\begin{align}A s_t + B x_t + C s_{t+1} + D x_{t+1} &amp; = &amp; 0 \\\\
+s_{t+1} &amp; = &amp; E s_t + F x_t
+\end{align}\]</span></p>
+<p><strong>Define a structure <code>PerturbedModel</code> to hold matrices A,B,C,D,E,F.</strong></p>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Write a function <code>first_order_model(s::Vector, x::Vector, p)::PerturbedModel</code>, which returns the first order model, given the steady-state and the calibration. Suggestion: use <code>ForwardDiff.jl</code> library.</strong></p>
+<pre class="{julia}"><code></code></pre>
+<p><strong>We look for a linear solution <span class="math inline">\(x_t = X s_t\)</span> . Write the matrix equation which <code>X</code> must satisfy. Write a function <code>residual(X::Array, M::PerturbedModel)</code> which computes the residual of this equation for a given <code>X</code>.</strong></p>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Write a function <code>T(X, M::PerturbedModel)</code> which implements the time iteration step.</strong></p>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Write function <code>linear_time_iteration(X_0::Matrix, m::PerturbedModel)::Matrix</code> which implements the time iteration algorithm. Apply it to <code>X0 = rand(1,2)</code> and check that the result satisfies the first order model.</strong></p>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Check blanchard Kahn Conditions</strong></p>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Define two linear operators <code>L_S(U::Union{Vector, Matrix}, X_0::Matrix, m::PerturbedModel)::Matrix</code> and <code>L_T(U::Matrix, X_0::Matrix, m::PerturbedModel)::Matrix</code> which implement the derivatives of the simulation and the time-iteration operator respectively.</strong></p>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Implement a function <code>spectral_radius(f::Function)::Float64</code> which implements the power iteration method to compute the biggest eigenvalues of the two previously defined operators. Check that Blanchard-Kahn conditions are met.</strong></p>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Write a function <code>simulate(s0::Vector, X::Matrix, p, T::Int64)::Tuple{Matrix, Matrix}</code> to simulate the model over <span class="math inline">\(T\)</span> periods (by using the formula <span class="math inline">\(\Delta s_t = (E + F X) \Delta s_{t-1}\)</span>. Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variables levels or log-deviations. If possible, return a DataFrame object.</strong></p>
+<pre class="{julia}"><code></code></pre>
+<p><strong>Make some nice plots.</strong></p>
+<pre class="{julia}"><code></code></pre>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-lectures-listing">
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-
-<th>
-Lectures
-</th>
-
-</tr>
-</thead>
-<tbody class="list">
-
-<tr data-index="0" data-listing-file-modified-sort="1769678264510" data-listing-reading-time-sort="9" data-listing-word-count-sort="1662" data-listing-title-sort="Convergence of Sequences (1)" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../lectures/convergence/index.html" class="title listing-title">Convergence of Sequences (1)</a>
-</td>
-
-</tr>
-
-<tr data-index="1" data-listing-file-modified-sort="1771500816433" data-listing-reading-time-sort="19" data-listing-word-count-sort="3611" data-listing-title-sort="Perturbation Analysis (f-g version)" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../lectures/perturbation/index.html" class="title listing-title">Perturbation Analysis (f-g version)</a>
-</td>
-
-</tr>
-
-</tbody>
-</table>
-<div class="listing-no-matching d-none">No matching items</div>
-</div><div class="quarto-listing quarto-listing-container-table" id="listing-tutorials-listing">
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-
-<th>
-Tutorials
-</th>
-
-</tr>
-</thead>
-<tbody class="list">
-
-<tr data-index="0" data-listing-file-modified-sort="1769678264517" data-listing-reading-time-sort="4" data-listing-word-count-sort="728" data-listing-title-sort="Epidemiology Models" data-listing-filename-sort="epidemiology.qmd">
-<td>
-<a href="../tutorials/epidemiology.html" class="title listing-title">Epidemiology Models</a>
-</td>
-
-</tr>
-
-<tr data-index="1" data-listing-file-modified-sort="1769678264517" data-listing-reading-time-sort="12" data-listing-word-count-sort="2216" data-listing-title-sort="Julia Basics" data-listing-filename-sort="Julia_Basics.qmd">
-<td>
-<a href="../tutorials/Julia_Basics.html" class="title listing-title">Julia Basics</a>
-</td>
-
-</tr>
-
-<tr data-index="2" data-listing-file-modified-sort="1771502463630" data-listing-reading-time-sort="3" data-listing-word-count-sort="446" data-listing-title-sort="Perturbation of Neoclassical Model" data-listing-filename-sort="perturbation.qmd">
-<td>
-<a href="../tutorials/perturbation.html" class="title listing-title">Perturbation of Neoclassical Model</a>
-</td>
-
-</tr>
-
-<tr data-index="3" data-listing-file-modified-sort="1769678264517" data-listing-reading-time-sort="2" data-listing-word-count-sort="226" data-listing-title-sort="Solow Model" data-listing-filename-sort="solow.qmd">
-<td>
-<a href="../tutorials/solow.html" class="title listing-title">Solow Model</a>
-</td>
-
-</tr>
-
-</tbody>
-</table>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

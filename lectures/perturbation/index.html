@@ -604,16 +604,13 @@ q_t:\quad &amp;  k_{t+1} &amp; = &amp; (1-\delta) k_{t} + i_{t}
 <section id="finite-differences-higher-order" class="slide level2">
 <h2>Finite Differences: Higher order</h2>
 <ul>
-<li>Central formula: <span class="math display">\[
+<li>Central formula:</li>
+</ul>
+<p><span class="math display">\[
 \begin{aligned}
 f''(x) &amp; \approx &amp; \frac{f'(x)-f'(x-\epsilon)}{\epsilon} \approx \frac{(f(x+\epsilon))-f(x))-(f(x)-f(x-\epsilon))}{\epsilon^2} \\ &amp; = &amp; \frac{f(x+\epsilon)-2f(x)+f(x-\epsilon)}{\epsilon^2}
 \end{aligned}
-\]</span>
-<ul>
-<li>precision: <span class="math inline">\(o(\epsilon)\)</span></li>
-</ul></li>
-<li>Generalizes to higher order but becomes more and more innacurate</li>
-</ul>
+\]</span> - precision: <span class="math inline">\(o(\epsilon)\)</span> - Generalizes to higher order but becomes more and more innacurate</p>
 </section>
 <section id="symbolic-differentiation" class="slide level2">
 <h2>Symbolic Differentiation</h2>
@@ -956,8 +953,9 @@ F(X, \tilde{X}) &amp; = &amp; (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&amp;
 <li>We can now compute the model evolution following initial deviation in the state: <span class="math display">\[\Delta s_t = \underbrace{(F + G X)}_{P} \Delta s_{t-1}\]</span>
 <ul>
 <li><span class="math inline">\(P\)</span> is the simulation operator</li>
-<li>it is a <em>backward</em> operator c- The system is stable if the biggest eigenvalue of <span class="math inline">\(P\)</span> is smaller than one…</li>
+<li>it is a <em>backward</em> operator</li>
 </ul></li>
+<li>The system is stable if the biggest eigenvalue of <span class="math inline">\(P\)</span> is smaller than one…</li>
 <li>… or if its spectral radius is smaller than 1: <span class="math display">\[\rho(P)&lt;1\]</span></li>
 <li>This condition is called <em>backward</em> stability
 <ul>
