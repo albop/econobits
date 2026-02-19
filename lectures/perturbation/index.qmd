@@ -1,7 +1,5 @@
 ---
-date: 2025/03/06
-title: "Perturbation Analysis"
-subtitle: "Advanced Macro: Numerical Methods (MIE37)"
+title: "Perturbation Analysis (f-g version)"
 author: Pablo Winant
 format:
   revealjs:
@@ -22,7 +20,6 @@ Study Neoclassical Model of Growth with Deterministic Productivity Shocks
 
 # Deriving First Order Conditions
 
-----
 
 ## Neoclassical Growth Model
 
@@ -58,7 +55,6 @@ $$\max_{i_t} \sum_{t\geq0} \beta^t U(c_t)$$
 ::::
 :::
 
-----
 
 ## Deriving First Order Conditions
 
@@ -69,7 +65,6 @@ $$\max_{i_t} \sum_{t\geq0} \beta^t U(c_t)$$
     2. Lagrangian:
 - We will use the lagrangian version
 
-----
 
 ## Lagrangian {.scrollable}
 
@@ -90,7 +85,6 @@ $$
 \{ U(c_t) + \mu_t \left( i_t \right) + \nu_t \left(\exp(z_t)k_t^{\alpha} - i_t \right) + \lambda_t \left(\exp(z_t) k_t^{\alpha}  - i_t -c_t \right)  + q_t \left( (1-\delta) k_{t} + i_{t} - k_{t+1} \right) \right\}
 $$
 
-----
 
 ## Lagrangian
 
@@ -129,7 +123,6 @@ $$\begin{eqnarray}
 ::::
 :::
 
-----
 
 ## Eliminating constraints
 
@@ -160,7 +153,7 @@ Let's review them:
   - hence $\mu_t=0$
 - for multipliers associated to an equality constraint, we always keep the system
   - multiplier can have any sign
-- inequality formulation is sometimes found too:
+- inequality formulation is sometimes used too:
   -  $c_t \leq \exp(z_t) k_t^{\alpha}  - i_t$ ( you can destroy production insead of eating or investing it)
   - $k_{t+1} \leq (1-\delta) k_{t} + i_{t}$ (you can destroy capital instead of investing it)
 
@@ -794,8 +787,7 @@ F(X, \tilde{X}) & = & (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&=& 0
 $$\Delta s_t = \underbrace{(F + G X)}_{P} \Delta s_{t-1}$$
   - $P$ is the simulation operator
   - it is a *backward* operator
-(TODO: example of a reaction to a shock)
-- The system is stable if the biggest eigenvalue of $P$ is smaller than one...
+c- The system is stable if the biggest eigenvalue of $P$ is smaller than one...
 - ... or if its spectral radius is smaller than 1:
   $$\rho(P)<1$$
 - This condition is called *backward* stability

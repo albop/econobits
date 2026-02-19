@@ -9,9 +9,9 @@ listing:
       title: "Lectures"
     contents:
       - ../lectures/convergence/index.qmd
-      - ../lectures/discretization.qmd
-      - ../lectures/interpolation.qmd
-      - ../lectures/time_iteration.qmd
+      - ../lectures/perturbation/index.qmd
+      # - ../lectures/interpolation.qmd
+      # - ../lectures/time_iteration.qmd
   - id: tutorials-listing
     type: table
     fields: [title]
