@@ -23,6 +23,7 @@ listing:
       - ../tutorials/Julia_Basics.qmd
       - ../tutorials/solow.qmd
       - ../tutorials/epidemiology.qmd
+      - ../tutorials/perturbation.qmd
 ---
 
 

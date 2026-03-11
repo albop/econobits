@@ -252,7 +252,7 @@ $$\overline{z }+ \Delta z_t = \overline{z}+ \Delta \rho z_{t-1}$$
 ## Result:
 
 - Optimality conditions
-$$\begin{bmatrix} . & . & . & . \\ \end{bmatrix} \begin{bmatrix} \Delta i_t \\ \Delta c_t  \\ \Delta k_t \\ \Delta z_t \end{bmatrix} = \begin{bmatrix} . & . & . \\ \end{bmatrix} \begin{bmatrix} \Delta i_{t+1} \\  \Delta c_{t+1} \\ \Delta k_{t+1} \\ \Delta z_{t+1} \end{bmatrix} $$
+$$\begin{bmatrix} . & . & . & . \\  . & . & . & . \end{bmatrix} \begin{bmatrix} \Delta i_t \\ \Delta c_t  \\ \Delta k_t \\ \Delta z_t \end{bmatrix} = \begin{bmatrix} . & . & . \\  . & . & . & .\end{bmatrix} \begin{bmatrix} \Delta i_{t+1} \\  \Delta c_{t+1} \\ \Delta k_{t+1} \\ \Delta z_{t+1} \end{bmatrix} $$
 
 - Transition
 $$ \begin{bmatrix} \Delta k_t \\ \Delta z_t \end{bmatrix} = \begin{bmatrix} . & .  \\ . & . \end{bmatrix} \begin{bmatrix} \Delta k_{t-1} \\ \Delta z_{t-1} \end{bmatrix}  + \begin{bmatrix} . \end{bmatrix} \begin{bmatrix}\Delta i_{t-1}\end{bmatrix}$$
@@ -373,6 +373,7 @@ FiniteDiff.finite_difference_jacobian(g, [0.1, 0.2])
 ## Finite Differences: Higher order
 
 - Central formula:
+
 $$
 \begin{aligned}
 f''(x) & \approx & \frac{f'(x)-f'(x-\epsilon)}{\epsilon} \approx \frac{(f(x+\epsilon))-f(x))-(f(x)-f(x-\epsilon))}{\epsilon^2} \\ & = & \frac{f(x+\epsilon)-2f(x)+f(x-\epsilon)}{\epsilon^2}
@@ -787,7 +788,7 @@ F(X, \tilde{X}) & = & (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&=& 0
 $$\Delta s_t = \underbrace{(F + G X)}_{P} \Delta s_{t-1}$$
   - $P$ is the simulation operator
   - it is a *backward* operator
-c- The system is stable if the biggest eigenvalue of $P$ is smaller than one...
+- The system is stable if the biggest eigenvalue of $P$ is smaller than one...
 - ... or if its spectral radius is smaller than 1:
   $$\rho(P)<1$$
 - This condition is called *backward* stability
