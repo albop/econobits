@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.32">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Pablo Winant">
   <title>econobits – Perturbation Analysis (f-g version)</title>
@@ -17,9 +17,6 @@
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -98,7 +95,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -948,8 +945,8 @@ F(X, \tilde{X}) &amp; = &amp; (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&amp;
 <h2>Simulating the model</h2>
 <ul>
 <li>Suppose we have found the solution <span class="math inline">\(\Delta x_t  = X \Delta s_t\)</span></li>
-<li>Recall the transition equation: <span class="math inline">\(\Delta s_{t+1} = F \Delta s_t + G \Delta x_t\)</span></li>
-<li>We can now compute the model evolution following initial deviation in the state: <span class="math display">\[\Delta s_t = \underbrace{(F + G X)}_{P} \Delta s_{t-1}\]</span>
+<li>Recall the transition equation: <span class="math inline">\(\Delta s_{t+1} = E \Delta s_t + F \Delta x_t\)</span></li>
+<li>We can now compute the model evolution following initial deviation in the state: <span class="math display">\[\Delta s_t = \underbrace{(E + F X)}_{P} \Delta s_{t-1}\]</span>
 <ul>
 <li><span class="math inline">\(P\)</span> is the simulation operator</li>
 <li>it is a <em>backward</em> operator</li>
@@ -1011,13 +1008,13 @@ F(X, \tilde{X}) &amp; = &amp; (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&amp;
 <section id="the-time-iteration-operator" class="slide level2">
 <h2>The Time Iteration Operator</h2>
 <p>The time iteration operator associated to the linearized model, associates to any function function <span class="math inline">\(\tilde{\varphi}\)</span> the function <span class="math inline">\(\varphi\)</span> such that:</p>
-<p><span class="math display">\[A \tilde{\varphi}( E s + F \varphi(s) ) + B ( E s + F \varphi(s))  + C \varphi(s) + D s = 0\]</span></p>
+<p><span class="math display">\[D \tilde{\varphi}( E s + F \varphi(s) ) + C ( E s + F \varphi(s))  + B \varphi(s) + A s = 0\]</span></p>
 <p>To find the solution we have iterated this operator in the space of linear functions (with <span class="math inline">\(\varphi(\overline{s})=\overline{x}\)</span>), but time-iteration can be defined in a more general space.</p>
 <p>In particular, we can study it in the space of affine functions <span class="math inline">\(\varphi(\overline{s})=x_0 + x_1 (\overline{s} - \overline{s})\)</span>.</p>
 <p>In this space of functions one can show that:</p>
 <ul>
 <li>if <span class="math inline">\(P\)</span> is stable, then the spectral radius of the time iteration operator is the spectral radius of <span class="math inline">\(((B + (C + D X) F)^{-1})D\)</span></li>
-<li>in that case the stable solution is the unique if and only if, the spectral radius of the time iteration operator is smaller than 1 (<em>backward stability</em>)</li>
+<li>in that case the stable solution is the unique if and only if, the spectral radius of the time iteration operator is smaller than 1 (<em>forward stability</em>)</li>
 </ul>
 <!-- ## Stability of the backward operator
 

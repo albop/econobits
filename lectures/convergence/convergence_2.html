@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.32">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
 
   <title>econobits – Convergence of Sequences (2)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,9 +16,6 @@
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -31,7 +28,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -148,14 +145,28 @@
 <p>The recursion <span class="math inline">\(y_t = A y_{t-1}\)</span> has a <strong>closed form</strong> solution <span class="math display">\[
   y_t = A^t\,y_0.
   \]</span></p>
-<ul>
-<li><p><strong>Two questions</strong> drive the dynamics:</p>
+<p><strong>Two questions</strong> drive the dynamics:</p>
 <ol type="1">
 <li>Does <span class="math inline">\(A^t \to 0\)</span> (stability) or does it grow (instability)?</li>
 <li>Can <span class="math inline">\(\lVert A^t\rVert\)</span> exhibit <strong>transient amplification</strong> even if the system is asymptotically stable?</li>
-</ol></li>
-<li><p>The answers depend on <em>how we measure “size”</em> and on whether <span class="math inline">\(A\)</span> is <strong>normal</strong> (commutes with <span class="math inline">\(A^*\)</span>) or <strong>non-normal</strong>.</p></li>
+</ol>
+<p>The answers depend on <em>how we measure “size”</em> and on whether <span class="math inline">\(A\)</span> is <strong>normal</strong> (commutes with <span class="math inline">\(A^*\)</span>) or <strong>non-normal</strong>.</p>
+</section>
+<section id="operator-norm" class="slide level2">
+<h2>Operator norm</h2>
+<p>We use here the following norms:</p>
+<ul>
+<li><span class="math inline">\(\|x\| = \|x\|_2 = \sqrt{\sum_i |x_i|^2}\)</span>: euclidean norm for vectors
+<ul>
+<li>it can be defined from the scalar product <span class="math inline">\(\langle x,y\rangle = x^*y\)</span> (where <span class="math inline">\(x^*\)</span> is the conjugate transpose of <span class="math inline">\(x\)</span>)</li>
+<li><span class="math inline">\(\|x\|_2 = \sqrt{\langle x,x\rangle}\)</span></li>
+</ul></li>
+<li><span class="math inline">\(\|A\| = \|A\|_2 = \max_{\|x\|_2=1} \|Ax\|_2\)</span>: (induced) operator norm for matrices
+<ul>
+<li>The operator norm, provides us with a worst-case measure of how much <span class="math inline">\(A\)</span> can stretch a vector in one step <span class="math inline">\(\|Ax\|_2 \le \|A\|_2 \|x\|_2\)</span></li>
+</ul></li>
 </ul>
+<p>It yields a simple estimate of the convergence rate: <span class="math display">\[\frac{\|y_t\|}{\|y_{t-1}\|} = \frac{\|A y_{t-1}\|_2}{\|y_{t-1}\|_2} \le \|A\|_2.\]</span></p>
 </section>
 <section id="spectral-radius-the-asymptotic-growth-rate" class="slide level2">
 <h2>Spectral radius: the asymptotic growth rate</h2>
@@ -170,14 +181,31 @@
 <li><p><strong>But:</strong> eigenvalues alone can miss large <strong>short-run</strong> growth when <span class="math inline">\(A\)</span> is non-normal.</p></li>
 </ul>
 </section>
-<section id="gelfands-formula-estimating-rhoa-from-powers" class="slide level2">
-<h2>Gelfand’s formula: estimating <span class="math inline">\(\rho(A)\)</span> from powers</h2>
-<p>For <em>any</em> matrix norm <span class="math inline">\(\lVert\cdot\rVert\)</span>, <span class="math display">\[
+<section id="transitory-dynamics-can-differ-from-asymptotic-dynamics" class="slide level2">
+<h2>Transitory Dynamics Can Differ from Asymptotic Dynamics</h2>
+<p>A canonical 2×2 example: <span class="math display">\[
+A = \begin{bmatrix}0.9 &amp; M\\ 0 &amp; 0.9\end{bmatrix},\quad M\gg 1.
+\]</span></p>
+<ul>
+<li>Eigenvalues are both <span class="math inline">\(0.9\)</span> so <span class="math inline">\(\rho(A)=0.9&lt;1\)</span>.</li>
+<li>But for large <span class="math inline">\(M\)</span>, <span class="math inline">\(\lVert A\rVert_2\)</span> can be much larger than 1, producing sizeable short-run growth.</li>
+</ul>
+<p>We have the closed form:</p>
+<p><span class="math display">\[A^k = \begin{bmatrix}0.9^k &amp; k M 0.9^{k-1}\\ 0 &amp; 0.9^k\end{bmatrix}\]</span></p>
+<p>And <span class="math inline">\(\|A^k\|_2\)</span> grows like <span class="math inline">\(k M 0.9^{k-1}\)</span> for large <span class="math inline">\(M\)</span> and small <span class="math inline">\(k\)</span>, before eventually decaying to zero as <span class="math inline">\(k\to\infty\)</span>.</p>
+</section>
+<section id="gelfands-formula" class="slide level2">
+<h2>Gelfand’s formula</h2>
+<p>Even though the spectral radius is not a norm <sup>1</sup>, it is related to matrix norms in the following way.</p>
+<p>For any matrix norm <span class="math inline">\(\|\cdot\|\)</span> (including the matrix norm), we have the following formula for the spectral radius: <span class="math display">\[
 \boxed{\ \rho(A) = \lim_{k\to\infty} \lVert A^k\rVert^{1/k}\ }
-\]</span> (Gelfand’s formula)</p>
+\]</span></p>
 <p><strong>Interpretation</strong></p>
 <ul>
-<li>The quantity <span class="math inline">\(\lVert A^k\rVert^{1/k}\)</span> is an “average per-step growth factor” over <span class="math inline">\(k\)</span> steps.</li>
+<li>The quantity <span class="math inline">\(\lVert A^k\rVert^{1/k}\)</span> is an “average per-step growth factor” over <span class="math inline">\(k\)</span> steps:
+<ul>
+<li>suppose there is growth <span class="math inline">\(g\)</span> such that <span class="math inline">\(g^k = \lVert A^k\rVert\)</span>, then <span class="math inline">\(g=\lVert A^k\rVert^{1/k}\)</span>.</li>
+</ul></li>
 <li>As <span class="math inline">\(k\)</span> increases, it filters out transients and converges to the true asymptotic rate <span class="math inline">\(\rho(A)\)</span>.</li>
 </ul>
 <p><strong>Remark</strong></p>
@@ -185,104 +213,78 @@
 <li>This formula is very useful for theoretical insights.</li>
 <li>In practice computing matrix norms is expensive, and computing matrix exponents is also expensive, so we typically use eigenvalue-based methods to estimate <span class="math inline">\(\rho(A)\)</span> for large matrices.</li>
 </ul>
-</section>
-<section id="power-iteration-estimating-the-spectral-radius-when-it-works" class="slide level2">
-<h2>Power iteration: estimating the <em>spectral radius</em> (when it works)</h2>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>we don’t have <span class="math inline">\(\rho(A+B)&lt;=\rho(A)+\rho(B)\)</span> or <span class="math inline">\(\rho(A)=0 \implies A=0\)</span></p></li></ol></aside></section>
+<section id="power-iteration-estimating-the-spectral-radius" class="slide level2">
+<h2>Power iteration: estimating the <em>spectral radius</em></h2>
 <p>The classic power iteration targets the eigenvalue of largest modulus, i.e.&nbsp;it can estimate <span class="math inline">\(\rho(A)\)</span> under standard conditions (dominant eigenvalue, start vector not orthogonal to its eigenvector).</p>
 <p><strong>Algorithm (basic form)</strong></p>
 <ul>
 <li>Choose a nonzero vector <span class="math inline">\(v_0\)</span>.</li>
 <li>Iterate: <span class="math inline">\(w_{m+1} \leftarrow A v_m\)</span>, then normalize <span class="math inline">\(v_{m+1}\leftarrow w_{m+1}/\lVert w_{m+1}\rVert_2\)</span>.</li>
-<li>Track the <strong>Growth ratio:</strong> <span class="math inline">\(\lVert A v_m\rVert_2 / \lVert v_m\rVert_2\)</span></li>
-<li>Or the <strong>Rayleigh quotient:</strong> <span class="math inline">\(\frac{v_m^* A v_m}{v_m^* v_m}\)</span> (most meaningful when <span class="math inline">\(A\)</span> is normal / Hermitian). <!-- - **Rayleigh quotient** (most meaningful when $A$ is normal / Hermitian):
-  $$
-  \mu_m = \frac{v_m^* A v_m}{v_m^* v_m}.
-  $$ --></li>
+<li>Track the <strong>Growth ratio:</strong> <span class="math inline">\(\lVert A v_m\rVert_2 / \lVert v_m\rVert_2\)</span> <!-- - Or the **Rayleigh quotient:** $\frac{v_m^* A v_m}{v_m^* v_m}$ (most meaningful when $A$ is normal / Hermitian). --> <!-- - **Rayleigh quotient** (most meaningful when $A$ is normal / Hermitian):
+    $$
+    \mu_m = \frac{v_m^* A v_m}{v_m^* v_m}.
+    $$ --></li>
 </ul>
 <p><strong>Convergence intuition</strong></p>
 <ul>
 <li>If <span class="math inline">\(|\lambda_1|&gt;|\lambda_2|\)</span> and <span class="math inline">\(A\)</span> is diagonalizable, then <span class="math inline">\(v_m\)</span> aligns with the dominant eigenvector and the estimates converge to <span class="math inline">\(|\lambda_1|=\rho(A)\)</span>.</li>
-<li>If the dominant eigenvalue is not unique in modulus (e.g.&nbsp;a complex conjugate pair), the iterates may oscillate. <!-- - For strongly **non-normal** matrices, convergence can be slow and the Rayleigh quotient can be misleading; Schur/QZ-based methods are more robust. --></li>
+<li>If the dominant eigenvalue is not unique in modulus (e.g.&nbsp;a complex conjugate pair), the iterates may oscillate.</li>
 </ul>
 </section>
-<section id="numerical-radius-a-one-step-quadratic-form-growth-measure" class="slide level2">
-<h2>Numerical radius: a one-step quadratic-form growth measure</h2>
-<ul>
-<li><p><strong>Field of values (numerical range):</strong> <span class="math display">\[
-W(A) := \{ x^*Ax : \lVert x\rVert_2 = 1 \} \subset \mathbb{C}.
-\]</span></p></li>
-<li><p><strong>Numerical radius:</strong> <span class="math display">\[
-\boxed{\ w(A) := \max\{ |z| : z\in W(A)\} = \max_{\lVert x\rVert_2=1} |x^*Ax|\ }
-\]</span></p></li>
-</ul>
-<p><strong>Key inequalities</strong> <span class="math display">\[
-\rho(A) \le w(A) \le \lVert A\rVert_2 \le 2\,w(A).
-\]</span></p>
-<p><strong>Intuition</strong></p>
-<ul>
-<li><span class="math inline">\(w(A)\)</span> captures the largest possible “one-step gain” of the scalar quadratic form <span class="math inline">\(x^*Ax\)</span>.</li>
-<li>For <strong>normal</strong> matrices: <span class="math inline">\(\rho(A)=w(A)=\lVert A\rVert_2\)</span>.</li>
-<li>For <strong>non-normal</strong> matrices: often <span class="math inline">\(\rho(A) \ll w(A)\)</span>.</li>
-</ul>
-</section>
-<section id="why-wa-matters-for-dynamics-transient-growth" class="slide level2">
-<h2>Why <span class="math inline">\(w(A)\)</span> matters for dynamics (transient growth)</h2>
-<p>Even when <span class="math inline">\(\rho(A)&lt;1\)</span> (asymptotically stable), a non-normal matrix can have:</p>
-<ul>
-<li><strong>large <span class="math inline">\(\lVert A\rVert_2\)</span></strong> (big one-step stretching)</li>
-<li><strong>large <span class="math inline">\(w(A)\)</span></strong> (big one-step Rayleigh-quotient magnitude)</li>
-<li><strong>transient amplification</strong>: <span class="math inline">\(\lVert A^t\rVert\)</span> can increase for some <span class="math inline">\(t\)</span> before eventually decaying.</li>
-</ul>
-<p>A canonical 2×2 example: <span class="math display">\[
-A = \begin{bmatrix}0.9 &amp; M\\ 0 &amp; 0.9\end{bmatrix},\quad M\gg 1.
-\]</span></p>
-<ul>
-<li>Eigenvalues are both <span class="math inline">\(0.9\)</span> so <span class="math inline">\(\rho(A)=0.9&lt;1\)</span>.</li>
-<li>But for large <span class="math inline">\(M\)</span>, <span class="math inline">\(\lVert A\rVert_2\)</span> (and typically <span class="math inline">\(w(A)\)</span>) can be much larger than 1, producing sizeable short-run growth.</li>
-</ul>
-</section>
-<section id="recap-spectral-vs-numerical-radius" class="slide level2">
-<h2>Recap: Spectral vs Numerical Radius</h2>
+<section id="recap-spectral-radius-and-operator-norm" class="slide level2">
+<h2>Recap: Spectral Radius and Operator Norm</h2>
 <ul>
 <li><strong>Spectral radius <span class="math inline">\(\rho(A)\)</span></strong>
 <ul>
 <li>Governs <em>asymptotic</em> stability and long-run exponential rate.</li>
 <li>Insensitive to how non-orthogonal the eigenvectors are.</li>
 </ul></li>
-<li><strong>Numerical radius <span class="math inline">\(w(A)\)</span></strong>
+<li><strong>Operator norm <span class="math inline">\(\lVert A\rVert_2\)</span></strong>
 <ul>
-<li>Upper-bounds <span class="math inline">\(\rho(A)\)</span> and is closely tied to the geometry of the field of values.</li>
-<li>More informative about <em>one-step</em> amplification and non-normality.</li>
+<li>Exact worst-case one-step state amplification: <span class="math inline">\(\max_{\|x\|_2=1}\|Ax\|_2\)</span>.</li>
+<li>Most conservative one-step bound.</li>
 </ul></li>
-<li><strong>Rule of thumb</strong>
+<li><strong>Relation between both</strong>: <span class="math inline">\(\rho(A) \le \|A\|_2\)</span>
 <ul>
-<li>If <span class="math inline">\(A\)</span> is (nearly) normal: <span class="math inline">\(\rho(A)\)</span> tells most of the story.</li>
-<li>If <span class="math inline">\(A\)</span> is non-normal: expect transients; look at <span class="math inline">\(w(A)\)</span>, <span class="math inline">\(\lVert A\rVert_2\)</span>, and (if needed) pseudospectra.</li>
+<li><span class="math inline">\(\rho(A)\)</span> can be much smaller than <span class="math inline">\(\|A\|_2\)</span></li>
+<li>For a normal matrix <span class="math inline">\(A\)</span>: <span class="math inline">\(\rho(A)=\|A\|_2\)</span>.
+<ul>
+<li>normal matrices commute with their conjugate transpose (<span class="math inline">\(A A^* = A^* A\)</span>), and include symmetric, Hermitian, and unitary matrices.</li>
+<li>symmetric, hermitian, unitary matrices are all normal</li>
+</ul></li>
+<li>A matrix can satisfy <span class="math inline">\(\rho(A)=\|A\|_2\)</span> without being normal</li>
 </ul></li>
 </ul>
 </section>
-<section id="nonlinear-sequences-local-convergence" class="slide level2">
-<h2>Nonlinear Sequences: Local Convergence</h2>
+<section id="nonlinear-sequences-contraction-mappings" class="slide level2">
+<h2>Nonlinear Sequences: Contraction Mappings</h2>
 <p>Now we want to study the convergence of nonlinear sequences defined by recursions like:</p>
 <p><span class="math display">\[x_{n+1} = f(x_n),\quad n=0,1,2,\dots\]</span></p>
 <p>with steady-state <span class="math inline">\(\overline{x}\)</span> such that <span class="math inline">\(f(\overline{x})=\overline{x}\)</span>.</p>
 <ul>
-<li><strong>Contraction mapping</strong>: <span class="math inline">\(f\)</span> is a contraction if <span class="math inline">\(\exists L&lt;1\)</span> s.t. <span class="math inline">\(|f(x)-f(y)| \le L|x-y|\)</span>.</li>
+<li><strong>Contraction mapping</strong>: <span class="math inline">\(f\)</span> is a contraction if <span class="math inline">\(\exists L&lt;1\)</span> s.t. <span class="math display">\[
+\|f(x)-f(y)\| \le L\|x-y\|.
+\]</span></li>
 <li><strong>Banach fixed point theorem</strong>: if <span class="math inline">\(f\)</span> is a contraction on a complete metric space, then <span class="math inline">\(f\)</span> has a unique fixed point and iterating <span class="math inline">\(f\)</span> converges to it at a linear rate.</li>
 </ul>
-<div class="fragment">
+</section>
+<section id="nonlinear-sequences-convergence-rates" class="slide level2">
+<h2>Nonlinear Sequences: Convergence Rates</h2>
 <p>Denote by <span class="math inline">\(A=f'(\overline{x})\)</span> the Jacobian matrix of <span class="math inline">\(f\)</span> at <span class="math inline">\(\overline{x}\)</span>.</p>
+<p>At which condition on <span class="math inline">\(A\)</span> can we guarantee local convergence of <span class="math inline">\(f\)</span> to <span class="math inline">\(\overline{x}\)</span>? At which rate?</p>
 <ul>
-<li>If <span class="math inline">\(w(A)&lt;1\)</span> there is a compact neighborhood around <span class="math inline">\(\overline{x}\)</span> where <span class="math inline">\(f\)</span> is a contraction, so local convergence is guaranteed, at geometric rate <span class="math inline">\(w(A)+\epsilon\)</span> for some small <span class="math inline">\(\epsilon&gt;0\)</span>.
+<li>If <span class="math inline">\(\|A\|_2&lt;1\)</span>
 <ul>
-<li>derives from Banach fixed point theorem</li>
+<li><em>for any</em> <span class="math inline">\(\epsilon\)</span> such that <span class="math inline">\(\|A\|_2+\epsilon&lt;1\)</span>, by continuity of <span class="math inline">\(f'\)</span> there is a neighborhood around <span class="math inline">\(\overline{x}\)</span> where <span class="math inline">\(\|f'(x)\|_2 \le \|A\|_2 + \epsilon &lt; 1\)</span>, so <span class="math inline">\(f\)</span> is a contraction in that neighborhood and local convergence follows by the Banach fixed point theorem.</li>
+<li>in particular asymptotic convergence rate is at most <span class="math inline">\(\|A\|_2+\epsilon\)</span></li>
 </ul></li>
-<li>If <span class="math inline">\(\rho(A)&lt;1\)</span> (weaker condition) local convergence is guaranteed, at geometric rate <span class="math inline">\(\rho(A)+\epsilon\)</span> for some small <span class="math inline">\(\epsilon&gt;0\)</span>.
+<li>If <span class="math inline">\(\rho(A)&lt;1\)</span> (weakest condition)
 <ul>
-<li>derives from norm equivalence and Gelfand’s formula</li>
+<li>local asymptotic convergence is guaranteed</li>
+<li>asymptotic convergence rate is at most <span class="math inline">\(\rho(A)+\epsilon\)</span> for any <span class="math inline">\(\epsilon&gt;0\)</span></li>
 </ul></li>
 </ul>
-</div>
 </section>
 <section id="going-further" class="slide level2">
 <h2>Going Further</h2>
@@ -298,9 +300,36 @@ A = \begin{bmatrix}0.9 &amp; M\\ 0 &amp; 0.9\end{bmatrix},\quad M\gg 1.
 <li>and the unstable eigenspace of <span class="math inline">\(A\)</span> approximate the unstable manifold of <span class="math inline">\(f\)</span>.</li>
 </ul>
 <p><span class="math inline">\(\implies\)</span> this is formalized in the <em>stable manifold theorem</em></p>
-
+</section>
+<section>
+<section id="appendix" class="title-slide slide level1 center">
+<h1>Appendix</h1>
 
 </section>
+<section id="the-spectral-radius-is-not-a-norm" class="slide level2">
+<h2>The spectral radius is not a norm</h2>
+</section>
+<section id="power-iteration-convergence-analysis" class="slide level2">
+<h2>Power iteration convergence analysis</h2>
+</section>
+<section id="proof-of-gelfands-formula" class="slide level2">
+<h2>Proof of Gelfand’s formula</h2>
+</section>
+<section id="proof-of-the-banach-fixed-point-theorem" class="slide level2">
+<h2>Proof of the Banach fixed point theorem</h2>
+</section>
+<section id="the-numerical-radius" class="slide level2">
+<h2>The Numerical Radius</h2>
+<ul>
+<li><p><strong>Definition (numerical radius):</strong></p>
+<p><span class="math display">\[
+w(A) := \max_{\|x\|_2=1} |\langle Ax,x\rangle|.
+\]</span></p></li>
+</ul>
+
+
+</section></section>
+
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

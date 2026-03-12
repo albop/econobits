@@ -1,47 +1,5 @@
 [
   {
-    "objectID": "eco309/index_2026.html",
-    "href": "eco309/index_2026.html",
-    "title": "econobits",
-    "section": "",
-    "text": "Work in Progress"
-  },
-  {
-    "objectID": "tutorials/perturbation.html",
-    "href": "tutorials/perturbation.html",
-    "title": "Perturbation of Neoclassical Model",
-    "section": "",
-    "text": "Our goal here is to compute a linear approximation of solution to the neoclassical model, c# execute: # freeze: true\n# execute: # enabled: falselose ot the steady-state.\n\nWarm-up: install the ForwardDiff library. Use it to differentiate the function below. Check the jacobian function.\n\nNote: the signature of function f needs to be fixed first to allow for dual numbers as arguments.\n\n# function f(x::Vector{T}) where T &lt;: Number\nfunction f(x)\n    a = x[1]\n    b = x[2]\n    x1 = a+b\n    x2 = a*exp(b)\n    return [x1,x2]\nend\n\n\n# your code here\n\n\nCreate a NamedTuple to hold the model parameters.\n\n\n# your code here\n\n\nDefine two functions:\n\n\ntransition(z::Number, k::Number, i::Number, p)::Tuple{Number} which returns productivity and capital at date t+1 as a function of productivity, capital and investment at date t\narbitrage(z::Number, k::Number, i::Number, Z::Number, K::Number, I::Number, p)::Number which returns the residual of the euler equation (lower case variable for date t, upper case for date t+1)\n\n\nUsing multiple dispatch, define two variants of the same functions, that take vectors as input and output arguments:\n\n\narbitrage(s::Vector{T}, x::Vector{T}, S::Vector{T}, X::Vector{T}, p) where T&lt;:Number\ntransition(s::Vector{T}, x::Vector{T}, p) where T&lt;:Number\n\n\n# your code here\n\n\n# your code here\n\n\n# your code here\n\n\nWrite a function steady_state(p)::Tuple{Vector,Vector} which computes the steady-state of the model computed by hand. It returns two vectors, one for the states, one for the controls. Check that the steady-state satisfies the model equations.\n\n\n# your code here\n\n\n# your code here\n\nThe first order system satisfies: \\[\\begin{align}A s_t + B x_t + C s_{t+1} + D x_{t+1} & = & 0 \\\\\\\\\ns_{t+1} & = & E s_t + F x_t\n\\end{align}\\]\n\nDefine a structure PerturbedModel to hold matrices A,B,C,D,E,F.\n\n\n# your code here\n\n\nWrite a function first_order_model(s::Vector, x::Vector, p)::PerturbedModel, which returns the first order model, given the steady-state and the calibration. Suggestion: use ForwardDiff.jl library.\n\n\n# your code here\n\n\nWe look for a linear solution \\(x_t = X s_t\\) . Write the matrix equation which X must satisfy. Write a function residual(X::Array, M::PerturbedModel) which computes the residual of this equation for a given X.\n\n\n# your code here\n\n\nWrite a function T(X, M::PerturbedModel) which implements the time iteration step.\n\n\n# your code here\n\n\nWrite function linear_time_iteration(X_0::Matrix, m::PerturbedModel)::Matrix which implements the time iteration algorithm. Apply it to X0 = rand(1,2) and check that the result satisfies the first order model.\n\n\n# your code here\n\n\nCheck blanchard Kahn Conditions\n\n\n# your code here\n\n\nWrite a function simulate(s0::Vector, X::Matrix, p, T::Int64)::Tuple{Matrix, Matrix} to simulate the model over \\(T\\) periods (by using the formula \\(\\Delta s_t = (E + F X) \\Delta s_{t-1})\\). Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variables levels or log-deviations. If possible, return a DataFrame object.\n\n\n# your code here\n\n\nMake some nice plots."
-  },
-  {
-    "objectID": "tutorials/test.html",
-    "href": "tutorials/test.html",
-    "title": "Solow Model",
-    "section": "",
-    "text": "This is a cell\n# jkj\nAnd another one\n\n#\n\nAnd another qnother one\n\n#"
-  },
-  {
-    "objectID": "mie37/homework/coursework_1.html",
-    "href": "mie37/homework/coursework_1.html",
-    "title": "Coursework 2026 - Deep Learning",
-    "section": "",
-    "text": "Name:\nSurname:\nAfter completing the following questions, send the edited notebook to pablo.winant@ensae.fr. You can work in (small) teams but are not allowed to copy/paste any code. Don’t forget to comment your code and take any initiative you find relevant."
-  },
-  {
-    "objectID": "mie37/homework/coursework_1.html#learning-the-consumption-rule",
-    "href": "mie37/homework/coursework_1.html#learning-the-consumption-rule",
-    "title": "Coursework 2026 - Deep Learning",
-    "section": "Learning the Consumption Rule",
-    "text": "Learning the Consumption Rule\nThis exercise is inspired from Individual learning about consumption by Todd Allen and Chris Carroll link and from Deep Learning for Solving Economic models by Maliar, Maliar and Winant link\nWe consider the following consumption saving problem. An agent receives random income \\(y_t = \\exp(\\epsilon_t)\\) where \\(\\epsilon_t\\sim \\mathcal{N}(\\sigma)\\) (\\(\\sigma\\) is the standard deviation.)\nConsumer starts the period with available income \\(w_t\\). The law of motion for available income is:\n\\[w_t = \\exp(\\epsilon_t) + (w_{t-1}-c_{t-1}) r\\]\nwhere consumption \\(c_t \\in ]0,w_t]\\) is chosen in each period in order to maximize:\n\\[E_t \\sum_{t=0}^T \\beta^t U(c_t)\\]\ngiven initial available income \\(w_0\\).\nIn the questions below, we will use the following calibration:\n\n\\(\\beta = 0.9\\)\n\\(\\sigma = 0.1\\)\n\\(T=100\\)\n\\(U(x) = \\frac{x^{1-\\gamma}}{1-\\gamma}\\) with \\(\\gamma=2\\)\n\\(w_0 = 1.1\\) (alternatively, consider values 0.5 and 1)\n\nThe theoretical solution to this problem is a concave function \\(\\varphi\\) such that \\(\\varphi(x)\\in ]0,x]\\) and \\(\\forall t,  c_t=\\varphi(w_t)\\). Qualitatively, agents accumulate savings, up to a certain point (a buffer stock), beyond which wealth is not increasing any more (in expectation).\nCarroll and Allen have noticed that the true solution can be approximated very well by a simple rule:\n\\(\\psi(x) = \\min(x, \\theta_0 + \\theta_1 (x - \\theta_0) )\\)\nThe main question they ask in the aforementioned paper is whether it is realistic that agents would learn good values of \\(\\theta_0\\) and \\(\\theta_1\\) by observing past experiences.\nWe would like to examine this result by checking convergence of speed of stochastic gradient algorithm.\n\nLifetime reward\nDefine a NamedTuple to hold the parameter values\n\n# your code here\n\nDefine simple rule fonction consumption(w::Number, θ_0::Number, θ_1::Number, p::NamedTuple) which compute consumption using a simple rule. What is the meaning of \\(\\theta_0\\) and \\(\\theta_1\\)? Make a plot in the space \\(w,c\\), including consumption rule and the line where \\(w_{t+1} = w_t\\).\n(remark for later: Number type is compatible with ForwardDiff.jl 😉)\n\n# your code here\n\nWrite a function lifetime_reward(w_0::Number, θ_0::Number, θ_1::Number, p::NamedTuple) which computes one realization of \\(\\sum \\beta^t U(c_t)\\) for initial wealth w_0 and simple rule θ_0, θ_1. Mathematically, we denote it by \\(\\xi(\\omega; \\theta_0, \\theta_1)\\), where \\(\\omega\\) represents the succession of random income draws.\n\n# your code here\n\nWrite a function expected_lifetime_reward(w_0::Number, θ_0::Number, θ_1::Number,  p::NamedTuple; N=1000) which computes expected lifetime reward using N Monte-Carlo draws. Mathematically, we write it \\(\\Xi^{N}(\\theta_0, \\theta_1) =\\frac{1}{N} \\sum_1^N {\\xi(\\omega_N; \\theta_0, \\theta_1)}\\). Check empirically that standard deviation of these draws decrease proportionally to \\(\\frac{1}{\\sqrt{N}}\\) .\n\n# your code here\n\n__Using a high enough number for N, compute optimal values for \\(\\theta_0\\) and \\(\\theta_1\\). What is the matching value for the objective function converted into an equivalent stream of deterministic consumption ? That is if V is the approximated value computed above, what is \\(\\bar{c}\\in \\R\\) such that $ V= _{t=0}^T ^t U({c})$ ?__\n\n# your code here\n\nUsing a high enough number for N, make contour plots of lifetime rewards as a function of θ_0 and θ_1. Ideally, represent lines with \\(1\\%\\) consumption loss, \\(5\\%\\) and \\(10\\%\\) deterministic consumption loss w.r.t. to maximum.\n\n# your code here\n\n\n\nLearning to save\nWe now focus on the number of steps it takes to optimize \\(\\theta_0\\), \\(\\theta_1\\).\nImplement a function ∇(θ::Vector; N=1000)::Vector which computes the gradient of the objective w.r.t. θ==[θ_0,θ_1]. (You need to use automatic differentiation, otherwise you might get incorrect results).\n\n# your code here\n\nImplement a gradient descent algorithm to maximize \\(\\Xi^N(\\theta_0, \\theta_1)\\) using learning rate \\(\\lambda \\in ]0,1]\\). Stop after a predefined number of iterations. Compare convergence speed for different values of \\(\\lambda\\) and plot them on the \\(\\theta_0, \\theta_1\\) plan. How many steps does it take to enter the 1% error zone? The 5% and the 10% error zone?\n\n# your code here\n\nEven for big N, the evaluated value of ∇ are stochastic, and always slightly inaccurate. In average, they are non-biased and the algorithm converges in expectation (it fluctuates around the maximum). This is called the stochastic gradient method.\n\n# your code here\n\nWhat are the values of \\(N\\) and \\(\\lambda\\) which minimize the number of iterations before reaching the target zones (at 1%, 2%, etc…)? How many simulations periods does it correspond to? Would you say it is realistic that consumers learn from their own experience?\n\n# your code here"
-  },
-  {
-    "objectID": "comments.html",
-    "href": "comments.html",
-    "title": "econobits",
-    "section": "",
-    "text": "# there are many ways to represent a model in julia\n\n\n# tuple\n# very efficient\n# not flexible\n# error-prone\nmodel = (0.96, 0.1, 0.3, 4)\n\n(0.96, 0.1, 0.3, 4)\n\n\n\nmodel[1] # julia is 1-based indexing\n\n0.96\n\n\n\nmodel[1] = 3\n\n\nMethodError: no method matching setindex!(::Tuple{Float64, Float64, Float64, Int64}, ::Int64, ::Int64)\nThe function `setindex!` exists, but no method is defined for this combination of argument types.\n\nStacktrace:\n [1] top-level scope\n   @ In[4]:1\n [2] eval(m::Module, e::Any)\n   @ Core ./boot.jl:489\n\n\n\n\nsizeof(model)\n\n32\n\n\n\nsizeof(0.64)\n\n8\n\n\n\n# use a dictionary\n# less error-prone\n\n\n# instead of strings we use symbols\n\"a\"\n\n\"a\"\n\n\n\n:a\n\n:a\n\n\n\nmodel2 = Dict(\n:α =&gt; 0.3, # pair\n:β =&gt; 0.96,\n:γ =&gt; 4,\n:δ =&gt; 0.1\n)\n\nDict{Symbol, Real} with 4 entries:\n  :α =&gt; 0.3\n  :γ =&gt; 4\n  :δ =&gt; 0.1\n  :β =&gt; 0.96\n\n\n\nmodel2[:α]\n\n0.3\n\n\n\n# dict are mutable\nmodel2[:α] = 0.4\n\n0.4\n\n\n\n# doesn't have a predetermined representation in memory\nisbits(model2)\n\nfalse\n\n\n\n# create a special julia-object: a struct\n\n\nstruct AModel\n    α\n    β\n    γ\n    δ\nend\n\n\n# create a model\nmm = AModel(0.3, 0.96, 4, 0.1)\n\nAModel(0.3, 0.96, 4, 0.1)\n\n\n\nsizeof(mm) # we have an efficient object\n\n32\n\n\n\n# we can access fields with .\nmm.α  # human friendly\n\n0.3\n\n\n\nmm[1] # it doesn't behave like a vector of parameters\n\n\nMethodError: no method matching getindex(::AModel, ::Int64)\nThe function `getindex` exists, but no method is defined for this combination of argument types.\n\nStacktrace:\n [1] top-level scope\n   @ In[26]:1\n [2] eval(m::Module, e::Any)\n   @ Core ./boot.jl:489\n\n\n\n\nstruct BModel\n    α::Float64\n    β::Float64\n    γ::Float64\n    δ::Float64\nend\n\n# structures are good type optimization\n\n\n\n##\n\n# namedtuples are great\n\n\n\n# named arguments (with name=) on the right of ;\np = (;α=0.3, β=0.96, γ=4, δ=0.1)\n\n(α = 0.3, β = 0.96, γ = 4, δ = 0.1)\n\n\n\nα = p.α\nδ = p.δ\n\n\n# unpack tuples\nα, β, γ, δ = tt\n\n\n# keyword unpacking\n\n\n(;α, δ)=tt\n# equivalent to \n# α = p.α\n# δ = p.δ\n\n(α = 0.3, β = 0.96, γ = 4, δ = 0.1)\n\n\n\nisbits(tt)\n\ntrue\n\n\n\n# behave like tuples\ntt[1]\n\n0.3\n\n\n\n# fields can be accessed with .\ntt.α\n\n0.3\n\n\n\n### functions\n\n\n\n# strings:\n\"afkjh\"\n# triple quotes for multiline\n\"\"\"\nmulti\nlines\n\"\"\"\n\n\"multi\\nlines\\n\"\n\n\n\n\"\"\" This is the docstring\n\na, b positional\n\n\"\"\"\nfunction fun(a,b)\n    \n    # return explicitly the result\n    return a*b\n    # the last line is the return value by default\n    a+b    \nend\n\nfun\n\n\n\nfun(3,3)\n\n\n9\n\n\n\n?fun\n\n\nsearch: fun run\n\n\n\n\n\n\nThis is the docstring\na, b positional\n\n\n\n# one liners\n\n\n\nf(x,y) = (x+y)*exp(x)\n\nf (generic function with 1 method)\n\n\n\nf(3,3)\n\n120.51322153912601\n\n\n\n# anonymous functions\n\n# parameters are given as tuples\n(u,v) -&gt; u^2 + v^2\n\n#2 (generic function with 1 method)\n\n\n\n((u,v) -&gt; u^2 + v^2)(0.1,0.3)\n\n0.1\n\n\n\n# functions can have optional and keyword arguments\n\n\n# c is an optional argument\nfunction fadd(a,b,c=1)\n    a + b*c\nend\n\n# this is equivalent to \n# function fadd(a,b)\n#     c=1\n#     a + b*c\n# end\n# function fadd(a,b,c)\n#     a + b*c\n# end\n\nfadd (generic function with 2 methods)\n\n\n\nfadd(1,2)\n\n3\n\n\n\nfadd(1,2,3)\n\n7\n\n\n\n#kwargs after ;\nfunction fmul(a,b ; twice=false)\n    if (twice == false)\n        return a + b\n    else\n        return a + 2*b\n    end\nend\n\nfmul (generic function with 1 method)\n\n\n\nfmul(1,4; twice=true)\n\n9\n\n\n\n# functions that modify their arguments\n# have ! by convention\n\n\n### vectors\n\n\n# \"look\" like python lists\n\n\nv = [3,4,2] # enclosed with square brackets\n\n3-element Vector{Int64}:\n 3\n 4\n 2\n\n\n\n# behave like numpy arrays\n\n\n2*v\n\n3-element Vector{Int64}:\n 6\n 8\n 4\n\n\n\n# follow mathematical conventions\n\n\nv .* v # the dot means element by element\n\n3-element Vector{Int64}:\n  9\n 16\n  4\n\n\n\nf(x) = x^2\n\nf (generic function with 2 methods)\n\n\n\nf.(v)\n\n3-element Vector{Int64}:\n  9\n 16\n  4\n\n\n\nv'*v # sacalar product with transpose '\n\n29\n\n\n\n∈"
-  },
-  {
     "objectID": "lectures/optimization/index.html#introduction-1",
     "href": "lectures/optimization/index.html#introduction-1",
     "title": "Optimization",
@@ -364,195 +322,6 @@
     "text": "Optimization libraries\n\nRobust optimization code is contained in the following libraries:\n\nRoots.jl: one-dimensional root finding\nNLSolve.jl: multidimensional root finding (+complementarities)\nOptim.jl: minimization\n\nThe two latter libraries have a somewhat peculiar API, but it’s worth absorbing it.\n\nin particular they provide non-allocating algorithms for functions that modify arguments in place\nthey are compatible with automatic differentiation\n\n\njulia&gt; f(x) = [x[1] - x[2] - 1, x[1] + x[2]]\nf (generic function with 1 method)\n\njulia&gt; NLsolve.nlsolve(f, [0., 0.0])\nResults of Nonlinear Solver Algorithm\n * Algorithm: Trust-region with dogleg and autoscaling\n * Starting Point: [0.0, 0.0]\n * Zero: [0.5000000000009869, -0.5000000000009869]\n * Inf-norm of residuals: 0.000000       \n * Iterations: 1                       \n * Convergence: true\n   * |x - x'| &lt; 0.0e+00: false\n   * |f(x)| &lt; 1.0e-08: true                           \n * Function Calls (f): 2\n * Jacobian Calls (df/dx): 2"
   },
   {
-    "objectID": "lectures/convergence/convergence_1.html#life-of-a-computational-economist",
-    "href": "lectures/convergence/convergence_1.html#life-of-a-computational-economist",
-    "title": "Convergence of Sequences (1)",
-    "section": "Life of a computational economist",
-    "text": "Life of a computational economist"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#life-of-a-computational-economist-1",
-    "href": "lectures/convergence/convergence_1.html#life-of-a-computational-economist-1",
-    "title": "Convergence of Sequences (1)",
-    "section": "Life of a computational economist",
-    "text": "Life of a computational economist\nVideo\n\n\nWe spend a lot of time waiting for algorithms to converge!\n\n\nsolution 1: program better\n\nsolution 2: better algorithms\n\neven better: understand convergence properties (information about the model)"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#recursive-sequence",
-    "href": "lectures/convergence/convergence_1.html#recursive-sequence",
-    "title": "Convergence of Sequences (1)",
-    "section": "Recursive sequence",
-    "text": "Recursive sequence\nConsider a function \\(f: \\mathbb{R}^n\\rightarrow \\mathbb{R}^n\\) and a recursive sequence \\((x_n)\\) defined by \\(x_0\\in \\mathbb{R}^n\\) and \\(x_n = f(x_{n-1})\\).\nWe want to compute a fixed point of \\(f\\) and study its properties.\n  \n\nToday: Some methods for the case \\(n=1\\).\n  \n\n\nAnother day:\n\nthe matrix case: \\(x_n = A^n x_0\\) where \\(A\\in \\mathbb{R}^{n\\times n}\\)\nthe finite nonlinear case: \\(x_n = f(x_{n-1})\\)"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#example-growth-model",
-    "href": "lectures/convergence/convergence_1.html#example-growth-model",
-    "title": "Convergence of Sequences (1)",
-    "section": "Example: growth model",
-    "text": "Example: growth model\n\n\n\nSolow growth model:\n\n\n\ncapital accumulation\n\\(k_t = (1-\\delta)k_{t-1} + i_{t-1}\\)\n\n\nproduction\n\\(y_t = k_t^\\alpha\\)\n\n\nconsumption\n\\(c_t = (1-{\\color{red}s})y_t\\)\n\n\ninvestment\n\\(i_t = s y_t\\)\n\n\n\n\n\nFor a given value of \\({\\color{red} s}\\in\\mathbb{R}^{+}\\) ( \\({\\color{red} s}\\) is a decision rule) \\[k_{t+1} = f(k_t, {\\color{red} s})\\]\n\nbackward-looking iterations\nSolow hypothesis: saving rate is invariant\n\n\n\nQuestions:\n\nWhat is the steady-state?\nCan we characterize the transition back the steady-state?\nCharacterize the dynamics close to the steady-state?\nwhat is the optimal \\(s\\) ?"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#another-example-linear-new-keynesian-model",
-    "href": "lectures/convergence/convergence_1.html#another-example-linear-new-keynesian-model",
-    "title": "Convergence of Sequences (1)",
-    "section": "Another example: linear new keynesian model",
-    "text": "Another example: linear new keynesian model\n\n\nBasic New Keynesian model (full derivation if curious )\n\nnew Phillips curve (PC):\\[\\pi_t = \\beta \\mathbb{E}_t \\pi_{t+1} + \\kappa y_t\\]\ndynamic investment-saving equation (IS):\\[y_t = \\beta \\mathbb{E}_t y_{t+1} - \\frac{1}{\\sigma}(i_t - \\mathbb{E}_t(\\pi_{t+1}) ) - {\\color{green} z_t}\\]\ninterest rate setting (taylor rule): \\[i_t = \\alpha_{\\pi} \\pi_t + \\alpha_{y} y_t\\]\n\n\nSolving the system: \\(\\begin{bmatrix}\\pi_t \\\\\\\\ y_t \\end{bmatrix} = {\\color{red} c} z_t\\)\n\n\n\nThe system is forward looking:\n\ntake \\(\\begin{bmatrix}\\pi_{t+1} \\\\\\\\ y_{t+1} \\end{bmatrix} = {\\color{red} {c_n}} z_{t+1}\\) → deduce \\(\\begin{bmatrix}\\pi_{t} \\\\\\\\ y_{t} \\end{bmatrix} = {\\color{red} {c_{n+1}}} z_{t}\\)\n\n\\(\\mathcal{T}: \\underbrace{c_{n}}_{t+1: \\; \\text{tomorrow}} \\rightarrow \\underbrace{c_{n+1}}_{t: \\text{today}}\\) is the time-iteration operator (a.k.a. Coleman operator)\n\n \n\nQuestions:\n\nWhat is the limit to \\(c_{t+1} = \\mathcal{T} c_n\\)?\nUnder which conditions (on \\(\\alpha_{\\pi}, \\alpha_y\\)) is it convergent?\n\ndeterminacy conditions\ninterpretation: does the central bank manage to control inflation expectations?"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#recursive-sequence-2",
-    "href": "lectures/convergence/convergence_1.html#recursive-sequence-2",
-    "title": "Convergence of Sequences (1)",
-    "section": "Recursive sequence (2)",
-    "text": "Recursive sequence (2)\n🤔 Wait: does a fixed point exist?\n\n\nwe’re not very concerned by the existence problem here\nwe’ll be happy with local conditions (existence, uniqueness) around a solution\n\n\n\nIn theoretical work, there are many fixed-point theorems to choose from.\n\n\n \nFor example:\n\n\nBrouwer fixed point: assume \\(f\\) is continuous and there is an interval such that \\(f([a,b])\\subset[a,b]\\). Then we know there exists \\(x\\) in \\([a,b]\\) such that \\(f(x)=x\\). (There can be many such points.)"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#example-growth-model-with-multiple-fixed-points",
-    "href": "lectures/convergence/convergence_1.html#example-growth-model-with-multiple-fixed-points",
-    "title": "Convergence of Sequences (1)",
-    "section": "Example: growth model with multiple fixed points",
-    "text": "Example: growth model with multiple fixed points\n\nMultiple equilibria in the growth modelIn the growth model, if we change the production function: \\(y=k^{\\alpha}\\) for a nonconvex/nonmonotonic one, we can get multiple fixed points."
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#convergence",
-    "href": "lectures/convergence/convergence_1.html#convergence",
-    "title": "Convergence of Sequences (1)",
-    "section": "Convergence",
-    "text": "Convergence\nGiven \\(f: \\mathbb{R} \\rightarrow \\mathbb{R}\\) consider the sequence \\(x_n = f(x_{n-1})\\)\n\nHow do we characterize behaviour around \\(x\\) such that \\(f(x)=x\\)?\n\n\n\nStability criterion:\n\nif \\(|f^{\\prime}(x)|&gt;1\\): sequence is unstable and will not converge to \\(x\\) except by chance\nif \\(|f^{\\prime}(x)|&lt;1\\): \\(x\\) is a stable fixed point\nif \\(|f^{\\prime}(x)|=1\\): ??? (look at higher order terms, details ↓)"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#convergence-cobweb-intuition",
-    "href": "lectures/convergence/convergence_1.html#convergence-cobweb-intuition",
-    "title": "Convergence of Sequences (1)",
-    "section": "Convergence (Cobweb intuition)",
-    "text": "Convergence (Cobweb intuition)\nThink of the graph of \\(y=f(x)\\) and the 45-degree line \\(y=x\\).\n\n\nIf \\(0&lt;f'(x^*)&lt;1\\): iterates approach \\(x^*\\) monotonically.\nIf \\(-1&lt;f'(x^*)&lt;0\\): iterates approach \\(x^*\\) but typically oscillate (alternating sides).\nIf \\(|f'(x^*)|&gt;1\\): you generically move away from \\(x^*\\)."
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#convergence-first-order-approximation",
-    "href": "lectures/convergence/convergence_1.html#convergence-first-order-approximation",
-    "title": "Convergence of Sequences (1)",
-    "section": "Convergence (first order approximation)",
-    "text": "Convergence (first order approximation)\nTo get the intuition about local convergence, assume you have an initial point \\(x_n\\) close to the steady state and consider the following expression:\n\\[x_{n+1} - x = f(x_n) - f(x) = f^{\\prime}(x) (x_n-x) + o(x_n-x)\\]\nIf one sets aside the error term (which one can do with full mathematical rigour), the dynamics for very small perturbations are given by:\n\\[|x_{n+1} - x| \\approx  |f^{\\prime}(x)| |x_n-x|\\]\nWhen \\(|f^{\\prime}(x)|&lt;1\\), the distance to the target decreases at each iteration and we have convergence.\nWhen \\(|f^{\\prime}(x)|&gt;1\\) there is local divergence.\nThis is conform to Cobweb intuition."
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#borderline-case-fx1",
-    "href": "lectures/convergence/convergence_1.html#borderline-case-fx1",
-    "title": "Convergence of Sequences (1)",
-    "section": "Borderline case \\(|f'(x^*)|=1\\)",
-    "text": "Borderline case \\(|f'(x^*)|=1\\)\nWhen \\(|f'(x^*)|=1\\), the linear approximation does not tell you whether you converge.\n\nYou must look at higher-order terms (Taylor expansion), and behavior can depend on the side you start from.\nIn practice, treat this as a warning sign: add damping, change the iteration, or switch to a root-finding method."
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#change-the-problem",
-    "href": "lectures/convergence/convergence_1.html#change-the-problem",
-    "title": "Convergence of Sequences (1)",
-    "section": "Change the problem",
-    "text": "Change the problem\n\nSometimes, we are interested in tweaking the convergence speed: \\[x_{n+1} = (1-\\lambda) x_n + \\lambda f(x_n)\\]\n\n\\(\\lambda\\) is the learning rate:\n\n\\(\\lambda&gt;1\\): acceleration\n\\(\\lambda&lt;1\\): dampening\n\n\n\n\n\nWe can also replace the function by another one \\(g\\) such that \\(g(x)=x\\iff f(x)=x\\), for instance: \\[g(x)=x-\\frac{f(x)-x}{f^{\\prime}(x)-1}\\]\n\nthis is the Newton iteration"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#contraction-mapping-why-fixed-point-iteration-works",
-    "href": "lectures/convergence/convergence_1.html#contraction-mapping-why-fixed-point-iteration-works",
-    "title": "Convergence of Sequences (1)",
-    "section": "Contraction mapping (why fixed-point iteration works)",
-    "text": "Contraction mapping (why fixed-point iteration works)\nSuppose there exists an interval \\(I=[a,b]\\) such that \\(f(I)\\subseteq I\\) and \\[\\sup_{x\\in I} |f'(x)| \\le L &lt; 1.\\]\n\nThen there is a unique fixed point \\(x^*\\in I\\).\nFor any \\(x_0\\in I\\), iterating \\(x_{n+1}=f(x_n)\\) converges to \\(x^*\\).\nThe error shrinks at least linearly: \\(|x_{n+1}-x^*|\\le L\\,|x_n-x^*|\\).\n\nThis is the one-dimensional version of the contraction logic used for many “time-iteration” operators in macro."
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#dynamics-around-a-stable-point",
-    "href": "lectures/convergence/convergence_1.html#dynamics-around-a-stable-point",
-    "title": "Convergence of Sequences (1)",
-    "section": "Dynamics around a stable point",
-    "text": "Dynamics around a stable point\n\nWe can write successive approximation errors: \\[|x_t - x_{t-1}| =  | f(x_{t-1}) - f(x_{t-2})| \\] \\[|x_t - x_{t-1}| \\sim |f^{\\prime}(x_{t-1})| |x_{t-1} - x_{t-2}| \\]\nRatio of successive approximation errors \\[\\lambda_t =  \\frac{ |x_{t} - x_{t-1}| } { |x_{t-1} - x_{t-2}|}\\]\nWhen the sequence converges: \\[\\lambda_t \\rightarrow | f^{\\prime}(\\overline{x}) |\\]"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#dynamics-around-a-stable-point-2",
-    "href": "lectures/convergence/convergence_1.html#dynamics-around-a-stable-point-2",
-    "title": "Convergence of Sequences (1)",
-    "section": "Dynamics around a stable point (2)",
-    "text": "Dynamics around a stable point (2)\nHow do we derive an error bound? Suppose that we have \\(\\overline{\\lambda}&gt;|f^{\\prime}(x_k)|\\) for all \\(k\\geq k_0\\):\n\\[|x_t - x| \\leq |x_t - x_{t+1}| + |x_{t+1} - x_{t+2}| + |x_{t+2} - x_{t+3}| + ... \\]\n\\[|x_t - x| \\leq |x_t - x_{t+1}| + |f(x_{t}) - f(x_{t+1})| + |f(x_{t+1}) - f(x_{t+2})| + ... \\]\n\\[|x_t - x| \\leq |x_t - x_{t+1}| + \\overline{\\lambda} |x_t - x_{t+1}| + \\overline{\\lambda}^2 |x_t - x_{t+1}| + ... \\]\n\\[|x_t - x| \\leq \\frac{1} {1-\\overline{\\lambda}} | x_t - x_{t+1} |\\]"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#how-do-we-improve-convergence",
-    "href": "lectures/convergence/convergence_1.html#how-do-we-improve-convergence",
-    "title": "Convergence of Sequences (1)",
-    "section": "How do we improve convergence ?",
-    "text": "How do we improve convergence ?\n\\[\\frac{|x_t - x_{t-1}|} {|x_{t-1} - x_{t-2}|} \\sim |f^{\\prime}(x_{t-1})|  \\]\ncorresponds to the case of linear convergence (kind of slow)."
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#aitkens-extrapolation",
-    "href": "lectures/convergence/convergence_1.html#aitkens-extrapolation",
-    "title": "Convergence of Sequences (1)",
-    "section": "Aitken’s extrapolation",
-    "text": "Aitken’s extrapolation\nWhen convergence is geometric, we have: \\[ \\lim_{t\\rightarrow \\infty}\\frac{ x_{t+1}-x}{x_t-x} = \\lambda \\in \\mathbb{R}^{\\star}\\]\nWhich implies:\n\\[\\frac{ x_{t+1}-x}{x_t-x} \\sim \\frac{ x_{t}-x}{x_{t-1}-x}\\]"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#aitkens-extrapolation-2",
-    "href": "lectures/convergence/convergence_1.html#aitkens-extrapolation-2",
-    "title": "Convergence of Sequences (1)",
-    "section": "Aitken’s extrapolation (2)",
-    "text": "Aitken’s extrapolation (2)\nTake \\(x_{t-1}, x_t\\) and \\(x_{t+1}\\) as given and solve for \\(x\\):\n\\[x = \\frac{x_{t+1}x_{t-1} - x_{t}^2}{x_{t+1}-2x_{t} + x_{t-1}}\\]\nor after some reordering\n\\[x = x_{t-1} - \\frac{(x_t-x_{t-1})^2}{x_{t+1}-2 x_t + x_{t-1}}\\]"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#steffensens-method",
-    "href": "lectures/convergence/convergence_1.html#steffensens-method",
-    "title": "Convergence of Sequences (1)",
-    "section": "Steffensen’s Method:",
-    "text": "Steffensen’s Method:\n\nstart with a guess \\(x_0\\), compute \\(x_1=f(x_0)\\) and \\(x_2=f(x_1)\\)\nuse Aitken’s guess for \\(x^{\\star}\\). If required tolerance is met, stop.\notherwise, set \\(x_0 = x^{\\star}\\) and go back to step 1.\n\nIt can be shown that the sequence generated from Steffensen’s method converges quadratically, that is\n\\(\\lim_{t\\rightarrow\\infty} \\frac{x_{t+1}-x_t}{(x_t-x_{t-1})^2} \\leq M  \\in \\mathbb{R}^{\\star}\\)"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#convergence-speed",
-    "href": "lectures/convergence/convergence_1.html#convergence-speed",
-    "title": "Convergence of Sequences (1)",
-    "section": "Convergence speed",
-    "text": "Convergence speed\nRate of convergence of series \\(x_t\\) towards \\(x^{\\star}\\) is:\n\nlinear: \\[{\\lim}_{t\\rightarrow\\infty} \\frac{|x_{t+1}-x^{\\star}|}{|x_{t}-x^{\\star}|} = \\mu \\in R^+\\]\nsuperlinear: \\[{\\lim}_{t\\rightarrow\\infty} \\frac{|x_{t+1}-x^{\\star}|}{|x_{t}-x^{\\star}|} = 0\\]\nquadratic: \\[{\\lim}_{t\\rightarrow\\infty} \\frac{|x_{t+1}-x^{\\star}|}{|x_{t}-x^{\\star}|^{\\color{red}2}} = \\mu \\in R^+\\]"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#convergence-speed-1",
-    "href": "lectures/convergence/convergence_1.html#convergence-speed-1",
-    "title": "Convergence of Sequences (1)",
-    "section": "Convergence speed",
-    "text": "Convergence speed\nRemark: in the case of linear convergence with \\(\\mu\\in(0,1)\\),\n\\[\\mu = {\\lim}_{t\\rightarrow\\infty} \\frac{|x_{t+1}-x^{\\star}|}{|x_{t}-x^{\\star}|} = {\\lim}_{t\\rightarrow\\infty} \\frac{|x_{t+1}-x_t|}{|x_t-x_{t-1}|}.\\]\nMoreover, asymptotically one has the useful heuristic bound \\[|x_t-x^{\\star}| \\approx \\frac{1}{1-\\mu}\\,|x_{t+1}-x_t|.\\]"
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#damping-relaxation-in-practice",
-    "href": "lectures/convergence/convergence_1.html#damping-relaxation-in-practice",
-    "title": "Convergence of Sequences (1)",
-    "section": "Damping / relaxation in practice",
-    "text": "Damping / relaxation in practice\nConsider the relaxed iteration \\[x_{n+1}=g(x_n)=(1-\\lambda)x_n+\\lambda f(x_n).\\]\nLocally around a fixed point \\(x^*\\), \\[g'(x^*) = 1-\\lambda+\\lambda f'(x^*).\\]\n\nIf you can estimate \\(f'(x^*)\\approx a\\), choose \\(\\lambda\\) to make \\(|g'(x^*)|\\) small.\nThe “ideal” choice (unconstrained) is \\(\\lambda^* = \\frac{1}{1-a}\\), which gives \\(g'(x^*)=0\\).\nIn practice you often restrict \\(\\lambda\\in(0,1]\\) (safeguard), so you clamp \\(\\lambda\\) to that range."
-  },
-  {
-    "objectID": "lectures/convergence/convergence_1.html#in-practice",
-    "href": "lectures/convergence/convergence_1.html#in-practice",
-    "title": "Convergence of Sequences (1)",
-    "section": "In practice",
-    "text": "In practice\n\nProblem: Suppose one is trying to find \\(x\\) solving the model \\(G(x)=0\\)\n\nAn iterative algorithm provides a function \\(f\\) defining a recursive series \\(x_{t+1}\\).\n\nThe best practice consists in monitoring at the same time:\n\nthe success criterion: \\[\\epsilon_n = |G(x_n)|\\]\n\n\nhave you found the solution?\n\nthe successive approximation errors \\[\\eta_n = |x_{n+1} - x_n|\\]\n\n\nare you making progress?\n\nthe ratio of successive approximation errors \\[\\lambda_n = \\frac{\\eta_n}{\\eta_{n-1}}\\]\n\n\nwhat kind of convergence? (if \\(|\\lambda_n|&lt;1\\): OK, otherwise: ❓)"
-  },
-  {
-    "objectID": "scpo/wip.html",
-    "href": "scpo/wip.html",
-    "title": "econobits",
-    "section": "",
-    "text": "Work in Progress"
-  },
-  {
-    "objectID": "scpo/index_2026.html",
-    "href": "scpo/index_2026.html",
-    "title": "econobits",
-    "section": "",
-    "text": "TipInstalling Julia\n\n\n\n\n\nThis assumes that you don’t have any version of Julia on your computer. If you have one, please consult with a higher authority.\nTo get a very nice working installation:\n\ninstall JuliaUp: keep Julia versions up to date\ninstall VSCode\ninside VSCode, install the Julia extension\n\n\n\n\n\n\n\n\n\n\nImportantHomework\n\n\n\n\n\nFor next time:\n\ninstall Julia (***)\n\n\n\n\n\n\n\n\n\n\n\n\nLectures\n\n\n\n\n\nNo matching items\n\n\n\n\n\n\nTutorials\n\n\n\n\n\n\n\n\nEpidemiology Models\n\n\n\n\n\n\nJulia Basics\n\n\n\n\n\n\nSolow Model\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "solow.html",
-    "href": "solow.html",
-    "title": "Solow Model",
-    "section": "",
-    "text": "Pablo Winant\n\nPrerequisites\nThis tutorial refers to the lecture on the convergence of sequences.\nAlso, make sure you went through the Julia Basics before.\n\n\nTutorial: Convergence\n\nSolow Model\nA representative agent uses capital \\(k_t\\) to produce \\(y_t\\) using the following production function:\n\\[y_t = k_t^{\\alpha}\\]\nHe chooses to consume an amount \\(c_t \\in ]0, y_t]\\) and invests what remains:\n\\[i_t = y_t - c_t\\]\nHe accumulates capital \\(k_t\\) according to:\n\\[k_{t+1} = \\left( 1-\\delta \\right) k_{t} + i_{t}\\]\nwhere \\(\\delta\\) is the depreciation rate and \\(i_t\\) is the amount invested.\nThe goal of the representative agent is to maximize:\n\\[\\sum_{t\\geq 0} \\beta^t U(c_t)\\]\nwhere \\(U(x)=\\frac{x^{1-\\gamma}}{1-\\gamma}\\) and \\(\\beta&lt;1\\) is the discount factor.\nFor now, we ignore the objective and assume that the saving rate \\(s=\\frac{c_t}{y_t}\\) is constant over time.\nCreate a NamedTuple to hold parameter values \\(\\beta=0.96\\), \\(\\delta=0.1\\), \\(\\alpha=0.3\\), \\(\\gamma=4\\).\n# your code here\n\nmodel = (;α=0.3, β=0.96, γ=4, δ=0.1, s=0.2)\n\n# we add the saving rate to the model\n\n(α = 0.3, β = 0.96, γ = 4, δ = 0.1, s = 0.2)\n\n\nWrite down the formula of function \\(f\\) such that \\(k_{t+1}\\): \\(k_{t+1} = f(k_t)\\).\n\\(k_{t+1} = (1-\\delta) k_t + ( s \\underbrace{k_t^\\alpha}_{\\text{production yesterday}} )\\)\nDefine a function f(k::Float64, p::NamedTuple)::Float64 to represent \\(f\\) for a given calibration\n# your code here\n\n# function f(k::Float64, p::NamedTuple)::Float64\n# end\n# we don't have to specify all types\nfunction f(k, p)\n    # get α and δ from the model\n    (;α, δ, s)=p\n    \n    i = s*k^α\n    K = (1-δ)*k + i\n    \nend\n\nf (generic function with 1 method)\n\n\n\nf(0.2, model)\n\n0.30340677254400195\n\n\n\n# see how long it takes to compute\n# using macro\n@time f(0.2, model)\n\n  0.000006 seconds (1 allocation: 16 bytes)\n\n\n0.30340677254400195\n\n\nWrite a function simulate(k0::Float64, T::Int, p::NamedTuple)::Vector{Float64} to compute the simulation over T periods starting from initial capital level k0.\n# your code here\n\nfunction simulate(k0, T, p)\n    # store the result in a vector\n    # adjust the size as we go\n    kvec = [k0]\n    for t ∈ 1:T\n        # remember 1:T contains 1 and T\n        k = kvec[end] # end: the last element\n        # k = kvec[length(kvec)]\n        K = f(k, p)\n        # append new value to kvec\n        push!(kvec, K)\n    end\n    return kvec\nend\n\nsimulate (generic function with 1 method)\n\n\n\nsimulate(0.2, 100, model);\n\n\n@time simulate(0.2, 100, model);\n\n  0.000016 seconds (7 allocations: 3.008 KiB)\n\n\n\nfunction simulate_noalloc(k0, T, p)\n    # store the result in a vector\n    kvec = zeros(T+1)\n    kvec[1] = k0\n    for t ∈ 1:T\n        # remember 1:T contains 1 and T\n        k = kvec[t] # end: the last element\n        # k = kvec[length(kvec)]\n        K = f(k, p)\n        # append new value to kvec\n        kvec[t+1] = K\n    end\n    return kvec\nend\n\nsimulate_noalloc (generic function with 1 method)\n\n\n\n@time simulate_noalloc(0.2, 100, model);\n\n  0.010058 seconds (13.08 k allocations: 645.609 KiB, 99.68% compilation time)\n\n\nMake a nice plot to illustrate the convergence. Do we get convergence from any initial level of capital?\n# your code here\n\n# import Pkg\n# Pkg.activate(\".\")\n\n\nusing Plots\n\n\nT = 100\ntv = 0:T\nkv = simulate(0.2, T, model);\nplot(tv,kv)\n\n\n\n\n\nusing LaTeXStrings\n\n\n# different starting points\nT = 100\ntv = 0:T\nkv1 = simulate(0.2, T, model);\nkv2 = simulate(0.4, T, model);\nkv3 = simulate(1.0, T, model);\n\npl = plot()\n# plot!(pl,tv,kv1,label=\"k_0\")\n# plot!(pl,tv,kv1,label=\"\\$k_0\\$\") # escape the dollar sign to avoid string interpolation\n# better : use latexstrings library\nplot!(pl,tv,kv1,label=L\"k_0=0.2\") # escape the dollar sign to avoid string interpolation\nplot!(pl,tv,kv2,label=L\"k_0=0.4\")\nplot!(pl,tv,kv3,label=L\"k_0=1.0\")\n\n\n\n\n\nk_init = [0.2, 0.4, 1.0]\nsims = [ simulate(k0,T,model) for k0 in k_init ] # comprehension syntax (same as in python)\n\n3-element Vector{Vector{Float64}}:\n [0.2, 0.30340677254400195, 0.4129080792968781, 0.525003373019628, 0.6373491155565568, 0.7483344417178636, 0.856841626057419, 0.9620988898971137, 1.0635841029776287, 1.1609587708409257  …  2.6873040218731723, 2.6876186883735818, 2.6879113388853018, 2.6881835130861362, 2.6884366430712516, 2.6886720608576273, 2.688891005366757, 2.689094628921639, 2.6892840032916374, 2.6894601253165105]\n [0.4, 0.5119315585864748, 0.6243422704616431, 0.7355508583035453, 0.8443911415579223, 0.9500568333602588, 1.0520006449771238, 1.1498654505051582, 1.2434355847290326, 1.3326014179604118  …  2.687878421679744, 2.6881528990807855, 2.6884081711777905, 2.688645581245582, 2.6888663786779268, 2.68907172553918, 2.689262702660023, 2.689440315308841, 2.6896054984681297, 2.6897591217433026]\n [1.0, 1.1, 1.195801151884219, 1.2872430129191352, 1.3742574618933996, 1.456845771393547, 1.5350611815735393, 1.6089955116075123, 1.6787687913320717, 1.7445211874595348  …  2.689166098397878, 2.689350471394512, 2.6895219419408285, 2.689681412713881, 2.689829723270148, 2.6899676544549416, 2.6900959325043807, 2.69021523286128, 2.6903261837248396, 2.6904293693526475]\n\n\n\nkv3 = simulate(1.0, T, model);\nk0 = 0.3\npl = plot()\nfor sim in sims\n    plot!(pl,tv,sim,label=L\"k_0=\" * \"$(sim[1])\") # escape the dollar sign to avoid string interpolation\nend\npl\n\n\n\n\n\nk_init = 0.5: 0.5: 3.5\nsims = [ simulate(k0,T,model) for k0 in k_init ] # comprehension syntax (same as in python)\npl = plot()\nfor (k0, sim) in zip(k_init, sims)\n    plot!(pl,tv,sim,label=L\"k_0=\" * \"$(sim[1])\", color=:red) # escape the dollar sign to avoid string interpolation\nend\npl\n\n\n\n\n\npl = plot()\nfor (i, sim) in enumerate(sims)\n    k0 = k_init[i]\n    plot!(pl,tv,sim,label=L\"k_0=\" * \"$(sim[1])\") # escape the dollar sign to avoid string interpolation\nend\npl\n\n\n\n\n\nsimulation_data = [ (k0,simulate(k0,T,model)) for k0 in k_init ] # comprehension syntax (same as in python)\n\n7-element Vector{Tuple{Float64, Vector{Float64}}}:\n (0.5, [0.5, 0.6124504792712471, 0.7238493517042889, 0.832984403877418, 0.9390166705127817, 1.041375090175603, 1.139684956743144, 1.233717469453318, 1.3233531316502873, 1.40855461086888  …  2.688124717954504, 2.688381961924404, 2.688621205942895, 2.6888437090435797, 2.6890506422578495, 2.68924309475745, 2.6894220795694443, 2.689588538893184, 2.689743349046873, 2.6898873250694084])\n (1.0, [1.0, 1.1, 1.195801151884219, 1.2872430129191352, 1.3742574618933996, 1.456845771393547, 1.5350611815735393, 1.6089955116075123, 1.6787687913320717, 1.7445211874595348  …  2.689166098397878, 2.689350471394512, 2.6895219419408285, 2.689681412713881, 2.689829723270148, 2.6899676544549416, 2.6900959325043807, 2.69021523286128, 2.6903261837248396, 2.6904293693526475])\n (1.5, [1.5, 1.5758693870913711, 1.6475201583781263, 1.7150841935587584, 1.7787098808849766, 1.8385565989758454, 1.8947904001991414, 1.9475806400433953, 1.9970973557459901, 2.0435092411105487  …  2.690038701794708, 2.690162007527074, 2.6902766834944245, 2.6903833335592306, 2.6904825193434627, 2.6905747631813886, 2.690660550866222, 2.6907403342049774, 2.6908145333948923, 2.6908835392338535])\n (2.0, [2.0, 2.0462288826689834, 2.089528674917447, 2.1300608401704926, 2.167981873889157, 2.2034426980783923, 2.236588248806851, 2.2675572178060395, 2.2964819166036654, 2.323488237574935  …  2.6908188642471536, 2.6908875669597023, 2.6909514609901906, 2.691010882877752, 2.691066145613052, 2.6911175402854264, 2.691165337614891, 2.691209789377058, 2.691251129728435, 2.691289576439058])\n (2.5, [2.5, 2.5132764408668473, 2.5256439052536868, 2.5371632360808465, 2.5478914001362627, 2.55788170636122, 2.567184016288864, 2.5758449461261734, 2.5839080601599886, 2.591414055321149  …  2.6915374078420995, 2.691555815991904, 2.69157293560767, 2.691588856881855, 2.691603663694112, 2.6916174340530916, 2.691630240507338, 2.691642150527427, 2.691653226861366, 2.691663527865125])\n (3.0, [3.0, 2.978077834063182, 2.957736712267823, 2.9388597852310765, 2.9213391975269687, 2.9050753518220396, 2.8899762381820255, 2.8759568222703935, 2.8629384868079684, 2.85084852124176  …  2.6922106739009313, 2.6921819530398157, 2.6921552427276807, 2.692130402214114, 2.692107300602852, 2.692085816161768, 2.692065835681197, 2.6920472538771976, 2.692029972836609, 2.6920139015009763])\n (3.5, [3.5, 3.441239588644217, 3.3868796568970985, 3.3365748704315115, 3.2900088329017825, 3.246891465688538, 3.206956642848077, 3.169960055137818, 3.135677279705747, 3.103902034472177  …  2.6928486431769474, 2.6927752608377347, 2.692707015841194, 2.69264354849513, 2.692584524296366, 2.692529632166085, 2.6924785828088926, 2.6924311071869056, 2.692386955100806, 2.6923458938703417])\n\n\n\nsimulation_data = Dict(\n    k0=&gt;simulate(k0,T,model)\n    for k0 in k_init\n) # comprehension syntax for dictionaries\n\nDict{Float64, Vector{Float64}} with 7 entries:\n  2.0 =&gt; [2.0, 2.04623, 2.08953, 2.13006, 2.16798, 2.20344, 2.23659, 2.26756, 2…\n  0.5 =&gt; [0.5, 0.61245, 0.723849, 0.832984, 0.939017, 1.04138, 1.13968, 1.23372…\n  3.5 =&gt; [3.5, 3.44124, 3.38688, 3.33657, 3.29001, 3.24689, 3.20696, 3.16996, 3…\n  1.5 =&gt; [1.5, 1.57587, 1.64752, 1.71508, 1.77871, 1.83856, 1.89479, 1.94758, 1…\n  2.5 =&gt; [2.5, 2.51328, 2.52564, 2.53716, 2.54789, 2.55788, 2.56718, 2.57584, 2…\n  1.0 =&gt; [1.0, 1.1, 1.1958, 1.28724, 1.37426, 1.45685, 1.53506, 1.609, 1.67877,…\n  3.0 =&gt; [3.0, 2.97808, 2.95774, 2.93886, 2.92134, 2.90508, 2.88998, 2.87596, 2…\n\n\n\nusing OrderedCollections\nsimulation_data = OrderedDict(\n    k0=&gt;simulate(k0,T,model)\n    for k0 in k_init\n) # comprehension syntax for dictionaries\n\nOrderedDict{Float64, Vector{Float64}} with 7 entries:\n  0.5 =&gt; [0.5, 0.61245, 0.723849, 0.832984, 0.939017, 1.04138, 1.13968, 1.23372…\n  1.0 =&gt; [1.0, 1.1, 1.1958, 1.28724, 1.37426, 1.45685, 1.53506, 1.609, 1.67877,…\n  1.5 =&gt; [1.5, 1.57587, 1.64752, 1.71508, 1.77871, 1.83856, 1.89479, 1.94758, 1…\n  2.0 =&gt; [2.0, 2.04623, 2.08953, 2.13006, 2.16798, 2.20344, 2.23659, 2.26756, 2…\n  2.5 =&gt; [2.5, 2.51328, 2.52564, 2.53716, 2.54789, 2.55788, 2.56718, 2.57584, 2…\n  3.0 =&gt; [3.0, 2.97808, 2.95774, 2.93886, 2.92134, 2.90508, 2.88998, 2.87596, 2…\n  3.5 =&gt; [3.5, 3.44124, 3.38688, 3.33657, 3.29001, 3.24689, 3.20696, 3.16996, 3…\n\n\n\npl = plot()\nfor (k,v) in each(simulation_data)\n    plot!(pl,k,v,label=L\"k_0=\" * \"$(k)\") # escape the dollar sign to avoid string interpolation\nend\npl\n\n\nUndefVarError: `each` not defined in `Main`\nSuggestion: check for spelling errors or missing imports.\n\nStacktrace:\n [1] top-level scope\n   @ ./In[24]:2\n [2] eval(m::Module, e::Any)\n   @ Core ./boot.jl:489\n\n\n\n\nn = 100\n\"This is a string. You can refer to external values inside: $(n)\" # string interpolation\n\n\"This is a string. You can refer to external values inside: 100\"\n\n\n\n# to reparametrize a model\n\n\nmerge(\n    model,\n    (;s=0.3)\n)\n\n(α = 0.3, β = 0.96, γ = 4, δ = 0.1, s = 0.3)\n\n\nSuppose you were interested in using f to compute the steady-state. What would you propose to measure convergence speed? To speed-up convergence? Implement these ideas.\n# your code here\n\np\n\n\nUndefVarError: `p` not defined in `Main`\nSuggestion: check for spelling errors or missing imports.\n\nStacktrace:\n [1] eval(m::Module, e::Any)\n   @ Core ./boot.jl:489\n\n\n\n\nfunction compute_steadystate(k0, T, p ; τ_η=1e-8)\n\n    for t ∈ 1:T\n        k1 = f(k0, p)\n        η = abs(k1-k0)\n        k0 = k1\n        if η&lt;τ_η\n            # println(\"Converged in $t iterations\")\n            return k0\n        end\n    end\n\n    error(\"No convergence\")\nend\n\ncompute_steadystate (generic function with 1 method)\n\n\n\n@time compute_steadystate(1, 500, model)\n\nConverged in 228 iterations\n  0.028495 seconds (15.55 k allocations: 813.156 KiB, 19.92% gc time, 99.51% compilation time)\n\n\n2.6918002585299976\n\n\n\nfunction compute_steadystate_new(k0, T, p ; τ_η=1e-8, λ=1.0)\n\n    for t ∈ 1:T\n        k1 = f(k0, p)\n        η = abs(k1-k0)\n        k0 = (1-λ)*k0 + λ*k1 # dampening / acceleration scheme\n        if η&lt;τ_η\n            println(\"Converged in $t iterations\")\n            return k0\n        end\n    end\n\n    error(\"No convergence\")\nend\n\ncompute_steadystate_new (generic function with 1 method)\n\n\n\n@time compute_steadystate_new(1, 500, model)\n\nConverged in 228 iterations\n  0.011282 seconds (9.09 k allocations: 457.492 KiB, 99.02% compilation time)\n\n\n2.6918002585299976\n\n\n\n@time compute_steadystate_new(1, 500, model; λ=10)\n\nConverged in 15 iterations\n  0.000088 seconds (18 allocations: 640 bytes)\n\n\n2.6918003470184395\n\n\n\nfunction compute_steadystate_2(k0, T, p ; τ_η=1e-8)\n    # store the result in a vector\n    # η = 0.0 # defining \\eta puts it in the local scope\n    # local η\n    for t ∈ 1:T\n        k1 = f(k0, p)\n        η = abs(k1-k0)\n        k0 = k1\n        if η&lt;τ_η\n            break # stops the for loop\n        end\n    end\n    # println(η) # η defined inside the loop\n    # if t&gt;=T\n    #     error(\"No convergence\")\n    # end\n    return k0\nend\n\n\n@time compute_steadystate(1, 100, model)\n\n  0.000012 seconds (1 allocation: 16 bytes)\n\n\n2.6904293693526475"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "This website is devoted to teaching computational economics."
-  },
-  {
     "objectID": "lectures/convergence/convergence_2.html#multidimensional-sequences",
     "href": "lectures/convergence/convergence_2.html#multidimensional-sequences",
     "title": "Convergence of Sequences (2)",
@@ -564,7 +333,14 @@
     "href": "lectures/convergence/convergence_2.html#linearized-dynamics",
     "title": "Convergence of Sequences (2)",
     "section": "Linearized Dynamics",
-    "text": "Linearized Dynamics\nThe recursion \\(y_t = A y_{t-1}\\) has a closed form solution \\[\n  y_t = A^t\\,y_0.\n  \\]\n\nTwo questions drive the dynamics:\n\nDoes \\(A^t \\to 0\\) (stability) or does it grow (instability)?\nCan \\(\\lVert A^t\\rVert\\) exhibit transient amplification even if the system is asymptotically stable?\n\nThe answers depend on how we measure “size” and on whether \\(A\\) is normal (commutes with \\(A^*\\)) or non-normal."
+    "text": "Linearized Dynamics\nThe recursion \\(y_t = A y_{t-1}\\) has a closed form solution \\[\n  y_t = A^t\\,y_0.\n  \\]\nTwo questions drive the dynamics:\n\nDoes \\(A^t \\to 0\\) (stability) or does it grow (instability)?\nCan \\(\\lVert A^t\\rVert\\) exhibit transient amplification even if the system is asymptotically stable?\n\nThe answers depend on how we measure “size” and on whether \\(A\\) is normal (commutes with \\(A^*\\)) or non-normal."
+  },
+  {
+    "objectID": "lectures/convergence/convergence_2.html#operator-norm",
+    "href": "lectures/convergence/convergence_2.html#operator-norm",
+    "title": "Convergence of Sequences (2)",
+    "section": "Operator norm",
+    "text": "Operator norm\nWe use here the following norms:\n\n\\(\\|x\\| = \\|x\\|_2 = \\sqrt{\\sum_i |x_i|^2}\\): euclidean norm for vectors\n\nit can be defined from the scalar product \\(\\langle x,y\\rangle = x^*y\\) (where \\(x^*\\) is the conjugate transpose of \\(x\\))\n\\(\\|x\\|_2 = \\sqrt{\\langle x,x\\rangle}\\)\n\n\\(\\|A\\| = \\|A\\|_2 = \\max_{\\|x\\|_2=1} \\|Ax\\|_2\\): (induced) operator norm for matrices\n\nThe operator norm, provides us with a worst-case measure of how much \\(A\\) can stretch a vector in one step \\(\\|Ax\\|_2 \\le \\|A\\|_2 \\|x\\|_2\\)\n\n\nIt yields a simple estimate of the convergence rate: \\[\\frac{\\|y_t\\|}{\\|y_{t-1}\\|} = \\frac{\\|A y_{t-1}\\|_2}{\\|y_{t-1}\\|_2} \\le \\|A\\|_2.\\]"
   },
   {
     "objectID": "lectures/convergence/convergence_2.html#spectral-radius-the-asymptotic-growth-rate",
@@ -574,46 +350,46 @@
     "text": "Spectral radius: the asymptotic growth rate\n\nDefinition (spectral radius): \\[\n\\rho(A) := \\max\\{ |\\lambda| : \\lambda \\in \\sigma(A)\\}.\n\\]\nStability (discrete time): \\[\n\\rho(A) &lt; 1 \\quad\\Longleftrightarrow\\quad A^t \\to 0\\ (t\\to\\infty).\n\\]\nIntuition: eigenvalues give the long-run scaling of invariant “modes” (exactly for diagonalizable/normal matrices; asymptotically for all).\nBut: eigenvalues alone can miss large short-run growth when \\(A\\) is non-normal."
   },
   {
-    "objectID": "lectures/convergence/convergence_2.html#gelfands-formula-estimating-rhoa-from-powers",
-    "href": "lectures/convergence/convergence_2.html#gelfands-formula-estimating-rhoa-from-powers",
+    "objectID": "lectures/convergence/convergence_2.html#transitory-dynamics-can-differ-from-asymptotic-dynamics",
+    "href": "lectures/convergence/convergence_2.html#transitory-dynamics-can-differ-from-asymptotic-dynamics",
     "title": "Convergence of Sequences (2)",
-    "section": "Gelfand’s formula: estimating \\(\\rho(A)\\) from powers",
-    "text": "Gelfand’s formula: estimating \\(\\rho(A)\\) from powers\nFor any matrix norm \\(\\lVert\\cdot\\rVert\\), \\[\n\\boxed{\\ \\rho(A) = \\lim_{k\\to\\infty} \\lVert A^k\\rVert^{1/k}\\ }\n\\] (Gelfand’s formula)\nInterpretation\n\nThe quantity \\(\\lVert A^k\\rVert^{1/k}\\) is an “average per-step growth factor” over \\(k\\) steps.\nAs \\(k\\) increases, it filters out transients and converges to the true asymptotic rate \\(\\rho(A)\\).\n\nRemark\n\nThis formula is very useful for theoretical insights.\nIn practice computing matrix norms is expensive, and computing matrix exponents is also expensive, so we typically use eigenvalue-based methods to estimate \\(\\rho(A)\\) for large matrices."
+    "section": "Transitory Dynamics Can Differ from Asymptotic Dynamics",
+    "text": "Transitory Dynamics Can Differ from Asymptotic Dynamics\nA canonical 2×2 example: \\[\nA = \\begin{bmatrix}0.9 & M\\\\ 0 & 0.9\\end{bmatrix},\\quad M\\gg 1.\n\\]\n\nEigenvalues are both \\(0.9\\) so \\(\\rho(A)=0.9&lt;1\\).\nBut for large \\(M\\), \\(\\lVert A\\rVert_2\\) can be much larger than 1, producing sizeable short-run growth.\n\nWe have the closed form:\n\\[A^k = \\begin{bmatrix}0.9^k & k M 0.9^{k-1}\\\\ 0 & 0.9^k\\end{bmatrix}\\]\nAnd \\(\\|A^k\\|_2\\) grows like \\(k M 0.9^{k-1}\\) for large \\(M\\) and small \\(k\\), before eventually decaying to zero as \\(k\\to\\infty\\)."
   },
   {
-    "objectID": "lectures/convergence/convergence_2.html#power-iteration-estimating-the-spectral-radius-when-it-works",
-    "href": "lectures/convergence/convergence_2.html#power-iteration-estimating-the-spectral-radius-when-it-works",
+    "objectID": "lectures/convergence/convergence_2.html#gelfands-formula",
+    "href": "lectures/convergence/convergence_2.html#gelfands-formula",
     "title": "Convergence of Sequences (2)",
-    "section": "Power iteration: estimating the spectral radius (when it works)",
-    "text": "Power iteration: estimating the spectral radius (when it works)\nThe classic power iteration targets the eigenvalue of largest modulus, i.e. it can estimate \\(\\rho(A)\\) under standard conditions (dominant eigenvalue, start vector not orthogonal to its eigenvector).\nAlgorithm (basic form)\n\nChoose a nonzero vector \\(v_0\\).\nIterate: \\(w_{m+1} \\leftarrow A v_m\\), then normalize \\(v_{m+1}\\leftarrow w_{m+1}/\\lVert w_{m+1}\\rVert_2\\).\nTrack the Growth ratio: \\(\\lVert A v_m\\rVert_2 / \\lVert v_m\\rVert_2\\)\nOr the Rayleigh quotient: \\(\\frac{v_m^* A v_m}{v_m^* v_m}\\) (most meaningful when \\(A\\) is normal / Hermitian). \n\nConvergence intuition\n\nIf \\(|\\lambda_1|&gt;|\\lambda_2|\\) and \\(A\\) is diagonalizable, then \\(v_m\\) aligns with the dominant eigenvector and the estimates converge to \\(|\\lambda_1|=\\rho(A)\\).\nIf the dominant eigenvalue is not unique in modulus (e.g. a complex conjugate pair), the iterates may oscillate."
+    "section": "Gelfand’s formula",
+    "text": "Gelfand’s formula\nEven though the spectral radius is not a norm 1, it is related to matrix norms in the following way.\nFor any matrix norm \\(\\|\\cdot\\|\\) (including the matrix norm), we have the following formula for the spectral radius: \\[\n\\boxed{\\ \\rho(A) = \\lim_{k\\to\\infty} \\lVert A^k\\rVert^{1/k}\\ }\n\\]\nInterpretation\n\nThe quantity \\(\\lVert A^k\\rVert^{1/k}\\) is an “average per-step growth factor” over \\(k\\) steps:\n\nsuppose there is growth \\(g\\) such that \\(g^k = \\lVert A^k\\rVert\\), then \\(g=\\lVert A^k\\rVert^{1/k}\\).\n\nAs \\(k\\) increases, it filters out transients and converges to the true asymptotic rate \\(\\rho(A)\\).\n\nRemark\n\nThis formula is very useful for theoretical insights.\nIn practice computing matrix norms is expensive, and computing matrix exponents is also expensive, so we typically use eigenvalue-based methods to estimate \\(\\rho(A)\\) for large matrices.\n\nwe don’t have \\(\\rho(A+B)&lt;=\\rho(A)+\\rho(B)\\) or \\(\\rho(A)=0 \\implies A=0\\)"
   },
   {
-    "objectID": "lectures/convergence/convergence_2.html#numerical-radius-a-one-step-quadratic-form-growth-measure",
-    "href": "lectures/convergence/convergence_2.html#numerical-radius-a-one-step-quadratic-form-growth-measure",
+    "objectID": "lectures/convergence/convergence_2.html#power-iteration-estimating-the-spectral-radius",
+    "href": "lectures/convergence/convergence_2.html#power-iteration-estimating-the-spectral-radius",
     "title": "Convergence of Sequences (2)",
-    "section": "Numerical radius: a one-step quadratic-form growth measure",
-    "text": "Numerical radius: a one-step quadratic-form growth measure\n\nField of values (numerical range): \\[\nW(A) := \\{ x^*Ax : \\lVert x\\rVert_2 = 1 \\} \\subset \\mathbb{C}.\n\\]\nNumerical radius: \\[\n\\boxed{\\ w(A) := \\max\\{ |z| : z\\in W(A)\\} = \\max_{\\lVert x\\rVert_2=1} |x^*Ax|\\ }\n\\]\n\nKey inequalities \\[\n\\rho(A) \\le w(A) \\le \\lVert A\\rVert_2 \\le 2\\,w(A).\n\\]\nIntuition\n\n\\(w(A)\\) captures the largest possible “one-step gain” of the scalar quadratic form \\(x^*Ax\\).\nFor normal matrices: \\(\\rho(A)=w(A)=\\lVert A\\rVert_2\\).\nFor non-normal matrices: often \\(\\rho(A) \\ll w(A)\\)."
+    "section": "Power iteration: estimating the spectral radius",
+    "text": "Power iteration: estimating the spectral radius\nThe classic power iteration targets the eigenvalue of largest modulus, i.e. it can estimate \\(\\rho(A)\\) under standard conditions (dominant eigenvalue, start vector not orthogonal to its eigenvector).\nAlgorithm (basic form)\n\nChoose a nonzero vector \\(v_0\\).\nIterate: \\(w_{m+1} \\leftarrow A v_m\\), then normalize \\(v_{m+1}\\leftarrow w_{m+1}/\\lVert w_{m+1}\\rVert_2\\).\nTrack the Growth ratio: \\(\\lVert A v_m\\rVert_2 / \\lVert v_m\\rVert_2\\)  \n\nConvergence intuition\n\nIf \\(|\\lambda_1|&gt;|\\lambda_2|\\) and \\(A\\) is diagonalizable, then \\(v_m\\) aligns with the dominant eigenvector and the estimates converge to \\(|\\lambda_1|=\\rho(A)\\).\nIf the dominant eigenvalue is not unique in modulus (e.g. a complex conjugate pair), the iterates may oscillate."
   },
   {
-    "objectID": "lectures/convergence/convergence_2.html#why-wa-matters-for-dynamics-transient-growth",
-    "href": "lectures/convergence/convergence_2.html#why-wa-matters-for-dynamics-transient-growth",
+    "objectID": "lectures/convergence/convergence_2.html#recap-spectral-radius-and-operator-norm",
+    "href": "lectures/convergence/convergence_2.html#recap-spectral-radius-and-operator-norm",
     "title": "Convergence of Sequences (2)",
-    "section": "Why \\(w(A)\\) matters for dynamics (transient growth)",
-    "text": "Why \\(w(A)\\) matters for dynamics (transient growth)\nEven when \\(\\rho(A)&lt;1\\) (asymptotically stable), a non-normal matrix can have:\n\nlarge \\(\\lVert A\\rVert_2\\) (big one-step stretching)\nlarge \\(w(A)\\) (big one-step Rayleigh-quotient magnitude)\ntransient amplification: \\(\\lVert A^t\\rVert\\) can increase for some \\(t\\) before eventually decaying.\n\nA canonical 2×2 example: \\[\nA = \\begin{bmatrix}0.9 & M\\\\ 0 & 0.9\\end{bmatrix},\\quad M\\gg 1.\n\\]\n\nEigenvalues are both \\(0.9\\) so \\(\\rho(A)=0.9&lt;1\\).\nBut for large \\(M\\), \\(\\lVert A\\rVert_2\\) (and typically \\(w(A)\\)) can be much larger than 1, producing sizeable short-run growth."
+    "section": "Recap: Spectral Radius and Operator Norm",
+    "text": "Recap: Spectral Radius and Operator Norm\n\nSpectral radius \\(\\rho(A)\\)\n\nGoverns asymptotic stability and long-run exponential rate.\nInsensitive to how non-orthogonal the eigenvectors are.\n\nOperator norm \\(\\lVert A\\rVert_2\\)\n\nExact worst-case one-step state amplification: \\(\\max_{\\|x\\|_2=1}\\|Ax\\|_2\\).\nMost conservative one-step bound.\n\nRelation between both: \\(\\rho(A) \\le \\|A\\|_2\\)\n\n\\(\\rho(A)\\) can be much smaller than \\(\\|A\\|_2\\)\nFor a normal matrix \\(A\\): \\(\\rho(A)=\\|A\\|_2\\).\n\nnormal matrices commute with their conjugate transpose (\\(A A^* = A^* A\\)), and include symmetric, Hermitian, and unitary matrices.\nsymmetric, hermitian, unitary matrices are all normal\n\nA matrix can satisfy \\(\\rho(A)=\\|A\\|_2\\) without being normal"
   },
   {
-    "objectID": "lectures/convergence/convergence_2.html#recap-spectral-vs-numerical-radius",
-    "href": "lectures/convergence/convergence_2.html#recap-spectral-vs-numerical-radius",
+    "objectID": "lectures/convergence/convergence_2.html#nonlinear-sequences-contraction-mappings",
+    "href": "lectures/convergence/convergence_2.html#nonlinear-sequences-contraction-mappings",
     "title": "Convergence of Sequences (2)",
-    "section": "Recap: Spectral vs Numerical Radius",
-    "text": "Recap: Spectral vs Numerical Radius\n\nSpectral radius \\(\\rho(A)\\)\n\nGoverns asymptotic stability and long-run exponential rate.\nInsensitive to how non-orthogonal the eigenvectors are.\n\nNumerical radius \\(w(A)\\)\n\nUpper-bounds \\(\\rho(A)\\) and is closely tied to the geometry of the field of values.\nMore informative about one-step amplification and non-normality.\n\nRule of thumb\n\nIf \\(A\\) is (nearly) normal: \\(\\rho(A)\\) tells most of the story.\nIf \\(A\\) is non-normal: expect transients; look at \\(w(A)\\), \\(\\lVert A\\rVert_2\\), and (if needed) pseudospectra."
+    "section": "Nonlinear Sequences: Contraction Mappings",
+    "text": "Nonlinear Sequences: Contraction Mappings\nNow we want to study the convergence of nonlinear sequences defined by recursions like:\n\\[x_{n+1} = f(x_n),\\quad n=0,1,2,\\dots\\]\nwith steady-state \\(\\overline{x}\\) such that \\(f(\\overline{x})=\\overline{x}\\).\n\nContraction mapping: \\(f\\) is a contraction if \\(\\exists L&lt;1\\) s.t. \\[\n\\|f(x)-f(y)\\| \\le L\\|x-y\\|.\n\\]\nBanach fixed point theorem: if \\(f\\) is a contraction on a complete metric space, then \\(f\\) has a unique fixed point and iterating \\(f\\) converges to it at a linear rate."
   },
   {
-    "objectID": "lectures/convergence/convergence_2.html#nonlinear-sequences-local-convergence",
-    "href": "lectures/convergence/convergence_2.html#nonlinear-sequences-local-convergence",
+    "objectID": "lectures/convergence/convergence_2.html#nonlinear-sequences-convergence-rates",
+    "href": "lectures/convergence/convergence_2.html#nonlinear-sequences-convergence-rates",
     "title": "Convergence of Sequences (2)",
-    "section": "Nonlinear Sequences: Local Convergence",
-    "text": "Nonlinear Sequences: Local Convergence\nNow we want to study the convergence of nonlinear sequences defined by recursions like:\n\\[x_{n+1} = f(x_n),\\quad n=0,1,2,\\dots\\]\nwith steady-state \\(\\overline{x}\\) such that \\(f(\\overline{x})=\\overline{x}\\).\n\nContraction mapping: \\(f\\) is a contraction if \\(\\exists L&lt;1\\) s.t. \\(|f(x)-f(y)| \\le L|x-y|\\).\nBanach fixed point theorem: if \\(f\\) is a contraction on a complete metric space, then \\(f\\) has a unique fixed point and iterating \\(f\\) converges to it at a linear rate.\n\n\nDenote by \\(A=f'(\\overline{x})\\) the Jacobian matrix of \\(f\\) at \\(\\overline{x}\\).\n\nIf \\(w(A)&lt;1\\) there is a compact neighborhood around \\(\\overline{x}\\) where \\(f\\) is a contraction, so local convergence is guaranteed, at geometric rate \\(w(A)+\\epsilon\\) for some small \\(\\epsilon&gt;0\\).\n\nderives from Banach fixed point theorem\n\nIf \\(\\rho(A)&lt;1\\) (weaker condition) local convergence is guaranteed, at geometric rate \\(\\rho(A)+\\epsilon\\) for some small \\(\\epsilon&gt;0\\).\n\nderives from norm equivalence and Gelfand’s formula"
+    "section": "Nonlinear Sequences: Convergence Rates",
+    "text": "Nonlinear Sequences: Convergence Rates\nDenote by \\(A=f'(\\overline{x})\\) the Jacobian matrix of \\(f\\) at \\(\\overline{x}\\).\nAt which condition on \\(A\\) can we guarantee local convergence of \\(f\\) to \\(\\overline{x}\\)? At which rate?\n\nIf \\(\\|A\\|_2&lt;1\\)\n\nfor any \\(\\epsilon\\) such that \\(\\|A\\|_2+\\epsilon&lt;1\\), by continuity of \\(f'\\) there is a neighborhood around \\(\\overline{x}\\) where \\(\\|f'(x)\\|_2 \\le \\|A\\|_2 + \\epsilon &lt; 1\\), so \\(f\\) is a contraction in that neighborhood and local convergence follows by the Banach fixed point theorem.\nin particular asymptotic convergence rate is at most \\(\\|A\\|_2+\\epsilon\\)\n\nIf \\(\\rho(A)&lt;1\\) (weakest condition)\n\nlocal asymptotic convergence is guaranteed\nasymptotic convergence rate is at most \\(\\rho(A)+\\epsilon\\) for any \\(\\epsilon&gt;0\\)"
   },
   {
     "objectID": "lectures/convergence/convergence_2.html#going-further",
@@ -623,235 +399,39 @@
     "text": "Going Further\nInsteady of studying stability of \\(\\overline{x}\\) (that is for any \\(x_0 \\in \\mathbb{R}^n\\)), we can also characterize all the different dynamics we can obtain for different initial \\(x_0\\) (read different initial shocks to the economy).\nWe can define two sets of initial conditions:\n\nthe stable manifold: \\(W=\\{x : \\lim_{n\\to\\infty} f^n(x) = \\overline{x}\\}\\)\nthe unstable manifold: \\(U=\\{x : \\lim_{n\\to\\infty} f^n(x) \\neq \\overline{x}\\}\\)\n\nEven when \\(\\rho(A)&gt;1\\), local dynamics of \\(f\\) can be characterized by \\(A=f'(\\overline{x})\\)\n\n\\(\\implies\\) the stable eigenspace of \\(A\\) approximates the stable manifold of \\(f\\)\nand the unstable eigenspace of \\(A\\) approximate the unstable manifold of \\(f\\).\n\n\\(\\implies\\) this is formalized in the stable manifold theorem"
   },
   {
-    "objectID": "lectures/perturbation/index.html#today",
-    "href": "lectures/perturbation/index.html#today",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Today",
-    "text": "Today\nStudy Neoclassical Model of Growth with Deterministic Productivity Shocks\n\nDerive First Order Conditions\nComputing Derivatives Numerically\nSolution Method\n\nLinear Time Iteration\n\nImplementation"
+    "objectID": "lectures/convergence/convergence_2.html#the-spectral-radius-is-not-a-norm",
+    "href": "lectures/convergence/convergence_2.html#the-spectral-radius-is-not-a-norm",
+    "title": "Convergence of Sequences (2)",
+    "section": "The spectral radius is not a norm",
+    "text": "The spectral radius is not a norm"
   },
   {
-    "objectID": "lectures/perturbation/index.html#neoclassical-growth-model",
-    "href": "lectures/perturbation/index.html#neoclassical-growth-model",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Neoclassical Growth Model",
-    "text": "Neoclassical Growth Model\n\n\n\nTransition Equation \\[\\begin{eqnarray}\nk_t & = & (1-\\delta) k_{t-1} + i_{t-1} \\\\\nz_t & = & \\rho z_{t-1}\n\\end{eqnarray}\n\\]\nDefinition: \\[c_t = \\exp(z_t) k_t^\\alpha - i_t\\]\nControl \\(i_t\\in[0, \\exp(z_t)k_t^\\alpha[\\)\n\nor equivalently \\(c_t \\in ]0, \\exp(z_t) k_t^{\\alpha}]\\)\n\nObjective: \\[\\max_{i_t} \\sum_{t\\geq0} \\beta^t U(c_t)\\]\n\n\n\nCalibration:\n\n\\(\\beta = 0.96\\)\n\\(\\delta = 0.1\\)\n\\(\\gamma = 4.0\\)\n\\(\\alpha = 0.3\\)\n\\(U(x)=\\frac{x^{1-\\gamma}}{1-\\gamma}\\)"
+    "objectID": "lectures/convergence/convergence_2.html#power-iteration-convergence-analysis",
+    "href": "lectures/convergence/convergence_2.html#power-iteration-convergence-analysis",
+    "title": "Convergence of Sequences (2)",
+    "section": "Power iteration convergence analysis",
+    "text": "Power iteration convergence analysis"
   },
   {
-    "objectID": "lectures/perturbation/index.html#deriving-first-order-conditions-1",
-    "href": "lectures/perturbation/index.html#deriving-first-order-conditions-1",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Deriving First Order Conditions",
-    "text": "Deriving First Order Conditions\n\nTwo methods:\n\nBellman:\n\nOptimality Condition\nEnveloppe Condition\n\nLagrangian:\n\nWe will use the lagrangian version"
+    "objectID": "lectures/convergence/convergence_2.html#proof-of-gelfands-formula",
+    "href": "lectures/convergence/convergence_2.html#proof-of-gelfands-formula",
+    "title": "Convergence of Sequences (2)",
+    "section": "Proof of Gelfand’s formula",
+    "text": "Proof of Gelfand’s formula"
   },
   {
-    "objectID": "lectures/perturbation/index.html#lagrangian",
-    "href": "lectures/perturbation/index.html#lagrangian",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Lagrangian",
-    "text": "Lagrangian\n\nInitial Conditions (predetermined states): \\(z_0\\), \\(k_0\\)\nProblem: \\[V(z_0, k_0) = \\max_{\\begin{matrix}i_0, i_1, i_2, \\cdots \\\\c_0, c_1, c_2 \\cdots \\\\ k_1, k_2, \\cdots\\end{matrix}} \\sum_{t \\geq 0}\\beta^t U(c_t)\\]\n\n\\[\\text{s.t.}\\forall t\\geq 0, \\; \\; \\begin{eqnarray}\n\\mu_t:\\quad &  0 & \\leq & i_t  \\\\\n\\nu_t:\\quad &  i_t & \\leq & \\exp(z_t) k_t^{\\alpha} \\\\\n\\lambda_t:\\quad &  i_t & = & \\exp(z_t) k_t^{\\alpha} - c_t\\\\\nq_t:\\quad &  k_{t+1} & = & (1-\\delta) k_{t} + i_{t}\n\\end{eqnarray}\\]\n\nLagrangian: \\[\n\\mathcal{L} (z_0, k_0) = \\sum_{t \\geq 0} \\beta^t\\left\n\\{ U(c_t) + \\mu_t \\left( i_t \\right) + \\nu_t \\left(\\exp(z_t)k_t^{\\alpha} - i_t \\right) + \\lambda_t \\left(\\exp(z_t) k_t^{\\alpha}  - i_t -c_t \\right)  + q_t \\left( (1-\\delta) k_{t} + i_{t} - k_{t+1} \\right) \\right\\}\n\\]"
+    "objectID": "lectures/convergence/convergence_2.html#proof-of-the-banach-fixed-point-theorem",
+    "href": "lectures/convergence/convergence_2.html#proof-of-the-banach-fixed-point-theorem",
+    "title": "Convergence of Sequences (2)",
+    "section": "Proof of the Banach fixed point theorem",
+    "text": "Proof of the Banach fixed point theorem"
   },
   {
-    "objectID": "lectures/perturbation/index.html#lagrangian-1",
-    "href": "lectures/perturbation/index.html#lagrangian-1",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Lagrangian",
-    "text": "Lagrangian\n\n\n\nWe maximize the lagrangian to get:\n\n\\[\\begin{eqnarray}\n\\forall t\\geq0 & \\frac{\\partial \\mathcal{L}}{\\partial i_t} & = & 0 \\\\\n& \\frac{\\partial \\mathcal{L}}{\\partial c_t} & = & 0 \\\\\n& \\frac{\\partial \\mathcal{L}}{\\partial k_{t+1}} & = & 0\n\\end{eqnarray}\\]\n\nIt is important to note that we don’t differentiate with respect to a predetermined state\n\ncheck that you don’t differentiate w.r.t. \\(k_0\\)\n\nIt looks like the first order condition added four new variables \\(\\mu_t\\),\\(\\nu_t\\), \\(\\lambda_t\\), \\(q_t\\)\n\n\n\nLuckily these variables are associated to slackness conditions.\n\n\n\n\n\\(\\mu_t \\geq 0\\)\n\\(i_t \\geq 0\\)\n\n\n\\(\\nu_t \\geq 0\\)\n\\(\\exp(z_t) k_t^{\\alpha}-i_t \\geq 0\\)\n\n\n\\(q_t \\geq 0\\)\n\\((1-\\delta) k_{t} + i_{t} - k_{t+1} \\geq 0\\)\n\n\n\\(\\lambda_t \\geq 0\\)\n\\(\\exp(z_t) k_t^{\\alpha}  - i_t -c_t = 0\\)\n\n\n\n\nThe Karush-Kuhn-Tucker states, that for each slackness condition, at any time, either\n\nthe lagrangian is 0 and it disappears from the F.O.C.s\nor it is not 0 and the associated constraint adds another condition"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#eliminating-constraints",
-    "href": "lectures/perturbation/index.html#eliminating-constraints",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Eliminating constraints",
-    "text": "Eliminating constraints\n\n\n\n\n\n\\(\\mu_t \\geq 0\\)\n\\(i_t \\geq 0\\)\n\n\n\\(\\nu_t \\geq 0\\)\n\\(\\exp(z_t) k_t^{\\alpha}-i_t \\geq 0\\)\n\n\n\\(q_t\\)\n\\((1-\\delta) k_{t} + i_{t} - k_{t+1} = 0\\)\n\n\n\\(\\lambda_t\\)\n\\(\\exp(z_t) k_t^{\\alpha}  - i_t -c_t = 0\\)\n\n\n\n\nIn general slackness conditions can be occasionally binding\nFor perturbation analysis, we need constraints to be always (or never binding)\n\n\nLet’s review them:\n\n\\(\\nu_t\\): it is equivalent to \\(c_t\\geq 0\\)\n\nwe necessarily have \\(c_t&gt;0\\) since \\(U^{\\prime}(0)=\\infty\\)\nhence \\(\\nu_t=0\\)\n\n\\(\\mu_t\\): it states \\(k_{t+1}\\geq 0\\)\n\nif \\(k_{t+1}=0\\), then \\(c_{t+1}\\). We can conclude \\(k_{t+1}&gt;0\\)\nhence \\(\\mu_t=0\\)\n\nfor multipliers associated to an equality constraint, we always keep the system\n\nmultiplier can have any sign\n\ninequality formulation is sometimes used too:\n\n\\(c_t \\leq \\exp(z_t) k_t^{\\alpha}  - i_t\\) ( you can destroy production insead of eating or investing it)\n\\(k_{t+1} \\leq (1-\\delta) k_{t} + i_{t}\\) (you can destroy capital instead of investing it)"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#first-order-model",
-    "href": "lectures/perturbation/index.html#first-order-model",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "First order model",
-    "text": "First order model\n\nOptimality Condition: \\[\\beta  \\left[ \\frac{\\left(c_{t+1}\\right)^{-\\gamma}}{\\left(c_t\\right)^{-\\gamma}} \\left( (1-\\delta + \\alpha exp(z_{t+1})k_{t+1}^{\\alpha -1}) \\right)\\right] = 1\\]\n\nTakes into account the fact that \\(c_t&gt;0\\).\n\nDefinition: \\[c_t = exp(z_t) k_t^\\alpha - i_t\\]\nTransition: \\[k_t = (1-\\delta) k_{t-1} + i_{t-1}\\] \\[z_t = \\rho z_{t-1}\\]"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#steady-state",
-    "href": "lectures/perturbation/index.html#steady-state",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Steady-State",
-    "text": "Steady-State\n\n\n\nSteady-State: \\(\\overline{i}, \\overline{k}, \\overline{z}\\) such that:\n\n\\(z_{t+1}=z_t=\\overline{z}\\)\n\\(k_{t+1}=k_t=\\overline{k}\\)\n\\(i_{t+1}=i_t=\\overline{i}\\)\n\\(c_{t+1}=c_t=\\overline{c}\\)\n\n…satisfy the first order conditions\n…i.e.\n\n\\[\n\\begin{eqnarray}\n1 & = & \\beta   \\left( (1-\\delta + \\alpha {\\overline{k}}^{\\alpha -1}) \\right)  \\\\\n\\overline{k} & = & (1-\\delta) \\overline{k} + \\overline{i} \\\\\n\\overline{z} & = & \\rho \\overline{z} \\\\\n\\overline{c} & = & \\overline{k}^{\\alpha} - \\overline{i}\n\\end{eqnarray}\n\\]\n\n\nSolution?\n\nclosed-form\nnumerical\n\nHere we can get a closed form:\n\n\\[\\begin{eqnarray}\n\\overline{k} & = & \\left( \\frac{\\frac{1}{\\beta}-(1-\\delta)}{\\alpha} \\right)^{\\frac{1}{\\alpha - 1}} \\\\\n\\overline{i} & = & \\delta \\overline{k} \\\\\\\n\\overline{z} & = & 0 \\\\\n\\overline{c} & = & \\overline{k}^{\\alpha} - \\overline{i}\n\\end{eqnarray}\\]"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#perturbation-analysis",
-    "href": "lectures/perturbation/index.html#perturbation-analysis",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Perturbation Analysis",
-    "text": "Perturbation Analysis\n\n\n\nWrite all variables in deviation to the steady-state: \\[z_{t}=\\overline{z} + \\Delta z_t\\] \\[k_{t}=\\overline{k} + \\Delta k_t\\] \\[i_{t}=\\overline{i} + \\Delta i_t\\] \\[c_{t}=\\overline{c} + \\Delta c_t\\]\n\nRemark: some smart economists use log-deviations (i.e. \\(x_t = \\overline{x} \\hat{x}_t\\) to make computations easier)\n\n\n\n\nReplace in the system \\[\\beta  \\left[ \\frac{\\left(\\overline{c}+ \\Delta c_{t+1}\\right)^{-\\gamma}}{\\left(\\overline{c} + \\Delta c_t\\right)^{-\\gamma}} \\left( (1-\\delta + \\alpha (\\overline{k} + \\Delta k_{t+1})^{\\alpha -1}) \\right)\\right] = 1\\] \\[\\overline{c} + \\Delta c_t = (\\overline{k}+ \\Delta k_t)^\\alpha - \\overline{i} - \\Delta i_t\\] \\[\\overline{k} + \\Delta k_t = (1-\\delta) (\\overline{k}+ \\Delta k_{t-1}) + \\overline{i }+ \\Delta i_{t-1}\\] \\[\\overline{z }+ \\Delta z_t = \\overline{z}+ \\Delta \\rho z_{t-1}\\]\nDifferentiate…\n(if we want to limit the number of equations, we can replace \\(c_t\\) by its value)"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#result",
-    "href": "lectures/perturbation/index.html#result",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Result:",
-    "text": "Result:\n\nOptimality conditions \\[\\begin{bmatrix} . & . & . & . \\\\  . & . & . & . \\end{bmatrix} \\begin{bmatrix} \\Delta i_t \\\\ \\Delta c_t  \\\\ \\Delta k_t \\\\ \\Delta z_t \\end{bmatrix} = \\begin{bmatrix} . & . & . \\\\  . & . & . & .\\end{bmatrix} \\begin{bmatrix} \\Delta i_{t+1} \\\\  \\Delta c_{t+1} \\\\ \\Delta k_{t+1} \\\\ \\Delta z_{t+1} \\end{bmatrix} \\]\nTransition \\[ \\begin{bmatrix} \\Delta k_t \\\\ \\Delta z_t \\end{bmatrix} = \\begin{bmatrix} . & .  \\\\ . & . \\end{bmatrix} \\begin{bmatrix} \\Delta k_{t-1} \\\\ \\Delta z_{t-1} \\end{bmatrix}  + \\begin{bmatrix} . \\end{bmatrix} \\begin{bmatrix}\\Delta i_{t-1}\\end{bmatrix}\\]"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#julia-console",
-    "href": "lectures/perturbation/index.html#julia-console",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Julia Console",
-    "text": "Julia Console\n\nAccessible:\n\nfrom a good terminal\nfrom VSCode panel\n\nFour modes:\n\n``: REPL (read-eval-print)\n?: Help\n]: Package Management\n;: System Console"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#julia-package-ecosystem",
-    "href": "lectures/perturbation/index.html#julia-package-ecosystem",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Julia package ecosystem",
-    "text": "Julia package ecosystem\n\nLarge package ecosystem\nFairly good quality native code\nWrappers to low-level / foreign language libraries\n\nC: ccall\nFortran: fcall\nPython: PyCall"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#how-do-you-install-pckages",
-    "href": "lectures/perturbation/index.html#how-do-you-install-pckages",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "How do you install pckages?",
-    "text": "How do you install pckages?\n\nShort and wrong answer: ] add PackageName\nBetter answer:\n\na project environment specifies all dependencies for a project\n\ninformations are contained in Project.toml\n\nchange directory to the right project\n\n; cd path_to_the_right_project\nyou can check where you are ; pwd (print working directory)\n\nactivate environment:\n\n] activate . (. universally means current director)\n\nadd desired package:\n\n] add PackageName\n\nwhen you restart work on a project activate, it again, to ensure you have the right dependencies"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#main-approaches",
-    "href": "lectures/perturbation/index.html#main-approaches",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Main approaches",
-    "text": "Main approaches\n\nBack to our problem, how to we differentiate the model?\nMain approaches:\n\nManual\nFinite Differences\nSymbolic Differentiation\nAutomatic Differentiation"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#manual-differentiation",
-    "href": "lectures/perturbation/index.html#manual-differentiation",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Manual Differentiation",
-    "text": "Manual Differentiation\n\nTrick:\n\nnever use \\(\\frac{d}{dx} \\frac{u(x)}{v(x)} = \\frac{u'(x)v(x)-u(x)v'(x)}{v(x)^2}\\)\n\ntoo error prone\n\nuse instead \\[\\frac{d}{dx} {u(x)v(x)} = {u'(x)v(x)+u(x)v'(x)}\\] and \\[\\frac{d}{dx} \\frac{1}{u(x)} = -\\frac{u^{\\prime}}{u(x)^2}\\]\n\nYou can get easier calculations (in some cases) by using log-deviation rules"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#finite-differences",
-    "href": "lectures/perturbation/index.html#finite-differences",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Finite Differences",
-    "text": "Finite Differences\n\n\n\n\nChoose small \\(\\epsilon&gt;0\\), typically \\(\\sqrt{ \\textit{machine eps}}\\)\n\ncheck eps()\n\nForward Difference scheme:\n\n\\(f'(x) \\approx \\frac{f(x+\\epsilon) - f(x)}{\\epsilon}\\)\nprecision: \\(O(\\epsilon)\\)\nbonus: if \\(f(x+\\epsilon)\\) can compute \\(f(x)-f(x-\\epsilon)\\) instead (Backward)\n\nCentral Difference scheme:\n\nFinite \\(f'(x) \\approx \\frac{f(x+\\epsilon) - f(x-\\epsilon)}{2\\epsilon}\\)\naverage of forward and backward\nprecision: \\(O(\\epsilon^2)\\)\n\n\n\n\nTwo packages FiniteDiff and FiniteDifferences.\nExample:\nusing FiniteDiff\n\ng(x) = [x[1]^2 x[2]^3]\nFiniteDiff.finite_difference_jacobian(g, [0.1, 0.2])"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#finite-differences-higher-order",
-    "href": "lectures/perturbation/index.html#finite-differences-higher-order",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Finite Differences: Higher order",
-    "text": "Finite Differences: Higher order\n\nCentral formula:\n\n\\[\n\\begin{aligned}\nf''(x) & \\approx & \\frac{f'(x)-f'(x-\\epsilon)}{\\epsilon} \\approx \\frac{(f(x+\\epsilon))-f(x))-(f(x)-f(x-\\epsilon))}{\\epsilon^2} \\\\ & = & \\frac{f(x+\\epsilon)-2f(x)+f(x-\\epsilon)}{\\epsilon^2}\n\\end{aligned}\n\\] - precision: \\(o(\\epsilon)\\) - Generalizes to higher order but becomes more and more innacurate"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#symbolic-differentiation",
-    "href": "lectures/perturbation/index.html#symbolic-differentiation",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Symbolic Differentiation",
-    "text": "Symbolic Differentiation\n\n\n\nmanipulate the tree of algebraic expressions\n\nimplements various simplification rules\n\nrequires mathematical expression\ncan produce mathematical insights\nsometimes inaccurate:\n\ncf: \\(\\left(\\frac{1+u(x)}{1+v(x)}\\right)^{100}\\)\n\n\n\nTwo main libraries:\n\nSymEngine.jl\n\nfast symbolic calculation\nmature C++ engine\n\nSymbolics.jl:\n\npure julia\nfinite difference\nsymbolic calculation\n\n\nExample using Symbolics:\nusing Symbolics\n@variables a x b y\neq = a*sin(x) + b*cos(y)\nSymbolics.derivative(eq, x)"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#automatic-differentiation",
-    "href": "lectures/perturbation/index.html#automatic-differentiation",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Automatic Differentiation",
-    "text": "Automatic Differentiation\n\nAutomatic Differentiation\n\ndoes not provide mathematical insights but solves the other problems\ncan differentiate any piece of code\ntwo flavours\n\nforward accumulation\nreverse accumulation"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#automatic-source-code-rewrite",
-    "href": "lectures/perturbation/index.html#automatic-source-code-rewrite",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Automatic source code rewrite",
-    "text": "Automatic source code rewrite\n\n\nConsider this simple function\nfunction f(x::Number)\n\n    a = x + 1\n    b = x^2\n    c = sin(a) \n    d = c + b\n\n    return d\n\nend\n\nWe can rewrite the code as follows:\nfunction f(x::Number)\n\n    # x is an argument\n    x_dx = 1.0\n\n    a = x + 1\n    a_dx = x_dx\n\n    b = x^2\n    b_dx = 2*x*x_dx\n\n    c = sin(a)\n    c_x = cos(a)*a_dx\n\n    d = c + b\n    d_x = c_dx + b_dx\n\n    return (d, d_x)\nend"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#dual-numbers-operator-overloading",
-    "href": "lectures/perturbation/index.html#dual-numbers-operator-overloading",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Dual numbers: operator overloading",
-    "text": "Dual numbers: operator overloading\nInstead of rewriting source code, we can use dual numbers to perform exactly the same calculations.\nstruct DN&lt;:Number\n    x::Float64\n    dx::Float64\nend\n\n+(a::DN,b::DN) = DN(a.x+b.x, a.dx+b.dx)\n-(a::DN,b::DN) = DN(a.x-b.x, a.dx-b.dx)\n*(a::DN,b::DN) = DN(a.x*b.x, a.x*b.dx+a.dx*b.x)\n/(a::DN,b::DN) = DN(a.x/b.x, (a.dx*b.x-a.x*b.dx)/b.dx^2)\n\n...\nTry it on function f What do we miss ?"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#dual-numbers",
-    "href": "lectures/perturbation/index.html#dual-numbers",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Dual numbers",
-    "text": "Dual numbers\nThis approach (and automatic differentiation in general) is compatible with control flow operations (if, while, …)\nLet’s see it with the dual numbers defined by ForwardDiff library:\nimport ForwardDiff: Dual\n\nx = Dual(1.0, 1.0)\na = 0.5*x\nb = sum([(x)^i/i*(-1)^(i+1) for i=1:5000])\n# compare with log(1+x)\n\ngeneralizes nicely to gradient computations\n\nx = Dual(1.0, 1.0, 0.0)\ny = Dual(1.0, 0.0, 1.0)\nexp(x) + log(y)"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#automatic-differentiation-2",
-    "href": "lectures/perturbation/index.html#automatic-differentiation-2",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Automatic differentiation",
-    "text": "Automatic differentiation\nThere are many flavours of automatic differenation (check JuliaDiff.org)\n \n \n\n\nForward Accumulation Mode\n\nisomorphic to dual number calculation\ncompute values and derivatives at the same time\nefficient for \\(f: R^n\\rightarrow R^m\\), with \\(n&lt;&lt;m\\)\n\n(keeps lots of empty gradients when \\(n&gt;&gt;m\\))\n\n\n\nReverse Accumulation Mode\n\nReverse Accumulation / Back Propagation\n\nefficient for \\(f: R^n\\rightarrow R^m\\), with \\(n&gt;&gt;m\\)\nrequires data storage (to keep intermediate values)\ngraph / example\n\nVery good for machine learning:\n\n\\(\\nabla_{\\theta} F(x;\\theta)\\) where \\(F\\) is a scalar objective"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#libraries-for-autodiff",
-    "href": "lectures/perturbation/index.html#libraries-for-autodiff",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Libraries for AutoDiff",
-    "text": "Libraries for AutoDiff\n\nSee JuliaDiff: http://www.juliadiff.org/\n\nForwardDiff.jl\nReverseDiff.jl\n\nZygote.jl\nDeep learning framework:\n\nhigher order diff w.r.t. any vector -&gt; tensor operations\nFlux.jl, MXNet.jl, Tensorflow.jl\n\n\n\n\n\n\n\n\n\nExample with ForwardDiff\n\n\nExample with ForwardDiff:\n  using ForwardDiff\nForwardDiff.jacobian(u-&gt;[u[1]^2, u[2]+u[1]], [0.1,0.2])"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#our-problem",
-    "href": "lectures/perturbation/index.html#our-problem",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Our problem",
-    "text": "Our problem\n\n\nGeneral formulation of a linearized model: \\[ \\begin{eqnarray} A s_t + B x_t + C s_{t+1} + D x_{t+1} & = & 0_{n_x} \\\\\ns_{t+1} & = & E s_t + F x_t \\end{eqnarray}\\] where:\n\n\\(s_t \\in \\mathbb{R}^{n_s}\\) is a vector of states\n\\(x_t \\in \\mathbb{R}^{n_x}\\) is a vector of controls\n\nRemark:\n\nfirst equation is forward looking\nsecond equation is backward looking\n\n\nIn the neoclassical model: \\[\\begin{eqnarray}\ns_t & = & (\\Delta z_t, \\Delta k_t) \\\\\nx_t & = & (\\Delta i_t, \\Delta c_t)\n\\end{eqnarray}\\]\nThe linearized system is: \\[\\begin{eqnarray}\nA & = & ...\\\\\nB & = & ...\\\\\nC & = & ...\\\\\nD & = & ...\\\\\nE & = & ...\\\\\nF & = &\n\\end{eqnarray}\\]"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#solution",
-    "href": "lectures/perturbation/index.html#solution",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Solution",
-    "text": "Solution\n\n\nWhat is the solution of our problem?\n\nAt date \\(t\\) controls must be chosen as a function of (predetermined) states\nMathematically speaking, the solution is a function \\(\\varphi\\) such that: \\[\\forall t, x_t = \\varphi(s_t)\\]\nSince the model is linear we look for un unknown matrix \\(X \\in \\mathbb{R}^{n_x} \\times \\mathbb{R}^{n_s}\\) such that: \\[\\Delta x_t = X \\Delta s_t\\]\n\n\nIn the neoclassical model\n\n\nThe states are \\(k_t\\) and \\(z_t\\)\nThe controls \\(i_t\\) and \\(c_t\\) must be a function of the states\n\nthere is a decision rule \\(i()\\), \\(c()\\) such that \\[i_t = i(z_t, k_t)\\] \\[c_t = c(z_t, k_t)\\]\n\nIn the linearized model: \\[\\Delta i_t =i_z \\Delta z_t + i_k \\Delta k_t\\] \\[\\Delta c_t =c_z \\Delta z_t + c_k \\Delta k_t\\]"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#optimality-condition",
-    "href": "lectures/perturbation/index.html#optimality-condition",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Optimality condition:",
-    "text": "Optimality condition:\n\n\nReplacing in the system: \n\\[\\Delta x_t  =  X \\Delta s_t\\] \\[\\Delta s_{t+1}  =  E \\Delta s_t + F X \\Delta s_t\\] \\[\\Delta x_{t+1}  =  X \\Delta s_{t+1}\\] \\[A \\Delta s_t + B \\Delta x_t + C \\Delta s_{t+1} + D \\Delta x_{t+1}  =  0\\]\nIf we make the full substitution:\n\\[( (A + B X) + ( D X + C) ( E  + F X ) ) \\Delta s_t = 0\\]\n\nThis must be true for all \\(s_t\\). We get the special Ricatti equation:\n\\[(A + B {\\color{red}{X}} ) + ( D {\\color{red}{X}} + C) ( E  + F {\\color{red}X} ) = 0\\]\nThis is a quadratic, matrix ( \\(X\\) is 2 by 2 ) equation:\n\nrequires special solution method\nthere are multiple solutions: which should we choose?\ntoday: linear time iteration selects only one solution\n\nalternative: eigenvalues analysis"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#linear-time-iteration",
-    "href": "lectures/perturbation/index.html#linear-time-iteration",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Linear Time Iteration",
-    "text": "Linear Time Iteration\n\nLet’s be more subtle: define\n\n\\(X\\): decision rule today and\n\\(\\tilde{X}\\): is decision rule tomorrow. \\[\\begin{eqnarray}\n\\Delta x_t & =&  X \\Delta s_t \\\\\n\\Delta s_{t+1} & = & E \\Delta  s_t + F X \\Delta s_t \\\\\n\\Delta x_{t+1} & = & \\tilde{X} \\Delta s_{t+1} \\\\\nA \\Delta s_t + B \\Delta x_t + C \\Delta s_{t+1} + D \\Delta x_{t+1} & = & 0\n\\end{eqnarray}\\]\n\nWe get, \\(\\forall s_t\\): \\[(A + B X) + (C + D \\tilde{X}) ( E  + F X ) ) \\Delta s_t = 0 \\]\nAgain, this must be zero in all states \\(\\Delta s_t\\)."
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#linear-time-iteration-2",
-    "href": "lectures/perturbation/index.html#linear-time-iteration-2",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Linear Time Iteration (2)",
-    "text": "Linear Time Iteration (2)\n\n\n\nWe get the equation: \\[\\begin{eqnarray}\nF(X, \\tilde{X}) & = & (A + B X) + ( C+ D \\tilde{X}) ( E  + F X ) \\\\&=& 0\n\\end{eqnarray}\\]\nWe can solve it with a simple Bernouilli scheme\nWhen the model is well-specified it is guaranteed to converge to the right solution.\n\ncf linear time iteration by Pontus Rendahl (link)\n\nThere are simple criteria to check that the solution is right, and that the model is well specified\n\n\nAlgorithm:\n\nchoose stopping criteria: \\(\\epsilon_0\\) and \\(\\eta_0\\)\nchoose random \\(X_0\\)\ngiven \\(X_n\\):\n\ncompute \\(X_{n+1}\\) such that \\(F(X_{n+1}, X_{n}) = 0\\) \\[(B + (C+D X_{n})F)X_{n+1} + A  + (C+D X_n )E=0\\]\\[X_{n+1} = - (B + (C + D X_n) F)^{-1} (A + (C+DX_n)E)\\]\\[X_{n+1} = T(X_n)\\]\ncompute:\n\n\\(\\eta_n = |X_{n+1} - X_n|\\)\n\\(\\epsilon_n = F(X_{n+1}, X_{n+1})\\)\n\nif \\(\\eta_n&lt;\\eta_0\\) and \\(\\epsilon_n&lt;\\epsilon_0\\)\n\nstop and return \\(X_{n+1}\\)\notherwise iterate with \\(X_{n+1}\\)"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#simulating-the-model",
-    "href": "lectures/perturbation/index.html#simulating-the-model",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Simulating the model",
-    "text": "Simulating the model\n\nSuppose we have found the solution \\(\\Delta x_t  = X \\Delta s_t\\)\nRecall the transition equation: \\(\\Delta s_{t+1} = F \\Delta s_t + G \\Delta x_t\\)\nWe can now compute the model evolution following initial deviation in the state: \\[\\Delta s_t = \\underbrace{(F + G X)}_{P} \\Delta s_{t-1}\\]\n\n\\(P\\) is the simulation operator\nit is a backward operator\n\nThe system is stable if the biggest eigenvalue of \\(P\\) is smaller than one…\n… or if its spectral radius is smaller than 1: \\[\\rho(P)&lt;1\\]\nThis condition is called backward stability\n\nit rules out explosive solutions\nif \\(\\rho(P)&gt;1\\) one can always find \\(s_0\\) such that the model simulation diverges"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#spectral-radius",
-    "href": "lectures/perturbation/index.html#spectral-radius",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Spectral radius",
-    "text": "Spectral radius\n\n\n\nHow do you compute the spectral radius of matrix P?\n\nnaive approach: compute all eigenvalues, check the value of the biggest one…\n\nusing LinearAlgebra\nM = rand(2,2)\nmaximum(abs, eigvals(M))\n\nbecomes limited when size of matrix growth\nanother approach: power iteration method\n\nPower iteration method:\n\nworks for matrices and linear operators\ntake a linear operator \\(L\\) over a Banach Space \\(\\mathcal{B}\\) (vector space with a norm)\nuse the fact that for most \\(u_0\\in \\mathcal{B}\\), \\(\\frac{|L^{n+1} u_0|}{|L^n u_0|}\\rightarrow \\rho(L)\\)\n\n\n\nAlgorithm:\n\nchoose tolerance criterium: \\(\\eta&gt;0\\)\nchoose random initial \\(x_0\\) and define \\(u_0 = \\frac{x_0}{|x_0|}\\)\n\nby construction: \\(|u_0|=1\\)\n\ngiven \\(u_n\\), compute\n\n\\(x_{n+1} = L.u_n\\)\n\\(u_{n+1} = \\frac{x_{n+1}}{|x_{n+1}|}\\)\ncompute \\(\\eta_{n+1} = |u_{n+1} - u_n|\\)\nif \\(\\eta_{n+1}&lt;\\eta\\):\n\nstop and return \\(|x_{n+1}|\\)\nelse iterate with \\(u_{n+1}\\)"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#the-time-iteration-operator",
-    "href": "lectures/perturbation/index.html#the-time-iteration-operator",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "The Time Iteration Operator",
-    "text": "The Time Iteration Operator\nThe time iteration operator associated to the linearized model, associates to any function function \\(\\tilde{\\varphi}\\) the function \\(\\varphi\\) such that:\n\\[A \\tilde{\\varphi}( E s + F \\varphi(s) ) + B ( E s + F \\varphi(s))  + C \\varphi(s) + D s = 0\\]\nTo find the solution we have iterated this operator in the space of linear functions (with \\(\\varphi(\\overline{s})=\\overline{x}\\)), but time-iteration can be defined in a more general space.\nIn particular, we can study it in the space of affine functions \\(\\varphi(\\overline{s})=x_0 + x_1 (\\overline{s} - \\overline{s})\\).\nIn this space of functions one can show that:\n\nif \\(P\\) is stable, then the spectral radius of the time iteration operator is the spectral radius of \\(((B + (C + D X) F)^{-1})D\\)\nin that case the stable solution is the unique if and only if, the spectral radius of the time iteration operator is smaller than 1 (backward stability)"
-  },
-  {
-    "objectID": "lectures/perturbation/index.html#recap",
-    "href": "lectures/perturbation/index.html#recap",
-    "title": "Perturbation Analysis (f-g version)",
-    "section": "Recap",
-    "text": "Recap\n\nWe compute the derivatives of the model\nTime iteration algorithm, starting from an initial guess \\(X_0\\) and we repeat until convergence: \\[X_{n+1} = (B + (C + D X_n) F)^{-1} (A + (C+DX_n)E)\\]\nWe compute the spectral radius of two operators to ensure the model is well defined and that the solution is the right one.\nbackward stability: derivative of simulation operator \\[\\boxed{\\rho(E + F \\overline{X} )}\\]\nforward stability: derivative of time iteration operator \\[\\boxed{\\rho \\left( u\\mapsto ((B + (C + D X) F)^{-1})D\\right)}\\]\n\n\\(\\implies\\) forward and backward stability are equivalent to Blanchard-Kahn conditions\n\nthere is a unique stable solution"
+    "objectID": "lectures/convergence/convergence_2.html#the-numerical-radius",
+    "href": "lectures/convergence/convergence_2.html#the-numerical-radius",
+    "title": "Convergence of Sequences (2)",
+    "section": "The Numerical Radius",
+    "text": "The Numerical Radius\n\nDefinition (numerical radius):\n\\[\nw(A) := \\max_{\\|x\\|_2=1} |\\langle Ax,x\\rangle|.\n\\]"
   },
   {
     "objectID": "lectures/discrete_dynamic_programming/index.html#introduction",
@@ -1218,18 +798,39 @@
     "text": "Policy iteration\n\nstart with policy \\(a(w)\\)\nevaluate the value of this policy \\(V^E_a, V^U_a\\)\ncompute the optimal policy \\(a(w)\\) in the Bellman iteration\n\nhere: \\(a(w) = \\arg\\max_{a(w)} \\begin{cases} \\beta \\tilde{V}^E(w)\\\\ \\beta  E_{a'}\\left[ \\tilde{V}^U(a^{\\prime}) \\right] \\end{cases}\\)\n\niterate until \\(a(w)\\) converges"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
+    "objectID": "scpo/index_2026.html",
+    "href": "scpo/index_2026.html",
     "title": "econobits",
     "section": "",
-    "text": "Ongoing courses:\nMIE37\nECO309\nSciencesPo"
+    "text": "TipInstalling Julia\n\n\n\n\n\nThis assumes that you don’t have any version of Julia on your computer. If you have one, please consult with a higher authority.\nTo get a very nice working installation:\n\ninstall JuliaUp: keep Julia versions up to date\ninstall VSCode\ninside VSCode, install the Julia extension\n\n\n\n\n\n\n\n\n\n\nImportantHomework\n\n\n\n\n\nFor next time:\n\ninstall Julia (***)\n\n\n\n\n\n\n\n\n\n\n\n\nLectures\n\n\n\n\n\nNo matching items\n\n\n\n\n\n\nTutorials\n\n\n\n\n\n\n\n\nEpidemiology Models\n\n\n\n\n\n\nJulia Basics\n\n\n\n\n\n\nSolow Model\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "mie37/index_2026.html",
-    "href": "mie37/index_2026.html",
+    "objectID": "mie37/corrections/perturbation_correction.html",
+    "href": "mie37/corrections/perturbation_correction.html",
+    "title": "Perturbation of Neoclassical Model",
+    "section": "",
+    "text": "Pablo Winant\nOur goal here is to compute a linear approximation of solution to the neoclassical model, c# execute: # freeze: true\n# execute: # enabled: falselose ot the steady-state.\n\nWarm-up: install the ForwardDiff library. Use it to differentiate the function below. Check the jacobian function.\n\nNote: the signature of function f needs to be fixed first to allow for dual numbers as arguments.\n\n# function f(x::Vector{T}) where T &lt;: Number\nfunction f(x)\n    a = x[1]\n    b = x[2]\n    x1 = a+b\n    x2 = a*exp(b)\n    return [x1,x2]\nend\n\nf (generic function with 1 method)\n\n\n\n# your code here\nusing ForwardDiff\nForwardDiff.jacobian(f, [1.0, 2.0])\n# library uses dual numbers so f should not be too specific about the type of x\n\n2×2 Matrix{Float64}:\n 1.0      1.0\n 7.38906  7.38906\n\n\n\n# # function f(x::Vector{T}) where T &lt;: Number\n# function g(x::Vector{Float64})\n#     a = x[1]\n#     b = x[2]\n#     x1 = a+b\n#     x2 = a*exp(b)\n#     return [x1,x2]\n# end\n# g([1.0, 2.0])\n# ForwardDiff.jacobian(g, [1.0, 2.0]) # doesn't work\n\nMethodError: MethodError: no method matching g(::Vector{ForwardDiff.Dual{ForwardDiff.Tag{typeof(g), Float64}, Float64, 2}})\nThe function `g` exists, but no method is defined for this combination of argument types.\n\nClosest candidates are:\n  g(!Matched::Vector{Float64})\n   @ Main ~/Teaching/econobits/jl_notebook_cell_df34fa98e69747e1a8f8a730347b8e2f_X36sZmlsZQ==.jl:2\n\nMethodError: no method matching g(::Vector{ForwardDiff.Dual{ForwardDiff.Tag{typeof(g), Float64}, Float64, 2}})\n\nThe function `g` exists, but no method is defined for this combination of argument types.\n\n\n\nClosest candidates are:\n\n  g(!Matched::Vector{Float64})\n\n   @ Main ~/Teaching/econobits/jl_notebook_cell_df34fa98e69747e1a8f8a730347b8e2f_X36sZmlsZQ==.jl:2\n\n\n\n\n\nStacktrace:\n\n [1] vector_mode_dual_eval!(f::typeof(g), cfg::ForwardDiff.JacobianConfig{ForwardDiff.Tag{typeof(g), Float64}, Float64, 2, Vector{ForwardDiff.Dual{ForwardDiff.Tag{typeof(g), Float64}, Float64, 2}}}, x::Vector{Float64})\n\n   @ ForwardDiff ~/.julia/packages/ForwardDiff/egQMG/src/apiutils.jl:24\n\n [2] vector_mode_jacobian(f::typeof(g), x::Vector{Float64}, cfg::ForwardDiff.JacobianConfig{ForwardDiff.Tag{typeof(g), Float64}, Float64, 2, Vector{ForwardDiff.Dual{ForwardDiff.Tag{typeof(g), Float64}, Float64, 2}}})\n\n   @ ForwardDiff ~/.julia/packages/ForwardDiff/egQMG/src/jacobian.jl:129\n\n [3] jacobian(f::typeof(g), x::Vector{Float64}, cfg::ForwardDiff.JacobianConfig{ForwardDiff.Tag{typeof(g), Float64}, Float64, 2, Vector{ForwardDiff.Dual{ForwardDiff.Tag{typeof(g), Float64}, Float64, 2}}}, ::Val{true})\n\n   @ ForwardDiff ~/.julia/packages/ForwardDiff/egQMG/src/jacobian.jl:22\n\n [4] jacobian(f::typeof(g), x::Vector{Float64}, cfg::ForwardDiff.JacobianConfig{ForwardDiff.Tag{typeof(g), Float64}, Float64, 2, Vector{ForwardDiff.Dual{ForwardDiff.Tag{typeof(g), Float64}, Float64, 2}}})\n\n   @ ForwardDiff ~/.julia/packages/ForwardDiff/egQMG/src/jacobian.jl:19\n\n [5] jacobian(f::typeof(g), x::Vector{Float64})\n\n   @ ForwardDiff ~/.julia/packages/ForwardDiff/egQMG/src/jacobian.jl:19\n\n [6] top-level scope\n\n   @ ~/Teaching/econobits/jl_notebook_cell_df34fa98e69747e1a8f8a730347b8e2f_X36sZmlsZQ==.jl:10\n\n\n\nCreate a NamedTuple to hold the model parameters.\n\n\n# your code here\nmodel  = (;\n    α = 0.3,\n    β = 0.96,\n    γ = 2.0,\n    δ = 0.1,\n    ρ = 0.9\n)\n\n(α = 0.3, β = 0.96, γ = 2.0, δ = 0.1, ρ = 0.9)\n\n\n\nDefine two functions:\n\n\ntransition(z::Number, k::Number, i::Number, p)::Tuple{Number} which returns productivity and capital at date t+1 as a function of productivity, capital and investment at date t\narbitrage(z::Number, k::Number, i::Number, Z::Number, K::Number, I::Number, p)::Number which returns the residual of the euler equation (lower case variable for date t, upper case for date t+1)\n\n\nUsing multiple dispatch, define two variants of the same functions, that take vectors as input and output arguments:\n\n\narbitrage(s::Vector{T}, x::Vector{T}, S::Vector{T}, X::Vector{T}, p) where T&lt;:Number\ntransition(s::Vector{T}, x::Vector{T}, p) where T&lt;:Number\n\n\n\"\"\"\np : parameters of the model\n\"\"\"\nfunction transition(z,k,i,p)\n    (;ρ, δ) = p\n    #same as\n    # ρ = p.ρ\n    # δ = p.δ\n\n    Z = ρ*z\n    K = (1-δ)*k + i\n    return (Z, K)\nend\ntransition( 0.0, 1.0, 0.1, model)\n\n(0.0, 1.0)\n\n\n\nfunction arbitrage(z,k,i,Z,K,I,p)\n    (;ρ, δ, α, β, γ) = p\n\n    y = exp(z)*k^α # lower case for today\n    c = y-i\n    Y = exp(Z)*K^α # upper case for tomorrow\n    C = Y-I\n\n    r = β*(C/c)^(-γ)*( (1-δ) + α*Y/K ) - 1\n\n    return (r, ) # tuple with one value\n\nend\narbitrage(0.0, 1.0, 0.1, 0.0, 1.0, 0.1, model)\n\n(0.1519999999999999,)\n\n\n\n# overload the definitions for vectors\n\ntransition(s, x, p) = [transition(s[1], s[2], x[1], p)...]\n\n# [t...]  #unpacks the tuple t as a vector\ntransition(s, x, p) = [transition(s..., x..., p)...]\n\ntransition (generic function with 2 methods)\n\n\n\ntransition([0.0, 1.0], [0.1], model)\n\n2-element Vector{Float64}:\n 0.0\n 1.0\n\n\n\narbitrage(s, x, S, X,  p) = [arbitrage(s..., x..., S..., X..., p)...]\narbitrage([0.0, 1.0], [0.1],[0.0, 1.0], [0.1], model)\n\n1-element Vector{Float64}:\n 0.1519999999999999\n\n\n\nWrite a function steady_state(p)::Tuple{Vector,Vector} which computes the steady-state of the model computed by hand. It returns two vectors, one for the states, one for the controls. Check that the steady-state satisfies the model equations.\n\n\nfunction steady_state(p)\n    (;ρ, δ, α, β, γ) = p\n    k = ((1/β-(1-δ))/α)^(1/(α-1))\n    i = δ*k\n    z = 0.0\n    return [z,k], [i]\n    \nend\n\ns_, x_ = steady_state(model)\n\n([0.0, 2.920822149964071], [0.29208221499640713])\n\n\n\narbitrage(s_,x_,s_,x_,model)\n\n1-element Vector{Float64}:\n 0.0\n\n\nThe first order system satisfies: \\[\\begin{align}A s_t + B x_t + C s_{t+1} + D x_{t+1} & = & 0 \\\\\\\\\ns_{t+1} & = & E s_t + F x_t\n\\end{align}\\]\n\nDefine a structure PerturbedModel to hold matrices A,B,C,D,E,F.\n\n\n# your code here\n\n\nWrite a function first_order_model(s::Vector, x::Vector, p)::PerturbedModel, which returns the first order model, given the steady-state and the calibration. Suggestion: use ForwardDiff.jl library.\n\n\nusing ForwardDiff\nA = ForwardDiff.jacobian( u-&gt; arbitrage(u, x_, s_, x_, model ), s_)\nB = ForwardDiff.jacobian( u-&gt; arbitrage(s_, u, s_, x_, model ), x_)\nC = ForwardDiff.jacobian( u-&gt; arbitrage(s_, x_, u, x_, model ), s_)\nD = ForwardDiff.jacobian( u-&gt; arbitrage(s_, x_, s_, u, model ), x_)\nE = ForwardDiff.jacobian( u-&gt; transition(u, x_, model ), s_)\nF = ForwardDiff.jacobian( u-&gt; transition(s_, u, model ), x_)\n\n2×1 Matrix{Float64}:\n 0.0\n 1.0\n\n\n\nWe look for a linear solution \\(x_t = X s_t\\) . Write the matrix equation which X must satisfy. Write a function residual(X::Array, M::PerturbedModel) which computes the residual of this equation for a given X.\n\n\n# your code here\n\n\nWrite a function T(X, M::PerturbedModel) which implements the time iteration step.\n\n\n# your code here\n\n\nWrite function linear_time_iteration(X_0::Matrix, m::PerturbedModel)::Matrix which implements the time iteration algorithm. Apply it to X0 = rand(1,2) and check that the result satisfies the first order model.\n\n\n# your code here\n\n\nCheck blanchard Kahn Conditions\n\n\n# your code here\n\n\nWrite a function simulate(s0::Vector, X::Matrix, p, T::Int64)::Tuple{Matrix, Matrix} to simulate the model over \\(T\\) periods (by using the formula \\(\\Delta s_t = (E + F X) \\Delta s_{t-1})\\). Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variables levels or log-deviations. If possible, return a DataFrame object.\n\n\n# your code here\n\n\nMake some nice plots."
+  },
+  {
+    "objectID": "mie37/homework/coursework_1.html",
+    "href": "mie37/homework/coursework_1.html",
+    "title": "Coursework 2026 - Deep Learning",
+    "section": "",
+    "text": "Name:\nSurname:\nAfter completing the following questions, send the edited notebook to pablo.winant@ensae.fr. You can work in (small) teams but are not allowed to copy/paste any code. Don’t forget to comment your code and take any initiative you find relevant."
+  },
+  {
+    "objectID": "mie37/homework/coursework_1.html#learning-the-consumption-rule",
+    "href": "mie37/homework/coursework_1.html#learning-the-consumption-rule",
+    "title": "Coursework 2026 - Deep Learning",
+    "section": "Learning the Consumption Rule",
+    "text": "Learning the Consumption Rule\nThis exercise is inspired from Individual learning about consumption by Todd Allen and Chris Carroll link and from Deep Learning for Solving Economic models by Maliar, Maliar and Winant link\nWe consider the following consumption saving problem. An agent receives random income \\(y_t = \\exp(\\epsilon_t)\\) where \\(\\epsilon_t\\sim \\mathcal{N}(\\sigma)\\) (\\(\\sigma\\) is the standard deviation.)\nConsumer starts the period with available income \\(w_t\\). The law of motion for available income is:\n\\[w_t = \\exp(\\epsilon_t) + (w_{t-1}-c_{t-1}) r\\]\nwhere consumption \\(c_t \\in ]0,w_t]\\) is chosen in each period in order to maximize:\n\\[E_t \\sum_{t=0}^T \\beta^t U(c_t)\\]\ngiven initial available income \\(w_0\\).\nIn the questions below, we will use the following calibration:\n\n\\(\\beta = 0.9\\)\n\\(\\sigma = 0.1\\)\n\\(T=100\\)\n\\(U(x) = \\frac{x^{1-\\gamma}}{1-\\gamma}\\) with \\(\\gamma=2\\)\n\\(w_0 = 1.1\\) (alternatively, consider values 0.5 and 1)\n\nThe theoretical solution to this problem is a concave function \\(\\varphi\\) such that \\(\\varphi(x)\\in ]0,x]\\) and \\(\\forall t,  c_t=\\varphi(w_t)\\). Qualitatively, agents accumulate savings, up to a certain point (a buffer stock), beyond which wealth is not increasing any more (in expectation).\nCarroll and Allen have noticed that the true solution can be approximated very well by a simple rule:\n\\(\\psi(x) = \\min(x, \\theta_0 + \\theta_1 (x - \\theta_0) )\\)\nThe main question they ask in the aforementioned paper is whether it is realistic that agents would learn good values of \\(\\theta_0\\) and \\(\\theta_1\\) by observing past experiences.\nWe would like to examine this result by checking convergence of speed of stochastic gradient algorithm.\n\nLifetime reward\nDefine a NamedTuple to hold the parameter values\n\n# your code here\n\nDefine simple rule fonction consumption(w::Number, θ_0::Number, θ_1::Number, p::NamedTuple) which compute consumption using a simple rule. What is the meaning of \\(\\theta_0\\) and \\(\\theta_1\\)? Make a plot in the space \\(w,c\\), including consumption rule and the line where \\(w_{t+1} = w_t\\).\n(remark for later: Number type is compatible with ForwardDiff.jl 😉)\n\n# your code here\n\nWrite a function lifetime_reward(w_0::Number, θ_0::Number, θ_1::Number, p::NamedTuple) which computes one realization of \\(\\sum \\beta^t U(c_t)\\) for initial wealth w_0 and simple rule θ_0, θ_1. Mathematically, we denote it by \\(\\xi(\\omega; \\theta_0, \\theta_1)\\), where \\(\\omega\\) represents the succession of random income draws.\n\n# your code here\n\nWrite a function expected_lifetime_reward(w_0::Number, θ_0::Number, θ_1::Number,  p::NamedTuple; N=1000) which computes expected lifetime reward using N Monte-Carlo draws. Mathematically, we write it \\(\\Xi^{N}(\\theta_0, \\theta_1) =\\frac{1}{N} \\sum_1^N {\\xi(\\omega_N; \\theta_0, \\theta_1)}\\). Check empirically that standard deviation of these draws decrease proportionally to \\(\\frac{1}{\\sqrt{N}}\\) .\n\n# your code here\n\n__Using a high enough number for N, compute optimal values for \\(\\theta_0\\) and \\(\\theta_1\\). What is the matching value for the objective function converted into an equivalent stream of deterministic consumption ? That is if V is the approximated value computed above, what is \\(\\bar{c}\\in \\R\\) such that $ V= _{t=0}^T ^t U({c})$ ?__\n\n# your code here\n\nUsing a high enough number for N, make contour plots of lifetime rewards as a function of θ_0 and θ_1. Ideally, represent lines with \\(1\\%\\) consumption loss, \\(5\\%\\) and \\(10\\%\\) deterministic consumption loss w.r.t. to maximum.\n\n# your code here\n\n\n\nLearning to save\nWe now focus on the number of steps it takes to optimize \\(\\theta_0\\), \\(\\theta_1\\).\nImplement a function ∇(θ::Vector; N=1000)::Vector which computes the gradient of the objective w.r.t. θ==[θ_0,θ_1]. (You need to use automatic differentiation, otherwise you might get incorrect results).\n\n# your code here\n\nImplement a gradient descent algorithm to maximize \\(\\Xi^N(\\theta_0, \\theta_1)\\) using learning rate \\(\\lambda \\in ]0,1]\\). Stop after a predefined number of iterations. Compare convergence speed for different values of \\(\\lambda\\) and plot them on the \\(\\theta_0, \\theta_1\\) plan. How many steps does it take to enter the 1% error zone? The 5% and the 10% error zone?\n\n# your code here\n\nEven for big N, the evaluated value of ∇ are stochastic, and always slightly inaccurate. In average, they are non-biased and the algorithm converges in expectation (it fluctuates around the maximum). This is called the stochastic gradient method.\n\n# your code here\n\nWhat are the values of \\(N\\) and \\(\\lambda\\) which minimize the number of iterations before reaching the target zones (at 1%, 2%, etc…)? How many simulations periods does it correspond to? Would you say it is realistic that consumers learn from their own experience?\n\n# your code here"
+  },
+  {
+    "objectID": "eco309/index_2026.html",
+    "href": "eco309/index_2026.html",
     "title": "econobits",
     "section": "",
-    "text": "TipInstalling Julia\n\n\n\n\n\nThis assumes that you don’t have any version of Julia on your computer. If you have one, please consult with a higher authority.\nTo get a very nice working installation:\n\ninstall JuliaUp: keep Julia versions up to date\ninstall VSCode\ninside VSCode, install the Julia extension\n\n\n\n\n\n\n\n\n\n\nImportantHomework\n\n\n\n\n\nFor April 2nd:\n\nFirst homework: coursework 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLectures\n\n\n\n\n\n\n\n\nConvergence of Sequences (1)\n\n\n\n\n\n\nConvergence of Sequences (2)\n\n\n\n\n\n\nPerturbation Analysis (f-g version)\n\n\n\n\n\n\nNo matching items\n\n\n\n\n\n\nTutorials\n\n\n\n\n\n\n\n\nEpidemiology Models\n\n\n\n\n\n\nJulia Basics\n\n\n\n\n\n\nPerturbation of Neoclassical Model\n\n\n\n\n\n\nSolow Model\n\n\n\n\n\n\nNo matching items"
+    "text": "Work in Progress"
   },
   {
     "objectID": "tutorials/Julia_Basics.html",
@@ -1246,6 +847,13 @@
     "text": "Additional Exercises\nTaken from QuantEcon’s Julia Essentials and Vectors, Arrays, and Matrices lectures.\n\nConsider the polynomial \\[p(x) = \\sum_{i=0}^n a_0 x^0\\] Using enumerate, write a function p such that p(x, coeff) computes the value of the polynomial with coefficients coeff evaluated at x.\nWrite a function solve_discrete_lyapunov that solves the discrete Lyapunov equation \\[S = ASA' + \\Sigma \\Sigma'\\] using the iterative procedure \\[S_0 = \\Sigma \\Sigma'\\] \\[S_{t+1} = A S_t A' + \\Sigma \\Sigma'\\] taking in as arguments the \\(n \\times n\\) matrix \\(A\\), the \\(n \\times k\\) matrix \\(\\Sigma\\), and a number of iterations."
   },
   {
+    "objectID": "tutorials/perturbation.html",
+    "href": "tutorials/perturbation.html",
+    "title": "Perturbation of Neoclassical Model",
+    "section": "",
+    "text": "Our goal here is to compute a linear approximation of solution to the neoclassical model, c# execute: # freeze: true\n# execute: # enabled: falselose ot the steady-state.\n\nWarm-up: install the ForwardDiff library. Use it to differentiate the function below. Check the jacobian function.\n\nNote: the signature of function f needs to be fixed first to allow for dual numbers as arguments.\n\n# function f(x::Vector{T}) where T &lt;: Number\nfunction f(x)\n    a = x[1]\n    b = x[2]\n    x1 = a+b\n    x2 = a*exp(b)\n    return [x1,x2]\nend\n\n\n# your code here\n\n\nCreate a NamedTuple to hold the model parameters.\n\n\n# your code here\n\n\nDefine two functions:\n\n\ntransition(z::Number, k::Number, i::Number, p)::Tuple{Number} which returns productivity and capital at date t+1 as a function of productivity, capital and investment at date t\narbitrage(z::Number, k::Number, i::Number, Z::Number, K::Number, I::Number, p)::Number which returns the residual of the euler equation (lower case variable for date t, upper case for date t+1)\n\n\nUsing multiple dispatch, define two variants of the same functions, that take vectors as input and output arguments:\n\n\narbitrage(s::Vector{T}, x::Vector{T}, S::Vector{T}, X::Vector{T}, p) where T&lt;:Number\ntransition(s::Vector{T}, x::Vector{T}, p) where T&lt;:Number\n\n\n# your code here\n\n\n# your code here\n\n\n# your code here\n\n\nWrite a function steady_state(p)::Tuple{Vector,Vector} which computes the steady-state of the model computed by hand. It returns two vectors, one for the states, one for the controls. Check that the steady-state satisfies the model equations.\n\n\n# your code here\n\n\n# your code here\n\nThe first order system satisfies: \\[\\begin{align}A s_t + B x_t + C s_{t+1} + D x_{t+1} & = & 0 \\\\\\\\\ns_{t+1} & = & E s_t + F x_t\n\\end{align}\\]\n\nDefine a structure PerturbedModel to hold matrices A,B,C,D,E,F.\n\n\n# your code here\n\n\nWrite a function first_order_model(s::Vector, x::Vector, p)::PerturbedModel, which returns the first order model, given the steady-state and the calibration. Suggestion: use ForwardDiff.jl library.\n\n\n# your code here\n\n\nWe look for a linear solution \\(x_t = X s_t\\) . Write the matrix equation which X must satisfy. Write a function residual(X::Array, M::PerturbedModel) which computes the residual of this equation for a given X.\n\n\n# your code here\n\n\nWrite a function T(X, M::PerturbedModel) which implements the time iteration step.\n\n\n# your code here\n\n\nWrite function linear_time_iteration(X_0::Matrix, m::PerturbedModel)::Matrix which implements the time iteration algorithm. Apply it to X0 = rand(1,2) and check that the result satisfies the first order model.\n\n\n# your code here\n\n\nCheck blanchard Kahn Conditions\n\n\n# your code here\n\n\nWrite a function simulate(s0::Vector, X::Matrix, p, T::Int64)::Tuple{Matrix, Matrix} to simulate the model over \\(T\\) periods (by using the formula \\(\\Delta s_t = (E + F X) \\Delta s_{t-1})\\). Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variables levels or log-deviations. If possible, return a DataFrame object.\n\n\n# your code here\n\n\nMake some nice plots."
+  },
+  {
     "objectID": "tutorials/solow.html",
     "href": "tutorials/solow.html",
     "title": "Solow Model",
@@ -1258,5 +866,425 @@
     "title": "Epidemiology Models",
     "section": "",
     "text": "H.W. Heathcote: epidemiologic models are deterministic models for infectious diseases which are spread by direct person-to-person contact in a population.\nThis kind of models has been used since by a few decades by economist, for matters that have nothing to do with health.\n\ndiffusion of information, or opinions on social medias\nasset prices and fads\nexpectation formation for macroeconomic outcomes (ex: The Epidemiology of Macroeconomic Expectations by Chris Carroll)\n\nEpidemiologic models have two features that depart from standard economic models:\n\nAgent’s behaviour does not take the full system into account. It is irrational in the sense that it isn’t forward looking. Instead, an agent is given a behavioural heuristic.\nThe transitions of the whole system can be determined without solving for complex interactions first.\n\nUnderstanding why these two assumptions are very costly for economists will keep us busy during a big part of the course. Here we just consider two simple models as small programming exercises.\n\nSimple SIR model\nThere is a continuum of agents of mass \\(1\\). Each agent can be either “Susceptible” (S), “Infected” (I) or “Recovered” (R). In each period, one agent meets another agent drawn randomly. During a meeting Susceptible agents who meet an infected agent, will always catch the disease (or the fad) but are not contagious. Infected agents, have a probability \\(\\pi\\) of being recovered. Nothing happens to Recovered agents who meet other people. No distinction is made between recovering as a healthy or a dead person.\nWe’re interested in the evolution in the number infected persons, both the speed of infection and the total amount of infected people in every period.\nWrite down the transition equations for \\(n_I\\), the number of infected people, for \\(n_R\\) the number of recovered people and \\(n_S\\) the number of susceptible people.\n# your text here\nCompute the transition function f for the vector state \\(s_t\\) returning \\(s_{t+1}\\).\n\n# your code here\n\nCompute the transitions over \\(T\\) periods. Plot the result using Plots.jl. (bonus: check against closed form solution)\n\n# your code here\n\nWe now assume a Susceptible person who meets an infected one has a probability \\(\\mu\\) of catching the disease. Update the transition function. Update function \\(f\\) and write a function of \\(\\mu\\), \\(\\pi\\) which returns the simulation. Compare different values of the parameters. How would you interpret “social distancing”? How would you choose parameters \\(\\Pi\\) and \\(\\mu\\)\n\n# your code here\n\n\n\nA Spatial SIR model\nWe now consider another version of the model where agents evolve in the space \\(\\mathcal{S}=[0,1]\\times[0,1]\\). There are \\(N\\in\\mathbb{N}\\) agent. At any date, each agent \\(n \\in [0,1]\\) is located at \\((x_n,y_n)\\in \\mathcal{S}\\).\nEach agent moves follows a random walk bounded by \\(\\mathcal{S}\\): \\[x_t = \\min(\\max( x_{t-1} + \\epsilon_t, 0), 1)\\] \\[y_t = \\min(\\max( y_{t-1} + \\eta_t, 0), 1)\\] where \\(\\epsilon_t\\) and \\(\\eta_t\\) are both normally distributed with standard deviation \\(\\sigma\\).\nAt any date, the individual state of an agent is \\(s_t=(x_t, y_t, h_t)\\) where \\(h_t\\) is either “S”, “I” or “R”. \\(v_t\\) denotes the states of all agents (for instance \\(v_t=(s_{n,t})_n\\). The health status of each agent is updated in the following way:\n\nAgents \\(R\\) stay \\(R\\).\nAgents \\(I\\) have probability \\(\\pi\\) to become \\(R\\). They stay \\(I\\) otherwise.\nAn agent of type \\(S\\) in position \\((x,y)\\) has a probability \\(prob(x,y,S)\\) to be infected that is \\(\\mu\\) if there is another infected agent within a radius \\(r&gt;0\\).\n\nDefine a type Agent, which holds the type of an agent. The state of the whole system will be held in a Vector[Agent] type.\n\n# your code here\n\nWrite a function spatial_transition(S::Vector{Agent})::Vector{Agent} to compute the transition of the positions. Write another function random_guess(T=100) which simulates for \\(T\\) periods in order to find a good initial guess.\n\n# your code here\n\nWrite a function show_population to plot all agents with different colors for different health status.\n\n# your code here\n\nWrite a function evolve(S::Vector[Agent])::Vector[Agent] which takes the population in a given state and returns the same population with updated health status.\n\n# your code here\n\nWrite a function simulate(S0::Vector[Agent], k=1) to simulate the economy starting from an initially random position with k infected individuals. The returned object should be of type Vector[Vector[Agent]].\n\n# your code here\n\nCompute statistics along a simulated path for \\(n_I\\), \\(n_S\\), \\(n_R\\). Plot and compare with the basic SIR model\n\n# your code here\n\n\n\nAdditional questions\nHave fun by trying to answer one of these questions:\n\nchange probability of infection so that it depends on the number of infected people in the vincinity (with some suitable functional formulation for)\ncompute an animation of the transition\ncompute an interactive visualisation (with Interact.jl if available)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "This website is devoted to teaching computational economics."
+  },
+  {
+    "objectID": "mie37/index_2026.html",
+    "href": "mie37/index_2026.html",
+    "title": "econobits",
+    "section": "",
+    "text": "TipInstalling Julia\n\n\n\n\n\nThis assumes that you don’t have any version of Julia on your computer. If you have one, please consult with a higher authority.\nTo get a very nice working installation:\n\ninstall JuliaUp: keep Julia versions up to date\ninstall VSCode\ninside VSCode, install the Julia extension\n\n\n\n\n\n\n\n\n\n\nImportantHomework\n\n\n\n\n\nFor April 2nd:\n\nFirst homework: coursework 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLectures\n\n\n\n\n\n\n\n\nConvergence of Sequences (1)\n\n\n\n\n\n\nConvergence of Sequences (2)\n\n\n\n\n\n\nPerturbation Analysis (f-g version)\n\n\n\n\n\n\nNo matching items\n\n\n\n\n\n\nTutorials\n\n\n\n\n\n\n\n\nEpidemiology Models\n\n\n\n\n\n\nJulia Basics\n\n\n\n\n\n\nPerturbation of Neoclassical Model\n\n\n\n\n\n\nSolow Model\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "scpo/wip.html",
+    "href": "scpo/wip.html",
+    "title": "econobits",
+    "section": "",
+    "text": "Work in Progress"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "econobits",
+    "section": "",
+    "text": "Ongoing courses:\nMIE37\nECO309\nSciencesPo"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#today",
+    "href": "lectures/perturbation/index.html#today",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Today",
+    "text": "Today\nStudy Neoclassical Model of Growth with Deterministic Productivity Shocks\n\nDerive First Order Conditions\nComputing Derivatives Numerically\nSolution Method\n\nLinear Time Iteration\n\nImplementation"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#neoclassical-growth-model",
+    "href": "lectures/perturbation/index.html#neoclassical-growth-model",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Neoclassical Growth Model",
+    "text": "Neoclassical Growth Model\n\n\n\nTransition Equation \\[\\begin{eqnarray}\nk_t & = & (1-\\delta) k_{t-1} + i_{t-1} \\\\\nz_t & = & \\rho z_{t-1}\n\\end{eqnarray}\n\\]\nDefinition: \\[c_t = \\exp(z_t) k_t^\\alpha - i_t\\]\nControl \\(i_t\\in[0, \\exp(z_t)k_t^\\alpha[\\)\n\nor equivalently \\(c_t \\in ]0, \\exp(z_t) k_t^{\\alpha}]\\)\n\nObjective: \\[\\max_{i_t} \\sum_{t\\geq0} \\beta^t U(c_t)\\]\n\n\n\nCalibration:\n\n\\(\\beta = 0.96\\)\n\\(\\delta = 0.1\\)\n\\(\\gamma = 4.0\\)\n\\(\\alpha = 0.3\\)\n\\(U(x)=\\frac{x^{1-\\gamma}}{1-\\gamma}\\)"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#deriving-first-order-conditions-1",
+    "href": "lectures/perturbation/index.html#deriving-first-order-conditions-1",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Deriving First Order Conditions",
+    "text": "Deriving First Order Conditions\n\nTwo methods:\n\nBellman:\n\nOptimality Condition\nEnveloppe Condition\n\nLagrangian:\n\nWe will use the lagrangian version"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#lagrangian",
+    "href": "lectures/perturbation/index.html#lagrangian",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Lagrangian",
+    "text": "Lagrangian\n\nInitial Conditions (predetermined states): \\(z_0\\), \\(k_0\\)\nProblem: \\[V(z_0, k_0) = \\max_{\\begin{matrix}i_0, i_1, i_2, \\cdots \\\\c_0, c_1, c_2 \\cdots \\\\ k_1, k_2, \\cdots\\end{matrix}} \\sum_{t \\geq 0}\\beta^t U(c_t)\\]\n\n\\[\\text{s.t.}\\forall t\\geq 0, \\; \\; \\begin{eqnarray}\n\\mu_t:\\quad &  0 & \\leq & i_t  \\\\\n\\nu_t:\\quad &  i_t & \\leq & \\exp(z_t) k_t^{\\alpha} \\\\\n\\lambda_t:\\quad &  i_t & = & \\exp(z_t) k_t^{\\alpha} - c_t\\\\\nq_t:\\quad &  k_{t+1} & = & (1-\\delta) k_{t} + i_{t}\n\\end{eqnarray}\\]\n\nLagrangian: \\[\n\\mathcal{L} (z_0, k_0) = \\sum_{t \\geq 0} \\beta^t\\left\n\\{ U(c_t) + \\mu_t \\left( i_t \\right) + \\nu_t \\left(\\exp(z_t)k_t^{\\alpha} - i_t \\right) + \\lambda_t \\left(\\exp(z_t) k_t^{\\alpha}  - i_t -c_t \\right)  + q_t \\left( (1-\\delta) k_{t} + i_{t} - k_{t+1} \\right) \\right\\}\n\\]"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#lagrangian-1",
+    "href": "lectures/perturbation/index.html#lagrangian-1",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Lagrangian",
+    "text": "Lagrangian\n\n\n\nWe maximize the lagrangian to get:\n\n\\[\\begin{eqnarray}\n\\forall t\\geq0 & \\frac{\\partial \\mathcal{L}}{\\partial i_t} & = & 0 \\\\\n& \\frac{\\partial \\mathcal{L}}{\\partial c_t} & = & 0 \\\\\n& \\frac{\\partial \\mathcal{L}}{\\partial k_{t+1}} & = & 0\n\\end{eqnarray}\\]\n\nIt is important to note that we don’t differentiate with respect to a predetermined state\n\ncheck that you don’t differentiate w.r.t. \\(k_0\\)\n\nIt looks like the first order condition added four new variables \\(\\mu_t\\),\\(\\nu_t\\), \\(\\lambda_t\\), \\(q_t\\)\n\n\n\nLuckily these variables are associated to slackness conditions.\n\n\n\n\n\\(\\mu_t \\geq 0\\)\n\\(i_t \\geq 0\\)\n\n\n\\(\\nu_t \\geq 0\\)\n\\(\\exp(z_t) k_t^{\\alpha}-i_t \\geq 0\\)\n\n\n\\(q_t \\geq 0\\)\n\\((1-\\delta) k_{t} + i_{t} - k_{t+1} \\geq 0\\)\n\n\n\\(\\lambda_t \\geq 0\\)\n\\(\\exp(z_t) k_t^{\\alpha}  - i_t -c_t = 0\\)\n\n\n\n\nThe Karush-Kuhn-Tucker states, that for each slackness condition, at any time, either\n\nthe lagrangian is 0 and it disappears from the F.O.C.s\nor it is not 0 and the associated constraint adds another condition"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#eliminating-constraints",
+    "href": "lectures/perturbation/index.html#eliminating-constraints",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Eliminating constraints",
+    "text": "Eliminating constraints\n\n\n\n\n\n\\(\\mu_t \\geq 0\\)\n\\(i_t \\geq 0\\)\n\n\n\\(\\nu_t \\geq 0\\)\n\\(\\exp(z_t) k_t^{\\alpha}-i_t \\geq 0\\)\n\n\n\\(q_t\\)\n\\((1-\\delta) k_{t} + i_{t} - k_{t+1} = 0\\)\n\n\n\\(\\lambda_t\\)\n\\(\\exp(z_t) k_t^{\\alpha}  - i_t -c_t = 0\\)\n\n\n\n\nIn general slackness conditions can be occasionally binding\nFor perturbation analysis, we need constraints to be always (or never binding)\n\n\nLet’s review them:\n\n\\(\\nu_t\\): it is equivalent to \\(c_t\\geq 0\\)\n\nwe necessarily have \\(c_t&gt;0\\) since \\(U^{\\prime}(0)=\\infty\\)\nhence \\(\\nu_t=0\\)\n\n\\(\\mu_t\\): it states \\(k_{t+1}\\geq 0\\)\n\nif \\(k_{t+1}=0\\), then \\(c_{t+1}\\). We can conclude \\(k_{t+1}&gt;0\\)\nhence \\(\\mu_t=0\\)\n\nfor multipliers associated to an equality constraint, we always keep the system\n\nmultiplier can have any sign\n\ninequality formulation is sometimes used too:\n\n\\(c_t \\leq \\exp(z_t) k_t^{\\alpha}  - i_t\\) ( you can destroy production insead of eating or investing it)\n\\(k_{t+1} \\leq (1-\\delta) k_{t} + i_{t}\\) (you can destroy capital instead of investing it)"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#first-order-model",
+    "href": "lectures/perturbation/index.html#first-order-model",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "First order model",
+    "text": "First order model\n\nOptimality Condition: \\[\\beta  \\left[ \\frac{\\left(c_{t+1}\\right)^{-\\gamma}}{\\left(c_t\\right)^{-\\gamma}} \\left( (1-\\delta + \\alpha exp(z_{t+1})k_{t+1}^{\\alpha -1}) \\right)\\right] = 1\\]\n\nTakes into account the fact that \\(c_t&gt;0\\).\n\nDefinition: \\[c_t = exp(z_t) k_t^\\alpha - i_t\\]\nTransition: \\[k_t = (1-\\delta) k_{t-1} + i_{t-1}\\] \\[z_t = \\rho z_{t-1}\\]"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#steady-state",
+    "href": "lectures/perturbation/index.html#steady-state",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Steady-State",
+    "text": "Steady-State\n\n\n\nSteady-State: \\(\\overline{i}, \\overline{k}, \\overline{z}\\) such that:\n\n\\(z_{t+1}=z_t=\\overline{z}\\)\n\\(k_{t+1}=k_t=\\overline{k}\\)\n\\(i_{t+1}=i_t=\\overline{i}\\)\n\\(c_{t+1}=c_t=\\overline{c}\\)\n\n…satisfy the first order conditions\n…i.e.\n\n\\[\n\\begin{eqnarray}\n1 & = & \\beta   \\left( (1-\\delta + \\alpha {\\overline{k}}^{\\alpha -1}) \\right)  \\\\\n\\overline{k} & = & (1-\\delta) \\overline{k} + \\overline{i} \\\\\n\\overline{z} & = & \\rho \\overline{z} \\\\\n\\overline{c} & = & \\overline{k}^{\\alpha} - \\overline{i}\n\\end{eqnarray}\n\\]\n\n\nSolution?\n\nclosed-form\nnumerical\n\nHere we can get a closed form:\n\n\\[\\begin{eqnarray}\n\\overline{k} & = & \\left( \\frac{\\frac{1}{\\beta}-(1-\\delta)}{\\alpha} \\right)^{\\frac{1}{\\alpha - 1}} \\\\\n\\overline{i} & = & \\delta \\overline{k} \\\\\\\n\\overline{z} & = & 0 \\\\\n\\overline{c} & = & \\overline{k}^{\\alpha} - \\overline{i}\n\\end{eqnarray}\\]"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#perturbation-analysis",
+    "href": "lectures/perturbation/index.html#perturbation-analysis",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Perturbation Analysis",
+    "text": "Perturbation Analysis\n\n\n\nWrite all variables in deviation to the steady-state: \\[z_{t}=\\overline{z} + \\Delta z_t\\] \\[k_{t}=\\overline{k} + \\Delta k_t\\] \\[i_{t}=\\overline{i} + \\Delta i_t\\] \\[c_{t}=\\overline{c} + \\Delta c_t\\]\n\nRemark: some smart economists use log-deviations (i.e. \\(x_t = \\overline{x} \\hat{x}_t\\) to make computations easier)\n\n\n\n\nReplace in the system \\[\\beta  \\left[ \\frac{\\left(\\overline{c}+ \\Delta c_{t+1}\\right)^{-\\gamma}}{\\left(\\overline{c} + \\Delta c_t\\right)^{-\\gamma}} \\left( (1-\\delta + \\alpha (\\overline{k} + \\Delta k_{t+1})^{\\alpha -1}) \\right)\\right] = 1\\] \\[\\overline{c} + \\Delta c_t = (\\overline{k}+ \\Delta k_t)^\\alpha - \\overline{i} - \\Delta i_t\\] \\[\\overline{k} + \\Delta k_t = (1-\\delta) (\\overline{k}+ \\Delta k_{t-1}) + \\overline{i }+ \\Delta i_{t-1}\\] \\[\\overline{z }+ \\Delta z_t = \\overline{z}+ \\Delta \\rho z_{t-1}\\]\nDifferentiate…\n(if we want to limit the number of equations, we can replace \\(c_t\\) by its value)"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#result",
+    "href": "lectures/perturbation/index.html#result",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Result:",
+    "text": "Result:\n\nOptimality conditions \\[\\begin{bmatrix} . & . & . & . \\\\  . & . & . & . \\end{bmatrix} \\begin{bmatrix} \\Delta i_t \\\\ \\Delta c_t  \\\\ \\Delta k_t \\\\ \\Delta z_t \\end{bmatrix} = \\begin{bmatrix} . & . & . \\\\  . & . & . & .\\end{bmatrix} \\begin{bmatrix} \\Delta i_{t+1} \\\\  \\Delta c_{t+1} \\\\ \\Delta k_{t+1} \\\\ \\Delta z_{t+1} \\end{bmatrix} \\]\nTransition \\[ \\begin{bmatrix} \\Delta k_t \\\\ \\Delta z_t \\end{bmatrix} = \\begin{bmatrix} . & .  \\\\ . & . \\end{bmatrix} \\begin{bmatrix} \\Delta k_{t-1} \\\\ \\Delta z_{t-1} \\end{bmatrix}  + \\begin{bmatrix} . \\end{bmatrix} \\begin{bmatrix}\\Delta i_{t-1}\\end{bmatrix}\\]"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#julia-console",
+    "href": "lectures/perturbation/index.html#julia-console",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Julia Console",
+    "text": "Julia Console\n\nAccessible:\n\nfrom a good terminal\nfrom VSCode panel\n\nFour modes:\n\n``: REPL (read-eval-print)\n?: Help\n]: Package Management\n;: System Console"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#julia-package-ecosystem",
+    "href": "lectures/perturbation/index.html#julia-package-ecosystem",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Julia package ecosystem",
+    "text": "Julia package ecosystem\n\nLarge package ecosystem\nFairly good quality native code\nWrappers to low-level / foreign language libraries\n\nC: ccall\nFortran: fcall\nPython: PyCall"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#how-do-you-install-pckages",
+    "href": "lectures/perturbation/index.html#how-do-you-install-pckages",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "How do you install pckages?",
+    "text": "How do you install pckages?\n\nShort and wrong answer: ] add PackageName\nBetter answer:\n\na project environment specifies all dependencies for a project\n\ninformations are contained in Project.toml\n\nchange directory to the right project\n\n; cd path_to_the_right_project\nyou can check where you are ; pwd (print working directory)\n\nactivate environment:\n\n] activate . (. universally means current director)\n\nadd desired package:\n\n] add PackageName\n\nwhen you restart work on a project activate, it again, to ensure you have the right dependencies"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#main-approaches",
+    "href": "lectures/perturbation/index.html#main-approaches",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Main approaches",
+    "text": "Main approaches\n\nBack to our problem, how to we differentiate the model?\nMain approaches:\n\nManual\nFinite Differences\nSymbolic Differentiation\nAutomatic Differentiation"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#manual-differentiation",
+    "href": "lectures/perturbation/index.html#manual-differentiation",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Manual Differentiation",
+    "text": "Manual Differentiation\n\nTrick:\n\nnever use \\(\\frac{d}{dx} \\frac{u(x)}{v(x)} = \\frac{u'(x)v(x)-u(x)v'(x)}{v(x)^2}\\)\n\ntoo error prone\n\nuse instead \\[\\frac{d}{dx} {u(x)v(x)} = {u'(x)v(x)+u(x)v'(x)}\\] and \\[\\frac{d}{dx} \\frac{1}{u(x)} = -\\frac{u^{\\prime}}{u(x)^2}\\]\n\nYou can get easier calculations (in some cases) by using log-deviation rules"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#finite-differences",
+    "href": "lectures/perturbation/index.html#finite-differences",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Finite Differences",
+    "text": "Finite Differences\n\n\n\n\nChoose small \\(\\epsilon&gt;0\\), typically \\(\\sqrt{ \\textit{machine eps}}\\)\n\ncheck eps()\n\nForward Difference scheme:\n\n\\(f'(x) \\approx \\frac{f(x+\\epsilon) - f(x)}{\\epsilon}\\)\nprecision: \\(O(\\epsilon)\\)\nbonus: if \\(f(x+\\epsilon)\\) can compute \\(f(x)-f(x-\\epsilon)\\) instead (Backward)\n\nCentral Difference scheme:\n\nFinite \\(f'(x) \\approx \\frac{f(x+\\epsilon) - f(x-\\epsilon)}{2\\epsilon}\\)\naverage of forward and backward\nprecision: \\(O(\\epsilon^2)\\)\n\n\n\n\nTwo packages FiniteDiff and FiniteDifferences.\nExample:\nusing FiniteDiff\n\ng(x) = [x[1]^2 x[2]^3]\nFiniteDiff.finite_difference_jacobian(g, [0.1, 0.2])"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#finite-differences-higher-order",
+    "href": "lectures/perturbation/index.html#finite-differences-higher-order",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Finite Differences: Higher order",
+    "text": "Finite Differences: Higher order\n\nCentral formula:\n\n\\[\n\\begin{aligned}\nf''(x) & \\approx & \\frac{f'(x)-f'(x-\\epsilon)}{\\epsilon} \\approx \\frac{(f(x+\\epsilon))-f(x))-(f(x)-f(x-\\epsilon))}{\\epsilon^2} \\\\ & = & \\frac{f(x+\\epsilon)-2f(x)+f(x-\\epsilon)}{\\epsilon^2}\n\\end{aligned}\n\\] - precision: \\(o(\\epsilon)\\) - Generalizes to higher order but becomes more and more innacurate"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#symbolic-differentiation",
+    "href": "lectures/perturbation/index.html#symbolic-differentiation",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Symbolic Differentiation",
+    "text": "Symbolic Differentiation\n\n\n\nmanipulate the tree of algebraic expressions\n\nimplements various simplification rules\n\nrequires mathematical expression\ncan produce mathematical insights\nsometimes inaccurate:\n\ncf: \\(\\left(\\frac{1+u(x)}{1+v(x)}\\right)^{100}\\)\n\n\n\nTwo main libraries:\n\nSymEngine.jl\n\nfast symbolic calculation\nmature C++ engine\n\nSymbolics.jl:\n\npure julia\nfinite difference\nsymbolic calculation\n\n\nExample using Symbolics:\nusing Symbolics\n@variables a x b y\neq = a*sin(x) + b*cos(y)\nSymbolics.derivative(eq, x)"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#automatic-differentiation",
+    "href": "lectures/perturbation/index.html#automatic-differentiation",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Automatic Differentiation",
+    "text": "Automatic Differentiation\n\nAutomatic Differentiation\n\ndoes not provide mathematical insights but solves the other problems\ncan differentiate any piece of code\ntwo flavours\n\nforward accumulation\nreverse accumulation"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#automatic-source-code-rewrite",
+    "href": "lectures/perturbation/index.html#automatic-source-code-rewrite",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Automatic source code rewrite",
+    "text": "Automatic source code rewrite\n\n\nConsider this simple function\nfunction f(x::Number)\n\n    a = x + 1\n    b = x^2\n    c = sin(a) \n    d = c + b\n\n    return d\n\nend\n\nWe can rewrite the code as follows:\nfunction f(x::Number)\n\n    # x is an argument\n    x_dx = 1.0\n\n    a = x + 1\n    a_dx = x_dx\n\n    b = x^2\n    b_dx = 2*x*x_dx\n\n    c = sin(a)\n    c_x = cos(a)*a_dx\n\n    d = c + b\n    d_x = c_dx + b_dx\n\n    return (d, d_x)\nend"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#dual-numbers-operator-overloading",
+    "href": "lectures/perturbation/index.html#dual-numbers-operator-overloading",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Dual numbers: operator overloading",
+    "text": "Dual numbers: operator overloading\nInstead of rewriting source code, we can use dual numbers to perform exactly the same calculations.\nstruct DN&lt;:Number\n    x::Float64\n    dx::Float64\nend\n\n+(a::DN,b::DN) = DN(a.x+b.x, a.dx+b.dx)\n-(a::DN,b::DN) = DN(a.x-b.x, a.dx-b.dx)\n*(a::DN,b::DN) = DN(a.x*b.x, a.x*b.dx+a.dx*b.x)\n/(a::DN,b::DN) = DN(a.x/b.x, (a.dx*b.x-a.x*b.dx)/b.dx^2)\n\n...\nTry it on function f What do we miss ?"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#dual-numbers",
+    "href": "lectures/perturbation/index.html#dual-numbers",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Dual numbers",
+    "text": "Dual numbers\nThis approach (and automatic differentiation in general) is compatible with control flow operations (if, while, …)\nLet’s see it with the dual numbers defined by ForwardDiff library:\nimport ForwardDiff: Dual\n\nx = Dual(1.0, 1.0)\na = 0.5*x\nb = sum([(x)^i/i*(-1)^(i+1) for i=1:5000])\n# compare with log(1+x)\n\ngeneralizes nicely to gradient computations\n\nx = Dual(1.0, 1.0, 0.0)\ny = Dual(1.0, 0.0, 1.0)\nexp(x) + log(y)"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#automatic-differentiation-2",
+    "href": "lectures/perturbation/index.html#automatic-differentiation-2",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Automatic differentiation",
+    "text": "Automatic differentiation\nThere are many flavours of automatic differenation (check JuliaDiff.org)\n \n \n\n\nForward Accumulation Mode\n\nisomorphic to dual number calculation\ncompute values and derivatives at the same time\nefficient for \\(f: R^n\\rightarrow R^m\\), with \\(n&lt;&lt;m\\)\n\n(keeps lots of empty gradients when \\(n&gt;&gt;m\\))\n\n\n\nReverse Accumulation Mode\n\nReverse Accumulation / Back Propagation\n\nefficient for \\(f: R^n\\rightarrow R^m\\), with \\(n&gt;&gt;m\\)\nrequires data storage (to keep intermediate values)\ngraph / example\n\nVery good for machine learning:\n\n\\(\\nabla_{\\theta} F(x;\\theta)\\) where \\(F\\) is a scalar objective"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#libraries-for-autodiff",
+    "href": "lectures/perturbation/index.html#libraries-for-autodiff",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Libraries for AutoDiff",
+    "text": "Libraries for AutoDiff\n\nSee JuliaDiff: http://www.juliadiff.org/\n\nForwardDiff.jl\nReverseDiff.jl\n\nZygote.jl\nDeep learning framework:\n\nhigher order diff w.r.t. any vector -&gt; tensor operations\nFlux.jl, MXNet.jl, Tensorflow.jl\n\n\n\n\n\n\n\n\n\nExample with ForwardDiff\n\n\nExample with ForwardDiff:\n  using ForwardDiff\nForwardDiff.jacobian(u-&gt;[u[1]^2, u[2]+u[1]], [0.1,0.2])"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#our-problem",
+    "href": "lectures/perturbation/index.html#our-problem",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Our problem",
+    "text": "Our problem\n\n\nGeneral formulation of a linearized model: \\[ \\begin{eqnarray} A s_t + B x_t + C s_{t+1} + D x_{t+1} & = & 0_{n_x} \\\\\ns_{t+1} & = & E s_t + F x_t \\end{eqnarray}\\] where:\n\n\\(s_t \\in \\mathbb{R}^{n_s}\\) is a vector of states\n\\(x_t \\in \\mathbb{R}^{n_x}\\) is a vector of controls\n\nRemark:\n\nfirst equation is forward looking\nsecond equation is backward looking\n\n\nIn the neoclassical model: \\[\\begin{eqnarray}\ns_t & = & (\\Delta z_t, \\Delta k_t) \\\\\nx_t & = & (\\Delta i_t, \\Delta c_t)\n\\end{eqnarray}\\]\nThe linearized system is: \\[\\begin{eqnarray}\nA & = & ...\\\\\nB & = & ...\\\\\nC & = & ...\\\\\nD & = & ...\\\\\nE & = & ...\\\\\nF & = &\n\\end{eqnarray}\\]"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#solution",
+    "href": "lectures/perturbation/index.html#solution",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Solution",
+    "text": "Solution\n\n\nWhat is the solution of our problem?\n\nAt date \\(t\\) controls must be chosen as a function of (predetermined) states\nMathematically speaking, the solution is a function \\(\\varphi\\) such that: \\[\\forall t, x_t = \\varphi(s_t)\\]\nSince the model is linear we look for un unknown matrix \\(X \\in \\mathbb{R}^{n_x} \\times \\mathbb{R}^{n_s}\\) such that: \\[\\Delta x_t = X \\Delta s_t\\]\n\n\nIn the neoclassical model\n\n\nThe states are \\(k_t\\) and \\(z_t\\)\nThe controls \\(i_t\\) and \\(c_t\\) must be a function of the states\n\nthere is a decision rule \\(i()\\), \\(c()\\) such that \\[i_t = i(z_t, k_t)\\] \\[c_t = c(z_t, k_t)\\]\n\nIn the linearized model: \\[\\Delta i_t =i_z \\Delta z_t + i_k \\Delta k_t\\] \\[\\Delta c_t =c_z \\Delta z_t + c_k \\Delta k_t\\]"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#optimality-condition",
+    "href": "lectures/perturbation/index.html#optimality-condition",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Optimality condition:",
+    "text": "Optimality condition:\n\n\nReplacing in the system: \n\\[\\Delta x_t  =  X \\Delta s_t\\] \\[\\Delta s_{t+1}  =  E \\Delta s_t + F X \\Delta s_t\\] \\[\\Delta x_{t+1}  =  X \\Delta s_{t+1}\\] \\[A \\Delta s_t + B \\Delta x_t + C \\Delta s_{t+1} + D \\Delta x_{t+1}  =  0\\]\nIf we make the full substitution:\n\\[( (A + B X) + ( D X + C) ( E  + F X ) ) \\Delta s_t = 0\\]\n\nThis must be true for all \\(s_t\\). We get the special Ricatti equation:\n\\[(A + B {\\color{red}{X}} ) + ( D {\\color{red}{X}} + C) ( E  + F {\\color{red}X} ) = 0\\]\nThis is a quadratic, matrix ( \\(X\\) is 2 by 2 ) equation:\n\nrequires special solution method\nthere are multiple solutions: which should we choose?\ntoday: linear time iteration selects only one solution\n\nalternative: eigenvalues analysis"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#linear-time-iteration",
+    "href": "lectures/perturbation/index.html#linear-time-iteration",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Linear Time Iteration",
+    "text": "Linear Time Iteration\n\nLet’s be more subtle: define\n\n\\(X\\): decision rule today and\n\\(\\tilde{X}\\): is decision rule tomorrow. \\[\\begin{eqnarray}\n\\Delta x_t & =&  X \\Delta s_t \\\\\n\\Delta s_{t+1} & = & E \\Delta  s_t + F X \\Delta s_t \\\\\n\\Delta x_{t+1} & = & \\tilde{X} \\Delta s_{t+1} \\\\\nA \\Delta s_t + B \\Delta x_t + C \\Delta s_{t+1} + D \\Delta x_{t+1} & = & 0\n\\end{eqnarray}\\]\n\nWe get, \\(\\forall s_t\\): \\[(A + B X) + (C + D \\tilde{X}) ( E  + F X ) ) \\Delta s_t = 0 \\]\nAgain, this must be zero in all states \\(\\Delta s_t\\)."
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#linear-time-iteration-2",
+    "href": "lectures/perturbation/index.html#linear-time-iteration-2",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Linear Time Iteration (2)",
+    "text": "Linear Time Iteration (2)\n\n\n\nWe get the equation: \\[\\begin{eqnarray}\nF(X, \\tilde{X}) & = & (A + B X) + ( C+ D \\tilde{X}) ( E  + F X ) \\\\&=& 0\n\\end{eqnarray}\\]\nWe can solve it with a simple Bernouilli scheme\nWhen the model is well-specified it is guaranteed to converge to the right solution.\n\ncf linear time iteration by Pontus Rendahl (link)\n\nThere are simple criteria to check that the solution is right, and that the model is well specified\n\n\nAlgorithm:\n\nchoose stopping criteria: \\(\\epsilon_0\\) and \\(\\eta_0\\)\nchoose random \\(X_0\\)\ngiven \\(X_n\\):\n\ncompute \\(X_{n+1}\\) such that \\(F(X_{n+1}, X_{n}) = 0\\) \\[(B + (C+D X_{n})F)X_{n+1} + A  + (C+D X_n )E=0\\]\\[X_{n+1} = - (B + (C + D X_n) F)^{-1} (A + (C+DX_n)E)\\]\\[X_{n+1} = T(X_n)\\]\ncompute:\n\n\\(\\eta_n = |X_{n+1} - X_n|\\)\n\\(\\epsilon_n = F(X_{n+1}, X_{n+1})\\)\n\nif \\(\\eta_n&lt;\\eta_0\\) and \\(\\epsilon_n&lt;\\epsilon_0\\)\n\nstop and return \\(X_{n+1}\\)\notherwise iterate with \\(X_{n+1}\\)"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#simulating-the-model",
+    "href": "lectures/perturbation/index.html#simulating-the-model",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Simulating the model",
+    "text": "Simulating the model\n\nSuppose we have found the solution \\(\\Delta x_t  = X \\Delta s_t\\)\nRecall the transition equation: \\(\\Delta s_{t+1} = E \\Delta s_t + F \\Delta x_t\\)\nWe can now compute the model evolution following initial deviation in the state: \\[\\Delta s_t = \\underbrace{(E + F X)}_{P} \\Delta s_{t-1}\\]\n\n\\(P\\) is the simulation operator\nit is a backward operator\n\nThe system is stable if the biggest eigenvalue of \\(P\\) is smaller than one…\n… or if its spectral radius is smaller than 1: \\[\\rho(P)&lt;1\\]\nThis condition is called backward stability\n\nit rules out explosive solutions\nif \\(\\rho(P)&gt;1\\) one can always find \\(s_0\\) such that the model simulation diverges"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#spectral-radius",
+    "href": "lectures/perturbation/index.html#spectral-radius",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Spectral radius",
+    "text": "Spectral radius\n\n\n\nHow do you compute the spectral radius of matrix P?\n\nnaive approach: compute all eigenvalues, check the value of the biggest one…\n\nusing LinearAlgebra\nM = rand(2,2)\nmaximum(abs, eigvals(M))\n\nbecomes limited when size of matrix growth\nanother approach: power iteration method\n\nPower iteration method:\n\nworks for matrices and linear operators\ntake a linear operator \\(L\\) over a Banach Space \\(\\mathcal{B}\\) (vector space with a norm)\nuse the fact that for most \\(u_0\\in \\mathcal{B}\\), \\(\\frac{|L^{n+1} u_0|}{|L^n u_0|}\\rightarrow \\rho(L)\\)\n\n\n\nAlgorithm:\n\nchoose tolerance criterium: \\(\\eta&gt;0\\)\nchoose random initial \\(x_0\\) and define \\(u_0 = \\frac{x_0}{|x_0|}\\)\n\nby construction: \\(|u_0|=1\\)\n\ngiven \\(u_n\\), compute\n\n\\(x_{n+1} = L.u_n\\)\n\\(u_{n+1} = \\frac{x_{n+1}}{|x_{n+1}|}\\)\ncompute \\(\\eta_{n+1} = |u_{n+1} - u_n|\\)\nif \\(\\eta_{n+1}&lt;\\eta\\):\n\nstop and return \\(|x_{n+1}|\\)\nelse iterate with \\(u_{n+1}\\)"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#the-time-iteration-operator",
+    "href": "lectures/perturbation/index.html#the-time-iteration-operator",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "The Time Iteration Operator",
+    "text": "The Time Iteration Operator\nThe time iteration operator associated to the linearized model, associates to any function function \\(\\tilde{\\varphi}\\) the function \\(\\varphi\\) such that:\n\\[D \\tilde{\\varphi}( E s + F \\varphi(s) ) + C ( E s + F \\varphi(s))  + B \\varphi(s) + A s = 0\\]\nTo find the solution we have iterated this operator in the space of linear functions (with \\(\\varphi(\\overline{s})=\\overline{x}\\)), but time-iteration can be defined in a more general space.\nIn particular, we can study it in the space of affine functions \\(\\varphi(\\overline{s})=x_0 + x_1 (\\overline{s} - \\overline{s})\\).\nIn this space of functions one can show that:\n\nif \\(P\\) is stable, then the spectral radius of the time iteration operator is the spectral radius of \\(((B + (C + D X) F)^{-1})D\\)\nin that case the stable solution is the unique if and only if, the spectral radius of the time iteration operator is smaller than 1 (forward stability)"
+  },
+  {
+    "objectID": "lectures/perturbation/index.html#recap",
+    "href": "lectures/perturbation/index.html#recap",
+    "title": "Perturbation Analysis (f-g version)",
+    "section": "Recap",
+    "text": "Recap\n\nWe compute the derivatives of the model\nTime iteration algorithm, starting from an initial guess \\(X_0\\) and we repeat until convergence: \\[X_{n+1} = (B + (C + D X_n) F)^{-1} (A + (C+DX_n)E)\\]\nWe compute the spectral radius of two operators to ensure the model is well defined and that the solution is the right one.\nbackward stability: derivative of simulation operator \\[\\boxed{\\rho(E + F \\overline{X} )}\\]\nforward stability: derivative of time iteration operator \\[\\boxed{\\rho \\left( u\\mapsto ((B + (C + D X) F)^{-1})D\\right)}\\]\n\n\\(\\implies\\) forward and backward stability are equivalent to Blanchard-Kahn conditions\n\nthere is a unique stable solution"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#life-of-a-computational-economist",
+    "href": "lectures/convergence/convergence_1.html#life-of-a-computational-economist",
+    "title": "Convergence of Sequences (1)",
+    "section": "Life of a computational economist",
+    "text": "Life of a computational economist"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#life-of-a-computational-economist-1",
+    "href": "lectures/convergence/convergence_1.html#life-of-a-computational-economist-1",
+    "title": "Convergence of Sequences (1)",
+    "section": "Life of a computational economist",
+    "text": "Life of a computational economist\nVideo\n\n\nWe spend a lot of time waiting for algorithms to converge!\n\n\nsolution 1: program better\n\nsolution 2: better algorithms\n\neven better: understand convergence properties (information about the model)"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#recursive-sequence",
+    "href": "lectures/convergence/convergence_1.html#recursive-sequence",
+    "title": "Convergence of Sequences (1)",
+    "section": "Recursive sequence",
+    "text": "Recursive sequence\nConsider a function \\(f: \\mathbb{R}^n\\rightarrow \\mathbb{R}^n\\) and a recursive sequence \\((x_n)\\) defined by \\(x_0\\in \\mathbb{R}^n\\) and \\(x_n = f(x_{n-1})\\).\nWe want to compute a fixed point of \\(f\\) and study its properties.\n  \n\nToday: Some methods for the case \\(n=1\\).\n  \n\n\nAnother day:\n\nthe matrix case: \\(x_n = A^n x_0\\) where \\(A\\in \\mathbb{R}^{n\\times n}\\)\nthe finite nonlinear case: \\(x_n = f(x_{n-1})\\)"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#example-growth-model",
+    "href": "lectures/convergence/convergence_1.html#example-growth-model",
+    "title": "Convergence of Sequences (1)",
+    "section": "Example: growth model",
+    "text": "Example: growth model\n\n\n\nSolow growth model:\n\n\n\ncapital accumulation\n\\(k_t = (1-\\delta)k_{t-1} + i_{t-1}\\)\n\n\nproduction\n\\(y_t = k_t^\\alpha\\)\n\n\nconsumption\n\\(c_t = (1-{\\color{red}s})y_t\\)\n\n\ninvestment\n\\(i_t = s y_t\\)\n\n\n\n\n\nFor a given value of \\({\\color{red} s}\\in\\mathbb{R}^{+}\\) ( \\({\\color{red} s}\\) is a decision rule) \\[k_{t+1} = f(k_t, {\\color{red} s})\\]\n\nbackward-looking iterations\nSolow hypothesis: saving rate is invariant\n\n\n\nQuestions:\n\nWhat is the steady-state?\nCan we characterize the transition back the steady-state?\nCharacterize the dynamics close to the steady-state?\nwhat is the optimal \\(s\\) ?"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#another-example-linear-new-keynesian-model",
+    "href": "lectures/convergence/convergence_1.html#another-example-linear-new-keynesian-model",
+    "title": "Convergence of Sequences (1)",
+    "section": "Another example: linear new keynesian model",
+    "text": "Another example: linear new keynesian model\n\n\nBasic New Keynesian model (full derivation if curious )\n\nnew Phillips curve (PC):\\[\\pi_t = \\beta \\mathbb{E}_t \\pi_{t+1} + \\kappa y_t\\]\ndynamic investment-saving equation (IS):\\[y_t = \\beta \\mathbb{E}_t y_{t+1} - \\frac{1}{\\sigma}(i_t - \\mathbb{E}_t(\\pi_{t+1}) ) - {\\color{green} z_t}\\]\ninterest rate setting (taylor rule): \\[i_t = \\alpha_{\\pi} \\pi_t + \\alpha_{y} y_t\\]\n\n\nSolving the system: \\(\\begin{bmatrix}\\pi_t \\\\\\\\ y_t \\end{bmatrix} = {\\color{red} c} z_t\\)\n\n\n\nThe system is forward looking:\n\ntake \\(\\begin{bmatrix}\\pi_{t+1} \\\\\\\\ y_{t+1} \\end{bmatrix} = {\\color{red} {c_n}} z_{t+1}\\) → deduce \\(\\begin{bmatrix}\\pi_{t} \\\\\\\\ y_{t} \\end{bmatrix} = {\\color{red} {c_{n+1}}} z_{t}\\)\n\n\\(\\mathcal{T}: \\underbrace{c_{n}}_{t+1: \\; \\text{tomorrow}} \\rightarrow \\underbrace{c_{n+1}}_{t: \\text{today}}\\) is the time-iteration operator (a.k.a. Coleman operator)\n\n \n\nQuestions:\n\nWhat is the limit to \\(c_{t+1} = \\mathcal{T} c_n\\)?\nUnder which conditions (on \\(\\alpha_{\\pi}, \\alpha_y\\)) is it convergent?\n\ndeterminacy conditions\ninterpretation: does the central bank manage to control inflation expectations?"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#recursive-sequence-2",
+    "href": "lectures/convergence/convergence_1.html#recursive-sequence-2",
+    "title": "Convergence of Sequences (1)",
+    "section": "Recursive sequence (2)",
+    "text": "Recursive sequence (2)\n🤔 Wait: does a fixed point exist?\n\n\nwe’re not very concerned by the existence problem here\nwe’ll be happy with local conditions (existence, uniqueness) around a solution\n\n\n\nIn theoretical work, there are many fixed-point theorems to choose from.\n\n\n \nFor example:\n\n\nBrouwer fixed point: assume \\(f\\) is continuous and there is an interval such that \\(f([a,b])\\subset[a,b]\\). Then we know there exists \\(x\\) in \\([a,b]\\) such that \\(f(x)=x\\). (There can be many such points.)"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#example-growth-model-with-multiple-fixed-points",
+    "href": "lectures/convergence/convergence_1.html#example-growth-model-with-multiple-fixed-points",
+    "title": "Convergence of Sequences (1)",
+    "section": "Example: growth model with multiple fixed points",
+    "text": "Example: growth model with multiple fixed points\n\nMultiple equilibria in the growth modelIn the growth model, if we change the production function: \\(y=k^{\\alpha}\\) for a nonconvex/nonmonotonic one, we can get multiple fixed points."
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#convergence",
+    "href": "lectures/convergence/convergence_1.html#convergence",
+    "title": "Convergence of Sequences (1)",
+    "section": "Convergence",
+    "text": "Convergence\nGiven \\(f: \\mathbb{R} \\rightarrow \\mathbb{R}\\) consider the sequence \\(x_n = f(x_{n-1})\\)\n\nHow do we characterize behaviour around \\(x\\) such that \\(f(x)=x\\)?\n\n\n\nStability criterion:\n\nif \\(|f^{\\prime}(x)|&gt;1\\): sequence is unstable and will not converge to \\(x\\) except by chance\nif \\(|f^{\\prime}(x)|&lt;1\\): \\(x\\) is a stable fixed point\nif \\(|f^{\\prime}(x)|=1\\): ??? (look at higher order terms, details ↓)"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#convergence-cobweb-intuition",
+    "href": "lectures/convergence/convergence_1.html#convergence-cobweb-intuition",
+    "title": "Convergence of Sequences (1)",
+    "section": "Convergence (Cobweb intuition)",
+    "text": "Convergence (Cobweb intuition)\nThink of the graph of \\(y=f(x)\\) and the 45-degree line \\(y=x\\).\n\n\nIf \\(0&lt;f'(x^*)&lt;1\\): iterates approach \\(x^*\\) monotonically.\nIf \\(-1&lt;f'(x^*)&lt;0\\): iterates approach \\(x^*\\) but typically oscillate (alternating sides).\nIf \\(|f'(x^*)|&gt;1\\): you generically move away from \\(x^*\\)."
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#convergence-first-order-approximation",
+    "href": "lectures/convergence/convergence_1.html#convergence-first-order-approximation",
+    "title": "Convergence of Sequences (1)",
+    "section": "Convergence (first order approximation)",
+    "text": "Convergence (first order approximation)\nTo get the intuition about local convergence, assume you have an initial point \\(x_n\\) close to the steady state and consider the following expression:\n\\[x_{n+1} - x = f(x_n) - f(x) = f^{\\prime}(x) (x_n-x) + o(x_n-x)\\]\nIf one sets aside the error term (which one can do with full mathematical rigour), the dynamics for very small perturbations are given by:\n\\[|x_{n+1} - x| \\approx  |f^{\\prime}(x)| |x_n-x|\\]\nWhen \\(|f^{\\prime}(x)|&lt;1\\), the distance to the target decreases at each iteration and we have convergence.\nWhen \\(|f^{\\prime}(x)|&gt;1\\) there is local divergence.\nThis is conform to Cobweb intuition."
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#borderline-case-fx1",
+    "href": "lectures/convergence/convergence_1.html#borderline-case-fx1",
+    "title": "Convergence of Sequences (1)",
+    "section": "Borderline case \\(|f'(x^*)|=1\\)",
+    "text": "Borderline case \\(|f'(x^*)|=1\\)\nWhen \\(|f'(x^*)|=1\\), the linear approximation does not tell you whether you converge.\n\nYou must look at higher-order terms (Taylor expansion), and behavior can depend on the side you start from.\nIn practice, treat this as a warning sign: add damping, change the iteration, or switch to a root-finding method."
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#change-the-problem",
+    "href": "lectures/convergence/convergence_1.html#change-the-problem",
+    "title": "Convergence of Sequences (1)",
+    "section": "Change the problem",
+    "text": "Change the problem\n\nSometimes, we are interested in tweaking the convergence speed: \\[x_{n+1} = (1-\\lambda) x_n + \\lambda f(x_n)\\]\n\n\\(\\lambda\\) is the learning rate:\n\n\\(\\lambda&gt;1\\): acceleration\n\\(\\lambda&lt;1\\): dampening\n\n\n\n\n\nWe can also replace the function by another one \\(g\\) such that \\(g(x)=x\\iff f(x)=x\\), for instance: \\[g(x)=x-\\frac{f(x)-x}{f^{\\prime}(x)-1}\\]\n\nthis is the Newton iteration"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#contraction-mapping-why-fixed-point-iteration-works",
+    "href": "lectures/convergence/convergence_1.html#contraction-mapping-why-fixed-point-iteration-works",
+    "title": "Convergence of Sequences (1)",
+    "section": "Contraction mapping (why fixed-point iteration works)",
+    "text": "Contraction mapping (why fixed-point iteration works)\nSuppose there exists an interval \\(I=[a,b]\\) such that \\(f(I)\\subseteq I\\) and \\[\\sup_{x\\in I} |f'(x)| \\le L &lt; 1.\\]\n\nThen there is a unique fixed point \\(x^*\\in I\\).\nFor any \\(x_0\\in I\\), iterating \\(x_{n+1}=f(x_n)\\) converges to \\(x^*\\).\nThe error shrinks at least linearly: \\(|x_{n+1}-x^*|\\le L\\,|x_n-x^*|\\).\n\nThis is the one-dimensional version of the contraction logic used for many “time-iteration” operators in macro."
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#dynamics-around-a-stable-point",
+    "href": "lectures/convergence/convergence_1.html#dynamics-around-a-stable-point",
+    "title": "Convergence of Sequences (1)",
+    "section": "Dynamics around a stable point",
+    "text": "Dynamics around a stable point\n\nWe can write successive approximation errors: \\[|x_t - x_{t-1}| =  | f(x_{t-1}) - f(x_{t-2})| \\] \\[|x_t - x_{t-1}| \\sim |f^{\\prime}(x_{t-1})| |x_{t-1} - x_{t-2}| \\]\nRatio of successive approximation errors \\[\\lambda_t =  \\frac{ |x_{t} - x_{t-1}| } { |x_{t-1} - x_{t-2}|}\\]\nWhen the sequence converges: \\[\\lambda_t \\rightarrow | f^{\\prime}(\\overline{x}) |\\]"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#dynamics-around-a-stable-point-2",
+    "href": "lectures/convergence/convergence_1.html#dynamics-around-a-stable-point-2",
+    "title": "Convergence of Sequences (1)",
+    "section": "Dynamics around a stable point (2)",
+    "text": "Dynamics around a stable point (2)\nHow do we derive an error bound? Suppose that we have \\(\\overline{\\lambda}&gt;|f^{\\prime}(x_k)|\\) for all \\(k\\geq k_0\\):\n\\[|x_t - x| \\leq |x_t - x_{t+1}| + |x_{t+1} - x_{t+2}| + |x_{t+2} - x_{t+3}| + ... \\]\n\\[|x_t - x| \\leq |x_t - x_{t+1}| + |f(x_{t}) - f(x_{t+1})| + |f(x_{t+1}) - f(x_{t+2})| + ... \\]\n\\[|x_t - x| \\leq |x_t - x_{t+1}| + \\overline{\\lambda} |x_t - x_{t+1}| + \\overline{\\lambda}^2 |x_t - x_{t+1}| + ... \\]\n\\[|x_t - x| \\leq \\frac{1} {1-\\overline{\\lambda}} | x_t - x_{t+1} |\\]"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#how-do-we-improve-convergence",
+    "href": "lectures/convergence/convergence_1.html#how-do-we-improve-convergence",
+    "title": "Convergence of Sequences (1)",
+    "section": "How do we improve convergence ?",
+    "text": "How do we improve convergence ?\n\\[\\frac{|x_t - x_{t-1}|} {|x_{t-1} - x_{t-2}|} \\sim |f^{\\prime}(x_{t-1})|  \\]\ncorresponds to the case of linear convergence (kind of slow)."
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#aitkens-extrapolation",
+    "href": "lectures/convergence/convergence_1.html#aitkens-extrapolation",
+    "title": "Convergence of Sequences (1)",
+    "section": "Aitken’s extrapolation",
+    "text": "Aitken’s extrapolation\nWhen convergence is geometric, we have: \\[ \\lim_{t\\rightarrow \\infty}\\frac{ x_{t+1}-x}{x_t-x} = \\lambda \\in \\mathbb{R}^{\\star}\\]\nWhich implies:\n\\[\\frac{ x_{t+1}-x}{x_t-x} \\sim \\frac{ x_{t}-x}{x_{t-1}-x}\\]"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#aitkens-extrapolation-2",
+    "href": "lectures/convergence/convergence_1.html#aitkens-extrapolation-2",
+    "title": "Convergence of Sequences (1)",
+    "section": "Aitken’s extrapolation (2)",
+    "text": "Aitken’s extrapolation (2)\nTake \\(x_{t-1}, x_t\\) and \\(x_{t+1}\\) as given and solve for \\(x\\):\n\\[x = \\frac{x_{t+1}x_{t-1} - x_{t}^2}{x_{t+1}-2x_{t} + x_{t-1}}\\]\nor after some reordering\n\\[x = x_{t-1} - \\frac{(x_t-x_{t-1})^2}{x_{t+1}-2 x_t + x_{t-1}}\\]"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#steffensens-method",
+    "href": "lectures/convergence/convergence_1.html#steffensens-method",
+    "title": "Convergence of Sequences (1)",
+    "section": "Steffensen’s Method:",
+    "text": "Steffensen’s Method:\n\nstart with a guess \\(x_0\\), compute \\(x_1=f(x_0)\\) and \\(x_2=f(x_1)\\)\nuse Aitken’s guess for \\(x^{\\star}\\). If required tolerance is met, stop.\notherwise, set \\(x_0 = x^{\\star}\\) and go back to step 1.\n\nIt can be shown that the sequence generated from Steffensen’s method converges quadratically, that is\n\\(\\lim_{t\\rightarrow\\infty} \\frac{x_{t+1}-x_t}{(x_t-x_{t-1})^2} \\leq M  \\in \\mathbb{R}^{\\star}\\)"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#convergence-speed",
+    "href": "lectures/convergence/convergence_1.html#convergence-speed",
+    "title": "Convergence of Sequences (1)",
+    "section": "Convergence speed",
+    "text": "Convergence speed\nRate of convergence of series \\(x_t\\) towards \\(x^{\\star}\\) is:\n\nlinear: \\[{\\lim}_{t\\rightarrow\\infty} \\frac{|x_{t+1}-x^{\\star}|}{|x_{t}-x^{\\star}|} = \\mu \\in R^+\\]\nsuperlinear: \\[{\\lim}_{t\\rightarrow\\infty} \\frac{|x_{t+1}-x^{\\star}|}{|x_{t}-x^{\\star}|} = 0\\]\nquadratic: \\[{\\lim}_{t\\rightarrow\\infty} \\frac{|x_{t+1}-x^{\\star}|}{|x_{t}-x^{\\star}|^{\\color{red}2}} = \\mu \\in R^+\\]"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#convergence-speed-1",
+    "href": "lectures/convergence/convergence_1.html#convergence-speed-1",
+    "title": "Convergence of Sequences (1)",
+    "section": "Convergence speed",
+    "text": "Convergence speed\nRemark: in the case of linear convergence with \\(\\mu\\in(0,1)\\),\n\\[\\mu = {\\lim}_{t\\rightarrow\\infty} \\frac{|x_{t+1}-x^{\\star}|}{|x_{t}-x^{\\star}|} = {\\lim}_{t\\rightarrow\\infty} \\frac{|x_{t+1}-x_t|}{|x_t-x_{t-1}|}.\\]\nMoreover, asymptotically one has the useful heuristic bound \\[|x_t-x^{\\star}| \\approx \\frac{1}{1-\\mu}\\,|x_{t+1}-x_t|.\\]"
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#damping-relaxation-in-practice",
+    "href": "lectures/convergence/convergence_1.html#damping-relaxation-in-practice",
+    "title": "Convergence of Sequences (1)",
+    "section": "Damping / relaxation in practice",
+    "text": "Damping / relaxation in practice\nConsider the relaxed iteration \\[x_{n+1}=g(x_n)=(1-\\lambda)x_n+\\lambda f(x_n).\\]\nLocally around a fixed point \\(x^*\\), \\[g'(x^*) = 1-\\lambda+\\lambda f'(x^*).\\]\n\nIf you can estimate \\(f'(x^*)\\approx a\\), choose \\(\\lambda\\) to make \\(|g'(x^*)|\\) small.\nThe “ideal” choice (unconstrained) is \\(\\lambda^* = \\frac{1}{1-a}\\), which gives \\(g'(x^*)=0\\).\nIn practice you often restrict \\(\\lambda\\in(0,1]\\) (safeguard), so you clamp \\(\\lambda\\) to that range."
+  },
+  {
+    "objectID": "lectures/convergence/convergence_1.html#in-practice",
+    "href": "lectures/convergence/convergence_1.html#in-practice",
+    "title": "Convergence of Sequences (1)",
+    "section": "In practice",
+    "text": "In practice\n\nProblem: Suppose one is trying to find \\(x\\) solving the model \\(G(x)=0\\)\n\nAn iterative algorithm provides a function \\(f\\) defining a recursive series \\(x_{t+1}\\).\n\nThe best practice consists in monitoring at the same time:\n\nthe success criterion: \\[\\epsilon_n = |G(x_n)|\\]\n\n\nhave you found the solution?\n\nthe successive approximation errors \\[\\eta_n = |x_{n+1} - x_n|\\]\n\n\nare you making progress?\n\nthe ratio of successive approximation errors \\[\\lambda_n = \\frac{\\eta_n}{\\eta_{n-1}}\\]\n\n\nwhat kind of convergence? (if \\(|\\lambda_n|&lt;1\\): OK, otherwise: ❓)"
   }
 ]
