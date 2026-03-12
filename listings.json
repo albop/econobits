@@ -2,6 +2,8 @@
   {
     "listing": "/scpo/index_2026.html",
     "items": [
+      "/lectures/convergence/convergence_1.html",
+      "/lectures/convergence/convergence_2.html",
       "/tutorials/epidemiology.html",
       "/tutorials/Julia_Basics.html",
       "/tutorials/solow.html"
