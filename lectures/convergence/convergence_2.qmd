@@ -103,16 +103,16 @@ $\rho(A)$ under standard conditions (dominant eigenvalue, start vector not ortho
 
 ---
 
-## Numerical radius: a one-step quadratic-form growth measure
+## Numerical radius
 
 - **Field of values (numerical range):**
   $$
-  W(A) := \{ x^*Ax : \lVert x\rVert_2 = 1 \} \subset \mathbb{C}.
+  W(A) := \{ |Ax| : \lVert x\rVert_2 = 1 \} \subset \mathbb{C}.
   $$
 
 - **Numerical radius:**
   $$
-  \boxed{\ w(A) := \max\{ |z| : z\in W(A)\} = \max_{\lVert x\rVert_2=1} |x^*Ax|\ }
+  \boxed{\ w(A) := \max\{ |z| : z\in W(A)\} = \max_{\lVert x\rVert_2=1} |Ax|\ }
   $$
 
 **Key inequalities**

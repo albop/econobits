@@ -126,22 +126,8 @@ s_{t+1} & = & E s_t + F x_t
 # your code here
 ```
 
-@. __Define two linear operators `L_S(U::Union{Vector, Matrix}, X_0::Matrix, m::PerturbedModel)::Matrix` and `L_T(U::Matrix, X_0::Matrix, m::PerturbedModel)::Matrix` which implement the derivatives of the simulation and the time-iteration operator respectively.__
 
-
-```{julia}
-# your code here
-```
-
-
-@. __Implement a function `spectral_radius(f::Function)::Float64` which implements the power iteration method to compute the biggest eigenvalues of the two previously defined operators. Check that Blanchard-Kahn conditions are met.__
-
-
-```{julia}
-# your code here
-```
-
-@. __Write a function `simulate(s0::Vector, X::Matrix, p, T::Int64)::Tuple{Matrix, Matrix}` to simulate the model over $T$ periods (by using the formula $\Delta s_t = (E + F X) \Delta s_{t-1}$. Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variables levels or log-deviations. If possible, return a DataFrame object.__
+@. __Write a function `simulate(s0::Vector, X::Matrix, p, T::Int64)::Tuple{Matrix, Matrix}` to simulate the model over $T$ periods (by using the formula $\Delta s_t = (E + F X) \Delta s_{t-1})$. Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variables levels or log-deviations. If possible, return a DataFrame object.__
 
 
 ```{julia}

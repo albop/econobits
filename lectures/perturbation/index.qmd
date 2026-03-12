@@ -2,7 +2,7 @@
 title: "Perturbation Analysis (f-g version)"
 author: Pablo Winant
 format:
-  html: default
+  # html: default
   revealjs:
     html-math-method: mathjax
     width: 1920
@@ -752,12 +752,10 @@ $$(A + B X) + (C + D \tilde{X}) ( E  + F X ) ) \Delta s_t = 0 $$
 $$\begin{eqnarray}
 F(X, \tilde{X}) & = & (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&=& 0
 \end{eqnarray}$$
-- Consider the *linear time iteration* algorithm
+- We can solve it with a simple *Bernouilli* scheme
 - When the model is well-specified it is guaranteed to converge to the right solution.
   - cf *linear time iteration* by Pontus Rendahl ([link](https://irihs.ihs.ac.at/id/eprint/4351/1/es-330.pdf))
 - There are simple criteria to check that the solution is right, and that the model is well specified
-- $T$ is the time iteration operator... for linear models
-  - it does *forward iteration* ($X_t$ as a function of $X_{t+1}$)
 
 ::::
 :::: column
@@ -784,9 +782,9 @@ F(X, \tilde{X}) & = & (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&=& 0
 ## Simulating the model
 
 - Suppose we have found the solution $\Delta x_t  = X \Delta s_t$
-- Recall the transition equation: $\Delta s_{t+1} = F \Delta s_t + G \Delta x_t$
+- Recall the transition equation: $\Delta s_{t+1} = E \Delta s_t + F \Delta x_t$
 - We can now compute the model evolution following initial deviation in the state:
-$$\Delta s_t = \underbrace{(F + G X)}_{P} \Delta s_{t-1}$$
+$$\Delta s_t = \underbrace{(E + F X)}_{P} \Delta s_{t-1}$$
   - $P$ is the simulation operator
   - it is a *backward* operator
 - The system is stable if the biggest eigenvalue of $P$ is smaller than one...
@@ -837,7 +835,25 @@ $$\Delta s_t = \underbrace{(F + G X)}_{P} \Delta s_{t-1}$$
 
 ----
 
-## Stability of the backward operator
+## The Time Iteration Operator
+
+
+The time iteration operator associated to the linearized model, associates to any function function $\tilde{\varphi}$ the function $\varphi$ such that:
+
+$$D \tilde{\varphi}( E s + F \varphi(s) ) + C ( E s + F \varphi(s))  + B \varphi(s) + A s = 0$$
+
+To find the solution we have iterated this operator in the space of linear functions (with $\varphi(\overline{s})=\overline{x}$), but time-iteration can be defined in a more general space.
+
+In particular, we can study it in the space of affine functions $\varphi(\overline{s})=x_0 + x_1 (\overline{s} - \overline{s})$.
+
+In this space of functions one can show that:
+
+- if $P$ is stable, then the spectral radius of the time iteration operator is the spectral radius of $((B + (C + D X) F)^{-1})D$
+- in that case the stable solution is the unique if and only if, the spectral radius of the time iteration operator is smaller than 1 (*forward stability*)
+
+
+
+<!-- ## Stability of the backward operator
 
 
 To solve the model we use the backard operator: $$T: \begin{eqnarray} \mathbb{R}^{n_x} \times \mathbb{R}^{n_s}  & \rightarrow &  \mathbb{R}^{n_x} \times \mathbb{R}^{n_s}  \\X_{t+1} & \mapsto & X_t \text{s.t.} F(X_t,X_{t+1})=0\end{eqnarray}$$
@@ -914,7 +930,7 @@ $$T^{\prime}(X) = -(F^{\prime}_X (T(X), X))^{-1}F_Y^{\prime}(T(X),X)$$
 $$T^{\prime}(\overline{X}).u = ((B + (C+D \overline{X})F)^{-1})D u (E+F \overline{X})$$
 - We can compute the spectral radius of $T^{\prime}(\overline{X})$ using the power iteration method
 
-----
+---- -->
 
 ## Recap
 
@@ -923,68 +939,11 @@ $$T^{\prime}(\overline{X}).u = ((B + (C+D \overline{X})F)^{-1})D u (E+F \overlin
 $$X_{n+1} = (B + (C + D X_n) F)^{-1} (A + (C+DX_n)E)$$
 3. We compute the spectral radius of two operators to ensure the model is well defined and that the solution is the right one.
   1. __backward stability__: derivative of simulation operator
-$$\boxed{\rho(F + H \overline{X} )}$$
+$$\boxed{\rho(E + F \overline{X} )}$$
   2. __forward stability__: derivative of time iteration operator
-$$\boxed{\rho \left( u\mapsto ((B + (C+D \overline{X})F)^{-1})D u (E+F \overline{X}) \right)}$$
+$$\boxed{\rho \left( u\mapsto ((B + (C + D X) F)^{-1})D\right)}$$
 
 
+$\implies$ forward and backward stability are equivalent to Blanchard-Kahn conditions
 
-
-
-# QZ Decomposition
-
-
-$$\begin{eqnarray}
-A s_t + B x_t + C s_{t+1} + D x_{t+1} & = & 0_{n_x} \\
-s_{t+1} & = & E s_t + F x_t \end{eqnarray}$$
-
-
-We can rewrite the state-space representation as follows:
-$$\begin{eqnarray}
-\begin{bmatrix} A & B \\ 0 & I \end{bmatrix} \begin{bmatrix} s_t \\ x_t \end{bmatrix} & = & \begin{bmatrix} -C & -D \\ I & -E \end{bmatrix} \begin{bmatrix} s_{t+1} \\ x_{t+1} \end{bmatrix}  \\
-\tilde{A} y_t & = & \tilde{B} y_{t+1}
-\end{eqnarray}$$
-
-Where $y_t$ is a vector of size $n_x + n_s$ defined as $y_t = \begin{bmatrix} s_t \\ x_t \end{bmatrix}$.
-
-To get an intuition: suppose that $\tilde{B}$ is invertible. Given $s_t$, if you know $x_t$, you can compute $y_t$ and then $y_{t+1}$ that is $s_{t+1}$ and $x_{t+1}$. 
-
-For a given $X$, we can also  write:
-
-$$\begin{eqnarray}
-\begin{bmatrix} A & B \\ 0 & I \end{bmatrix} \begin{bmatrix} s_t \\ X s_t \end{bmatrix} & = & \begin{bmatrix} -C & -D \\ I & -E \end{bmatrix} \begin{bmatrix} s_{t+1} \\ X s_{t+1} \end{bmatrix}  \\
-\tilde{A} y_t & = & \tilde{B} y_{t+1}
-\end{eqnarray}$$
-
-<!-- which we can rewrite as:
-
-$$\begin{eqnarray}
-\begin{bmatrix} A + B X \\ X - E - F X \end{bmatrix} s_t & = & \begin{bmatrix} -C - D X \\ I \end{bmatrix} s_{t+1}  \\
-\tilde{A} s_t & = & \tilde{B} s_{t+1}
-\end{eqnarray}$$ -->
-
-
-Suppose we have an eigenvalue decomposition of the pair of matrices $(\tilde{A}, \tilde{B})$:
-$$\begin{eqnarray}
-\tilde{A} & = & Q S Z^{-1} \\
-\tilde{B} & = & Q T Z^{-1}
-\end{eqnarray}$$
-Where $Q$ and $Z$ are invertible matrices and $S$ and $T$ are upper triangular matrices. 
-
-Then, we can rewrite the system as follows:
-$$\begin{eqnarray}
-Q S Z^{-1} y_t & = & Q T Z^{-1} y_{t+1} \\
-S z_t & = & T z_{t+1}
-\end{eqnarray}$$  
-
-Where $z_t = Z^{-1} y_t$.
-
-The QZ decomposition is a generalization of the Schur decomposition for pairs of matrices. It allows us to find the eigenvalues of the pencil $(\tilde{A}, \tilde{B})$ and to analyze the stability of the system.
-
-Then, we can analyze the eigenvalues of the pencil $(\tilde{A}, \tilde{B})$ to determine the stability of the system and to find the solution for $X$ that satisfies the Blanchard-Kahn conditions.
-
-We recover the solution of the model by selecting the eigenvalues of the pencil that are inside the unit circle and by constructing the corresponding eigenvectors. This allows us to find the decision rule $X$ that satisfies the Blanchard-Kahn conditions.
-
-$X$ can be computed as follows:
-$$X = -Z_{22} Z_{12}^{-1}$$
-Where $Z_{22}$ and $Z_{12}$ are submatrices of $Z$ corresponding to the stable and unstable eigenvalues, respectively.
+- there is a unique stable solution
