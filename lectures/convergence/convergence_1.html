@@ -6,18 +6,20 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.32">
 
   <meta name="author" content="Pablo Winant">
-  <meta name="dcterms.date" content="2025-02-06">
-  <title>econobits – Introduction</title>
+  <title>econobits – Convergence of Sequences (1)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -30,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -128,8 +130,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Introduction</h1>
-  <p class="subtitle">Advanced Macro: Numerical Methods (MIE37)</p>
+  <h1 class="title">Convergence of Sequences (1)</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -139,248 +140,319 @@ Pablo Winant
 </div>
 </div>
 
-  <p class="date">2025-02-06</p>
 </section>
-<section class="slide level2">
+<section id="life-of-a-computational-economist" class="slide level2">
+<h2>Life of a computational economist</h2>
 
-<h3 id="communication-for-this-course">Communication for this Course</h3>
+<img data-src="impossible.jpg" class="r-stretch"></section>
+<section id="life-of-a-computational-economist-1" class="slide level2">
+<h2>Life of a computational economist</h2>
+<p><video data-src="waiting_for_convergence.mp4" style="width:50.0%" controls=""><a href="waiting_for_convergence.mp4">Video</a></video></p>
 <ul>
-<li>Github repository for the course: https://github.com/albop/mie37</li>
-<li>Join on <a href="econforge.zulipchat.org">Zulip</a> : we’ll communicate in the <code>mie37</code> room
+<li><!-- .element: class="fragment" -->
+We spend <strong>a lot</strong> of time waiting for algorithms to converge!
 <ul>
-<li>you’re welcome to ask questions and answer other’s questions (nicely)</li>
-<li>outside of the course hours, I’ll answer when I can</li>
+<li><!-- .element: class="fragment" -->
+solution 1: program better</li>
+<li><!-- .element: class="fragment" -->
+solution 2: better algorithms</li>
+<li><!-- .element: class="fragment" -->
+even better: understand convergence properties (information about the model)</li>
 </ul></li>
-<li>Formal or infrequent communication: <code>pwinant@escp.eu</code> with subject starting by <code>[mie37]</code></li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="assignments-and-final-exam">Assignments and Final Exam</h3>
+<section id="recursive-sequence" class="slide level2">
+<h2>Recursive sequence</h2>
+<p>Consider a function <span class="math inline">\(f: \mathbb{R}^n\rightarrow \mathbb{R}^n\)</span> and a recursive sequence <span class="math inline">\((x_n)\)</span> defined by <span class="math inline">\(x_0\in \mathbb{R}^n\)</span> and <span class="math inline">\(x_n = f(x_{n-1})\)</span>.</p>
+<p>We want to compute a fixed point of <span class="math inline">\(f\)</span> and study its properties.</p>
+<p>&nbsp;&nbsp;</p>
+<div class="fragment">
+<p><strong>Today</strong>: Some methods for the case <span class="math inline">\(n=1\)</span>.</p>
+<p>&nbsp;&nbsp;</p>
+</div>
+<div class="fragment">
+<p><strong>Another day</strong>:</p>
 <ul>
-<li>Hands-on tutorial started in class must be (reasonably) completed by Wednesday night.</li>
-<li>There will be two special assignments with 14 days to complete each of them.</li>
-<li>Groupwork is OK.</li>
-<li>Final Exam will take place in the latest session.
-<ul>
-<li>It will consists of a few simple programming questions and a small model to solve yourself.</li>
-</ul></li>
-<li>Final Grade will weight everything.</li>
+<li>the matrix case: <span class="math inline">\(x_n = A^n x_0\)</span> where <span class="math inline">\(A\in \mathbb{R}^{n\times n}\)</span></li>
+<li>the finite nonlinear case: <span class="math inline">\(x_n = f(x_{n-1})\)</span></li>
 </ul>
+</div>
 </section>
-<section class="slide level2">
-
-<h3 id="other-sources-of-information">Other sources of information</h3>
-<ul>
-<li>Course is mostly self-contained for its Math and Econ aspects.</li>
-<li>Books:
-<ul>
-<li><em>Economic Dynamics: Theory and Computation</em> by John Stahurski</li>
-<li><em>Computational Economics</em> by Miranda &amp; Fackler</li>
-<li><em>Recursive macreconomic theory</em> by Lars Ljungqvist &amp; Tom Sargent</li>
-</ul></li>
-<li>Online:
-<ul>
-<li><a href="https://quantecon.org/lectures/">QuantEcon lectures</a></li>
-</ul></li>
-<li>… and all the Julia material</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="about-me">About me</h3>
+<section id="example-growth-model" class="slide level2">
+<h2>Example: growth model</h2>
 <div class="columns">
-<div class="column">
-<p><img data-src="assets/0_girafes.jpg"></p>
-</div><div class="column">
+<div class="column" style="width:40%;">
+<p><img class="fragment" src="solow_generated.png" width="100%" data-fragment-index="2"></p>
+<p>Solow growth model:</p>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td>capital accumulation</td>
+<td><span class="math inline">\(k_t = (1-\delta)k_{t-1} + i_{t-1}\)</span></td>
+</tr>
+<tr class="even">
+<td>production</td>
+<td><span class="math inline">\(y_t = k_t^\alpha\)</span></td>
+</tr>
+<tr class="odd">
+<td>consumption</td>
+<td><span class="math inline">\(c_t = (1-{\color{red}s})y_t\)</span></td>
+</tr>
+<tr class="even">
+<td>investment</td>
+<td><span class="math inline">\(i_t = s y_t\)</span></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:60%;">
+<div class="fragment">
+<p>For a given value of <span class="math inline">\({\color{red} s}\in\mathbb{R}^{+}\)</span> ( <span class="math inline">\({\color{red} s}\)</span> is a <strong>decision rule</strong>) <span class="math display">\[k_{t+1} = f(k_t, {\color{red} s})\]</span></p>
 <ul>
-<li>A computational economist</li>
-<li>Formerly Worked in institutions (IMF, BOE)</li>
-<li>Now at ESCP and CREST/Polytechnique</li>
-<li>Research on models about:
-<ul>
-<li>Inequality (heterogeneity)</li>
-<li>International Finance</li>
-<li>Monetary Policy</li>
-<li>Artificial Intelligence</li>
-</ul></li>
-<li>Involved in several opensource projects (Dolo, QuantEcon, ARK)</li>
+<li><strong>backward-looking</strong> iterations</li>
+<li>Solow hypothesis: saving rate is invariant</li>
 </ul>
+</div>
+<div class="fragment">
+<p><em>Questions</em>:</p>
+<ul>
+<li>What is the steady-state?</li>
+<li>Can we characterize the transition back the steady-state?</li>
+<li>Characterize the dynamics close to the steady-state?</li>
+<li>what is the optimal <span class="math inline">\(s\)</span> ?</li>
+</ul>
+</div>
 </div></div>
 </section>
-<section class="slide level2">
-
-<h3 id="content-of-the-course">Content of the course</h3>
-
-<img src="vain_diagram.jpg" width="30%" class="r-stretch"><ul>
-<li>Computational Economics is made of:
+<section id="another-example-linear-new-keynesian-model" class="slide level2">
+<h2>Another example: linear new keynesian model</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>Basic New Keynesian model (<a href="https://www.crei.cat/wp-content/uploads/users/pages/ch3_slides_june2015(1).pdf">full derivation</a> if curious )</p>
 <ul>
-<li>Applied Math (theory)</li>
-<li>Programming (techniques)</li>
-<li>Economic Modeling (expertise)</li>
-</ul></li>
-<li>We’ll alternate between the three topics
+<li>new Phillips curve (PC):<span class="math display">\[\pi_t = \beta \mathbb{E}_t \pi_{t+1} + \kappa y_t\]</span></li>
+<li>dynamic investment-saving equation (IS):<span class="math display">\[y_t = \beta \mathbb{E}_t y_{t+1} - \frac{1}{\sigma}(i_t - \mathbb{E}_t(\pi_{t+1}) ) - {\color{green} z_t}\]</span></li>
+<li>interest rate setting (taylor rule): <span class="math display">\[i_t = \alpha_{\pi} \pi_t + \alpha_{y} y_t\]</span></li>
+</ul>
+<div class="fragment">
+<p>Solving the system: <span class="math inline">\(\begin{bmatrix}\pi_t \\\\ y_t \end{bmatrix} = {\color{red} c} z_t\)</span></p>
+</div>
+</div><div class="column" style="width:55%;">
+<div class="fragment">
+<p>The system is <em>forward looking</em>:</p>
 <ul>
-<li>with a stronger than usual emphasis on Programming skills</li>
+<li>take <span class="math inline">\(\begin{bmatrix}\pi_{t+1} \\\\ y_{t+1} \end{bmatrix} = {\color{red} {c_n}} z_{t+1}\)</span> → deduce <span class="math inline">\(\begin{bmatrix}\pi_{t} \\\\ y_{t} \end{bmatrix} = {\color{red} {c_{n+1}}} z_{t}\)</span></li>
+</ul>
+<p><span class="math inline">\(\mathcal{T}: \underbrace{c_{n}}_{t+1: \; \text{tomorrow}} \rightarrow \underbrace{c_{n+1}}_{t: \text{today}}\)</span> is the <strong>time-iteration</strong> operator (a.k.a. <strong>Coleman</strong> operator)</p>
+</div>
+<p>&nbsp;</p>
+<div class="fragment">
+<p><em>Questions</em>:</p>
+<ul>
+<li>What is the limit to <span class="math inline">\(c_{t+1} = \mathcal{T} c_n\)</span>?</li>
+<li>Under which conditions (on <span class="math inline">\(\alpha_{\pi}, \alpha_y\)</span>) is it convergent?
+<ul>
+<li>determinacy conditions</li>
+<li>interpretation: does the central bank manage to control inflation expectations?</li>
 </ul></li>
 </ul>
+</div>
+</div></div>
 </section>
-<section class="slide level2">
-
-<h3 id="math">Math</h3>
+<section id="recursive-sequence-2" class="slide level2">
+<h2>Recursive sequence (2)</h2>
+<p>🤔 Wait: does a fixed point exist?</p>
+<div class="fragment">
 <ul>
-<li>We won’t be using very advanced math
-<ul>
-<li>linear algebra, Banach spaces, a bit of probabilities</li>
-<li>working knowledge is fine</li>
-<li>(almost) no proofs</li>
-</ul></li>
-<li>but in a context where advanced math is an option…
-<ul>
-<li>functional spaces…</li>
-</ul></li>
-<li>applied math: essentially describes the algorithms and their validity/convergence properties</li>
+<li>we’re not very concerned by the existence problem here</li>
+<li>we’ll be happy with local conditions (existence, uniqueness) around a solution</li>
 </ul>
+</div>
+<div class="fragment">
+<p>In theoretical work, there are many fixed-point theorems to choose from.</p>
+</div>
+<div class="fragment">
+<p>&nbsp;</p>
+<p>For example:</p>
+<p><br>
+</p>
+<p><em>Brouwer</em> fixed point: assume <span class="math inline">\(f\)</span> is continuous and there is an interval such that <span class="math inline">\(f([a,b])\subset[a,b]\)</span>. Then we know there exists <span class="math inline">\(x\)</span> in <span class="math inline">\([a,b]\)</span> such that <span class="math inline">\(f(x)=x\)</span>. (There can be many such points.)</p>
+</div>
 </section>
-<section class="slide level2">
+<section id="example-growth-model-with-multiple-fixed-points" class="slide level2">
+<h2>Example: growth model with multiple fixed points</h2>
 
-<h3 id="models">Models</h3>
+<img data-src="solow_multiple_fixed_points.png" style="width:55.0%" class="r-stretch quarto-figure-center"><p class="caption">Multiple equilibria in the growth model</p><p>In the growth model, if we change the production function: <span class="math inline">\(y=k^{\alpha}\)</span> for a nonconvex/nonmonotonic one, we can get multiple fixed points.</p>
+</section>
+<section id="convergence" class="slide level2">
+<h2>Convergence</h2>
+<p>Given <span class="math inline">\(f: \mathbb{R} \rightarrow \mathbb{R}\)</span> consider the sequence <span class="math inline">\(x_n = f(x_{n-1})\)</span></p>
 <ul>
-<li>See a variety of models:
-<ul>
-<li>Static Market Determination (Computational General Equilibrium: CGE)</li>
-<li>Dynamic Optimization (continous or discrete)</li>
-<li>Linear Rational Expectations Models</li>
-<li>Dynamic Stochastic General Equilibrium models (DSGE)</li>
-<li>Heterogenous Agents Models</li>
-</ul></li>
-<li>In discrete time
-<ul>
-<li>to avoid discretization schemes and stochastic calculus</li>
-</ul></li>
-<li>Usually a model is specified by equations and some parameter values:
-<ul>
-<li>no closed form, most of the time</li>
-<li>goal is to “solve” the model to study properties of its solutions</li>
-</ul></li>
+<li>How do we characterize behaviour around <span class="math inline">\(x\)</span> such that <span class="math inline">\(f(x)=x\)</span>?</li>
 </ul>
-</section>
-<section class="slide level2">
-
-<h3 id="models-2">Models (2)</h3>
+<div class="fragment">
 <ul>
-<li>random examples of questions we can analyse numerically:
+<li><p>Stability criterion:</p>
 <ul>
-<li>which sectors should receive more help during the coronavirus (CGE)?</li>
-<li>when is it time to replace a machine? how much water should be extracted? how much should be stored? (dynamic programming)</li>
-<li>what kind of shock drives the business cycles? (DSGE models)</li>
-<li>is a Central Bank <em>able</em> to commit to intervene in the markets? (time inconsistency)</li>
+<li>if <span class="math inline">\(|f^{\prime}(x)|&gt;1\)</span>: sequence is unstable and will not converge to <span class="math inline">\(x\)</span> except by chance</li>
+<li>if <span class="math inline">\(|f^{\prime}(x)|&lt;1\)</span>: <span class="math inline">\(x\)</span> is a stable fixed point</li>
+<li>if <span class="math inline">\(|f^{\prime}(x)|=1\)</span>: ??? (look at higher order terms, details ↓)</li>
 </ul></li>
 </ul>
+</div>
 </section>
-<section class="slide level2">
+<section id="convergence-cobweb-intuition" class="slide level2">
+<h2>Convergence (Cobweb intuition)</h2>
+<p>Think of the graph of <span class="math inline">\(y=f(x)\)</span> and the 45-degree line <span class="math inline">\(y=x\)</span>.</p>
 
-<h3 id="why-economics-is-not-physics-1">Why economics is not Physics (1)</h3>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/bmUAKkisAFo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
-</iframe>
-<ul>
-<li>Easy!: you just swap particles for people, and simulate (or solve an IVP problem)</li>
-<li><em>NO</em>: Not only local interactions: economic agents interact in many ways, including through markets
-<ul>
-<li>All agents/prices must be solved at the same time</li>
-</ul></li>
+<img data-src="cobweb_intuition.png" style="width:85.0%" class="r-stretch"><ul>
+<li class="fragment">If <span class="math inline">\(0&lt;f'(x^*)&lt;1\)</span>: iterates approach <span class="math inline">\(x^*\)</span> monotonically.</li>
+<li class="fragment">If <span class="math inline">\(-1&lt;f'(x^*)&lt;0\)</span>: iterates approach <span class="math inline">\(x^*\)</span> but typically oscillate (alternating sides).</li>
+<li class="fragment">If <span class="math inline">\(|f'(x^*)|&gt;1\)</span>: you generically move away from <span class="math inline">\(x^*\)</span>.</li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="why-economics-is-not-physics-2">Why economics is not Physics (2)</h3>
-
-<img data-src="assets/fem.png" class="r-stretch quarto-figure-center"><p class="caption">FEM</p><ul>
-<li>Easy!: it’s a differential equation with boundary values (BVP)</li>
-<li><em>NO</em>: agents think, they are forward looking and respond to other agents’ (possibly future) decisions</li>
+<section id="convergence-first-order-approximation" class="slide level2">
+<h2>Convergence (first order approximation)</h2>
+<p>To get the intuition about local convergence, assume you have an initial point <span class="math inline">\(x_n\)</span> close to the steady state and consider the following expression:</p>
+<p><span class="math display">\[x_{n+1} - x = f(x_n) - f(x) = f^{\prime}(x) (x_n-x) + o(x_n-x)\]</span></p>
+<p>If one sets aside the error term (which one can do with full mathematical rigour), the dynamics for very small perturbations are given by:</p>
+<p><span class="math display">\[|x_{n+1} - x| \approx  |f^{\prime}(x)| |x_n-x|\]</span></p>
+<p>When <span class="math inline">\(|f^{\prime}(x)|&lt;1\)</span>, the distance to the target decreases at each iteration and we have convergence.</p>
+<p>When <span class="math inline">\(|f^{\prime}(x)|&gt;1\)</span> there is local divergence.</p>
+<p>This is conform to Cobweb intuition.</p>
+</section>
+<section id="borderline-case-fx1" class="slide level2">
+<h2>Borderline case <span class="math inline">\(|f'(x^*)|=1\)</span></h2>
+<p>When <span class="math inline">\(|f'(x^*)|=1\)</span>, the linear approximation does not tell you whether you converge.</p>
+<ul>
+<li class="fragment">You must look at higher-order terms (Taylor expansion), and behavior can depend on the side you start from.</li>
+<li class="fragment">In practice, treat this as a warning sign: add damping, change the iteration, or switch to a root-finding method.</li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="what-makes-the-life-of-computational-economists-hard">What makes the life of computational economists hard:</h3>
+<section id="change-the-problem" class="slide level2">
+<h2>Change the problem</h2>
 <ul>
-<li>Agents are rationnal, they should consider all possible outcomes and all decisions (and those of others…) in the future to make a decision today <img data-src="assets/brownian_motion.png" alt="bm"></li>
-<li>Very complex problem: curse of dimensionality when more than a few variables</li>
-<li>Wait, that’s crazy! People are not that smart, let’s make simplifying assumptions about their behaviour
+<li><p>Sometimes, we are interested in tweaking the convergence speed: <span class="math display">\[x_{n+1} = (1-\lambda) x_n + \lambda f(x_n)\]</span></p>
 <ul>
-<li>agent based approach</li>
-<li>methodological issues: too many possible predictions, too many parameters</li>
+<li><span class="math inline">\(\lambda\)</span> is the learning rate:
+<ul>
+<li><span class="math inline">\(\lambda&gt;1\)</span>: acceleration</li>
+<li><span class="math inline">\(\lambda&lt;1\)</span>: dampening</li>
+</ul></li>
 </ul></li>
 </ul>
-</section>
-<section class="slide level2">
-
-<h3 id="why-should-you-learn-to-program">Why should you learn to program ?</h3>
+<div class="fragment">
 <ul>
-<li>Econometricians, modellers, data scientists, spend a lot of time writing code
+<li class="fragment">We can also replace the function by another one <span class="math inline">\(g\)</span> such that <span class="math inline">\(g(x)=x\iff f(x)=x\)</span>, for instance: <span class="math display">\[g(x)=x-\frac{f(x)-x}{f^{\prime}(x)-1}\]</span>
 <ul>
-<li>and do it inefficiently…</li>
-</ul></li>
-<li>Programming efficiently requires awareness of
-<ul>
-<li>certain basic concepts: (types, control flow, functions, objects)</li>
-<li>some tools (programming language, code versioning, command line)</li>
-<li>which are never taught…</li>
-</ul></li>
-<li>And yet they are very easy to learn
-<ul>
-<li>anyone can become an expert !</li>
+<li class="fragment">this is the Newton iteration</li>
 </ul></li>
 </ul>
+</div>
 </section>
-<section class="slide level2">
-
-<h3 id="now-is-the-right-time">Now is the right time !</h3>
+<section id="contraction-mapping-why-fixed-point-iteration-works" class="slide level2">
+<h2>Contraction mapping (why fixed-point iteration works)</h2>
+<p>Suppose there exists an interval <span class="math inline">\(I=[a,b]\)</span> such that <span class="math inline">\(f(I)\subseteq I\)</span> and <span class="math display">\[\sup_{x\in I} |f'(x)| \le L &lt; 1.\]</span></p>
 <ul>
-<li>A lot of demand everywhere for skilled programmers.</li>
-<li>Many faculties are introducing formal programming courses (for economists)
+<li class="fragment">Then there is a unique fixed point <span class="math inline">\(x^*\in I\)</span>.</li>
+<li class="fragment">For any <span class="math inline">\(x_0\in I\)</span>, iterating <span class="math inline">\(x_{n+1}=f(x_n)\)</span> converges to <span class="math inline">\(x^*\)</span>.</li>
+<li class="fragment">The error shrinks at least linearly: <span class="math inline">\(|x_{n+1}-x^*|\le L\,|x_n-x^*|\)</span>.</li>
+</ul>
+<p>This is the one-dimensional version of the contraction logic used for many “time-iteration” operators in macro.</p>
+</section>
+<section id="dynamics-around-a-stable-point" class="slide level2">
+<h2>Dynamics around a stable point</h2>
 <ul>
-<li>NYU, Penn, MIT (see <a href="https://computationalthinking.mit.edu/Spring21/">thinking computationnally</a></li>
-<li>Summer Bootcamps</li>
-</ul></li>
-<li>New applications are even more code-intensive than before:
-<ul>
-<li>data science</li>
-<li>machine learning</li>
-<li>modeling</li>
-</ul></li>
+<li class="fragment">We can write successive approximation errors: <span class="math display">\[|x_t - x_{t-1}| =  | f(x_{t-1}) - f(x_{t-2})| \]</span> <span class="math display">\[|x_t - x_{t-1}| \sim |f^{\prime}(x_{t-1})| |x_{t-1} - x_{t-2}| \]</span></li>
+<li class="fragment">Ratio of successive approximation errors <span class="math display">\[\lambda_t =  \frac{ |x_{t} - x_{t-1}| } { |x_{t-1} - x_{t-2}|}\]</span></li>
+<li class="fragment">When the sequence converges: <span class="math display">\[\lambda_t \rightarrow | f^{\prime}(\overline{x}) |\]</span></li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="do-it-in-the-open">Do it in the open !</h3>
+<section id="dynamics-around-a-stable-point-2" class="slide level2">
+<h2>Dynamics around a stable point (2)</h2>
+<p>How do we derive an error bound? Suppose that we have <span class="math inline">\(\overline{\lambda}&gt;|f^{\prime}(x_k)|\)</span> for all <span class="math inline">\(k\geq k_0\)</span>:</p>
+<p><span class="math display">\[|x_t - x| \leq |x_t - x_{t+1}| + |x_{t+1} - x_{t+2}| + |x_{t+2} - x_{t+3}| + ... \]</span></p>
+<p><span class="math display">\[|x_t - x| \leq |x_t - x_{t+1}| + |f(x_{t}) - f(x_{t+1})| + |f(x_{t+1}) - f(x_{t+2})| + ... \]</span></p>
+<p><span class="math display">\[|x_t - x| \leq |x_t - x_{t+1}| + \overline{\lambda} |x_t - x_{t+1}| + \overline{\lambda}^2 |x_t - x_{t+1}| + ... \]</span></p>
+<p><span class="math display">\[|x_t - x| \leq \frac{1} {1-\overline{\lambda}} | x_t - x_{t+1} |\]</span></p>
+</section>
+<section id="how-do-we-improve-convergence" class="slide level2">
+<h2>How do we improve convergence ?</h2>
+<p><span class="math display">\[\frac{|x_t - x_{t-1}|} {|x_{t-1} - x_{t-2}|} \sim |f^{\prime}(x_{t-1})|  \]</span></p>
+<p>corresponds to the case of <strong>linear</strong> convergence (kind of slow).</p>
+</section>
+<section id="aitkens-extrapolation" class="slide level2">
+<h2>Aitken’s extrapolation</h2>
+<p>When convergence is geometric, we have: <span class="math display">\[ \lim_{t\rightarrow \infty}\frac{ x_{t+1}-x}{x_t-x} = \lambda \in \mathbb{R}^{\star}\]</span></p>
+<p>Which implies:</p>
+<p><span class="math display">\[\frac{ x_{t+1}-x}{x_t-x} \sim \frac{ x_{t}-x}{x_{t-1}-x}\]</span></p>
+</section>
+<section id="aitkens-extrapolation-2" class="slide level2">
+<h2>Aitken’s extrapolation (2)</h2>
+<p>Take <span class="math inline">\(x_{t-1}, x_t\)</span> and <span class="math inline">\(x_{t+1}\)</span> as given and solve for <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[x = \frac{x_{t+1}x_{t-1} - x_{t}^2}{x_{t+1}-2x_{t} + x_{t-1}}\]</span></p>
+<p>or after some reordering</p>
+<p><span class="math display">\[x = x_{t-1} - \frac{(x_t-x_{t-1})^2}{x_{t+1}-2 x_t + x_{t-1}}\]</span></p>
+</section>
+<section id="steffensens-method" class="slide level2">
+<h2>Steffensen’s Method:</h2>
+<ol type="1">
+<li>start with a guess <span class="math inline">\(x_0\)</span>, compute <span class="math inline">\(x_1=f(x_0)\)</span> and <span class="math inline">\(x_2=f(x_1)\)</span></li>
+<li>use Aitken’s guess for <span class="math inline">\(x^{\star}\)</span>. If required tolerance is met, stop.</li>
+<li>otherwise, set <span class="math inline">\(x_0 = x^{\star}\)</span> and go back to step 1.</li>
+</ol>
+<p>It can be shown that the sequence generated from Steffensen’s method converges <strong>quadratically</strong>, that is</p>
+<p><span class="math inline">\(\lim_{t\rightarrow\infty} \frac{x_{t+1}-x_t}{(x_t-x_{t-1})^2} \leq M  \in \mathbb{R}^{\star}\)</span></p>
+</section>
+<section id="convergence-speed" class="slide level2">
+<h2>Convergence speed</h2>
+<p>Rate of convergence of series <span class="math inline">\(x_t\)</span> towards <span class="math inline">\(x^{\star}\)</span> is:</p>
 <ul>
-<li>Many excellent online resources:
-<ul>
-<li><a href="https://software-carpentry.org/">Software Carpentry</a></li>
-<li><a href="https://quantecon.org/news-item/need-for-speed-in-julia">QuantEcon</a> from Tom Sargent and John Stachurski</li>
-<li><a href="https://julialang.org/learning/">Julia manuals/tutorials</a></li>
-</ul></li>
-<li>Opensource community is very welcoming:
-<ul>
-<li>ask on mailing lists or online chats (Julia users, quantecon, dynare, …)</li>
-<li>open issues (for instance against Dolo <a href="https://github.com/EconForge/Dolo.jl/issues">https://github.com/EconForge/Dolo.jl/issues</a></li>
-<li>participating is also a great occasion to learn</li>
-</ul></li>
+<li>linear: <span class="math display">\[{\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|} = \mu \in R^+\]</span></li>
+<li>superlinear: <span class="math display">\[{\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|} = 0\]</span></li>
+<li>quadratic: <span class="math display">\[{\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|^{\color{red}2}} = \mu \in R^+\]</span></li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="setup">Setup</h3>
+<section id="convergence-speed-1" class="slide level2">
+<h2>Convergence speed</h2>
+<p>Remark: in the case of linear convergence with <span class="math inline">\(\mu\in(0,1)\)</span>,</p>
+<p><span class="math display">\[\mu = {\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|} = {\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x_t|}{|x_t-x_{t-1}|}.\]</span></p>
+<p>Moreover, asymptotically one has the useful heuristic bound <span class="math display">\[|x_t-x^{\star}| \approx \frac{1}{1-\mu}\,|x_{t+1}-x_t|.\]</span></p>
+</section>
+<section id="damping-relaxation-in-practice" class="slide level2">
+<h2>Damping / relaxation in practice</h2>
+<p>Consider the relaxed iteration <span class="math display">\[x_{n+1}=g(x_n)=(1-\lambda)x_n+\lambda f(x_n).\]</span></p>
+<p>Locally around a fixed point <span class="math inline">\(x^*\)</span>, <span class="math display">\[g'(x^*) = 1-\lambda+\lambda f'(x^*).\]</span></p>
 <ul>
-<li>Plan A: use your own laptop. You will need:
+<li class="fragment">If you can estimate <span class="math inline">\(f'(x^*)\approx a\)</span>, choose <span class="math inline">\(\lambda\)</span> to make <span class="math inline">\(|g'(x^*)|\)</span> small.</li>
+<li class="fragment">The “ideal” choice (unconstrained) is <span class="math inline">\(\lambda^* = \frac{1}{1-a}\)</span>, which gives <span class="math inline">\(g'(x^*)=0\)</span>.</li>
+<li class="fragment">In practice you often restrict <span class="math inline">\(\lambda\in(0,1]\)</span> (safeguard), so you clamp <span class="math inline">\(\lambda\)</span> to that range.</li>
+</ul>
+</section>
+<section id="in-practice" class="slide level2">
+<h2>In practice</h2>
 <ul>
-<li>Julia 1.11.x (install using <a href="https://github.com/JuliaLang/juliaup">JuliaUp</a>)</li>
-<li>visual studio code</li>
-<li>julia extension to VSCode</li>
-<li>git</li>
+<li class="fragment">Problem: Suppose one is trying to find <span class="math inline">\(x\)</span> solving the model <span class="math inline">\(G(x)=0\)</span>
+<ul>
+<li class="fragment">An iterative algorithm provides a function <span class="math inline">\(f\)</span> defining a recursive series <span class="math inline">\(x_{t+1}\)</span>.</li>
 </ul></li>
-<li>Plan B: use the mybinder links from the courses repository.</li>
+<li class="fragment">The best practice consists in monitoring at the same time:
+<ul>
+<li class="fragment">the success criterion: <span class="math display">\[\epsilon_n = |G(x_n)|\]</span>
+<ul>
+<li class="fragment"><!-- .element: class="fragment" -->
+have you found the solution?</li>
+</ul></li>
+<li class="fragment">the successive approximation errors <span class="math display">\[\eta_n = |x_{n+1} - x_n|\]</span>
+<ul>
+<li class="fragment"><!-- .element: class="fragment" -->
+are you making progress?</li>
+</ul></li>
+<li class="fragment">the ratio of successive approximation errors <span class="math display">\[\lambda_n = \frac{\eta_n}{\eta_{n-1}}\]</span>
+<ul>
+<li class="fragment"><!-- .element: class="fragment" -->
+what kind of convergence? (if <span class="math inline">\(|\lambda_n|&lt;1\)</span>: OK, otherwise: ❓)</li>
+</ul></li>
+</ul></li>
 </ul>
 
 

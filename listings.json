@@ -1,8 +1,17 @@
 [
   {
+    "listing": "/scpo/index_2026.html",
+    "items": [
+      "/tutorials/epidemiology.html",
+      "/tutorials/Julia_Basics.html",
+      "/tutorials/solow.html"
+    ]
+  },
+  {
     "listing": "/mie37/index_2026.html",
     "items": [
-      "/lectures/convergence/index.html",
+      "/lectures/convergence/convergence_1.html",
+      "/lectures/convergence/convergence_2.html",
       "/lectures/perturbation/index.html",
       "/tutorials/epidemiology.html",
       "/tutorials/Julia_Basics.html",

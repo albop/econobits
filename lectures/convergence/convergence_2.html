@@ -9,8 +9,7 @@
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.32">
 
-  <meta name="author" content="Pablo Winant">
-  <title>econobits – Introduction</title>
+  <title>econobits – Convergence of Sequences (2)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -130,250 +129,175 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Introduction</h1>
-  <p class="subtitle">Numerical Methods</p>
+  <h1 class="title">Convergence of Sequences (2)</h1>
 
 <div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Pablo Winant 
-</div>
-</div>
 </div>
 
 </section>
-<section class="slide level2">
-
-<h3 id="communication-for-this-course">Communication for this Course</h3>
+<section id="multidimensional-sequences" class="slide level2">
+<h2>Multidimensional sequences</h2>
+<p>In <a href="../../lectures/convergence/convergence_1.html">Convergence of Sequences (1)</a> we focused on scalar sequences.</p>
+<p>Today we will study the local stability of nonlinear <strong>multidimensional</strong> sequences defined by recursions like</p>
+<p><span class="math display">\[x_{t} = f(x_{t-1}),\quad t=1,2,\dots\]</span> where <span class="math inline">\(f\)</span> is a nonlinear function <span class="math inline">\(f:\mathbb{R}^n \to \mathbb{R}^n\)</span> and <span class="math inline">\(x_0\)</span> is an initial vector in <span class="math inline">\(\mathbb{R}^n\)</span>.Assume there is a stationary point <span class="math inline">\(\overline{x}\)</span> such that <span class="math display">\[f(\overline{x})=\overline{x}\]</span></p>
+<p>We want to understand the behavior of <span class="math inline">\(x_t\)</span> as <span class="math inline">\(t\to\infty\)</span> when we start near <span class="math inline">\(\overline{x}\)</span>.</p>
+<p>At first order, we can study the linearized dynamics around <span class="math inline">\(\overline{x}\)</span>: <span class="math display">\[y_t = A y_{t-1},\quad A = f'(\overline{x}),\quad y_t = x_t - \overline{x}.\]</span></p>
+</section>
+<section id="linearized-dynamics" class="slide level2">
+<h2>Linearized Dynamics</h2>
+<p>The recursion <span class="math inline">\(y_t = A y_{t-1}\)</span> has a <strong>closed form</strong> solution <span class="math display">\[
+  y_t = A^t\,y_0.
+  \]</span></p>
 <ul>
-<li>Website: <a href="http://econobits.org">econobits</a></li>
-<li>Github repository for the course: <a href="https://github.com/albop/econobits">repo</a>
-<ul>
-<li>1 PR = 1 free coffee/tea!</li>
-</ul></li>
-<li>Join on <a href="econforge.zulipchat.org">Zulip</a> : we’ll communicate in the <code>mie37_2026</code> room
-<ul>
-<li>you’re welcome to ask questions and answer other’s questions (nicely)</li>
-<li>outside of the course hours, I’ll answer when I can</li>
-</ul></li>
-<li>Formal or infrequent communication: <code>pwinant@escp.eu</code> with subject starting by <code>[mie37]</code></li>
+<li><p><strong>Two questions</strong> drive the dynamics:</p>
+<ol type="1">
+<li>Does <span class="math inline">\(A^t \to 0\)</span> (stability) or does it grow (instability)?</li>
+<li>Can <span class="math inline">\(\lVert A^t\rVert\)</span> exhibit <strong>transient amplification</strong> even if the system is asymptotically stable?</li>
+</ol></li>
+<li><p>The answers depend on <em>how we measure “size”</em> and on whether <span class="math inline">\(A\)</span> is <strong>normal</strong> (commutes with <span class="math inline">\(A^*\)</span>) or <strong>non-normal</strong>.</p></li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="assignments-and-final-exam">Assignments and Final Exam</h3>
+<section id="spectral-radius-the-asymptotic-growth-rate" class="slide level2">
+<h2>Spectral radius: the asymptotic growth rate</h2>
 <ul>
-<li>Hands-on tutorial started in class can be completed and sent by Wednesday night.</li>
-<li>if you wish to have a correction, please ask expicitely</li>
-<li>There will be two special assignments with 14 days to complete each of them.</li>
-<li>Groupwork is OK.</li>
-<li>Final Exam will take place in the last session.
-<ul>
-<li>It will consists of a few simple programming questions and a small model to solve yourself.</li>
-</ul></li>
-<li>Final Grade will weight everything.</li>
+<li><p><strong>Definition (spectral radius):</strong> <span class="math display">\[
+\rho(A) := \max\{ |\lambda| : \lambda \in \sigma(A)\}.
+\]</span></p></li>
+<li><p><strong>Stability (discrete time):</strong> <span class="math display">\[
+\rho(A) &lt; 1 \quad\Longleftrightarrow\quad A^t \to 0\ (t\to\infty).
+\]</span></p></li>
+<li><p><strong>Intuition:</strong> eigenvalues give the long-run scaling of invariant “modes” (exactly for diagonalizable/normal matrices; asymptotically for all).</p></li>
+<li><p><strong>But:</strong> eigenvalues alone can miss large <strong>short-run</strong> growth when <span class="math inline">\(A\)</span> is non-normal.</p></li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="other-sources-of-information">Other sources of information</h3>
+<section id="gelfands-formula-estimating-rhoa-from-powers" class="slide level2">
+<h2>Gelfand’s formula: estimating <span class="math inline">\(\rho(A)\)</span> from powers</h2>
+<p>For <em>any</em> matrix norm <span class="math inline">\(\lVert\cdot\rVert\)</span>, <span class="math display">\[
+\boxed{\ \rho(A) = \lim_{k\to\infty} \lVert A^k\rVert^{1/k}\ }
+\]</span> (Gelfand’s formula)</p>
+<p><strong>Interpretation</strong></p>
 <ul>
-<li>Course is mostly self-contained for its Math and Econ aspects.</li>
-<li>Books:
+<li>The quantity <span class="math inline">\(\lVert A^k\rVert^{1/k}\)</span> is an “average per-step growth factor” over <span class="math inline">\(k\)</span> steps.</li>
+<li>As <span class="math inline">\(k\)</span> increases, it filters out transients and converges to the true asymptotic rate <span class="math inline">\(\rho(A)\)</span>.</li>
+</ul>
+<p><strong>Remark</strong></p>
 <ul>
-<li><em>Economic Dynamics: Theory and Computation</em> by John Stahurski</li>
-<li><em>Computational Economics</em> by Miranda &amp; Fackler</li>
-<li><em>Recursive macreconomic theory</em> by Lars Ljungqvist &amp; Tom Sargent</li>
-</ul></li>
-<li>Online:
-<ul>
-<li><a href="https://quantecon.org/lectures/">QuantEcon lectures</a></li>
-</ul></li>
-<li>… and all the Julia material</li>
+<li>This formula is very useful for theoretical insights.</li>
+<li>In practice computing matrix norms is expensive, and computing matrix exponents is also expensive, so we typically use eigenvalue-based methods to estimate <span class="math inline">\(\rho(A)\)</span> for large matrices.</li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="about-me">About me</h3>
-<div class="columns">
-<div class="column">
-<p><img data-src="assets/0_girafes.jpg"></p>
-</div><div class="column">
+<section id="power-iteration-estimating-the-spectral-radius-when-it-works" class="slide level2">
+<h2>Power iteration: estimating the <em>spectral radius</em> (when it works)</h2>
+<p>The classic power iteration targets the eigenvalue of largest modulus, i.e.&nbsp;it can estimate <span class="math inline">\(\rho(A)\)</span> under standard conditions (dominant eigenvalue, start vector not orthogonal to its eigenvector).</p>
+<p><strong>Algorithm (basic form)</strong></p>
 <ul>
-<li>A computational economist</li>
-<li>Formerly Worked in institutions (IMF, BOE)</li>
-<li>Now at ESCP and CREST/Polytechnique</li>
-<li>Research on models about:
-<ul>
-<li>Inequality (heterogeneity)</li>
-<li>International Finance</li>
-<li>Monetary Policy</li>
-<li>Artificial Intelligence</li>
-</ul></li>
-<li>Involved in several opensource projects (Dolo, QuantEcon, ARK)</li>
+<li>Choose a nonzero vector <span class="math inline">\(v_0\)</span>.</li>
+<li>Iterate: <span class="math inline">\(w_{m+1} \leftarrow A v_m\)</span>, then normalize <span class="math inline">\(v_{m+1}\leftarrow w_{m+1}/\lVert w_{m+1}\rVert_2\)</span>.</li>
+<li>Track the <strong>Growth ratio:</strong> <span class="math inline">\(\lVert A v_m\rVert_2 / \lVert v_m\rVert_2\)</span></li>
+<li>Or the <strong>Rayleigh quotient:</strong> <span class="math inline">\(\frac{v_m^* A v_m}{v_m^* v_m}\)</span> (most meaningful when <span class="math inline">\(A\)</span> is normal / Hermitian). <!-- - **Rayleigh quotient** (most meaningful when $A$ is normal / Hermitian):
+  $$
+  \mu_m = \frac{v_m^* A v_m}{v_m^* v_m}.
+  $$ --></li>
 </ul>
-</div></div>
-</section>
-<section class="slide level2">
-
-<h3 id="content-of-the-course">Content of the course</h3>
-
-<img src="assets/vain_diagram.jpg" width="30%" class="r-stretch"><ul>
-<li>Computational Economics is made of:
+<p><strong>Convergence intuition</strong></p>
 <ul>
-<li>Applied Math (theory)</li>
-<li>Programming (techniques)</li>
-<li>Economic Modeling (expertise)</li>
-</ul></li>
-<li>We’ll alternate between the three topics
-<ul>
-<li>with a stronger than usual emphasis on Programming skills</li>
-</ul></li>
+<li>If <span class="math inline">\(|\lambda_1|&gt;|\lambda_2|\)</span> and <span class="math inline">\(A\)</span> is diagonalizable, then <span class="math inline">\(v_m\)</span> aligns with the dominant eigenvector and the estimates converge to <span class="math inline">\(|\lambda_1|=\rho(A)\)</span>.</li>
+<li>If the dominant eigenvalue is not unique in modulus (e.g.&nbsp;a complex conjugate pair), the iterates may oscillate. <!-- - For strongly **non-normal** matrices, convergence can be slow and the Rayleigh quotient can be misleading; Schur/QZ-based methods are more robust. --></li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="math">Math</h3>
+<section id="numerical-radius-a-one-step-quadratic-form-growth-measure" class="slide level2">
+<h2>Numerical radius: a one-step quadratic-form growth measure</h2>
 <ul>
-<li>We won’t be using very advanced math
+<li><p><strong>Field of values (numerical range):</strong> <span class="math display">\[
+W(A) := \{ x^*Ax : \lVert x\rVert_2 = 1 \} \subset \mathbb{C}.
+\]</span></p></li>
+<li><p><strong>Numerical radius:</strong> <span class="math display">\[
+\boxed{\ w(A) := \max\{ |z| : z\in W(A)\} = \max_{\lVert x\rVert_2=1} |x^*Ax|\ }
+\]</span></p></li>
+</ul>
+<p><strong>Key inequalities</strong> <span class="math display">\[
+\rho(A) \le w(A) \le \lVert A\rVert_2 \le 2\,w(A).
+\]</span></p>
+<p><strong>Intuition</strong></p>
 <ul>
-<li>linear algebra, Banach spaces, a bit of probabilities</li>
-<li>working knowledge is fine</li>
-<li>(almost) no proofs</li>
-</ul></li>
-<li>but in a context where advanced math is an option…
-<ul>
-<li>functional spaces…</li>
-</ul></li>
-<li>applied math: essentially describes the algorithms and their validity/convergence properties</li>
+<li><span class="math inline">\(w(A)\)</span> captures the largest possible “one-step gain” of the scalar quadratic form <span class="math inline">\(x^*Ax\)</span>.</li>
+<li>For <strong>normal</strong> matrices: <span class="math inline">\(\rho(A)=w(A)=\lVert A\rVert_2\)</span>.</li>
+<li>For <strong>non-normal</strong> matrices: often <span class="math inline">\(\rho(A) \ll w(A)\)</span>.</li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="models">Models</h3>
+<section id="why-wa-matters-for-dynamics-transient-growth" class="slide level2">
+<h2>Why <span class="math inline">\(w(A)\)</span> matters for dynamics (transient growth)</h2>
+<p>Even when <span class="math inline">\(\rho(A)&lt;1\)</span> (asymptotically stable), a non-normal matrix can have:</p>
 <ul>
-<li>See a variety of models:
+<li><strong>large <span class="math inline">\(\lVert A\rVert_2\)</span></strong> (big one-step stretching)</li>
+<li><strong>large <span class="math inline">\(w(A)\)</span></strong> (big one-step Rayleigh-quotient magnitude)</li>
+<li><strong>transient amplification</strong>: <span class="math inline">\(\lVert A^t\rVert\)</span> can increase for some <span class="math inline">\(t\)</span> before eventually decaying.</li>
+</ul>
+<p>A canonical 2×2 example: <span class="math display">\[
+A = \begin{bmatrix}0.9 &amp; M\\ 0 &amp; 0.9\end{bmatrix},\quad M\gg 1.
+\]</span></p>
 <ul>
-<li>Static Market Determination (Computational General Equilibrium: CGE)</li>
-<li>Dynamic Optimization (continous or discrete)</li>
-<li>Linear Rational Expectations Models</li>
-<li>Dynamic Stochastic General Equilibrium models (DSGE)</li>
-<li>Heterogenous Agents Models</li>
+<li>Eigenvalues are both <span class="math inline">\(0.9\)</span> so <span class="math inline">\(\rho(A)=0.9&lt;1\)</span>.</li>
+<li>But for large <span class="math inline">\(M\)</span>, <span class="math inline">\(\lVert A\rVert_2\)</span> (and typically <span class="math inline">\(w(A)\)</span>) can be much larger than 1, producing sizeable short-run growth.</li>
+</ul>
+</section>
+<section id="recap-spectral-vs-numerical-radius" class="slide level2">
+<h2>Recap: Spectral vs Numerical Radius</h2>
+<ul>
+<li><strong>Spectral radius <span class="math inline">\(\rho(A)\)</span></strong>
+<ul>
+<li>Governs <em>asymptotic</em> stability and long-run exponential rate.</li>
+<li>Insensitive to how non-orthogonal the eigenvectors are.</li>
 </ul></li>
-<li>In discrete time
+<li><strong>Numerical radius <span class="math inline">\(w(A)\)</span></strong>
 <ul>
-<li>to avoid discretization schemes and stochastic calculus</li>
+<li>Upper-bounds <span class="math inline">\(\rho(A)\)</span> and is closely tied to the geometry of the field of values.</li>
+<li>More informative about <em>one-step</em> amplification and non-normality.</li>
 </ul></li>
-<li>Usually a model is specified by equations and some parameter values:
+<li><strong>Rule of thumb</strong>
 <ul>
-<li>no closed form, most of the time</li>
-<li>goal is to “solve” the model to study properties of its solutions</li>
+<li>If <span class="math inline">\(A\)</span> is (nearly) normal: <span class="math inline">\(\rho(A)\)</span> tells most of the story.</li>
+<li>If <span class="math inline">\(A\)</span> is non-normal: expect transients; look at <span class="math inline">\(w(A)\)</span>, <span class="math inline">\(\lVert A\rVert_2\)</span>, and (if needed) pseudospectra.</li>
 </ul></li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="models-2">Models (2)</h3>
+<section id="nonlinear-sequences-local-convergence" class="slide level2">
+<h2>Nonlinear Sequences: Local Convergence</h2>
+<p>Now we want to study the convergence of nonlinear sequences defined by recursions like:</p>
+<p><span class="math display">\[x_{n+1} = f(x_n),\quad n=0,1,2,\dots\]</span></p>
+<p>with steady-state <span class="math inline">\(\overline{x}\)</span> such that <span class="math inline">\(f(\overline{x})=\overline{x}\)</span>.</p>
 <ul>
-<li>random examples of questions we can analyse numerically:
+<li><strong>Contraction mapping</strong>: <span class="math inline">\(f\)</span> is a contraction if <span class="math inline">\(\exists L&lt;1\)</span> s.t. <span class="math inline">\(|f(x)-f(y)| \le L|x-y|\)</span>.</li>
+<li><strong>Banach fixed point theorem</strong>: if <span class="math inline">\(f\)</span> is a contraction on a complete metric space, then <span class="math inline">\(f\)</span> has a unique fixed point and iterating <span class="math inline">\(f\)</span> converges to it at a linear rate.</li>
+</ul>
+<div class="fragment">
+<p>Denote by <span class="math inline">\(A=f'(\overline{x})\)</span> the Jacobian matrix of <span class="math inline">\(f\)</span> at <span class="math inline">\(\overline{x}\)</span>.</p>
 <ul>
-<li>which sectors should receive more help during the coronavirus (CGE)?</li>
-<li>when is it time to replace a machine? how much water should be extracted? how much should be stored? (dynamic programming)</li>
-<li>what kind of shock drives the business cycles? (DSGE models)</li>
-<li>is a Central Bank <em>able</em> to commit to intervene in the markets? (time inconsistency)</li>
+<li>If <span class="math inline">\(w(A)&lt;1\)</span> there is a compact neighborhood around <span class="math inline">\(\overline{x}\)</span> where <span class="math inline">\(f\)</span> is a contraction, so local convergence is guaranteed, at geometric rate <span class="math inline">\(w(A)+\epsilon\)</span> for some small <span class="math inline">\(\epsilon&gt;0\)</span>.
+<ul>
+<li>derives from Banach fixed point theorem</li>
+</ul></li>
+<li>If <span class="math inline">\(\rho(A)&lt;1\)</span> (weaker condition) local convergence is guaranteed, at geometric rate <span class="math inline">\(\rho(A)+\epsilon\)</span> for some small <span class="math inline">\(\epsilon&gt;0\)</span>.
+<ul>
+<li>derives from norm equivalence and Gelfand’s formula</li>
 </ul></li>
 </ul>
+</div>
 </section>
-<section class="slide level2">
-
-<h3 id="why-economics-is-not-physics-1">Why economics is not Physics (1)</h3>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/bmUAKkisAFo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
-</iframe>
+<section id="going-further" class="slide level2">
+<h2>Going Further</h2>
+<p>Insteady of studying stability of <span class="math inline">\(\overline{x}\)</span> (that is for any <span class="math inline">\(x_0 \in \mathbb{R}^n\)</span>), we can also characterize all the different dynamics we can obtain for different initial <span class="math inline">\(x_0\)</span> (read different initial shocks to the economy).</p>
+<p>We can define two sets of initial conditions:</p>
 <ul>
-<li>Easy!: you just swap particles for people, and simulate (or solve an IVP problem)</li>
-<li><em>NO</em>: Not only local interactions: economic agents interact in many ways, including through markets
-<ul>
-<li>All agents/prices must be solved at the same time</li>
-</ul></li>
+<li>the stable manifold: <span class="math inline">\(W=\{x : \lim_{n\to\infty} f^n(x) = \overline{x}\}\)</span></li>
+<li>the unstable manifold: <span class="math inline">\(U=\{x : \lim_{n\to\infty} f^n(x) \neq \overline{x}\}\)</span></li>
 </ul>
-</section>
-<section class="slide level2">
-
-<h3 id="why-economics-is-not-physics-2">Why economics is not Physics (2)</h3>
-
-<img data-src="assets/fem.png" class="r-stretch quarto-figure-center"><p class="caption">FEM</p><ul>
-<li>Easy!: it’s a differential equation with boundary values (BVP)</li>
-<li><em>NO</em>: agents think, they are forward looking and respond to other agents’ (possibly future) decisions</li>
+<p>Even when <span class="math inline">\(\rho(A)&gt;1\)</span>, local dynamics of <span class="math inline">\(f\)</span> can be characterized by <span class="math inline">\(A=f'(\overline{x})\)</span></p>
+<ul>
+<li><span class="math inline">\(\implies\)</span> the stable eigenspace of <span class="math inline">\(A\)</span> approximates the stable manifold of <span class="math inline">\(f\)</span></li>
+<li>and the unstable eigenspace of <span class="math inline">\(A\)</span> approximate the unstable manifold of <span class="math inline">\(f\)</span>.</li>
 </ul>
-</section>
-<section class="slide level2">
-
-<h3 id="what-makes-the-life-of-computational-economists-hard">What makes the life of computational economists hard:</h3>
-<ul>
-<li>Agents are rationnal, they should consider all possible outcomes and all decisions (and those of others…) in the future to make a decision today <img data-src="assets/brownian_motion.png" alt="bm"></li>
-<li>Very complex problem: curse of dimensionality when more than a few variables</li>
-<li>Wait, that’s crazy! People are not that smart, let’s make simplifying assumptions about their behaviour
-<ul>
-<li>agent based approach</li>
-<li>methodological issues: too many possible predictions, too many parameters</li>
-</ul></li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="why-should-you-learn-to-program">Why should you learn to program ?</h3>
-<ul>
-<li>Econometricians, modellers, data scientists, spend a lot of time writing code
-<ul>
-<li>and do it inefficiently…</li>
-</ul></li>
-<li>Programming efficiently requires awareness of
-<ul>
-<li>certain basic concepts: (types, control flow, functions, objects)</li>
-<li>some tools (programming language, code versioning, command line)</li>
-<li>which are never taught…</li>
-</ul></li>
-<li>And yet they are very easy to learn
-<ul>
-<li>anyone can become an expert !</li>
-</ul></li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="now-is-the-right-time">Now is the right time !</h3>
-<ul>
-<li>A lot of demand everywhere for skilled programmers.</li>
-<li>Many faculties are introducing formal programming courses (for economists)
-<ul>
-<li>NYU, Penn, MIT (see <a href="https://computationalthinking.mit.edu/Spring21/">thinking computationnally</a></li>
-<li>Summer Bootcamps</li>
-</ul></li>
-<li>New applications are even more code-intensive than before:
-<ul>
-<li>data science</li>
-<li>machine learning</li>
-<li>modeling</li>
-</ul></li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="do-it-in-the-open">Do it in the open !</h3>
-<ul>
-<li>Many excellent online resources:
-<ul>
-<li><a href="https://software-carpentry.org/">Software Carpentry</a></li>
-<li><a href="https://quantecon.org/news-item/need-for-speed-in-julia">QuantEcon</a> from Tom Sargent and John Stachurski</li>
-<li><a href="https://julialang.org/learning/">Julia manuals/tutorials</a></li>
-</ul></li>
-<li>Opensource community is very welcoming:
-<ul>
-<li>ask on mailing lists or online chats (Julia users, quantecon, dynare, …)</li>
-<li>open issues (for instance against Dolo <a href="https://github.com/EconForge/Dolo.jl/issues">https://github.com/EconForge/Dolo.jl/issues</a></li>
-<li>participating is also a great occasion to learn</li>
-</ul></li>
-</ul>
+<p><span class="math inline">\(\implies\)</span> this is formalized in the <em>stable manifold theorem</em></p>
 
 
 </section>

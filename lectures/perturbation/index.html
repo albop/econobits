@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.32">
 
   <meta name="author" content="Pablo Winant">
   <title>econobits – Perturbation Analysis (f-g version)</title>
@@ -17,6 +17,9 @@
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -95,7 +98,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -463,7 +466,7 @@ q_t:\quad &amp;  k_{t+1} &amp; = &amp; (1-\delta) k_{t} + i_{t}
 <section id="result" class="slide level2">
 <h2>Result:</h2>
 <ul>
-<li><p>Optimality conditions <span class="math display">\[\begin{bmatrix} . &amp; . &amp; . &amp; . \\ \end{bmatrix} \begin{bmatrix} \Delta i_t \\ \Delta c_t  \\ \Delta k_t \\ \Delta z_t \end{bmatrix} = \begin{bmatrix} . &amp; . &amp; . \\ \end{bmatrix} \begin{bmatrix} \Delta i_{t+1} \\  \Delta c_{t+1} \\ \Delta k_{t+1} \\ \Delta z_{t+1} \end{bmatrix} \]</span></p></li>
+<li><p>Optimality conditions <span class="math display">\[\begin{bmatrix} . &amp; . &amp; . &amp; . \\  . &amp; . &amp; . &amp; . \end{bmatrix} \begin{bmatrix} \Delta i_t \\ \Delta c_t  \\ \Delta k_t \\ \Delta z_t \end{bmatrix} = \begin{bmatrix} . &amp; . &amp; . \\  . &amp; . &amp; . &amp; .\end{bmatrix} \begin{bmatrix} \Delta i_{t+1} \\  \Delta c_{t+1} \\ \Delta k_{t+1} \\ \Delta z_{t+1} \end{bmatrix} \]</span></p></li>
 <li><p>Transition <span class="math display">\[ \begin{bmatrix} \Delta k_t \\ \Delta z_t \end{bmatrix} = \begin{bmatrix} . &amp; .  \\ . &amp; . \end{bmatrix} \begin{bmatrix} \Delta k_{t-1} \\ \Delta z_{t-1} \end{bmatrix}  + \begin{bmatrix} . \end{bmatrix} \begin{bmatrix}\Delta i_{t-1}\end{bmatrix}\]</span></p></li>
 </ul>
 </section></section>
@@ -912,16 +915,12 @@ A \Delta s_t + B \Delta x_t + C \Delta s_{t+1} + D \Delta x_{t+1} &amp; = &amp; 
 <li>We get the equation: <span class="math display">\[\begin{eqnarray}
 F(X, \tilde{X}) &amp; = &amp; (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&amp;=&amp; 0
 \end{eqnarray}\]</span></li>
-<li>Consider the <em>linear time iteration</em> algorithm</li>
+<li>We can solve it with a simple <em>Bernouilli</em> scheme</li>
 <li>When the model is well-specified it is guaranteed to converge to the right solution.
 <ul>
 <li>cf <em>linear time iteration</em> by Pontus Rendahl (<a href="https://irihs.ihs.ac.at/id/eprint/4351/1/es-330.pdf">link</a>)</li>
 </ul></li>
 <li>There are simple criteria to check that the solution is right, and that the model is well specified</li>
-<li><span class="math inline">\(T\)</span> is the time iteration operator… for linear models
-<ul>
-<li>it does <em>forward iteration</em> (<span class="math inline">\(X_t\)</span> as a function of <span class="math inline">\(X_{t+1}\)</span>)</li>
-</ul></li>
 </ul>
 </div><div class="column">
 <h3 id="algorithm">Algorithm:</h3>
@@ -1009,90 +1008,95 @@ F(X, \tilde{X}) &amp; = &amp; (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&amp;
 </ul>
 </div></div>
 </section>
-<section id="stability-of-the-backward-operator" class="slide level2">
-<h2>Stability of the backward operator</h2>
-<p>To solve the model we use the backard operator: <span class="math display">\[T: \begin{eqnarray} \mathbb{R}^{n_x} \times \mathbb{R}^{n_s}  &amp; \rightarrow &amp;  \mathbb{R}^{n_x} \times \mathbb{R}^{n_s}  \\X_{t+1} &amp; \mapsto &amp; X_t \text{s.t.} F(X_t,X_{t+1})=0\end{eqnarray}\]</span></p>
+<section id="the-time-iteration-operator" class="slide level2">
+<h2>The Time Iteration Operator</h2>
+<p>The time iteration operator associated to the linearized model, associates to any function function <span class="math inline">\(\tilde{\varphi}\)</span> the function <span class="math inline">\(\varphi\)</span> such that:</p>
+<p><span class="math display">\[A \tilde{\varphi}( E s + F \varphi(s) ) + B ( E s + F \varphi(s))  + C \varphi(s) + D s = 0\]</span></p>
+<p>To find the solution we have iterated this operator in the space of linear functions (with <span class="math inline">\(\varphi(\overline{s})=\overline{x}\)</span>), but time-iteration can be defined in a more general space.</p>
+<p>In particular, we can study it in the space of affine functions <span class="math inline">\(\varphi(\overline{s})=x_0 + x_1 (\overline{s} - \overline{s})\)</span>.</p>
+<p>In this space of functions one can show that:</p>
 <ul>
-<li>What about its stability?</li>
-<li>Recall: fixed point <span class="math inline">\(\overline{z}\)</span> of recursive sequence <span class="math inline">\(z_n=f(z_{n_1})\)</span> is stable if <span class="math inline">\(|f^{\prime}(\overline{z})|&lt;1\)</span></li>
+<li>if <span class="math inline">\(P\)</span> is stable, then the spectral radius of the time iteration operator is the spectral radius of <span class="math inline">\(((B + (C + D X) F)^{-1})D\)</span></li>
+<li>in that case the stable solution is the unique if and only if, the spectral radius of the time iteration operator is smaller than 1 (<em>backward stability</em>)</li>
 </ul>
-<div class="fragment">
-<div class="columns">
-<div class="column">
-<p>We need to study <span class="math inline">\(T^{\prime}\)</span> of (<span class="math inline">\(X\)</span>).</p>
-<ul>
-<li>but <span class="math inline">\(T\)</span> maps a matrix to another matrix 🐉😓</li>
-<li>how do we differentiate it?</li>
-</ul>
-</div><div class="column">
-<p><img class="fragment" src="adele_bs.jpg"></p>
-</div></div>
-</div>
-</section>
-<section id="differentials" class="slide level2">
-<h2>Differentials</h2>
-<ul>
-<li>Consider a Banach Space <span class="math inline">\(\mathcal{B}\)</span>.</li>
-<li>Consider an operator (i.e.&nbsp;a function): <span class="math inline">\(\mathcal{T}: \mathcal{B} \rightarrow \mathcal{B}\)</span>.</li>
-<li>Consider <span class="math inline">\(\overline{x} \in \mathcal{B}\)</span>.</li>
-<li><span class="math inline">\(\mathcal{T}\)</span> is differentiable at <span class="math inline">\(\overline{x}\)</span> if there exists a bounded linear operator <span class="math inline">\(L \in \mathcal{L}(\mathcal{B})\)</span> such that: <span class="math display">\[\mathcal{T}(x) = \overline{x} + L.(x-\overline{x}) + o(|x-\overline{x}|)\]</span>
-<ul>
-<li>when it exists we denote this operator by <span class="math inline">\(\mathcal{T}^{\prime}(\overline{x})\)</span></li>
-</ul></li>
-<li>Remarks:
-<ul>
-<li>Bounded operator means: <span class="math inline">\(\sup_{|x|=1} |L.x|&lt;+\infty\)</span></li>
-<li>This definition of a derivative is usually referred to as Fréchet-derivative</li>
-</ul></li>
-</ul>
-</section>
-<section id="examples-of-linear-operators" class="slide level2">
-<h2>Examples of linear operators</h2>
-<ul>
-<li><span class="math inline">\(x\)</span> vector, A a matrix, <span class="math inline">\(T(x) = Ax\)</span>
-<ul>
-<li>then <span class="math inline">\(T(x+u) = Ax + A.u + 0\)</span></li>
-<li><span class="math inline">\(T^{\prime}(x) = A\)</span> for all x</li>
-</ul></li>
-<li><span class="math inline">\(A\)</span> a matrix, B a matrix, X a matrix: <span class="math inline">\(T(X) = A X B\)</span>
-<ul>
-<li>then <span class="math inline">\(T(X+u) = A X B + A u B + 0\)</span></li>
-<li><span class="math inline">\(T^{\prime}(X).u = A u B\)</span></li>
-</ul></li>
-<li><span class="math inline">\(A\)</span> a matrix, X a matrix: <span class="math inline">\(T(X) = A X B\)</span>
-<ul>
-<li>then <span class="math inline">\(T(X+u) = A X B + A u B\)</span></li>
-<li><span class="math inline">\(T^{\prime}(X).u = A u B\)</span></li>
-</ul></li>
-</ul>
-</section>
-<section id="back-to-the-time-iteration-operator" class="slide level2">
-<h2>Back to the time iteration operator</h2>
-<ul>
-<li><span class="math inline">\(T(X)\)</span> is implicitly defined by <span class="math inline">\(F(T(X), X)=0\)</span></li>
-<li><span class="math inline">\(F(X,Y) = (A + B X) + ( C+ D Y) ( E  + F X )\)</span>
-<ul>
-<li>it is linear in <span class="math inline">\(X\)</span> and in <span class="math inline">\(Y\)</span></li>
-</ul></li>
-<li><span class="math inline">\(F^{\prime}_X (X, Y).u = (B + (C+DY)F) u\)</span>
-<ul>
-<li>a regular matrix multiplication</li>
-<li>its inverse is: <span class="math inline">\(F^{\prime}_X (X, Y)^{-1} = (B + (C+DY)F)^{-1}\)</span></li>
-</ul></li>
-<li><span class="math inline">\(F^{\prime}_Y (X, Y).u = D u (E+FX)\)</span>
-<ul>
-<li>a linear operation on matrices</li>
-</ul></li>
-</ul>
-</section>
-<section id="the-derivative-of-the-time-iteration-operator" class="slide level2">
-<h2>The derivative of the time-iteration operator</h2>
-<ul>
-<li>Implicit relation can be differentiated: <span class="math display">\[F^{\prime}_X (T(X), X) T^{\prime} (X) + F_Y^{\prime}(T(X),X) = 0\]</span></li>
-<li><span class="math inline">\(F^{\prime}_X (T(X), X)\)</span> being a regular matrix, it is (conceptually) easy to invert: <span class="math display">\[T^{\prime}(X) = -(F^{\prime}_X (T(X), X))^{-1}F_Y^{\prime}(T(X),X)\]</span></li>
-<li>Finally, we get the explicit formula for the linear operator <span class="math inline">\(T^{\prime}\)</span> computed at the steady state: <span class="math display">\[T^{\prime}(\overline{X}).u = ((B + (C+D \overline{X})F)^{-1})D u (E+F \overline{X})\]</span></li>
-<li>We can compute the spectral radius of <span class="math inline">\(T^{\prime}(\overline{X})\)</span> using the power iteration method</li>
-</ul>
+<!-- ## Stability of the backward operator
+
+
+To solve the model we use the backard operator: $$T: \begin{eqnarray} \mathbb{R}^{n_x} \times \mathbb{R}^{n_s}  & \rightarrow &  \mathbb{R}^{n_x} \times \mathbb{R}^{n_s}  \\X_{t+1} & \mapsto & X_t \text{s.t.} F(X_t,X_{t+1})=0\end{eqnarray}$$
+
+- What about its stability?
+- Recall: fixed point $\overline{z}$ of recursive sequence $z_n=f(z_{n_1})$ is stable if $|f^{\prime}(\overline{z})|<1$
+
+. . .
+
+::: columns
+:::: column
+
+We need to study $T^{\prime}$ of ($X$).
+
+  - but $T$ maps a matrix to another matrix 🐉😓
+  - how do we differentiate it?
+
+::::
+::::  column
+<img class="fragment" src="adele_bs.jpg">
+::::
+:::
+
+----
+
+## Differentials
+
+- Consider a Banach Space $\mathcal{B}$.
+- Consider an operator (i.e. a function): $\mathcal{T}: \mathcal{B} \rightarrow \mathcal{B}$.
+- Consider $\overline{x} \in \mathcal{B}$.
+- $\mathcal{T}$ is differentiable at $\overline{x}$ if there exists a bounded linear operator $L \in \mathcal{L}(\mathcal{B})$ such that:
+$$\mathcal{T}(x) = \overline{x} + L.(x-\overline{x}) + o(|x-\overline{x}|)$$
+  - when it exists we denote this operator by $\mathcal{T}^{\prime}(\overline{x})$
+- Remarks:
+  - Bounded operator means: $\sup_{|x|=1} |L.x|<+\infty$
+  - This definition of a derivative is usually referred to as Fréchet-derivative
+
+----
+
+## Examples of linear operators
+
+- $x$ vector, A a matrix, $T(x) = Ax$
+  - then $T(x+u) = Ax + A.u + 0$
+  - $T^{\prime}(x) = A$ for all x
+- $A$ a matrix, B a matrix, X a matrix: $T(X) = A X B$
+  - then $T(X+u) = A X B + A u B + 0$
+  - $T^{\prime}(X).u = A u B$
+- $A$ a matrix, X a matrix: $T(X) = A X B$
+  - then $T(X+u) = A X B + A u B$
+  - $T^{\prime}(X).u = A u B$
+
+----
+
+## Back to the time iteration operator
+
+- $T(X)$ is implicitly defined by $F(T(X), X)=0$
+- $F(X,Y) = (A + B X) + ( C+ D Y) ( E  + F X )$
+  - it is linear in $X$ and in $Y$
+- $F^{\prime}_X (X, Y).u = (B + (C+DY)F) u$
+  - a regular matrix multiplication
+  - its inverse is: $F^{\prime}_X (X, Y)^{-1} = (B + (C+DY)F)^{-1}$
+- $F^{\prime}_Y (X, Y).u = D u (E+FX)$
+  - a linear operation on matrices
+
+----
+
+## The derivative of the time-iteration operator
+
+- Implicit relation can be differentiated:
+$$F^{\prime}_X (T(X), X) T^{\prime} (X) + F_Y^{\prime}(T(X),X) = 0$$
+- $F^{\prime}_X (T(X), X)$ being a regular matrix, it is (conceptually) easy to invert:
+$$T^{\prime}(X) = -(F^{\prime}_X (T(X), X))^{-1}F_Y^{\prime}(T(X),X)$$
+- Finally, we get the explicit formula for the linear operator $T^{\prime}$ computed at the steady state:
+$$T^{\prime}(\overline{X}).u = ((B + (C+D \overline{X})F)^{-1})D u (E+F \overline{X})$$
+- We can compute the spectral radius of $T^{\prime}(\overline{X})$ using the power iteration method
+
+---- -->
 </section>
 <section id="recap" class="slide level2">
 <h2>Recap</h2>
@@ -1100,9 +1104,13 @@ F(X, \tilde{X}) &amp; = &amp; (A + B X) + ( C+ D \tilde{X}) ( E  + F X ) \\&amp;
 <li>We compute the derivatives of the model</li>
 <li>Time iteration algorithm, starting from an initial guess <span class="math inline">\(X_0\)</span> and we repeat until convergence: <span class="math display">\[X_{n+1} = (B + (C + D X_n) F)^{-1} (A + (C+DX_n)E)\]</span></li>
 <li>We compute the spectral radius of two operators to ensure the model is well defined and that the solution is the right one.</li>
-<li><strong>backward stability</strong>: derivative of simulation operator <span class="math display">\[\boxed{\rho(F + H \overline{X} )}\]</span></li>
-<li><strong>forward stability</strong>: derivative of time iteration operator <span class="math display">\[\boxed{\rho \left( u\mapsto ((B + (C+D \overline{X})F)^{-1})D u (E+F \overline{X}) \right)}\]</span></li>
+<li><strong>backward stability</strong>: derivative of simulation operator <span class="math display">\[\boxed{\rho(E + F \overline{X} )}\]</span></li>
+<li><strong>forward stability</strong>: derivative of time iteration operator <span class="math display">\[\boxed{\rho \left( u\mapsto ((B + (C + D X) F)^{-1})D\right)}\]</span></li>
 </ol>
+<p><span class="math inline">\(\implies\)</span> forward and backward stability are equivalent to Blanchard-Kahn conditions</p>
+<ul>
+<li>there is a unique stable solution</li>
+</ul>
 
 
 </section></section>
