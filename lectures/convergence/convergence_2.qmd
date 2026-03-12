@@ -32,12 +32,26 @@ The recursion $y_t = A y_{t-1}$ has a **closed form** solution
   y_t = A^t\,y_0.
   $$
 
-- **Two questions** drive the dynamics:
+**Two questions** drive the dynamics:
 
   1. Does $A^t \to 0$ (stability) or does it grow (instability)?
   2. Can $\lVert A^t\rVert$ exhibit **transient amplification** even if the system is asymptotically stable?
 
-- The answers depend on *how we measure “size”* and on whether $A$ is **normal** (commutes with $A^*$) or **non-normal**.
+The answers depend on *how we measure “size”* and on whether $A$ is **normal** (commutes with $A^*$) or **non-normal**.
+
+
+## Operator norm
+
+We use here the following norms:
+
+- $\|x\| = \|x\|_2 = \sqrt{\sum_i |x_i|^2}$: euclidean norm for vectors
+  - it can be defined from the scalar product $\langle x,y\rangle = x^*y$ (where $x^*$ is the conjugate transpose of $x$)
+  - $\|x\|_2 = \sqrt{\langle x,x\rangle}$
+- $\|A\| = \|A\|_2 = \max_{\|x\|_2=1} \|Ax\|_2$: (induced) operator norm for matrices
+  - The operator norm, provides us with a worst-case measure of how much $A$ can stretch a vector in one step $\|Ax\|_2 \le \|A\|_2 \|x\|_2$ 
+
+It yields a simple estimate of the convergence rate:
+$$\frac{\|y_t\|}{\|y_{t-1}\|} = \frac{\|A y_{t-1}\|_2}{\|y_{t-1}\|_2} \le \|A\|_2.$$
 
 ---
 
@@ -59,17 +73,39 @@ The recursion $y_t = A y_{t-1}$ has a **closed form** solution
 
 ---
 
-## Gelfand’s formula: estimating $\rho(A)$ from powers
+## Transitory Dynamics Can Differ from Asymptotic Dynamics
 
-For *any* matrix norm $\lVert\cdot\rVert$,
+A canonical 2×2 example:
+$$
+A = \begin{bmatrix}0.9 & M\\ 0 & 0.9\end{bmatrix},\quad M\gg 1.
+$$
+
+- Eigenvalues are both $0.9$ so $\rho(A)=0.9<1$.
+- But for large $M$, $\lVert A\rVert_2$ can be much larger than 1, producing sizeable short-run growth.
+
+We have the closed form:
+
+$$A^k = \begin{bmatrix}0.9^k & k M 0.9^{k-1}\\ 0 & 0.9^k\end{bmatrix}$$
+
+And $\|A^k\|_2$ grows like $k M 0.9^{k-1}$ for large $M$ and small $k$, before eventually decaying to zero as $k\to\infty$.
+
+## Gelfand’s formula
+
+Even though the spectral radius is not a norm [^notanorm], it is related to matrix norms in the following way.
+
+For any matrix norm $\|\cdot\|$ (including the matrix norm), we have the following formula for the spectral radius:
 $$
 \boxed{\ \rho(A) = \lim_{k\to\infty} \lVert A^k\rVert^{1/k}\ }
 $$
-(Gelfand’s formula)
+
+
+[^notanorm]: we don't have $\rho(A+B)<=\rho(A)+\rho(B)$ or $\rho(A)=0 \implies A=0$
+
 
 **Interpretation**
 
-- The quantity $\lVert A^k\rVert^{1/k}$ is an "average per-step growth factor" over $k$ steps.
+- The quantity $\lVert A^k\rVert^{1/k}$ is an "average per-step growth factor" over $k$ steps:
+  - suppose there is growth $g$ such that $g^k = \lVert A^k\rVert$, then $g=\lVert A^k\rVert^{1/k}$.
 - As $k$ increases, it filters out transients and converges to the true asymptotic rate $\rho(A)$.
 
 **Remark**
@@ -79,7 +115,7 @@ $$
 
 ---
 
-## Power iteration: estimating the *spectral radius* (when it works)
+## Power iteration: estimating the *spectral radius*
 
 The classic power iteration targets the eigenvalue of largest modulus, i.e. it can estimate
 $\rho(A)$ under standard conditions (dominant eigenvalue, start vector not orthogonal to its eigenvector).
@@ -89,7 +125,7 @@ $\rho(A)$ under standard conditions (dominant eigenvalue, start vector not ortho
 - Choose a nonzero vector $v_0$.
 - Iterate: $w_{m+1} \leftarrow A v_m$, then normalize $v_{m+1}\leftarrow w_{m+1}/\lVert w_{m+1}\rVert_2$.
 - Track the **Growth ratio:** $\lVert A v_m\rVert_2 / \lVert v_m\rVert_2$
-- Or the **Rayleigh quotient:** $\frac{v_m^* A v_m}{v_m^* v_m}$ (most meaningful when $A$ is normal / Hermitian).
+<!-- - Or the **Rayleigh quotient:** $\frac{v_m^* A v_m}{v_m^* v_m}$ (most meaningful when $A$ is normal / Hermitian). -->
   <!-- - **Rayleigh quotient** (most meaningful when $A$ is normal / Hermitian):
     $$
     \mu_m = \frac{v_m^* A v_m}{v_m^* v_m}.
@@ -99,71 +135,32 @@ $\rho(A)$ under standard conditions (dominant eigenvalue, start vector not ortho
 
 - If $|\lambda_1|>|\lambda_2|$ and $A$ is diagonalizable, then $v_m$ aligns with the dominant eigenvector and the estimates converge to $|\lambda_1|=\rho(A)$.
 - If the dominant eigenvalue is not unique in modulus (e.g. a complex conjugate pair), the iterates may oscillate.
-<!-- - For strongly **non-normal** matrices, convergence can be slow and the Rayleigh quotient can be misleading; Schur/QZ-based methods are more robust. -->
 
 ---
 
-## Numerical radius
 
-- **Field of values (numerical range):**
-  $$
-  W(A) := \{ |Ax| : \lVert x\rVert_2 = 1 \} \subset \mathbb{C}.
-  $$
+## Recap: Spectral Radius and Operator Norm
 
-- **Numerical radius:**
-  $$
-  \boxed{\ w(A) := \max\{ |z| : z\in W(A)\} = \max_{\lVert x\rVert_2=1} |Ax|\ }
-  $$
-
-**Key inequalities**
-$$
-\rho(A) \le w(A) \le \lVert A\rVert_2 \le 2\,w(A).
-$$
-
-**Intuition**
-
-- $w(A)$ captures the largest possible “one-step gain” of the scalar quadratic form $x^*Ax$.
-- For **normal** matrices: $\rho(A)=w(A)=\lVert A\rVert_2$.
-- For **non-normal** matrices: often $\rho(A) \ll w(A)$.
-
----
-
-## Why $w(A)$ matters for dynamics (transient growth)
-
-Even when $\rho(A)<1$ (asymptotically stable), a non-normal matrix can have:
-
-- **large $\lVert A\rVert_2$** (big one-step stretching)
-- **large $w(A)$** (big one-step Rayleigh-quotient magnitude)
-- **transient amplification**: $\lVert A^t\rVert$ can increase for some $t$ before eventually decaying.
-
-A canonical 2×2 example:
-$$
-A = \begin{bmatrix}0.9 & M\\ 0 & 0.9\end{bmatrix},\quad M\gg 1.
-$$
-
-- Eigenvalues are both $0.9$ so $\rho(A)=0.9<1$.
-- But for large $M$, $\lVert A\rVert_2$ (and typically $w(A)$) can be much larger than 1, producing sizeable short-run growth.
-
----
-
-## Recap: Spectral vs Numerical Radius
 
 - **Spectral radius $\rho(A)$**
   - Governs *asymptotic* stability and long-run exponential rate.
   - Insensitive to how non-orthogonal the eigenvectors are.
 
-- **Numerical radius $w(A)$**
-  - Upper-bounds $\rho(A)$ and is closely tied to the geometry of the field of values.
-  - More informative about *one-step* amplification and non-normality.
+- **Operator norm $\lVert A\rVert_2$**
+  - Exact worst-case one-step state amplification: $\max_{\|x\|_2=1}\|Ax\|_2$.
+  - Most conservative one-step bound.
 
-- **Rule of thumb**
-  - If $A$ is (nearly) normal: $\rho(A)$ tells most of the story.
-  - If $A$ is non-normal: expect transients; look at $w(A)$, $\lVert A\rVert_2$, and (if needed) pseudospectra.
+- **Relation between both**: $\rho(A) \le \|A\|_2$
+  - $\rho(A)$ can be much smaller than $\|A\|_2$
+  - For a normal matrix $A$: $\rho(A)=\|A\|_2$.
+    - normal matrices commute with their conjugate transpose ($A A^* = A^* A$), and include symmetric, Hermitian, and unitary matrices.
+    - symmetric, hermitian, unitary matrices are all normal
+  - A matrix can satisfy $\rho(A)=\|A\|_2$ without being normal
 
 ---
 
 
-## Nonlinear Sequences: Local Convergence
+## Nonlinear Sequences: Contraction Mappings
 
 Now we want to study the convergence of nonlinear sequences defined by recursions like:
 
@@ -171,18 +168,26 @@ $$x_{n+1} = f(x_n),\quad n=0,1,2,\dots$$
 
 with steady-state $\overline{x}$ such that $f(\overline{x})=\overline{x}$.
 
-- **Contraction mapping**: $f$ is a contraction if $\exists L<1$ s.t. $|f(x)-f(y)| \le L|x-y|$.
+- **Contraction mapping**: $f$ is a contraction if $\exists L<1$ s.t.
+  $$
+  \|f(x)-f(y)\| \le L\|x-y\|.
+  $$
 - **Banach fixed point theorem**: if $f$ is a contraction on a complete metric space, then $f$ has a unique fixed point and iterating $f$ converges to it at a linear rate.
 
-. . .
+## Nonlinear Sequences: Convergence Rates
 
-Denote by $A=f'(\overline{x})$ the Jacobian matrix of $f$ at $\overline{x}$. 
+Denote by $A=f'(\overline{x})$ the Jacobian matrix of $f$ at $\overline{x}$.
 
-- If $w(A)<1$ there is a compact neighborhood around $\overline{x}$ where $f$ is a contraction, so local convergence is guaranteed, at geometric rate $w(A)+\epsilon$ for some small $\epsilon>0$.
-  - derives from Banach fixed point theorem 
+At which condition on $A$ can we guarantee local convergence of $f$ to $\overline{x}$? At which rate?
 
-- If $\rho(A)<1$ (weaker condition) local convergence is guaranteed, at geometric rate $\rho(A)+\epsilon$ for some small $\epsilon>0$.
-  - derives from norm equivalence and Gelfand’s formula
+- If $\|A\|_2<1$
+  - *for any* $\epsilon$ such that $\|A\|_2+\epsilon<1$, by continuity of $f'$ there is a neighborhood around $\overline{x}$ where $\|f'(x)\|_2 \le \|A\|_2 + \epsilon < 1$, so $f$ is a contraction in that neighborhood and local convergence follows by the Banach fixed point theorem.
+  - in particular asymptotic convergence rate is at most $\|A\|_2+\epsilon$
+
+- If $\rho(A)<1$ (weakest condition)
+  - local asymptotic convergence is guaranteed
+  - asymptotic convergence rate is at most $\rho(A)+\epsilon$ for any $\epsilon>0$
+
 
 
 ## Going Further
@@ -200,3 +205,23 @@ Even when $\rho(A)>1$, local dynamics of $f$ can be characterized by $A=f'(\over
 - and the unstable eigenspace of $A$ approximate the unstable manifold of $f$.
 
 $\implies$ this is formalized in the *stable manifold theorem*
+
+
+# Appendix
+
+
+## The spectral radius is not a norm
+
+## Power iteration convergence analysis
+
+## Proof of Gelfand’s formula
+
+## Proof of the Banach fixed point theorem
+
+## The Numerical Radius
+
+- **Definition (numerical radius):**
+
+  $$
+  w(A) := \max_{\|x\|_2=1} |\langle Ax,x\rangle|.
+  $$
