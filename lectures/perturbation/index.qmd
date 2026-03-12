@@ -2,6 +2,7 @@
 title: "Perturbation Analysis (f-g version)"
 author: Pablo Winant
 format:
+  html: default
   revealjs:
     html-math-method: mathjax
     width: 1920
@@ -925,3 +926,65 @@ $$X_{n+1} = (B + (C + D X_n) F)^{-1} (A + (C+DX_n)E)$$
 $$\boxed{\rho(F + H \overline{X} )}$$
   2. __forward stability__: derivative of time iteration operator
 $$\boxed{\rho \left( u\mapsto ((B + (C+D \overline{X})F)^{-1})D u (E+F \overline{X}) \right)}$$
+
+
+
+
+
+# QZ Decomposition
+
+
+$$\begin{eqnarray}
+A s_t + B x_t + C s_{t+1} + D x_{t+1} & = & 0_{n_x} \\
+s_{t+1} & = & E s_t + F x_t \end{eqnarray}$$
+
+
+We can rewrite the state-space representation as follows:
+$$\begin{eqnarray}
+\begin{bmatrix} A & B \\ 0 & I \end{bmatrix} \begin{bmatrix} s_t \\ x_t \end{bmatrix} & = & \begin{bmatrix} -C & -D \\ I & -E \end{bmatrix} \begin{bmatrix} s_{t+1} \\ x_{t+1} \end{bmatrix}  \\
+\tilde{A} y_t & = & \tilde{B} y_{t+1}
+\end{eqnarray}$$
+
+Where $y_t$ is a vector of size $n_x + n_s$ defined as $y_t = \begin{bmatrix} s_t \\ x_t \end{bmatrix}$.
+
+To get an intuition: suppose that $\tilde{B}$ is invertible. Given $s_t$, if you know $x_t$, you can compute $y_t$ and then $y_{t+1}$ that is $s_{t+1}$ and $x_{t+1}$. 
+
+For a given $X$, we can also  write:
+
+$$\begin{eqnarray}
+\begin{bmatrix} A & B \\ 0 & I \end{bmatrix} \begin{bmatrix} s_t \\ X s_t \end{bmatrix} & = & \begin{bmatrix} -C & -D \\ I & -E \end{bmatrix} \begin{bmatrix} s_{t+1} \\ X s_{t+1} \end{bmatrix}  \\
+\tilde{A} y_t & = & \tilde{B} y_{t+1}
+\end{eqnarray}$$
+
+<!-- which we can rewrite as:
+
+$$\begin{eqnarray}
+\begin{bmatrix} A + B X \\ X - E - F X \end{bmatrix} s_t & = & \begin{bmatrix} -C - D X \\ I \end{bmatrix} s_{t+1}  \\
+\tilde{A} s_t & = & \tilde{B} s_{t+1}
+\end{eqnarray}$$ -->
+
+
+Suppose we have an eigenvalue decomposition of the pair of matrices $(\tilde{A}, \tilde{B})$:
+$$\begin{eqnarray}
+\tilde{A} & = & Q S Z^{-1} \\
+\tilde{B} & = & Q T Z^{-1}
+\end{eqnarray}$$
+Where $Q$ and $Z$ are invertible matrices and $S$ and $T$ are upper triangular matrices. 
+
+Then, we can rewrite the system as follows:
+$$\begin{eqnarray}
+Q S Z^{-1} y_t & = & Q T Z^{-1} y_{t+1} \\
+S z_t & = & T z_{t+1}
+\end{eqnarray}$$  
+
+Where $z_t = Z^{-1} y_t$.
+
+The QZ decomposition is a generalization of the Schur decomposition for pairs of matrices. It allows us to find the eigenvalues of the pencil $(\tilde{A}, \tilde{B})$ and to analyze the stability of the system.
+
+Then, we can analyze the eigenvalues of the pencil $(\tilde{A}, \tilde{B})$ to determine the stability of the system and to find the solution for $X$ that satisfies the Blanchard-Kahn conditions.
+
+We recover the solution of the model by selecting the eigenvalues of the pencil that are inside the unit circle and by constructing the corresponding eigenvectors. This allows us to find the decision rule $X$ that satisfies the Blanchard-Kahn conditions.
+
+$X$ can be computed as follows:
+$$X = -Z_{22} Z_{12}^{-1}$$
+Where $Z_{22}$ and $Z_{12}$ are submatrices of $Z$ corresponding to the stable and unstable eigenvalues, respectively.

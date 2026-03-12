@@ -2,8 +2,9 @@
 title: Julia Basics
 author: Pablo Winant / QuantEcon
 format:
-  html: default
-  ipynb: default
+    html: default
+    ipynb: default
+jupyter: julia-1.12
 execute: 
   enabled: false
 ---
@@ -646,11 +647,11 @@ end
 ```
 
 ```{julia}
-[i^2 for i=1:10000000 if mod(i,2)==0] ;
+[i^2 for i=1:100000 if mod(i,2)==0] ;
 ```
 
 ```{julia}
-@time sum( [i^2 for i=1:10000000000 if mod(i,2)==0] )
+@time sum( [i^2 for i=1:10000000 if mod(i,2)==0] )
 ```
 
 ```{julia}

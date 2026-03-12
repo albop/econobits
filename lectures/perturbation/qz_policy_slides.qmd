@@ -1,0 +1,451 @@
+---
+title: "Solving with QZ"
+subtitle: "From intuition to the general case"
+
+author: Pablo Winant
+format:
+  html: default
+  revealjs:
+    html-math-method: mathjax
+    width: 1920
+    height: 1080
+    mathjax: true
+# format:
+#   revealjs:
+#     theme: white
+#     slide-number: true
+#     transition: fade
+#     center: false
+#     controls: true
+#     progress: true
+#     incremental: false
+#     embed-resources: true
+#     preview-links: auto
+---
+
+## Goal
+
+We want a linear decision rule
+$$
+x_t = X s_t
+$$
+for the system
+$$
+A s_t + B x_t + C s_{t+1} + D x_{t+1} = 0,
+$$
+$$
+s_{t+1} = E s_t + F x_t.
+$$
+
+We will build intuition first, then move to the general QZ case.
+
+---
+
+## The key question
+
+A rule $x_t = X s_t$ is useful only if the implied state dynamics
+$$
+s_{t+1} = (E + F X)s_t
+$$
+are **non-diverging**.
+
+So there are really two problems:
+
+1. find $X$;
+2. keep only the values of $X$ for which the dynamics are stable.
+
+---
+
+## Why this often feels unintuitive
+
+The original equations are written in terms of
+
+- today's state $s_t$,
+- today's jump/control $x_t$,
+- tomorrow's state $s_{t+1}$,
+- tomorrow's jump/control $x_{t+1}$.
+
+So the policy matrix $X$ appears **nonlinearly** if we substitute
+$x_t = X s_t$ and $x_{t+1} = X s_{t+1}$.
+
+QZ avoids solving that nonlinear matrix equation directly.
+
+---
+
+## First intuition: assume $\Gamma_1$ is invertible
+
+Define
+$$
+y_t = \begin{bmatrix} s_t \\ x_t \end{bmatrix},
+\qquad
+\Gamma_0 = \begin{bmatrix} A & B \\ -E & -F \end{bmatrix},
+\qquad
+\Gamma_1 = \begin{bmatrix} -C & -D \\ I & 0 \end{bmatrix}.
+$$
+
+Then the model is
+$$
+\Gamma_0 y_t = \Gamma_1 y_{t+1}.
+$$
+
+If $\Gamma_1$ is invertible, this becomes the plain system
+$$
+y_{t+1} = M y_t,
+\qquad M = \Gamma_1^{-1}\Gamma_0.
+$$
+
+---
+
+## Ordinary eigenvalue intuition
+
+If
+$$
+y_{t+1} = M y_t,
+$$
+and $M = V \Lambda V^{-1}$, then
+$$
+y_t = V \Lambda^t V^{-1} y_0.
+$$
+
+Each eigenvalue $\lambda_i$ gives one mode:
+$$
+\text{mode } i \propto \lambda_i^t.
+$$
+
+- If $|\lambda_i| < 1$: that mode dies out.
+- If $|\lambda_i| > 1$: that mode explodes.
+
+So boundedness means:
+
+> choose the initial point $y_0$ so that it has no component along unstable eigenvectors.
+
+---
+
+## Stable subspace: the geometric picture
+
+The bounded trajectories lie in the **stable invariant subspace** of $M$.
+
+If the stable eigenvectors are the columns of $Z_1$, then every bounded path has the form
+$$
+y_t = Z_1 u_t.
+$$
+
+Partition by rows:
+$$
+Z_1 = \begin{bmatrix} Z_s \\ Z_x \end{bmatrix},
+\qquad
+s_t = Z_s u_t,
+\qquad
+x_t = Z_x u_t.
+$$
+
+If $Z_s$ is square and invertible, then
+$$
+u_t = Z_s^{-1}s_t,
+\qquad
+x_t = Z_x Z_s^{-1} s_t.
+$$
+So
+$$
+\boxed{X = Z_x Z_s^{-1}}.
+$$
+
+---
+
+## Why the rule is unique only sometimes
+
+The state $s_t$ is predetermined.
+
+The control/jump variable $x_t$ can move on impact.
+
+So at time 0:
+
+- $s_0$ is given,
+- $x_0$ must be chosen so that
+  $y_0 = \binom{s_0}{x_0}$
+  lies on the stable subspace.
+
+That is a **shooting problem**.
+
+---
+
+## Counting intuition
+
+Let
+
+- $n_s$ = number of predetermined states,
+- $n_x$ = number of jump variables,
+- $n_u$ = number of unstable eigenvalues of $M$,
+- $k$ = number of stable eigenvalues.
+
+Because $k + n_u = n_s + n_x$, the condition
+$$
+n_u = n_x
+$$
+is equivalent to
+$$
+k = n_s.
+$$
+
+Interpretation:
+
+- each unstable mode gives one restriction,
+- each jump variable gives one degree of freedom.
+
+---
+
+## Existence and uniqueness in the invertible case
+
+If $M$ has:
+
+- fewer than $n_s$ stable eigenvalues: **no stable solution**;
+- exactly $n_s$ stable eigenvalues: **unique stable rule**;
+- more than $n_s$ stable eigenvalues: **multiple stable rules**.
+
+Equivalently, in unstable counts:
+
+- if $n_u > n_x$: no solution;
+- if $n_u = n_x$: unique solution;
+- if $n_u < n_x$: indeterminacy.
+
+---
+
+## Tiny one-state / one-control picture
+
+Suppose $n_s = n_x = 1$.
+
+Then $(s_t, x_t)$ lives in a plane.
+
+- A stable solution must lie on the stable line.
+- Any line through the origin has equation $x = X s$.
+- So $X$ is just the **slope of the stable line**.
+
+Hence:
+
+- one stable line $\Rightarrow$ unique $X$,
+- many admissible stable lines $\Rightarrow$ many $X$,
+- no admissible stable line $\Rightarrow$ no $X$.
+
+---
+
+## Back to the general case
+
+Now drop the assumption that $\Gamma_1$ is invertible.
+
+We still have the matrix pencil
+$$
+\Gamma_0 y_t = \Gamma_1 y_{t+1}.
+$$
+
+We cannot always form
+$M = \Gamma_1^{-1}\Gamma_0$,
+so we work directly with the pair
+$(\Gamma_0, \Gamma_1)$.
+
+This is exactly what the **QZ decomposition** is for.
+
+---
+
+## Generalized Schur / QZ decomposition
+
+The QZ decomposition gives orthogonal matrices $Q, Z$ such that
+$$
+Q^\top \Gamma_0 Z = S,
+\qquad
+Q^\top \Gamma_1 Z = T,
+$$
+where $S$ and $T$ are upper quasi-triangular.
+
+The generalized eigenvalues are
+$$
+\lambda_i = \frac{S_{ii}}{T_{ii}}.
+$$
+
+Interpretation:
+
+- these play the same role as the ordinary eigenvalues of $M$,
+- they tell us which modes are stable and which are unstable,
+- infinite eigenvalues appear naturally when $T_{ii}=0$.
+
+---
+
+## Why QZ is the right generalization
+
+Set
+$$
+y_t = Z w_t.
+$$
+Then the system becomes
+$$
+S w_t = T w_{t+1}.
+$$
+
+If $T$ were invertible, this would read
+$$
+w_{t+1} = T^{-1}S w_t,
+$$
+so the diagonal ratios $S_{ii}/T_{ii}$ are again the growth factors.
+
+So QZ is doing the same stable/unstable decomposition as ordinary eigen-analysis,
+just without requiring $\Gamma_1$ to be invertible.
+
+---
+
+## Ordered QZ: put stable roots first
+
+After reordering the QZ factors, write
+$$
+S = \begin{bmatrix} S_{11} & S_{12} \\ 0 & S_{22} \end{bmatrix},
+\qquad
+T = \begin{bmatrix} T_{11} & T_{12} \\ 0 & T_{22} \end{bmatrix},
+\qquad
+w_t = \begin{bmatrix} u_t \\ v_t \end{bmatrix},
+$$
+where the first block contains the stable generalized eigenvalues.
+
+Then boundedness forces
+$$
+v_t \equiv 0.
+$$
+So every non-diverging path must satisfy
+$$
+y_t = Z_1 u_t,
+$$
+where $Z_1$ contains the stable columns of $Z$.
+
+---
+
+## Extracting $X$ from the QZ vectors
+
+Partition the stable block by rows:
+$$
+Z_1 = \begin{bmatrix} Z_s \\ Z_x \end{bmatrix},
+\qquad
+Z_s \in \mathbb{R}^{n_s \times k},
+\qquad
+Z_x \in \mathbb{R}^{n_x \times k},
+$$
+where $k$ is the number of stable generalized eigenvalues.
+
+Then bounded solutions satisfy
+$$
+s_t = Z_s u_t,
+\qquad
+x_t = Z_x u_t.
+$$
+
+If $k=n_s$ and $Z_s$ is invertible, then
+$$
+\boxed{X = Z_x Z_s^{-1}}.
+$$
+
+---
+
+## The closed-loop matrix
+
+Under the unique stable rule,
+$$
+s_{t+1} = (E + F X) s_t.
+$$
+
+But in QZ coordinates,
+$$
+u_{t+1} = T_{11}^{-1} S_{11} u_t.
+$$
+So
+$$
+s_{t+1} = Z_s T_{11}^{-1} S_{11} Z_s^{-1} s_t.
+$$
+Hence
+$$
+E + F X
+\quad \text{is similar to} \quad
+T_{11}^{-1}S_{11}.
+$$
+
+Therefore the eigenvalues of $E+FX$ are exactly the selected stable generalized eigenvalues.
+
+---
+
+## Determinacy conditions in QZ form
+
+Let $k$ be the number of generalized eigenvalues with $|\lambda|<1$.
+
+Then:
+
+- if $k < n_s$: **no stable linear rule**;
+- if $k = n_s$: **unique stable linear rule**;
+- if $k > n_s$: **multiple stable linear rules**.
+
+This is the same logic as before, now expressed for the pencil
+$(\Gamma_0,\Gamma_1)$.
+
+---
+
+## If there are multiple solutions
+
+When $k > n_s$, the stable subspace is larger than the state dimension.
+
+Then $s_t$ does not pin down a unique coordinate vector $u_t$, so there are many admissible rules.
+
+A convenient parametrization is:
+
+choose any full-column-rank matrix
+$P \in \mathbb{R}^{k \times n_s}$ such that $Z_s P$ is invertible, and set
+$$
+X(P) = (Z_x P)(Z_s P)^{-1}.
+$$
+
+Different choices of $P$ give different stable equilibria.
+
+---
+
+## Practical algorithm
+
+1. Build
+   $$
+   \Gamma_0 = \begin{bmatrix} A & B \\ -E & -F \end{bmatrix},
+   \qquad
+   \Gamma_1 = \begin{bmatrix} -C & -D \\ I & 0 \end{bmatrix}.
+   $$
+2. Compute QZ of $(\Gamma_0, \Gamma_1)$.
+3. Reorder so $|S_{ii}/T_{ii}| < 1$ come first.
+4. Count stable roots: $k$.
+5. Partition stable columns $Z_1 = \binom{Z_s}{Z_x}$.
+6. If $k=n_s$ and $Z_s$ invertible, compute
+   $$
+   X = Z_x Z_s^{-1}.
+   $$
+7. Check that the eigenvalues of $E+FX$ are inside the unit circle.
+
+---
+
+## Numerical remarks
+
+- Use a tolerance near the unit circle, e.g. classify roots by
+  $|\lambda| < 1 - \varepsilon$ or with a small tolerance around 1.
+- Complex roots come in conjugate pairs in real QZ.
+- Infinite generalized eigenvalues are handled automatically by QZ.
+- In practice, ordered QZ is more robust than explicitly forming matrix inverses.
+
+---
+
+## Main takeaways
+
+- The intuition is easiest when $\Gamma_1$ is invertible:
+  bounded paths live on the stable subspace of
+  $M = \Gamma_1^{-1}\Gamma_0$.
+- The rule $x_t = X s_t$ is the graph of that stable subspace.
+- QZ does the same job for the general pencil
+  $(\Gamma_0,\Gamma_1)$, even when $\Gamma_1$ is singular.
+- The unique stable rule exists when the number of stable generalized eigenvalues equals $n_s$.
+
+---
+
+## Render command
+
+To render these slides locally:
+
+```bash
+quarto render qz_policy_slides.qmd --to revealjs
+```

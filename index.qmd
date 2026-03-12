@@ -36,3 +36,6 @@ Ongoing courses:
 [ECO309](eco309/index_2026.qmd)
 
 [SciencesPo](scpo/index_2026.qmd)
+
+
+[check](tutorials/test.qmd)

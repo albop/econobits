@@ -3,6 +3,7 @@ title: Epidemiology Models
 format:
   html: default
   ipynb: default
+jupyter: julia-1.12
 execute: 
   enabled: false
 ---

@@ -4,6 +4,7 @@ author: Pablo Winant
 format:
   html: default
   ipynb: default
+jupyter: julia-1.12
 execute: 
   enabled: false
 ---

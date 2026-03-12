@@ -27,3 +27,7 @@ format:
       # - cerulean
     css: styles.css
     toc: true
+
+jupyter: julia-1.12
+execute: 
+  enabled: false
