@@ -388,27 +388,3 @@ $$g'(x^*) = 1-\lambda+\lambda f'(x^*).$$
     - <!-- .element: class="fragment" --> what kind of convergence? (if $|\lambda_n|<1$: OK, otherwise: ❓)
 
 :::
-
-## Quick diagnostic patterns
-
-::: {.incremental}
-- $\eta_n\downarrow$ but $\epsilon_n$ flat: “false convergence” / stagnation (bad scaling, poor conditioning, wrong stopping rule).
-- $\epsilon_n\downarrow$ but $\eta_n$ does not: cycling / non-contractive map / numerical noise.
-- $\lambda_n$ is informative only after a burn-in; early iterations can be chaotic.
-:::
-
-## Summary: methods at a glance
-
-| Method | Needs | Typical rate (local) | Common failure mode |
-|---|---|---|---|
-| Fixed-point $x\leftarrow f(x)$ | function eval | linear if $|f'(x^*)|<1$ | diverges / cycles if not contractive |
-| Relaxed $(1-\lambda)x+\lambda f(x)$ | function eval + choose $\lambda$ | linear, often faster | too small $\lambda$ (slow), too large (diverge) |
-| Newton on $f(x)-x=0$ | derivative (or approx) | quadratic near solution | bad initial guess; derivative near 1 makes step unstable |
-| Steffensen (Aitken-accelerated) | extra evals | quadratic (often) | noisy/flat denominator; not robust far from solution |
-
-## Check yourself
-
-1. Suppose $\lambda_n\approx 0.8$ and $|x_{n+1}-x_n|\approx 10^{-4}$. Use $|x_n-x^*|\approx \frac{1}{1-\lambda_n}|x_{n+1}-x_n|$ to estimate the remaining error.
-2. You observe oscillations in $x_n$ but the amplitude shrinks. What does that suggest about the sign of $f'(x^*)$?
-
-:::

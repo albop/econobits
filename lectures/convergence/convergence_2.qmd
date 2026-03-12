@@ -1,0 +1,202 @@
+---
+title: "Convergence of Sequences (2)"
+format:
+  # html: default
+  revealjs:
+    html-math-method: mathjax
+    width: 1920
+    height: 1080
+    mathjax: true
+---
+
+## Multidimensional sequences
+
+In [Convergence of Sequences (1)](convergence_1.qmd) we focused on scalar sequences.
+
+Today we will study the local stability of nonlinear **multidimensional** sequences defined by recursions like
+
+$$x_{t} = f(x_{t-1}),\quad t=1,2,\dots$$
+where $f$ is a nonlinear function $f:\mathbb{R}^n \to \mathbb{R}^n$ and $x_0$ is an initial vector in $\mathbb{R}^n$.Assume there is a stationary point $\overline{x}$ such that $$f(\overline{x})=\overline{x}$$ 
+
+We want to understand the behavior of $x_t$ as $t\to\infty$ when we start near $\overline{x}$.
+
+
+At first order, we can study the linearized dynamics around $\overline{x}$:
+$$y_t = A y_{t-1},\quad A = f'(\overline{x}),\quad y_t = x_t - \overline{x}.$$
+
+
+## Linearized Dynamics
+
+The recursion $y_t = A y_{t-1}$ has a **closed form** solution
+  $$
+  y_t = A^t\,y_0.
+  $$
+
+- **Two questions** drive the dynamics:
+
+  1. Does $A^t \to 0$ (stability) or does it grow (instability)?
+  2. Can $\lVert A^t\rVert$ exhibit **transient amplification** even if the system is asymptotically stable?
+
+- The answers depend on *how we measure “size”* and on whether $A$ is **normal** (commutes with $A^*$) or **non-normal**.
+
+---
+
+## Spectral radius: the asymptotic growth rate
+
+- **Definition (spectral radius):**
+  $$
+  \rho(A) := \max\{ |\lambda| : \lambda \in \sigma(A)\}.
+  $$
+
+- **Stability (discrete time):**
+  $$
+  \rho(A) < 1 \quad\Longleftrightarrow\quad A^t \to 0\ (t\to\infty).
+  $$
+
+- **Intuition:** eigenvalues give the long-run scaling of invariant “modes” (exactly for diagonalizable/normal matrices; asymptotically for all).
+
+- **But:** eigenvalues alone can miss large **short-run** growth when $A$ is non-normal.
+
+---
+
+## Gelfand’s formula: estimating $\rho(A)$ from powers
+
+For *any* matrix norm $\lVert\cdot\rVert$,
+$$
+\boxed{\ \rho(A) = \lim_{k\to\infty} \lVert A^k\rVert^{1/k}\ }
+$$
+(Gelfand’s formula)
+
+**Interpretation**
+
+- The quantity $\lVert A^k\rVert^{1/k}$ is an "average per-step growth factor" over $k$ steps.
+- As $k$ increases, it filters out transients and converges to the true asymptotic rate $\rho(A)$.
+
+**Remark**
+
+- This formula is very useful for theoretical insights.
+- In practice computing matrix norms is expensive, and computing matrix exponents is also expensive, so we typically use eigenvalue-based methods to estimate $\rho(A)$ for large matrices.
+
+---
+
+## Power iteration: estimating the *spectral radius* (when it works)
+
+The classic power iteration targets the eigenvalue of largest modulus, i.e. it can estimate
+$\rho(A)$ under standard conditions (dominant eigenvalue, start vector not orthogonal to its eigenvector).
+
+**Algorithm (basic form)**
+
+- Choose a nonzero vector $v_0$.
+- Iterate: $w_{m+1} \leftarrow A v_m$, then normalize $v_{m+1}\leftarrow w_{m+1}/\lVert w_{m+1}\rVert_2$.
+- Track the **Growth ratio:** $\lVert A v_m\rVert_2 / \lVert v_m\rVert_2$
+- Or the **Rayleigh quotient:** $\frac{v_m^* A v_m}{v_m^* v_m}$ (most meaningful when $A$ is normal / Hermitian).
+  <!-- - **Rayleigh quotient** (most meaningful when $A$ is normal / Hermitian):
+    $$
+    \mu_m = \frac{v_m^* A v_m}{v_m^* v_m}.
+    $$ -->
+
+**Convergence intuition**
+
+- If $|\lambda_1|>|\lambda_2|$ and $A$ is diagonalizable, then $v_m$ aligns with the dominant eigenvector and the estimates converge to $|\lambda_1|=\rho(A)$.
+- If the dominant eigenvalue is not unique in modulus (e.g. a complex conjugate pair), the iterates may oscillate.
+<!-- - For strongly **non-normal** matrices, convergence can be slow and the Rayleigh quotient can be misleading; Schur/QZ-based methods are more robust. -->
+
+---
+
+## Numerical radius: a one-step quadratic-form growth measure
+
+- **Field of values (numerical range):**
+  $$
+  W(A) := \{ x^*Ax : \lVert x\rVert_2 = 1 \} \subset \mathbb{C}.
+  $$
+
+- **Numerical radius:**
+  $$
+  \boxed{\ w(A) := \max\{ |z| : z\in W(A)\} = \max_{\lVert x\rVert_2=1} |x^*Ax|\ }
+  $$
+
+**Key inequalities**
+$$
+\rho(A) \le w(A) \le \lVert A\rVert_2 \le 2\,w(A).
+$$
+
+**Intuition**
+
+- $w(A)$ captures the largest possible “one-step gain” of the scalar quadratic form $x^*Ax$.
+- For **normal** matrices: $\rho(A)=w(A)=\lVert A\rVert_2$.
+- For **non-normal** matrices: often $\rho(A) \ll w(A)$.
+
+---
+
+## Why $w(A)$ matters for dynamics (transient growth)
+
+Even when $\rho(A)<1$ (asymptotically stable), a non-normal matrix can have:
+
+- **large $\lVert A\rVert_2$** (big one-step stretching)
+- **large $w(A)$** (big one-step Rayleigh-quotient magnitude)
+- **transient amplification**: $\lVert A^t\rVert$ can increase for some $t$ before eventually decaying.
+
+A canonical 2×2 example:
+$$
+A = \begin{bmatrix}0.9 & M\\ 0 & 0.9\end{bmatrix},\quad M\gg 1.
+$$
+
+- Eigenvalues are both $0.9$ so $\rho(A)=0.9<1$.
+- But for large $M$, $\lVert A\rVert_2$ (and typically $w(A)$) can be much larger than 1, producing sizeable short-run growth.
+
+---
+
+## Recap: Spectral vs Numerical Radius
+
+- **Spectral radius $\rho(A)$**
+  - Governs *asymptotic* stability and long-run exponential rate.
+  - Insensitive to how non-orthogonal the eigenvectors are.
+
+- **Numerical radius $w(A)$**
+  - Upper-bounds $\rho(A)$ and is closely tied to the geometry of the field of values.
+  - More informative about *one-step* amplification and non-normality.
+
+- **Rule of thumb**
+  - If $A$ is (nearly) normal: $\rho(A)$ tells most of the story.
+  - If $A$ is non-normal: expect transients; look at $w(A)$, $\lVert A\rVert_2$, and (if needed) pseudospectra.
+
+---
+
+
+## Nonlinear Sequences: Local Convergence
+
+Now we want to study the convergence of nonlinear sequences defined by recursions like:
+
+$$x_{n+1} = f(x_n),\quad n=0,1,2,\dots$$
+
+with steady-state $\overline{x}$ such that $f(\overline{x})=\overline{x}$.
+
+- **Contraction mapping**: $f$ is a contraction if $\exists L<1$ s.t. $|f(x)-f(y)| \le L|x-y|$.
+- **Banach fixed point theorem**: if $f$ is a contraction on a complete metric space, then $f$ has a unique fixed point and iterating $f$ converges to it at a linear rate.
+
+. . .
+
+Denote by $A=f'(\overline{x})$ the Jacobian matrix of $f$ at $\overline{x}$. 
+
+- If $w(A)<1$ there is a compact neighborhood around $\overline{x}$ where $f$ is a contraction, so local convergence is guaranteed, at geometric rate $w(A)+\epsilon$ for some small $\epsilon>0$.
+  - derives from Banach fixed point theorem 
+
+- If $\rho(A)<1$ (weaker condition) local convergence is guaranteed, at geometric rate $\rho(A)+\epsilon$ for some small $\epsilon>0$.
+  - derives from norm equivalence and Gelfand’s formula
+
+
+## Going Further
+
+Insteady of studying stability of $\overline{x}$ (that is for any $x_0 \in \mathbb{R}^n$), we can also characterize all the different dynamics we can obtain for different initial $x_0$ (read different initial shocks to the economy).
+
+We can define two sets of initial conditions:
+
+- the stable manifold:  $W=\{x : \lim_{n\to\infty} f^n(x) = \overline{x}\}$
+- the unstable manifold: $U=\{x : \lim_{n\to\infty} f^n(x) \neq \overline{x}\}$
+
+Even when $\rho(A)>1$, local dynamics of $f$ can be characterized by $A=f'(\overline{x})$
+
+- $\implies$ the stable eigenspace of $A$ approximates the stable manifold of $f$
+- and the unstable eigenspace of $A$ approximate the unstable manifold of $f$.
+
+$\implies$ this is formalized in the *stable manifold theorem*

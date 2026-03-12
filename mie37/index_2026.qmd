@@ -8,7 +8,8 @@ listing:
     field-display-names: 
       title: "Lectures"
     contents:
-      - ../lectures/convergence/index.qmd
+      - ../lectures/convergence/convergence_1.qmd
+      - ../lectures/convergence/convergence_2.qmd
       - ../lectures/perturbation/index.qmd
       # - ../lectures/interpolation.qmd
       # - ../lectures/time_iteration.qmd
