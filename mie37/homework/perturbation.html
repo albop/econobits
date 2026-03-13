@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Pablo Winant">
 
-<title>Epidemiology Models – econobits</title>
+<title>Coursework 2026 - Perturbation of Stochastic Neoclassical Growth Model – econobits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,24 +59,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-1cd7b8e680c3b9cc8632e22c6f4c6d56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-1cd7b8e680c3b9cc8632e22c6f4c6d56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -134,7 +135,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -144,9 +145,9 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../images/logo_full2.png" alt="" class="navbar-logo light-content">
-    <img src="../images/logo_full2.png" alt="" class="navbar-logo dark-content">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo_full2.png" alt="" class="navbar-logo light-content">
+    <img src="../../images/logo_full2.png" alt="" class="navbar-logo dark-content">
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -155,11 +156,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -178,24 +179,29 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#simple-sir-model" id="toc-simple-sir-model" class="nav-link active" data-scroll-target="#simple-sir-model">Simple SIR model</a></li>
-  <li><a href="#a-spatial-sir-model" id="toc-a-spatial-sir-model" class="nav-link" data-scroll-target="#a-spatial-sir-model">A Spatial SIR model</a></li>
-  <li><a href="#additional-questions" id="toc-additional-questions" class="nav-link" data-scroll-target="#additional-questions">Additional questions</a></li>
+  <li><a href="#model-definition" id="toc-model-definition" class="nav-link active" data-scroll-target="#model-definition">Model Definition</a></li>
+  <li><a href="#perturbation" id="toc-perturbation" class="nav-link" data-scroll-target="#perturbation">Perturbation</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="epidemiology.ipynb" download="epidemiology.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="perturbation.ipynb" download="perturbation.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Epidemiology Models</h1>
+<h1 class="title">Coursework 2026 - Perturbation of Stochastic Neoclassical Growth Model</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Pablo Winant </p>
+          </div>
+  </div>
     
   
     
@@ -206,81 +212,166 @@ window.Quarto = {
 </header>
 
 
-<p>H.W. Heathcote: epidemiologic models are <em>deterministic models for infectious diseases which are spread by direct person-to-person contact in a population</em>.</p>
-<p>This kind of models has been used since by a few decades by economist, for matters that have nothing to do with health.</p>
+<p>Our goal here is to compute a linear approximation of solution to the neoclassical model, close to the steady-state, and use it to study the effect of productivity shocks.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you have worked on the tutorial version of this homework, pay attention to the following differences:</p>
 <ul>
-<li>diffusion of information, or opinions on social medias</li>
-<li>asset prices and fads</li>
-<li>expectation formation for macroeconomic outcomes (ex: <em>The Epidemiology of Macroeconomic Expectations</em> by Chris Carroll)</li>
+<li>The controls are now (<code>y,c,i</code>) instead of just <code>i</code>. This facilitates the production of graphs with the simulations.</li>
+<li>The exogenous shock <span class="math inline">\(\epsilon_t\)</span> drives the productivity process. Function <code>arbitrage</code> and <code>transition</code> need to be defined a bit differently and produce a new jacobian (<code>G</code>). Note that it doesn’t have any effect on the first order solution and that <code>X</code> is still a function of <code>A,B,C,D,E,F</code>.</li>
+<li>You can check Blanchard-Kahn conditions using the simple formula in the slides rather than by studying the time-iteration operator.</li>
+<li>Thre are now two kinds of simulations: irf (how the economy reacts to the shock), and stochastic simulations (produce many draws from the same initial state)</li>
 </ul>
-<p>Epidemiologic models have two features that depart from standard economic models:</p>
-<ul>
-<li>Agent’s behaviour does not take the full system into account. It is irrational in the sense that it isn’t forward looking. Instead, an agent is given a behavioural heuristic.</li>
-<li>The transitions of the whole system can be determined without solving for complex interactions first.</li>
-</ul>
-<p>Understanding why these two assumptions are very costly for economists will keep us busy during a big part of the course. Here we just consider two simple models as small programming exercises.</p>
-<section id="simple-sir-model" class="level3">
-<h3 class="anchored" data-anchor-id="simple-sir-model">Simple SIR model</h3>
-<p>There is a continuum of agents of mass <span class="math inline">\(1\)</span>. Each agent can be either “Susceptible” (S), “Infected” (I) or “Recovered” (R). In each period, one agent meets another agent drawn randomly. During a meeting Susceptible agents who meet an infected agent, will always catch the disease (or the fad) but are not contagious. Infected agents, have a probability <span class="math inline">\(\pi\)</span> of being recovered. Nothing happens to Recovered agents who meet other people. No distinction is made between recovering as a healthy or a dead person.</p>
-<p>We’re interested in the evolution in the number infected persons, both the speed of infection and the total amount of infected people in every period.</p>
-<p><strong>Write down the transition equations for <span class="math inline">\(n_I\)</span>, the number of infected people, for <span class="math inline">\(n_R\)</span> the number of recovered people and <span class="math inline">\(n_S\)</span> the number of susceptible people.</strong></p>
-<pre class="{markdown}"><code># your text here</code></pre>
-<p><strong>Compute the transition function <code>f</code> for the vector state <span class="math inline">\(s_t\)</span> returning <span class="math inline">\(s_{t+1}\)</span>.</strong></p>
-<div id="b1b5ee77" class="cell">
+</div>
+</div>
+<ol class="example" type="1">
+<li><strong>Warm-up: install the <code>ForwardDiff</code> library. Use it to differentiate the function below. Check the jacobian function.</strong></li>
+</ol>
+<p>Note: the signature of function <code>f</code> needs to be fixed first to allow for dual numbers as arguments.</p>
+<div id="a19103a8" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function f(x::Vector{T}) where T &lt;: Number</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">f</span>(x)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> x[<span class="fl">1</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> x[<span class="fl">2</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> a<span class="op">+</span>b</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span> <span class="fu">a*exp</span>(b)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [x1,x2]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="58a5dad6" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Compute the transitions over <span class="math inline">\(T\)</span> periods. Plot the result using Plots.jl. (bonus: check against closed form solution)</strong></p>
-<div id="f37d1854" class="cell">
+<section id="model-definition" class="level2">
+<h2 class="anchored" data-anchor-id="model-definition">Model Definition</h2>
+<p>We use the following version of the neoclassical model:</p>
+<ul>
+<li><p>transition equations: <span class="math display">\[\begin{align}
+k_{t} &amp; = (1-\delta) k_{t-1} + i_{t-1} \\\\
+z_{t} &amp; = \rho z_{t-1} + \epsilon_{t}
+\end{align}\]</span></p></li>
+<li><p>first order equations: <span class="math display">\[\begin{align}
+0 &amp; = \mathbb{E}_t\left[exp(z_t) k_t^\alpha - y_t \right]\\\\
+0 &amp; = \mathbb{E}_t\left[ y_t - c_t + i_t \right]\\\\
+0 &amp; = \mathbb{E}_t\left[ \beta (c_{t+1}/c_t) ( (1-\delta) + \alpha exp(z_{t+1}) k_{t+1}^{\alpha-1}) -  1 \right]
+\end{align}
+\]</span></p></li>
+</ul>
+<p>where <span class="math inline">\(k\)</span> is capital, <span class="math inline">\(i\)</span> is investment, <span class="math inline">\(z\)</span> is productivity, <span class="math inline">\(c\)</span> is consumption, <span class="math inline">\(\delta\)</span> is the depreciation rate, <span class="math inline">\(\alpha\)</span> is the capital share in production and <span class="math inline">\(\beta\)</span> is the discount factor. The shock <span class="math inline">\(\epsilon_t\)</span> is an i.i.d. shock with variance <span class="math inline">\(\sigma^2\)</span>.</p>
+<ol start="2" class="example" type="1">
+<li><strong>Which variables are states and which are controls?</strong></li>
+</ol>
+<div id="b2a8c566" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>We now assume a Susceptible person who meets an infected one has a probability <span class="math inline">\(\mu\)</span> of catching the disease. Update the transition function. Update function <span class="math inline">\(f\)</span> and write a function of <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\pi\)</span> which returns the simulation. Compare different values of the parameters. How would you interpret “social distancing”? How would you choose parameters <span class="math inline">\(\Pi\)</span> and <span class="math inline">\(\mu\)</span></strong></p>
-<div id="87016ce9" class="cell">
+<ol start="3" class="example" type="1">
+<li><strong>Create a NamedTuple to hold the model parameters. Choose and justify plausible values.</strong></li>
+</ol>
+<div id="908e24c6" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="a-spatial-sir-model" class="level3">
-<h3 class="anchored" data-anchor-id="a-spatial-sir-model">A Spatial SIR model</h3>
-<p>We now consider another version of the model where agents evolve in the space <span class="math inline">\(\mathcal{S}=[0,1]\times[0,1]\)</span>. There are <span class="math inline">\(N\in\mathbb{N}\)</span> agent. At any date, each agent <span class="math inline">\(n \in [0,1]\)</span> is located at <span class="math inline">\((x_n,y_n)\in \mathcal{S}\)</span>.</p>
-<p>Each agent moves follows a random walk bounded by <span class="math inline">\(\mathcal{S}\)</span>: <span class="math display">\[x_t = \min(\max( x_{t-1} + \epsilon_t, 0), 1)\]</span> <span class="math display">\[y_t = \min(\max( y_{t-1} + \eta_t, 0), 1)\]</span> where <span class="math inline">\(\epsilon_t\)</span> and <span class="math inline">\(\eta_t\)</span> are both normally distributed with standard deviation <span class="math inline">\(\sigma\)</span>.</p>
-<p>At any date, the individual state of an agent is <span class="math inline">\(s_t=(x_t, y_t, h_t)\)</span> where <span class="math inline">\(h_t\)</span> is either “S”, “I” or “R”. <span class="math inline">\(v_t\)</span> denotes the states of all agents (for instance <span class="math inline">\(v_t=(s_{n,t})_n\)</span>. The health status of each agent is updated in the following way:</p>
+<ol start="4" class="example" type="1">
+<li><strong>Define two functions:</strong></li>
+</ol>
 <ul>
-<li>Agents <span class="math inline">\(R\)</span> stay <span class="math inline">\(R\)</span>.</li>
-<li>Agents <span class="math inline">\(I\)</span> have probability <span class="math inline">\(\pi\)</span> to become <span class="math inline">\(R\)</span>. They stay <span class="math inline">\(I\)</span> otherwise.</li>
-<li>An agent of type <span class="math inline">\(S\)</span> in position <span class="math inline">\((x,y)\)</span> has a probability <span class="math inline">\(prob(x,y,S)\)</span> to be infected that is <span class="math inline">\(\mu\)</span> if there is another infected agent within a radius <span class="math inline">\(r&gt;0\)</span>.</li>
+<li><p><code>transition(z::Number, k::Number, i::Number, c: Number, y: Number, e::Number, p::NamedTuple)::Tuple{Number}</code> which returns productivity and capital at date <span class="math inline">\(t+1\)</span> as a function of productivity, capital, investment, and shock at date <span class="math inline">\(t\)</span> as well as the exogenous shock at date <span class="math inline">\(t+1\)</span>. Argument <code>p</code> represents the model parameters.</p></li>
+<li><p><code>arbitrage(z::Number, k::Number, i::Number, c::Number, y::Number,Z::Number, K::Number, I::Number,  C::Number,  Y::Number p)::Tuple{Number, Number}</code> which returns the residual of the euler equation (lower case variable for date <span class="math inline">\(t\)</span>, upper case for date <span class="math inline">\(t+1\)</span>) and the residual of the budget constraint. Argument <code>p</code> represents the model parameters.</p></li>
 </ul>
-<p><strong>Define a type <code>Agent</code>, which holds the type of an agent. The state of the whole system will be held in a <code>Vector[Agent]</code> type.</strong></p>
-<div id="e154d700" class="cell">
+<p>Note that the arbitrage equation here is defined for a specific realization of the shock in <span class="math inline">\(t\)</span> and <span class="math inline">\(t+1\)</span>: there is no need to code the expectation operator here.</p>
+<div id="9f435839" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Write a function <code>spatial_transition(S::Vector{Agent})::Vector{Agent}</code> to compute the transition of the positions. Write another function <code>random_guess(T=100)</code> which simulates for <span class="math inline">\(T\)</span> periods in order to find a good initial guess.</strong></p>
-<div id="b4d7b72a" class="cell">
+<ol start="5" class="example" type="1">
+<li><strong>Using multiple dispatch, define two variants of the same functions, that take vectors as input and output arguments:</strong></li>
+</ol>
+<ul>
+<li><code>arbitrage(s::Vector, x::Vector, S::Vector, X::Vector, p)</code></li>
+<li><code>transition(s::Vector, x::Vector, e::Vector, p)</code></li>
+</ul>
+<p>where <code>s</code> is the vector of states (capital and productivity), <code>x</code> is the vector of controls (investment, consumption, production), <code>S</code> and <code>X</code> are the same variables at date t+1, and <code>e</code> is the vector of shocks.</p>
+<div id="5349b6ce" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Write a function <code>show_population</code> to plot all agents with different colors for different health status.</strong></p>
-<div id="cf494014" class="cell">
+<ol start="6" class="example" type="1">
+<li><strong>Write a function <code>steady_state(p)::Tuple{Vector,Vector}</code> which computes the steady-state of the model computed by hand.</strong> It returns three vectors, one for the states, one for the controls, one for the exogenous shocks. Check that the steady-state satisfies the model equations.</li>
+</ol>
+<div id="a311fe33" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Write a function <code>evolve(S::Vector[Agent])::Vector[Agent]</code> which takes the population in a given state and returns the same population with updated health status.</strong></p>
-<div id="934753f9" class="cell">
+<p>The first order system satisfies: <span class="math display">\[\begin{align}
+\mathbb{E} \left[A s_t + B x_t + C s_{t+1} + D x_{t+1} \right] &amp; = &amp; 0 \\\\
+s_{t+1} &amp; = &amp; E s_t + F x_t + G e_t
+\end{align}\]</span></p>
+<ol start="7" class="example" type="1">
+<li><strong>Define a structure <code>PerturbedModel</code> to hold matrices A,B,C,D,E,F,G.</strong></li>
+</ol>
+<div id="db0a0b88" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Write a function <code>simulate(S0::Vector[Agent], k=1)</code> to simulate the economy starting from an initially random position with <code>k</code> infected individuals. The returned object should be of type <code>Vector[Vector[Agent]]</code>.</strong></p>
-<div id="dca4d53a" class="cell">
+</section>
+<section id="perturbation" class="level2">
+<h2 class="anchored" data-anchor-id="perturbation">Perturbation</h2>
+<ol start="8" class="example" type="1">
+<li><strong>Write a function <code>first_order_model(s::Vector, x::Vector, e::Vector, p)::PerturbedModel</code>, which returns the first order model, given the steady-state and the calibration. Suggestion: use <code>ForwardDiff.jl</code> library.</strong></li>
+</ol>
+<div id="1022c960" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Compute statistics along a simulated path for <span class="math inline">\(n_I\)</span>, <span class="math inline">\(n_S\)</span>, <span class="math inline">\(n_R\)</span>. Plot and compare with the basic SIR model</strong></p>
-<div id="e3e4bbe5" class="cell">
+<ol start="9" class="example" type="1">
+<li><strong>We look for a linear solution <span class="math inline">\(x_t = X s_t\)</span> . Write the matrix equation which <code>X</code> must satisfy. Write a function <code>riccati_residual(X::Array, M::PerturbedModel)</code> to compute the residual of this equation for a given <code>X</code>.</strong></li>
+</ol>
+<div id="7dbbe7b7" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="additional-questions" class="level3">
-<h3 class="anchored" data-anchor-id="additional-questions">Additional questions</h3>
-<p>Have fun by trying to answer one of these questions:</p>
-<ul>
-<li>change probability of infection so that it depends on the number of infected people in the vincinity (with some suitable functional formulation for)</li>
-<li>compute an animation of the transition</li>
-<li>compute an interactive visualisation (with <code>Interact.jl</code> if available)</li>
-</ul>
+<ol start="10" class="example" type="1">
+<li><strong>Write a function <code>T(X, M::PerturbedModel)</code> which implements the linear time iteration step.</strong></li>
+</ol>
+<div id="6b21ba8e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="11" class="example" type="1">
+<li><strong>Write function <code>linear_time_iteration(X_0::Matrix, m::PerturbedModel)::Matrix</code> which implements the time iteration algorithm. Apply it to <code>X0 = rand(1,2)</code> and check that the result satisfies the first order model.</strong></li>
+</ol>
+<div id="33e844b2" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="12" class="example" type="1">
+<li><strong>Check blanchard Kahn Conditions (i.e.&nbsp;non-divergence and unicity using the conditions from the lecture).</strong></li>
+</ol>
+<div id="9d25a98d" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="13" class="example" type="1">
+<li><strong>Write a function <code>irf(X::Matrix, p, T::Int64;σ=0.01)::Tuple{Matrix, Matrix}</code> to compute the response of the model to a standard deviation productivity shock (i.e.&nbsp;<span class="math inline">\(e_0=\sigma\)</span> and <span class="math inline">\(e_1=e_2=...=0\)</span> ) by using the formula <span class="math inline">\(\Delta s_t = (E + F X) \Delta s_{t-1} + G e_t\)</span>. Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variable levels or log-deviations. If possible, return a DataFrame object.</strong></li>
+</ol>
+<div id="e5358ccb" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="14" class="example" type="1">
+<li><strong>Compare irfs for different values of a parameter of your choice and comment using nice plots.</strong></li>
+</ol>
+<div id="47ec6d04" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="15" class="example" type="1">
+<li><strong>Write a function <code>simulate(s0::Vector, X::Matrix, p, T::Int64; n_draws=100)::VectorTuple{Matrix, Matrix}</code> to compute many draws of the model over <span class="math inline">\(T\)</span> periods. Bonus: return the result as an AxisArrays object.</strong></li>
+</ol>
+<div id="d72788c8" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="16" class="example" type="1">
+<li><strong>Compute standard deviations of the variables and their correlations. Comment?</strong></li>
+</ol>
+<div id="fcf394d7" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 
 
 </section>
@@ -359,7 +450,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/albop\.github\.io\/econobits\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
