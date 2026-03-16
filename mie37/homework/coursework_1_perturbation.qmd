@@ -1,0 +1,186 @@
+---
+title: Coursework 2026 - Perturbation of Stochastic Neoclassical Growth Model
+author: Pablo Winant
+format:
+  html: default
+  ipynb: default
+jupyter: julia-1.12
+execute: 
+  enabled: false
+---
+
+__Name__:
+
+__Surname__:
+
+After completing the following questions, send the edited notebook to `pablo.winant@ensae.fr`.
+You can work in (small) teams.
+Don't forget to comment your code and take any initiative you find relevant.
+
+::: {.callout-warning collapse="true" title="Differences With the Tutorial Version"}
+
+If you have worked on the tutorial version of this homework, pay attention to the following differences:
+
+- The controls are now (`y,c,i`) instead of just `i`. This facilitates the production of graphs with the simulations.
+- The exogenous shock $\epsilon_t$ drives the productivity process. Function `arbitrage` and `transition` need to be defined a bit differently and produce a new jacobian (`G`). Note that it doesn't have any effect on the first order solution and that `X` is still a function of `A,B,C,D,E,F`.
+- You can check Blanchard-Kahn conditions using the simple formula in the slides rather than by studying the time-iteration operator.
+- Thre are now two kinds of simulations: irf (how the economy reacts to the shock), and stochastic simulations (produce many draws from the same initial state)
+
+:::
+
+Our goal here is to compute a linear approximation of solution to the neoclassical model, close to the steady-state, and use it to study the effect of productivity shocks.
+
+@. __Warm-up: install the `ForwardDiff` library. Use it to differentiate the function below. Check the jacobian function.__
+
+Note: the signature of function `f` needs to be fixed first to allow for dual numbers as arguments.
+
+```{julia}
+# function f(x::Vector{T}) where T <: Number
+function f(x)
+    a = x[1]
+    b = x[2]
+    x1 = a+b
+    x2 = a*exp(b)
+    return [x1,x2]
+end
+```
+
+```{julia}
+# your code here
+```
+
+
+## Model Definition
+
+
+We use the following version of the neoclassical model:
+
+- transition equations:
+$$\begin{align}
+k_{t} & = (1-\delta) k_{t-1} + i_{t-1} \\\\
+z_{t} & = \rho z_{t-1} + \epsilon_{t}
+\end{align}$$
+
+- first order equations:
+$$\begin{align}
+0 & = \mathbb{E}_t\left[exp(z_t) k_t^\alpha - y_t \right]\\\\
+0 & = \mathbb{E}_t\left[ y_t - c_t + i_t \right]\\\\
+0 & = \mathbb{E}_t\left[ \beta (c_{t+1}/c_t) ( (1-\delta) + \alpha exp(z_{t+1}) k_{t+1}^{\alpha-1}) -  1 \right]
+\end{align}
+$$
+
+where $k$ is capital, $i$ is investment, $z$ is productivity, $c$ is consumption, $\delta$ is the depreciation rate, $\alpha$ is the capital share in production and $\beta$ is the discount factor. The shock $\epsilon_t$ is an i.i.d. shock with variance $\sigma^2$.
+
+@. __Which variables are states and which are controls?__
+
+```{julia}
+# your code here
+```
+
+@. __Create a NamedTuple to hold the model parameters. Choose and justify plausible values.__
+
+```{julia}
+# your code here
+```
+
+
+@. __Define two functions:__
+
+- `transition(z::Number, k::Number, i::Number, c: Number, y: Number, e::Number, p::NamedTuple)::Tuple{Number}` which returns productivity and capital at date $t+1$ as a function of productivity, capital, investment, and shock at date $t$ as well as the exogenous shock at date $t+1$. Argument `p` represents the model parameters.
+
+- `arbitrage(z::Number, k::Number, i::Number, c::Number, y::Number,Z::Number, K::Number, I::Number,  C::Number,  Y::Number p)::Tuple{Number, Number}` which returns the residual of the euler equation (lower case variable for date $t$, upper case for date $t+1$) and the residual of the budget constraint. Argument `p` represents the model parameters.
+
+Note that the arbitrage equation here is defined for a specific realization of the shock in $t$ and $t+1$: there is no need to code the expectation operator here.
+
+```{julia}
+# your code here
+```
+
+
+@. __Using multiple dispatch, define two variants of the same functions, that take vectors as input and output arguments:__
+
+- `arbitrage(s::Vector, x::Vector, S::Vector, X::Vector, p)`
+- `transition(s::Vector, x::Vector, e::Vector, p)`
+
+where `s` is the vector of states (capital and productivity), `x` is the vector of controls (investment, consumption, production), `S` and `X` are the same variables at date t+1, and `e` is the vector of shocks.
+
+```{julia}
+# your code here
+```
+
+
+@. __Write a function `steady_state(p)::Tuple{Vector,Vector}` which computes the steady-state of the model computed by hand.__
+It returns three vectors, one for the states, one for the controls, one for the exogenous shocks. Check that the steady-state satisfies the model equations.
+
+```{julia}
+# your code here
+```
+
+The first order system satisfies:
+$$\begin{align}
+\mathbb{E} \left[A s_t + B x_t + C s_{t+1} + D x_{t+1} \right] & = & 0 \\\\ 
+s_{t+1} & = & E s_t + F x_t + G e_t
+ \end{align}$$
+
+@. __Define a structure `PerturbedModel` to hold matrices A,B,C,D,E,F,G.__
+
+```{julia}
+# your code here
+```
+
+## Perturbation
+
+@. __Write a function `first_order_model(s::Vector, x::Vector, e::Vector, p)::PerturbedModel`, which returns the first order model, given the steady-state and the calibration. Suggestion: use `ForwardDiff.jl` library.__
+
+```{julia}
+# your code here
+```
+
+
+@. __We look for a linear solution $x_t = X s_t$ .  Write the matrix equation which `X` must satisfy. Write a function `riccati_residual(X::Array, M::PerturbedModel)` to compute the residual of this equation for a given `X`.__
+
+```{julia}
+# your code here
+```
+
+@. __Write a function `T(X, M::PerturbedModel)`  which implements the linear time iteration step.__
+
+```{julia}
+# your code here
+```
+
+@. __Write function `linear_time_iteration(X_0::Matrix, m::PerturbedModel)::Matrix` which implements the time iteration algorithm. Apply it to `X0 = rand(1,2)` and check that the result satisfies the first order model.__
+
+
+```{julia}
+# your code here
+```
+
+@. __Check blanchard Kahn Conditions (i.e. non-divergence and unicity using the conditions from the lecture).__
+
+```{julia}
+# your code here
+```
+
+@. __Write a function `irf(X::Matrix, p, T::Int64;σ=0.01)::Tuple{Matrix, Matrix}` to compute the response of the model to a standard deviation productivity shock (i.e. $e_0=\sigma$ and $e_1=e_2=...=0$ ) by using the formula $\Delta s_t = (E + F X) \Delta s_{t-1} + G e_t$. Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variable levels or log-deviations. If possible, return a DataFrame object.__
+
+```{julia}
+# your code here
+```
+
+@. __Compare irfs for different values of a parameter of your choice and comment using nice plots.__
+
+```{julia}
+# your code here
+```
+
+@. __Write a function `simulate(s0::Vector, X::Matrix, p, T::Int64; n_draws=100)::VectorTuple{Matrix, Matrix}` to compute many draws of the model over $T$ periods. Bonus: return the result as an AxisArrays object.__
+```{julia}
+# your code here
+```
+
+@. __Compute standard deviations of the variables and their correlations. Comment?__
+
+```{julia}
+# your code here
+```

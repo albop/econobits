@@ -48,6 +48,26 @@ Optimization is everywhere in economics:
 - constrained root-finding
 
 
+## Optimization method map
+
+| Problem | First tool to try | Why | Watch out |
+|---|---|---|---|
+| 1D root, bracket known | Bisection | ✅ guaranteed convergence | ⚡ can be slow |
+| 1D root, smooth + good guess | Newton/Secant | ⚡ very fast locally | ⚠️ sensitive to initial guess |
+| 1D minimum on interval | Golden section | ✅ derivative-free + robust | ⚡ slower than Newton-like |
+| Multidim smooth minimization | Gradient / Quasi-Newton | 🛠️ scalable and practical | ⚠️ scaling and step-size matter |
+| Constraints/complementarity | KKT + NCP solver | ✅ handles corners naturally | ⚠️ formulation can be tricky |
+
+
+## How to read each method slide
+
+- 🧠 Intuition: what geometry the method exploits
+- ✅ Guarantee: when convergence is ensured
+- ⚡ Speed: local convergence rate (linear/superlinear/quadratic)
+- ⚠️ Failure mode: typical reason it breaks
+- 🛠️ Fix: one practical stabilization trick
+
+
 
 # General considerations
 
@@ -144,6 +164,8 @@ And yet, neural networks do great things!
 
 ## Bisection
 
+🧠 Split the interval in two and keep the side where the sign changes.
+
 - Find $x \in [a,b]$ such that $f(x) = 0$. Assume $f(a)f(b) <0$.
 - Algorithm
   1. Start with $a_n, b_n$. Set $c_n=(a_n+b_n)/2$
@@ -163,7 +185,17 @@ And yet, neural networks do great things!
 - think about your tradeoff: ($\delta$ or $\epsilon$ ?)
 
 
+## Bisection intuition (visual)
+
+<img src="bisection_progress.png" width=82%>
+
+- Red bars: shrinking brackets $[a_n,b_n]$
+- Green dots: midpoints tested each iteration
+
+
 ## Newton algorithm
+
+⚡ Local tangent approximation gives very fast convergence near the solution.
 
 - Find $x$ such that $f(x) = 0$. Use $x_0$ as initial guess.
 - $f$ must be $\mathcal{C_1}$ and we assume we can compute its derivative $f^{\prime}$
@@ -202,6 +234,8 @@ $$x_{n+1} = x_n- f(x_n)\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})}$$
 
 ## Limits of Newton's method
 
+⚠️ Newton is powerful, but fragile far from the root.
+
 - How could Newton method fail?
   - bad guess
     - -> start with a better guess
@@ -210,6 +244,14 @@ $$x_{n+1} = x_n- f(x_n)\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})}$$
     - -> backtrack
   - stationary point  
     - -> if root of multiplicity $m$ try  $x_{n+1} = x_n- m \frac{f(x_n)}{f^{\prime}(x_n)}$
+
+
+## Newton: fast when local, fragile when not
+
+<img src="newton_success_failure.png" width=90%>
+
+- Left: good initial guess, fast convergence ✅
+- Right: poor guess, unstable/cycling behavior ⚠️
 
 
 ## Backtracking
@@ -245,6 +287,8 @@ $$x_{n+1} = x_n- f(x_n)\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})}$$
 
 
 ## Gradient Descent
+
+🛠️ Think "small steps downhill"; robustness depends on step size.
 
 - Minimize $f(x)$ for  $x \in R$ given initial guess $x_0$
 - Algorithm:
@@ -358,6 +402,29 @@ $$x_{n+1} = (1-\lambda) x_n - \lambda \nabla f(x_n)$$
 <img src=contours_evaluation_optimizers.gif width=60%>
 
 
+## Quick checkpoint
+
+You need to solve a smooth 1D equation and you have a reliable bracket $[a,b]$.
+
+- Option A: Newton from the midpoint
+- Option B: Bisection on $[a,b]$
+
+Best first move for robustness: **B** ✅
+
+Then switch to Newton close to the solution for speed ⚡.
+
+
+## Convergence cheat sheet
+
+| Method | Info needed | Typical local rate | Robustness |
+|---|---|---|---|
+| Bisection | signs at endpoints | linear | very high |
+| Secant | function values | superlinear | medium |
+| Newton | first derivative / Jacobian | quadratic | medium-low |
+| Gradient descent | gradient | linear | medium-high |
+| Newton minimization | gradient + Hessian | quadratic | medium-low |
+
+
 ## Multidimensional Newton Minimization
 
 
@@ -464,6 +531,8 @@ $$V(x_1, x_2) = U(x_1, x_2) - \lambda (p_1 x_1 + p_2 x_2 - B)$$
 
 ## Karush-Kuhn-Tucker conditions
 
+🧠 KKT tells you whether optimum is interior or at a corner (binding constraint).
+
 - If $(x^{\star},y^{\star})$ is optimal there exists $\lambda$ such that:
   - $(x^{\star},y^{\star})$ maximizes lagrangian $\mathcal{L} = U(x_1, x_2) + \lambda (B- p_1 x_1 - p_2 x_2)$
   - $\lambda \geq 0$
@@ -473,6 +542,14 @@ $$V(x_1, x_2) = U(x_1, x_2) - \lambda (p_1 x_1 + p_2 x_2 - B)$$
   - they are equivalent to $\min(\lambda, B - p_1 x_1 - p_2 x_2)=0$
   - we denote $\lambda \geq 0 \perp B- p_1 x_1 + p_2 x_2  \geq 0$
 - $\lambda$ can be interpreted as the welfare gain of relaxing the constraint.
+
+
+## KKT geometry (visual)
+
+<img src="kkt_geometry.png" width=86%>
+
+- Left panel: interior optimum from tangency
+- Right panel: inequality constraints can force a corner solution
 
 ## Karush-Kuhn-Tucker conditions
 

@@ -43,8 +43,8 @@ To get a very nice working installation:
 
 ::: {.callout-important title="Homework" collapse="false"}
 
-For April 2nd:
+Before April 2nd:
 
-- First homework: [coursework 1](homework/coursework_1.ipynb)
+- First homework: [coursework 1 (perturbation)](homework/coursework_1_perturbation.qmd) *or* [coursework 1 (deeplearning)](homework/coursework_1_deeplearning.ipynb)
 
 :::

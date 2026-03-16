@@ -1,0 +1,100 @@
+---
+title: Optimization Methods
+author: Pablo Winant
+format:
+  html: default
+  ipynb: default
+jupyter: julia-1.12
+execute: 
+  enabled: false
+---
+
+In this tutorial you will learn to code and use common optimization algorithms for static models.
+
+
+---
+
+## Profit optimization by a monopolist
+
+A monopolist produces quantity $q$ of goods X at price $p$. Its cost function is $c(q) = 0.5 + q (1-qe^{-q})$
+
+The consumer's demand for price $p$ is $x(p)=2 e^{-0.5 p}$ (constant elasticity of demand to price).
+
+@. __Write down the profit function of the monopolist and find the optimal production (if any). Don't use any library except for plotting.__
+
+
+```{julia}
+# your code here
+```
+
+---
+
+## Constrained optimization
+
+Consider the function $f(x,y) = 1-(x-0.5)^2 -(y-0.3)^2$.
+
+@. __Use Optim.jl to maximize $f$ without constraint. Check you understand diagnostic information returned by the optimizer.__
+
+```{julia}
+# your code here
+```
+
+@. __Now, consider the constraint $x<0.3$ and maximize $f$ under this new constraint.__
+
+```{julia}
+# your code here
+```
+
+@. __Reformulate the problem as a root finding problem with lagrangians. Write the complementarity conditions.__
+
+```{julia}
+# your code here
+```
+
+@. __Solve using NLSolve.jl__
+
+```{julia}
+# your code here
+```
+
+---
+
+## Consumption optimization
+
+A consumer has preferences $U(c_1, c_2)$ over two consumption goods $c_1$ and $c_2$.
+
+Given a budget $I$, consumer wants to maximize utility subject to the budget constraint $p_1 c_1 + p_2 c_2 \leq I$.
+
+We choose a Stone-Geary specification where
+
+$U(c_1, c_2)=\beta_1 \log(c_1-\gamma_1) + \beta_2 \log(c_2-\gamma_2)$
+
+@. __Write the Karush-Kuhn-Tucker necessary conditions for the problem.__
+
+```{julia}
+# your code here
+```
+
+@. __Verify the KKT conditions are sufficient for optimality.__
+
+```{julia}
+# your code here
+```
+
+@. __Derive analytically the demand functions, and the shadow price.__
+
+```{julia}
+# your code here
+```
+
+@. __Interpret this problem as a complementarity problem and solve it using NLSolve.__
+
+```{julia}
+# your code here
+```
+
+@. __Produce some nice graphs with isoutility curves, the budget constraint and the optimal choice.__
+
+```{julia}
+# your code here
+```

@@ -9,7 +9,9 @@ listing:
       title: "Lectures"
     contents:
       - ../lectures/convergence/convergence_1.qmd
+      - ../tutorials/optimization.qmd
       - ../lectures/convergence/convergence_2.qmd
+
       # - ../lectures/perturbation/index.qmd
       # - ../lectures/interpolation.qmd
       # - ../lectures/time_iteration.qmd
@@ -24,7 +26,18 @@ listing:
       - ../tutorials/Julia_Basics.qmd
       - ../tutorials/solow.qmd
       - ../tutorials/epidemiology.qmd
+      - ../tutorials/optimization.qmd
+
       # - ../tutorials/perturbation.qmd
+  - id: exercises-listing
+    type: table
+    fields: [title]
+    sort-ui: false
+    filter-ui: false
+    field-display-names: 
+      title: "Exercises"
+    contents:
+      - ../exercises/optimization_pushups.qmd
 ---
 
 
@@ -45,6 +58,6 @@ To get a very nice working installation:
 
 For next time:
 
-- install Julia (***)
+- Some Optimization Pushups: [optimization pushups](../exercises/optimization_pushups.qmd)
 
 :::
