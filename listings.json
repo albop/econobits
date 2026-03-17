@@ -4,9 +4,10 @@
     "items": [
       "/lectures/convergence/convergence_1.html",
       "/lectures/convergence/convergence_2.html",
-      "/tutorials/optimization.html",
+      "/lectures/optimization/index.html",
       "/tutorials/epidemiology.html",
       "/tutorials/Julia_Basics.html",
+      "/tutorials/optimization.html",
       "/tutorials/solow.html",
       "/exercises/optimization_pushups.html"
     ]
