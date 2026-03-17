@@ -947,3 +947,5 @@ $$\boxed{\rho \left( u\mapsto ((B + (C + D X) F)^{-1})D\right)}$$
 $\implies$ forward and backward stability are equivalent to Blanchard-Kahn conditions
 
 - there is a unique stable solution
+
+
