@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.32">
 
   <title>econobits – Convergence of Sequences (2)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -28,7 +31,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -222,9 +225,9 @@ A = \begin{bmatrix}0.9 &amp; M\\ 0 &amp; 0.9\end{bmatrix},\quad M\gg 1.
 <li>Choose a nonzero vector <span class="math inline">\(v_0\)</span>.</li>
 <li>Iterate: <span class="math inline">\(w_{m+1} \leftarrow A v_m\)</span>, then normalize <span class="math inline">\(v_{m+1}\leftarrow w_{m+1}/\lVert w_{m+1}\rVert_2\)</span>.</li>
 <li>Track the <strong>Growth ratio:</strong> <span class="math inline">\(\lVert A v_m\rVert_2 / \lVert v_m\rVert_2\)</span> <!-- - Or the **Rayleigh quotient:** $\frac{v_m^* A v_m}{v_m^* v_m}$ (most meaningful when $A$ is normal / Hermitian). --> <!-- - **Rayleigh quotient** (most meaningful when $A$ is normal / Hermitian):
-    $$
-    \mu_m = \frac{v_m^* A v_m}{v_m^* v_m}.
-    $$ --></li>
+  $$
+  \mu_m = \frac{v_m^* A v_m}{v_m^* v_m}.
+  $$ --></li>
 </ul>
 <p><strong>Convergence intuition</strong></p>
 <ul>

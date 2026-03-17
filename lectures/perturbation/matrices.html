@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Pablo Winant">
 
-<title>Solow Model – econobits</title>
+<title>Matrix Recursions: Spectral vs Numerical Radius – econobits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -24,61 +23,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f67b63dbfc378573cfd6da3a14783f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f67b63dbfc378573cfd6da3a14783f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -137,7 +101,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -147,9 +111,9 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../images/logo_full2.png" alt="" class="navbar-logo light-content">
-    <img src="../images/logo_full2.png" alt="" class="navbar-logo dark-content">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo_full2.png" alt="" class="navbar-logo light-content">
+    <img src="../../images/logo_full2.png" alt="" class="navbar-logo dark-content">
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -158,11 +122,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -181,31 +145,31 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#tutorial-convergence" id="toc-tutorial-convergence" class="nav-link active" data-scroll-target="#tutorial-convergence">Tutorial: Convergence</a>
-  <ul class="collapse">
-  <li><a href="#solow-model" id="toc-solow-model" class="nav-link" data-scroll-target="#solow-model">Solow Model</a></li>
-  </ul></li>
+  <li><a href="#the-recursion-y_t-a-y_t-1" id="toc-the-recursion-y_t-a-y_t-1" class="nav-link active" data-scroll-target="#the-recursion-y_t-a-y_t-1">The recursion <span class="math inline">\(y_t = A y_{t-1}\)</span></a></li>
+  <li><a href="#spectral-radius-the-asymptotic-growth-rate" id="toc-spectral-radius-the-asymptotic-growth-rate" class="nav-link" data-scroll-target="#spectral-radius-the-asymptotic-growth-rate">Spectral radius: the asymptotic growth rate</a></li>
+  <li><a href="#gelfands-formula-estimating-rhoa-from-powers" id="toc-gelfands-formula-estimating-rhoa-from-powers" class="nav-link" data-scroll-target="#gelfands-formula-estimating-rhoa-from-powers">Gelfand’s formula: estimating <span class="math inline">\(\rho(A)\)</span> from powers</a></li>
+  <li><a href="#power-iteration-estimating-the-spectral-radius-when-it-works" id="toc-power-iteration-estimating-the-spectral-radius-when-it-works" class="nav-link" data-scroll-target="#power-iteration-estimating-the-spectral-radius-when-it-works">Power iteration: estimating the <em>spectral radius</em> (when it works)</a></li>
+  <li><a href="#numerical-radius-a-one-step-quadratic-form-growth-measure" id="toc-numerical-radius-a-one-step-quadratic-form-growth-measure" class="nav-link" data-scroll-target="#numerical-radius-a-one-step-quadratic-form-growth-measure">Numerical radius: a one-step quadratic-form growth measure</a></li>
+  <li><a href="#why-wa-matters-for-dynamics-transient-growth" id="toc-why-wa-matters-for-dynamics-transient-growth" class="nav-link" data-scroll-target="#why-wa-matters-for-dynamics-transient-growth">Why <span class="math inline">\(w(A)\)</span> matters for dynamics (transient growth)</a></li>
+  <li><a href="#spectral-vs-numerical-radius-the-punchline" id="toc-spectral-vs-numerical-radius-the-punchline" class="nav-link" data-scroll-target="#spectral-vs-numerical-radius-the-punchline">Spectral vs numerical radius: the punchline</a></li>
+  <li><a href="#computing-wa-via-a-real-symmetric-maximization" id="toc-computing-wa-via-a-real-symmetric-maximization" class="nav-link" data-scroll-target="#computing-wa-via-a-real-symmetric-maximization">Computing <span class="math inline">\(w(A)\)</span> via a real-symmetric maximization</a></li>
+  <li><a href="#power-iteration-to-estimate-wa-via-a-hermitian-reduction" id="toc-power-iteration-to-estimate-wa-via-a-hermitian-reduction" class="nav-link" data-scroll-target="#power-iteration-to-estimate-wa-via-a-hermitian-reduction">Power iteration to estimate <span class="math inline">\(w(A)\)</span> (via a Hermitian reduction)</a></li>
+  <li><a href="#connecting-the-two-radii-and-long-run-behavior" id="toc-connecting-the-two-radii-and-long-run-behavior" class="nav-link" data-scroll-target="#connecting-the-two-radii-and-long-run-behavior">Connecting the two: radii and long-run behavior</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="solow.ipynb" download="solow.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="matrices.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Solow Model</h1>
+<h1 class="title">Matrix Recursions: Spectral vs Numerical Radius</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Pablo Winant </p>
-          </div>
-  </div>
     
   
     
@@ -216,65 +180,126 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-tip callout-titled" title="Prerequisites">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Prerequisites
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>This tutorial refers to the lecture on the <a href="../lectures/convergence/">convergence of sequences</a>.</p>
-<p>Also, make sure you went through the <a href="../tutorials/Julia_Basics.html">Julia Basics</a> before.</p>
-</div>
-</div>
-</div>
-<section id="tutorial-convergence" class="level1">
-<h1>Tutorial: Convergence</h1>
-<section id="solow-model" class="level3">
-<h3 class="anchored" data-anchor-id="solow-model">Solow Model</h3>
-<p>A representative agent uses capital <span class="math inline">\(k_t\)</span> to produce <span class="math inline">\(y_t\)</span> using the following production function:</p>
-<p><span class="math display">\[y_t = k_t^{\alpha}\]</span></p>
-<p>He chooses to consume an amount <span class="math inline">\(c_t \in ]0, y_t]\)</span> and invests what remains:</p>
-<p><span class="math display">\[i_t = y_t - c_t\]</span></p>
-<p>He accumulates capital <span class="math inline">\(k_t\)</span> according to:</p>
-<p><span class="math display">\[k_{t+1} = \left( 1-\delta \right) k_{t} + i_{t}\]</span></p>
-<p>where <span class="math inline">\(\delta\)</span> is the depreciation rate and <span class="math inline">\(i_t\)</span> is the amount invested.</p>
-<p>The goal of the representative agent is to maximize:</p>
-<p><span class="math display">\[\sum_{t\geq 0} \beta^t U(c_t)\]</span></p>
-<p>where <span class="math inline">\(U(x)=\frac{x^{1-\gamma}}{1-\gamma}\)</span> and <span class="math inline">\(\beta&lt;1\)</span> is the discount factor.</p>
-<p>For now, we ignore the objective and assume that the saving rate <span class="math inline">\(s=\frac{c_t}{y_t}\)</span> is constant over time.</p>
-<p><strong>Create a <code>NamedTuple</code> to hold parameter values <span class="math inline">\(\beta=0.96\)</span>, <span class="math inline">\(\delta=0.1\)</span>, <span class="math inline">\(\alpha=0.3\)</span>, <span class="math inline">\(\gamma=4\)</span>.</strong></p>
-<div id="cf994340" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><strong>Write down the formula of function <span class="math inline">\(f\)</span> such that <span class="math inline">\(k_{t+1}\)</span>: <span class="math inline">\(k_{t+1} = f(k_t)\)</span>.</strong></p>
-<div id="10c79ff1" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your text here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><strong>Define a function <code>f(k::Float64, p::NamedTuple)::Float64</code> to represent <span class="math inline">\(f\)</span> for a given calibration</strong></p>
-<div id="9aaf9316" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><strong>Write a function <code>simulate(k0::Float64, T::Int, p::NamedTuple)::Vector{Float64}</code> to compute the simulation over <code>T</code> periods starting from initial capital level <code>k0</code>.</strong></p>
-<div id="1b8fa8c3" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><strong>Make a nice plot to illustrate the convergence. Do we get convergence from any initial level of capital?</strong></p>
-<div id="88f262b0" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><strong>Suppose you were interested in using <code>f</code> to compute the steady-state. What would you propose to measure convergence speed? To speed-up convergence? Implement these ideas.</strong></p>
-<div id="5882fc95" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-
-
+<section id="the-recursion-y_t-a-y_t-1" class="level2">
+<h2 class="anchored" data-anchor-id="the-recursion-y_t-a-y_t-1">The recursion <span class="math inline">\(y_t = A y_{t-1}\)</span></h2>
+<ul>
+<li><p><strong>Closed form:</strong> [ y_t = A^t,y_0. ]</p></li>
+<li><p><strong>Two questions</strong> drive the dynamics:</p>
+<ol type="1">
+<li>Does <span class="math inline">\(A^t \to 0\)</span> (stability) or does it grow (instability)?</li>
+<li>Can <span class="math inline">\(\lVert A^t\rVert\)</span> exhibit <strong>transient amplification</strong> even if the system is asymptotically stable?</li>
+</ol></li>
+<li><p>The answers depend on <em>how we measure “size”</em> and on whether <span class="math inline">\(A\)</span> is <strong>normal</strong> (commutes with <span class="math inline">\(A^*\)</span>) or <strong>non-normal</strong>.</p></li>
+</ul>
+<hr>
 </section>
+<section id="spectral-radius-the-asymptotic-growth-rate" class="level2">
+<h2 class="anchored" data-anchor-id="spectral-radius-the-asymptotic-growth-rate">Spectral radius: the asymptotic growth rate</h2>
+<ul>
+<li><p><strong>Definition (spectral radius):</strong> [ (A) := { || : (A)}. ]</p></li>
+<li><p><strong>Stability (discrete time):</strong> [ (A) &lt; 1 A^t &nbsp;(t). ]</p></li>
+<li><p><strong>Intuition:</strong> eigenvalues give the long-run scaling of invariant “modes” (exactly for diagonalizable/normal matrices; asymptotically for all).</p></li>
+<li><p><strong>But:</strong> eigenvalues alone can miss large <strong>short-run</strong> growth when <span class="math inline">\(A\)</span> is non-normal.</p></li>
+</ul>
+<hr>
+</section>
+<section id="gelfands-formula-estimating-rhoa-from-powers" class="level2">
+<h2 class="anchored" data-anchor-id="gelfands-formula-estimating-rhoa-from-powers">Gelfand’s formula: estimating <span class="math inline">\(\rho(A)\)</span> from powers</h2>
+<p>For any matrix norm <span class="math inline">\(\lVert\cdot\rVert\)</span>, [ ] (Gelfand’s formula)</p>
+<p><strong>Interpretation</strong> - The quantity <span class="math inline">\(\lVert A^k\rVert^{1/k}\)</span> is an “average per-step growth factor” over <span class="math inline">\(k\)</span> steps. - As <span class="math inline">\(k\)</span> increases, it filters out transients and converges to the true asymptotic rate <span class="math inline">\(\rho(A)\)</span>.</p>
+<p><strong>Practical note</strong> - Large <span class="math inline">\(k\)</span> can be numerically delicate (overflow/underflow); rescaling or working in Schur/QZ form is common.</p>
+<hr>
+</section>
+<section id="power-iteration-estimating-the-spectral-radius-when-it-works" class="level2">
+<h2 class="anchored" data-anchor-id="power-iteration-estimating-the-spectral-radius-when-it-works">Power iteration: estimating the <em>spectral radius</em> (when it works)</h2>
+<p>The <strong>classic</strong> power iteration targets the eigenvalue of largest modulus, i.e.&nbsp;it can estimate ((A)) under standard conditions (dominant eigenvalue, start vector not orthogonal to its eigenvector).</p>
+<p><strong>Algorithm (basic form)</strong> - Choose a nonzero vector (v_0). - Iterate: (w_{m+1} A v_m), then normalize (v_{m+1}w_{m+1}/w_{m+1}_2). - Track a scalar estimate (common choices): - <strong>Growth ratio:</strong> (A v_m_2 / v_m_2) - <strong>Rayleigh quotient</strong> (most meaningful when (A) is normal / Hermitian): [ _m = . ]</p>
+<p><strong>Convergence intuition</strong> - If (|_1|&gt;|_2|) and (A) is diagonalizable, then (v_m) aligns with the dominant eigenvector and the estimates converge to (|_1|=(A)). - If the dominant eigenvalue is not unique in modulus (e.g.&nbsp;a complex conjugate pair), the iterates may oscillate. - For strongly <strong>non-normal</strong> matrices, convergence can be slow and the Rayleigh quotient can be misleading; Schur/QZ-based methods are more robust.</p>
+<p><strong>Important distinction</strong> - Power iteration applied to (A^*A) estimates (A_2^2) (largest singular value squared) — <strong>not</strong> ((A)).</p>
+<hr>
+</section>
+<section id="numerical-radius-a-one-step-quadratic-form-growth-measure" class="level2">
+<h2 class="anchored" data-anchor-id="numerical-radius-a-one-step-quadratic-form-growth-measure">Numerical radius: a one-step quadratic-form growth measure</h2>
+<ul>
+<li><p><strong>Field of values (numerical range):</strong> [ W(A) := { x^*Ax : x_2 = 1 } . ]</p></li>
+<li><p><strong>Numerical radius:</strong> [ ]</p></li>
+</ul>
+<p><strong>Key inequalities</strong> [ (A) w(A) A_2 ,w(A). ]</p>
+<p><strong>Intuition</strong> - <span class="math inline">\(w(A)\)</span> captures the largest possible “one-step gain” of the scalar quadratic form <span class="math inline">\(x^*Ax\)</span>. - For <strong>normal</strong> matrices: <span class="math inline">\(\rho(A)=w(A)=\lVert A\rVert_2\)</span>. - For <strong>non-normal</strong> matrices: often <span class="math inline">\(\rho(A) \ll w(A)\)</span>.</p>
+<hr>
+</section>
+<section id="why-wa-matters-for-dynamics-transient-growth" class="level2">
+<h2 class="anchored" data-anchor-id="why-wa-matters-for-dynamics-transient-growth">Why <span class="math inline">\(w(A)\)</span> matters for dynamics (transient growth)</h2>
+<p>Even when <span class="math inline">\(\rho(A)&lt;1\)</span> (asymptotically stable), a non-normal matrix can have:</p>
+<ul>
+<li><strong>large <span class="math inline">\(\lVert A\rVert_2\)</span></strong> (big one-step stretching)</li>
+<li><strong>large <span class="math inline">\(w(A)\)</span></strong> (big one-step Rayleigh-quotient magnitude)</li>
+<li><strong>transient amplification</strong>: <span class="math inline">\(\lVert A^t\rVert\)</span> can increase for some <span class="math inline">\(t\)</span> before eventually decaying.</li>
+</ul>
+A canonical 2×2 example: [ A =
+<span class="math display">\[\begin{bmatrix}0.9 &amp; M\\ 0 &amp; 0.9\end{bmatrix}\]</span>
+<p>,M. ]</p>
+<ul>
+<li>Eigenvalues are both <span class="math inline">\(0.9\)</span> so <span class="math inline">\(\rho(A)=0.9&lt;1\)</span>.</li>
+<li>But for large <span class="math inline">\(M\)</span>, <span class="math inline">\(\lVert A\rVert_2\)</span> (and typically <span class="math inline">\(w(A)\)</span>) can be much larger than 1, producing sizeable short-run growth.</li>
+</ul>
+<hr>
+</section>
+<section id="spectral-vs-numerical-radius-the-punchline" class="level2">
+<h2 class="anchored" data-anchor-id="spectral-vs-numerical-radius-the-punchline">Spectral vs numerical radius: the punchline</h2>
+<ul>
+<li><strong>Spectral radius <span class="math inline">\(\rho(A)\)</span></strong>
+<ul>
+<li>Governs <em>asymptotic</em> stability and long-run exponential rate.</li>
+<li>Insensitive to how non-orthogonal the eigenvectors are.</li>
+</ul></li>
+<li><strong>Numerical radius <span class="math inline">\(w(A)\)</span></strong>
+<ul>
+<li>Upper-bounds <span class="math inline">\(\rho(A)\)</span> and is closely tied to the geometry of the field of values.</li>
+<li>More informative about <em>one-step</em> amplification and non-normality.</li>
+</ul></li>
+<li><strong>Rule of thumb</strong>
+<ul>
+<li>If <span class="math inline">\(A\)</span> is (nearly) normal: <span class="math inline">\(\rho(A)\)</span> tells most of the story.</li>
+<li>If <span class="math inline">\(A\)</span> is non-normal: expect transients; look at <span class="math inline">\(w(A)\)</span>, <span class="math inline">\(\lVert A\rVert_2\)</span>, and (if needed) pseudospectra.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="computing-wa-via-a-real-symmetric-maximization" class="level2">
+<h2 class="anchored" data-anchor-id="computing-wa-via-a-real-symmetric-maximization">Computing <span class="math inline">\(w(A)\)</span> via a real-symmetric maximization</h2>
+<p>A very useful identity: [ ] where [ (e^{-i}A) := (e^{-i}A + e<sup>{i}A</sup>*) ] is <strong>Hermitian</strong>.</p>
+<p><strong>Intuition</strong> - Rotating <span class="math inline">\(A\)</span> by a phase <span class="math inline">\(e^{-i\theta}\)</span> rotates the field of values. - Taking the real part selects the supporting line (tangent) of the rotated set. - Maximizing the support function over <span class="math inline">\(\theta\)</span> recovers the farthest distance from the origin.</p>
+<hr>
+</section>
+<section id="power-iteration-to-estimate-wa-via-a-hermitian-reduction" class="level2">
+<h2 class="anchored" data-anchor-id="power-iteration-to-estimate-wa-via-a-hermitian-reduction">Power iteration to estimate <span class="math inline">\(w(A)\)</span> (via a Hermitian reduction)</h2>
+<p>Because <span class="math inline">\(H(\theta):=\operatorname{Re}(e^{-i\theta}A)\)</span> is Hermitian, you can estimate (_{}(H())) with <strong>power iteration</strong>.</p>
+<p><em>(This is <strong>not</strong> power iteration on (A) itself; it uses power iteration only as a subroutine to get the top eigenvalue of the Hermitian matrix (H()).)</em></p>
+<p><strong>Power iteration (Hermitian case)</strong> 1. Pick a random unit vector <span class="math inline">\(v_0\)</span>. 2. Repeat: <span class="math inline">\(v_{m+1} \leftarrow H(\theta) v_m\)</span> and normalize. 3. Rayleigh quotient: <span class="math inline">\(\mu_m = v_m^* H(\theta) v_m\)</span> converges to <span class="math inline">\(\lambda_{\max}(H(\theta))\)</span>.</p>
+<p><strong>Estimating <span class="math inline">\(w(A)\)</span></strong> - Choose a grid of angles <span class="math inline">\(\theta_j\)</span> on <span class="math inline">\([0,2\pi)\)</span>. - For each <span class="math inline">\(\theta_j\)</span>, run power iteration on <span class="math inline">\(H(\theta_j)\)</span> to get <span class="math inline">\(\widehat\lambda_{\max}(\theta_j)\)</span>. - Return [ . ]</p>
+<p><strong>Notes</strong> - Finer angle grids improve accuracy; adaptive refinement near the maximizing <span class="math inline">\(\theta\)</span> is common. - For large sparse matrices, Lanczos typically outperforms plain power iteration.</p>
+<hr>
+</section>
+<section id="connecting-the-two-radii-and-long-run-behavior" class="level2">
+<h2 class="anchored" data-anchor-id="connecting-the-two-radii-and-long-run-behavior">Connecting the two: radii and long-run behavior</h2>
+<ul>
+<li>If you care about <strong>eventual</strong> decay/growth of <span class="math inline">\(y_t=A^t y_0\)</span>:
+<ul>
+<li>the decisive quantity is <span class="math inline">\(\rho(A)\)</span> (via eigenvalues, or via Gelfand’s formula).</li>
+</ul></li>
+<li>If you care about <strong>short-run</strong> amplification, robustness, or sensitivity:
+<ul>
+<li>examine <span class="math inline">\(w(A)\)</span> and <span class="math inline">\(\lVert A\rVert_2\)</span> (and, for deeper analysis, pseudospectra).</li>
+</ul></li>
+<li>In many economic/DSGE linearizations:
+<ul>
+<li><span class="math inline">\(\rho(A)&lt;1\)</span> corresponds to stable laws of motion.</li>
+<li>large <span class="math inline">\(w(A)\)</span> / <span class="math inline">\(\lVert A\rVert_2\)</span> can still mean substantial transient responses (large multipliers) even under stability.</li>
+</ul></li>
+</ul>
+
+
 </section>
 
 </main> <!-- /main -->
@@ -351,7 +376,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/albop\.github\.io\/econobits\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

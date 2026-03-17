@@ -2,14 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pablo Winant">
 
-<title>Coursework 2026 - Perturbation of Stochastic Neoclassical Growth Model – econobits</title>
+<title>Optimization Methods – econobits</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -59,24 +62,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-1cd7b8e680c3b9cc8632e22c6f4c6d56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-f67b63dbfc378573cfd6da3a14783f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -106,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -135,7 +137,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -145,9 +147,9 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/logo_full2.png" alt="" class="navbar-logo light-content">
-    <img src="../../images/logo_full2.png" alt="" class="navbar-logo dark-content">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../images/logo_full2.png" alt="" class="navbar-logo light-content">
+    <img src="../images/logo_full2.png" alt="" class="navbar-logo dark-content">
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -156,11 +158,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html"> 
+    <a class="nav-link" href="../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -179,17 +181,18 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#model-definition" id="toc-model-definition" class="nav-link active" data-scroll-target="#model-definition">Model Definition</a></li>
-  <li><a href="#perturbation" id="toc-perturbation" class="nav-link" data-scroll-target="#perturbation">Perturbation</a></li>
+  <li><a href="#profit-optimization-by-a-monopolist" id="toc-profit-optimization-by-a-monopolist" class="nav-link active" data-scroll-target="#profit-optimization-by-a-monopolist">Profit optimization by a monopolist</a></li>
+  <li><a href="#constrained-optimization" id="toc-constrained-optimization" class="nav-link" data-scroll-target="#constrained-optimization">Constrained optimization</a></li>
+  <li><a href="#consumption-optimization" id="toc-consumption-optimization" class="nav-link" data-scroll-target="#consumption-optimization">Consumption optimization</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="perturbation.ipynb" download="perturbation.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="optimization.ipynb" download="optimization.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Coursework 2026 - Perturbation of Stochastic Neoclassical Growth Model</h1>
+<h1 class="title">Optimization Methods</h1>
 </div>
 
 
@@ -212,165 +215,84 @@ window.Quarto = {
 </header>
 
 
-<p>Our goal here is to compute a linear approximation of solution to the neoclassical model, close to the steady-state, and use it to study the effect of productivity shocks.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If you have worked on the tutorial version of this homework, pay attention to the following differences:</p>
-<ul>
-<li>The controls are now (<code>y,c,i</code>) instead of just <code>i</code>. This facilitates the production of graphs with the simulations.</li>
-<li>The exogenous shock <span class="math inline">\(\epsilon_t\)</span> drives the productivity process. Function <code>arbitrage</code> and <code>transition</code> need to be defined a bit differently and produce a new jacobian (<code>G</code>). Note that it doesn’t have any effect on the first order solution and that <code>X</code> is still a function of <code>A,B,C,D,E,F</code>.</li>
-<li>You can check Blanchard-Kahn conditions using the simple formula in the slides rather than by studying the time-iteration operator.</li>
-<li>Thre are now two kinds of simulations: irf (how the economy reacts to the shock), and stochastic simulations (produce many draws from the same initial state)</li>
-</ul>
-</div>
-</div>
+<p>In this tutorial you will learn to code and use common optimization algorithms for static models.</p>
+<hr>
+<section id="profit-optimization-by-a-monopolist" class="level2">
+<h2 class="anchored" data-anchor-id="profit-optimization-by-a-monopolist">Profit optimization by a monopolist</h2>
+<p>A monopolist produces quantity <span class="math inline">\(q\)</span> of goods X at price <span class="math inline">\(p\)</span>. Its cost function is <span class="math inline">\(c(q) = 0.5 + q (1-qe^{-q})\)</span></p>
+<p>The consumer’s demand for price <span class="math inline">\(p\)</span> is <span class="math inline">\(x(p)=2 e^{-0.5 p}\)</span> (constant elasticity of demand to price).</p>
 <ol class="example" type="1">
-<li><strong>Warm-up: install the <code>ForwardDiff</code> library. Use it to differentiate the function below. Check the jacobian function.</strong></li>
+<li><strong>Write down the profit function of the monopolist and find the optimal production (if any). Don’t use any library except for plotting.</strong></li>
 </ol>
-<p>Note: the signature of function <code>f</code> needs to be fixed first to allow for dual numbers as arguments.</p>
-<div id="a19103a8" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function f(x::Vector{T}) where T &lt;: Number</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">f</span>(x)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> x[<span class="fl">1</span>]</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> x[<span class="fl">2</span>]</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> a<span class="op">+</span>b</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span> <span class="fu">a*exp</span>(b)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [x1,x2]</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="853f8290" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="58a5dad6" class="cell">
+<hr>
+</section>
+<section id="constrained-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="constrained-optimization">Constrained optimization</h2>
+<p>Consider the function <span class="math inline">\(f(x,y) = 1-(x-0.5)^2 -(y-0.3)^2\)</span>.</p>
+<ol start="2" class="example" type="1">
+<li><strong>Use Optim.jl to maximize <span class="math inline">\(f\)</span> without constraint. Check you understand diagnostic information returned by the optimizer.</strong></li>
+</ol>
+<div id="6bf99cf5" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="model-definition" class="level2">
-<h2 class="anchored" data-anchor-id="model-definition">Model Definition</h2>
-<p>We use the following version of the neoclassical model:</p>
-<ul>
-<li><p>transition equations: <span class="math display">\[\begin{align}
-k_{t} &amp; = (1-\delta) k_{t-1} + i_{t-1} \\\\
-z_{t} &amp; = \rho z_{t-1} + \epsilon_{t}
-\end{align}\]</span></p></li>
-<li><p>first order equations: <span class="math display">\[\begin{align}
-0 &amp; = \mathbb{E}_t\left[exp(z_t) k_t^\alpha - y_t \right]\\\\
-0 &amp; = \mathbb{E}_t\left[ y_t - c_t + i_t \right]\\\\
-0 &amp; = \mathbb{E}_t\left[ \beta (c_{t+1}/c_t) ( (1-\delta) + \alpha exp(z_{t+1}) k_{t+1}^{\alpha-1}) -  1 \right]
-\end{align}
-\]</span></p></li>
-</ul>
-<p>where <span class="math inline">\(k\)</span> is capital, <span class="math inline">\(i\)</span> is investment, <span class="math inline">\(z\)</span> is productivity, <span class="math inline">\(c\)</span> is consumption, <span class="math inline">\(\delta\)</span> is the depreciation rate, <span class="math inline">\(\alpha\)</span> is the capital share in production and <span class="math inline">\(\beta\)</span> is the discount factor. The shock <span class="math inline">\(\epsilon_t\)</span> is an i.i.d. shock with variance <span class="math inline">\(\sigma^2\)</span>.</p>
-<ol start="2" class="example" type="1">
-<li><strong>Which variables are states and which are controls?</strong></li>
+<ol start="3" class="example" type="1">
+<li><strong>Now, consider the constraint <span class="math inline">\(x&lt;0.3\)</span> and maximize <span class="math inline">\(f\)</span> under this new constraint.</strong></li>
 </ol>
-<div id="b2a8c566" class="cell">
+<div id="ebdd2f74" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="3" class="example" type="1">
-<li><strong>Create a NamedTuple to hold the model parameters. Choose and justify plausible values.</strong></li>
+<ol start="4" class="example" type="1">
+<li><strong>Reformulate the problem as a root finding problem with lagrangians. Write the complementarity conditions.</strong></li>
 </ol>
-<div id="908e24c6" class="cell">
+<div id="8903c731" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="4" class="example" type="1">
-<li><strong>Define two functions:</strong></li>
+<ol start="5" class="example" type="1">
+<li><strong>Solve using NLSolve.jl</strong></li>
 </ol>
-<ul>
-<li><p><code>transition(z::Number, k::Number, i::Number, c: Number, y: Number, e::Number, p::NamedTuple)::Tuple{Number}</code> which returns productivity and capital at date <span class="math inline">\(t+1\)</span> as a function of productivity, capital, investment, and shock at date <span class="math inline">\(t\)</span> as well as the exogenous shock at date <span class="math inline">\(t+1\)</span>. Argument <code>p</code> represents the model parameters.</p></li>
-<li><p><code>arbitrage(z::Number, k::Number, i::Number, c::Number, y::Number,Z::Number, K::Number, I::Number,  C::Number,  Y::Number p)::Tuple{Number, Number}</code> which returns the residual of the euler equation (lower case variable for date <span class="math inline">\(t\)</span>, upper case for date <span class="math inline">\(t+1\)</span>) and the residual of the budget constraint. Argument <code>p</code> represents the model parameters.</p></li>
-</ul>
-<p>Note that the arbitrage equation here is defined for a specific realization of the shock in <span class="math inline">\(t\)</span> and <span class="math inline">\(t+1\)</span>: there is no need to code the expectation operator here.</p>
-<div id="9f435839" class="cell">
+<div id="dd14d59e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="5" class="example" type="1">
-<li><strong>Using multiple dispatch, define two variants of the same functions, that take vectors as input and output arguments:</strong></li>
+<hr>
+</section>
+<section id="consumption-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="consumption-optimization">Consumption optimization</h2>
+<p>A consumer has preferences <span class="math inline">\(U(c_1, c_2)\)</span> over two consumption goods <span class="math inline">\(c_1\)</span> and <span class="math inline">\(c_2\)</span>.</p>
+<p>Given a budget <span class="math inline">\(I\)</span>, consumer wants to maximize utility subject to the budget constraint <span class="math inline">\(p_1 c_1 + p_2 c_2 \leq I\)</span>.</p>
+<p>We choose a Stone-Geary specification where</p>
+<p><span class="math inline">\(U(c_1, c_2)=\beta_1 \log(c_1-\gamma_1) + \beta_2 \log(c_2-\gamma_2)\)</span></p>
+<ol start="6" class="example" type="1">
+<li><strong>Write the Karush-Kuhn-Tucker necessary conditions for the problem.</strong></li>
 </ol>
-<ul>
-<li><code>arbitrage(s::Vector, x::Vector, S::Vector, X::Vector, p)</code></li>
-<li><code>transition(s::Vector, x::Vector, e::Vector, p)</code></li>
-</ul>
-<p>where <code>s</code> is the vector of states (capital and productivity), <code>x</code> is the vector of controls (investment, consumption, production), <code>S</code> and <code>X</code> are the same variables at date t+1, and <code>e</code> is the vector of shocks.</p>
-<div id="5349b6ce" class="cell">
+<div id="a994849c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="6" class="example" type="1">
-<li><strong>Write a function <code>steady_state(p)::Tuple{Vector,Vector}</code> which computes the steady-state of the model computed by hand.</strong> It returns three vectors, one for the states, one for the controls, one for the exogenous shocks. Check that the steady-state satisfies the model equations.</li>
+<ol start="7" class="example" type="1">
+<li><strong>Verify the KKT conditions are sufficient for optimality.</strong></li>
 </ol>
-<div id="a311fe33" class="cell">
+<div id="37bf3013" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The first order system satisfies: <span class="math display">\[\begin{align}
-\mathbb{E} \left[A s_t + B x_t + C s_{t+1} + D x_{t+1} \right] &amp; = &amp; 0 \\\\
-s_{t+1} &amp; = &amp; E s_t + F x_t + G e_t
-\end{align}\]</span></p>
-<ol start="7" class="example" type="1">
-<li><strong>Define a structure <code>PerturbedModel</code> to hold matrices A,B,C,D,E,F,G.</strong></li>
+<ol start="8" class="example" type="1">
+<li><strong>Derive analytically the demand functions, and the shadow price.</strong></li>
 </ol>
-<div id="db0a0b88" class="cell">
+<div id="d1af019b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="perturbation" class="level2">
-<h2 class="anchored" data-anchor-id="perturbation">Perturbation</h2>
-<ol start="8" class="example" type="1">
-<li><strong>Write a function <code>first_order_model(s::Vector, x::Vector, e::Vector, p)::PerturbedModel</code>, which returns the first order model, given the steady-state and the calibration. Suggestion: use <code>ForwardDiff.jl</code> library.</strong></li>
+<ol start="9" class="example" type="1">
+<li><strong>Interpret this problem as a complementarity problem and solve it using NLSolve.</strong></li>
 </ol>
-<div id="1022c960" class="cell">
+<div id="5ca18b22" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="9" class="example" type="1">
-<li><strong>We look for a linear solution <span class="math inline">\(x_t = X s_t\)</span> . Write the matrix equation which <code>X</code> must satisfy. Write a function <code>riccati_residual(X::Array, M::PerturbedModel)</code> to compute the residual of this equation for a given <code>X</code>.</strong></li>
-</ol>
-<div id="7dbbe7b7" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <ol start="10" class="example" type="1">
-<li><strong>Write a function <code>T(X, M::PerturbedModel)</code> which implements the linear time iteration step.</strong></li>
+<li><strong>Produce some nice graphs with isoutility curves, the budget constraint and the optimal choice.</strong></li>
 </ol>
-<div id="6b21ba8e" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="11" class="example" type="1">
-<li><strong>Write function <code>linear_time_iteration(X_0::Matrix, m::PerturbedModel)::Matrix</code> which implements the time iteration algorithm. Apply it to <code>X0 = rand(1,2)</code> and check that the result satisfies the first order model.</strong></li>
-</ol>
-<div id="33e844b2" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="12" class="example" type="1">
-<li><strong>Check blanchard Kahn Conditions (i.e.&nbsp;non-divergence and unicity using the conditions from the lecture).</strong></li>
-</ol>
-<div id="9d25a98d" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="13" class="example" type="1">
-<li><strong>Write a function <code>irf(X::Matrix, p, T::Int64;σ=0.01)::Tuple{Matrix, Matrix}</code> to compute the response of the model to a standard deviation productivity shock (i.e.&nbsp;<span class="math inline">\(e_0=\sigma\)</span> and <span class="math inline">\(e_1=e_2=...=0\)</span> ) by using the formula <span class="math inline">\(\Delta s_t = (E + F X) \Delta s_{t-1} + G e_t\)</span>. Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variable levels or log-deviations. If possible, return a DataFrame object.</strong></li>
-</ol>
-<div id="e5358ccb" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="14" class="example" type="1">
-<li><strong>Compare irfs for different values of a parameter of your choice and comment using nice plots.</strong></li>
-</ol>
-<div id="47ec6d04" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="15" class="example" type="1">
-<li><strong>Write a function <code>simulate(s0::Vector, X::Matrix, p, T::Int64; n_draws=100)::VectorTuple{Matrix, Matrix}</code> to compute many draws of the model over <span class="math inline">\(T\)</span> periods. Bonus: return the result as an AxisArrays object.</strong></li>
-</ol>
-<div id="d72788c8" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="16" class="example" type="1">
-<li><strong>Compute standard deviations of the variables and their correlations. Comment?</strong></li>
-</ol>
-<div id="fcf394d7" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="d9efcdda" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
@@ -450,7 +372,7 @@ s_{t+1} &amp; = &amp; E s_t + F x_t + G e_t
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/albop\.github\.io\/econobits\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

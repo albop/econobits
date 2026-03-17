@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.32">
 
   <meta name="author" content="Pablo Winant">
   <meta name="dcterms.date" content="2025-03-21">
@@ -18,6 +18,9 @@
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -30,7 +33,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -180,6 +183,67 @@ Pablo Winant
 <li>constrained optimization</li>
 <li>constrained root-finding</li>
 </ul>
+</section>
+<section id="optimization-method-map" class="slide level2">
+<h2>Optimization method map</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>First tool to try</th>
+<th>Why</th>
+<th>Watch out</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1D root, bracket known</td>
+<td>Bisection</td>
+<td>✅ guaranteed convergence</td>
+<td>⚡ can be slow</td>
+</tr>
+<tr class="even">
+<td>1D root, smooth + good guess</td>
+<td>Newton/Secant</td>
+<td>⚡ very fast locally</td>
+<td>⚠️ sensitive to initial guess</td>
+</tr>
+<tr class="odd">
+<td>1D minimum on interval</td>
+<td>Golden section</td>
+<td>✅ derivative-free + robust</td>
+<td>⚡ slower than Newton-like</td>
+</tr>
+<tr class="even">
+<td>Multidim smooth minimization</td>
+<td>Gradient / Quasi-Newton</td>
+<td>🛠️ scalable and practical</td>
+<td>⚠️ scaling and step-size matter</td>
+</tr>
+<tr class="odd">
+<td>Constraints/complementarity</td>
+<td>KKT + NCP solver</td>
+<td>✅ handles corners naturally</td>
+<td>⚠️ formulation can be tricky</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-to-read-each-method-slide" class="slide level2">
+<h2>How to read each method slide</h2>
+<ul>
+<li>🧠 Intuition: what geometry the method exploits</li>
+<li>✅ Guarantee: when convergence is ensured</li>
+<li>⚡ Speed: local convergence rate (linear/superlinear/quadratic)</li>
+<li>⚠️ Failure mode: typical reason it breaks</li>
+<li>🛠️ Fix: one practical stabilization trick</li>
+</ul>
 </section></section>
 <section>
 <section id="general-considerations" class="title-slide slide level1 center">
@@ -299,6 +363,7 @@ Pablo Winant
 </section>
 <section id="bisection" class="slide level2">
 <h2>Bisection</h2>
+<p>🧠 Split the interval in two and keep the side where the sign changes.</p>
 <ul>
 <li>Find <span class="math inline">\(x \in [a,b]\)</span> such that <span class="math inline">\(f(x) = 0\)</span>. Assume <span class="math inline">\(f(a)f(b) &lt;0\)</span>.</li>
 <li>Algorithm
@@ -328,8 +393,17 @@ Pablo Winant
 <li>think about your tradeoff: (<span class="math inline">\(\delta\)</span> or <span class="math inline">\(\epsilon\)</span> ?)</li>
 </ul>
 </section>
+<section id="bisection-intuition-visual" class="slide level2">
+<h2>Bisection intuition (visual)</h2>
+
+<img src="bisection_progress.png" width="82%" class="r-stretch"><ul>
+<li>Red bars: shrinking brackets <span class="math inline">\([a_n,b_n]\)</span></li>
+<li>Green dots: midpoints tested each iteration</li>
+</ul>
+</section>
 <section id="newton-algorithm" class="slide level2">
 <h2>Newton algorithm</h2>
+<p>⚡ Local tangent approximation gives very fast convergence near the solution.</p>
 <ul>
 <li>Find <span class="math inline">\(x\)</span> such that <span class="math inline">\(f(x) = 0\)</span>. Use <span class="math inline">\(x_0\)</span> as initial guess.</li>
 <li><span class="math inline">\(f\)</span> must be <span class="math inline">\(\mathcal{C_1}\)</span> and we assume we can compute its derivative <span class="math inline">\(f^{\prime}\)</span></li>
@@ -377,6 +451,7 @@ Proof that convergence is quadratic
 </section>
 <section id="limits-of-newtons-method" class="slide level2">
 <h2>Limits of Newton’s method</h2>
+<p>⚠️ Newton is powerful, but fragile far from the root.</p>
 <ul>
 <li>How could Newton method fail?
 <ul>
@@ -394,6 +469,14 @@ Proof that convergence is quadratic
 <li>-&gt; if root of multiplicity <span class="math inline">\(m\)</span> try <span class="math inline">\(x_{n+1} = x_n- m \frac{f(x_n)}{f^{\prime}(x_n)}\)</span></li>
 </ul></li>
 </ul></li>
+</ul>
+</section>
+<section id="newton-fast-when-local-fragile-when-not" class="slide level2">
+<h2>Newton: fast when local, fragile when not</h2>
+
+<img src="newton_success_failure.png" width="90%" class="r-stretch"><ul>
+<li>Left: good initial guess, fast convergence ✅</li>
+<li>Right: poor guess, unstable/cycling behavior ⚠️</li>
 </ul>
 </section>
 <section id="backtracking" class="slide level2">
@@ -442,6 +525,7 @@ Proof that convergence is quadratic
 </section>
 <section id="gradient-descent" class="slide level2">
 <h2>Gradient Descent</h2>
+<p>🛠️ Think “small steps downhill”; robustness depends on step size.</p>
 <ul>
 <li>Minimize <span class="math inline">\(f(x)\)</span> for <span class="math inline">\(x \in R\)</span> given initial guess <span class="math inline">\(x_0\)</span></li>
 <li>Algorithm:
@@ -580,6 +664,61 @@ Proof that convergence is quadratic
 <h2>Gradient descent variants</h2>
 
 <img src="contours_evaluation_optimizers.gif" width="60%" class="r-stretch"></section>
+<section id="quick-checkpoint" class="slide level2">
+<h2>Quick checkpoint</h2>
+<p>You need to solve a smooth 1D equation and you have a reliable bracket <span class="math inline">\([a,b]\)</span>.</p>
+<ul>
+<li>Option A: Newton from the midpoint</li>
+<li>Option B: Bisection on <span class="math inline">\([a,b]\)</span></li>
+</ul>
+<p>Best first move for robustness: <strong>B</strong> ✅</p>
+<p>Then switch to Newton close to the solution for speed ⚡.</p>
+</section>
+<section id="convergence-cheat-sheet" class="slide level2">
+<h2>Convergence cheat sheet</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Info needed</th>
+<th>Typical local rate</th>
+<th>Robustness</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bisection</td>
+<td>signs at endpoints</td>
+<td>linear</td>
+<td>very high</td>
+</tr>
+<tr class="even">
+<td>Secant</td>
+<td>function values</td>
+<td>superlinear</td>
+<td>medium</td>
+</tr>
+<tr class="odd">
+<td>Newton</td>
+<td>first derivative / Jacobian</td>
+<td>quadratic</td>
+<td>medium-low</td>
+</tr>
+<tr class="even">
+<td>Gradient descent</td>
+<td>gradient</td>
+<td>linear</td>
+<td>medium-high</td>
+</tr>
+<tr class="odd">
+<td>Newton minimization</td>
+<td>gradient + Hessian</td>
+<td>quadratic</td>
+<td>medium-low</td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="multidimensional-newton-minimization" class="slide level2">
 <h2>Multidimensional Newton Minimization</h2>
 <ul>
@@ -709,6 +848,7 @@ Proof that convergence is quadratic
 </section>
 <section id="karush-kuhn-tucker-conditions" class="slide level2">
 <h2>Karush-Kuhn-Tucker conditions</h2>
+<p>🧠 KKT tells you whether optimum is interior or at a corner (binding constraint).</p>
 <ul>
 <li>If <span class="math inline">\((x^{\star},y^{\star})\)</span> is optimal there exists <span class="math inline">\(\lambda\)</span> such that:
 <ul>
@@ -723,6 +863,14 @@ Proof that convergence is quadratic
 <li>we denote <span class="math inline">\(\lambda \geq 0 \perp B- p_1 x_1 + p_2 x_2  \geq 0\)</span></li>
 </ul></li>
 <li><span class="math inline">\(\lambda\)</span> can be interpreted as the welfare gain of relaxing the constraint.</li>
+</ul>
+</section>
+<section id="kkt-geometry-visual" class="slide level2">
+<h2>KKT geometry (visual)</h2>
+
+<img src="kkt_geometry.png" width="86%" class="r-stretch"><ul>
+<li>Left panel: interior optimum from tangency</li>
+<li>Right panel: inequality constraints can force a corner solution</li>
 </ul>
 </section>
 <section id="karush-kuhn-tucker-conditions-1" class="slide level2">

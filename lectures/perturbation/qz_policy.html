@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en"><head>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f67b63dbfc378573cfd6da3a14783f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-html/tabby.min.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -10,7 +26,7 @@
   <meta name="generator" content="quarto-1.9.32">
 
   <meta name="author" content="Pablo Winant">
-  <title>econobits – Convergence of Sequences (1)</title>
+  <title>econobits – Solving with QZ</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -130,7 +146,8 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Convergence of Sequences (1)</h1>
+  <h1 class="title">Solving with QZ</h1>
+  <p class="subtitle">From intuition to the general case</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -141,319 +158,305 @@ Pablo Winant
 </div>
 
 </section>
-<section id="life-of-a-computational-economist" class="slide level2">
-<h2>Life of a computational economist</h2>
-
-<img data-src="impossible.jpg" class="r-stretch"></section>
-<section id="life-of-a-computational-economist-1" class="slide level2">
-<h2>Life of a computational economist</h2>
-<p><video data-src="waiting_for_convergence.mp4" style="width:50.0%" controls=""><a href="waiting_for_convergence.mp4">Video</a></video></p>
-<ul>
-<li><!-- .element: class="fragment" -->
-We spend <strong>a lot</strong> of time waiting for algorithms to converge!
-<ul>
-<li><!-- .element: class="fragment" -->
-solution 1: program better</li>
-<li><!-- .element: class="fragment" -->
-solution 2: better algorithms</li>
-<li><!-- .element: class="fragment" -->
-even better: understand convergence properties (information about the model)</li>
-</ul></li>
-</ul>
+<section id="goal" class="slide level2">
+<h2>Goal</h2>
+<p>We want a linear decision rule <span class="math display">\[
+x_t = X s_t
+\]</span> for the system <span class="math display">\[
+A s_t + B x_t + C s_{t+1} + D x_{t+1} = 0,
+\]</span> <span class="math display">\[
+s_{t+1} = E s_t + F x_t.
+\]</span></p>
+<p>We will build intuition first, then move to the general QZ case.</p>
 </section>
-<section id="recursive-sequence" class="slide level2">
-<h2>Recursive sequence</h2>
-<p>Consider a function <span class="math inline">\(f: \mathbb{R}^n\rightarrow \mathbb{R}^n\)</span> and a recursive sequence <span class="math inline">\((x_n)\)</span> defined by <span class="math inline">\(x_0\in \mathbb{R}^n\)</span> and <span class="math inline">\(x_n = f(x_{n-1})\)</span>.</p>
-<p>We want to compute a fixed point of <span class="math inline">\(f\)</span> and study its properties.</p>
-<p>&nbsp;&nbsp;</p>
-<div class="fragment">
-<p><strong>Today</strong>: Some methods for the case <span class="math inline">\(n=1\)</span>.</p>
-<p>&nbsp;&nbsp;</p>
-</div>
-<div class="fragment">
-<p><strong>Another day</strong>:</p>
-<ul>
-<li>the matrix case: <span class="math inline">\(x_n = A^n x_0\)</span> where <span class="math inline">\(A\in \mathbb{R}^{n\times n}\)</span></li>
-<li>the finite nonlinear case: <span class="math inline">\(x_n = f(x_{n-1})\)</span></li>
-</ul>
-</div>
-</section>
-<section id="example-growth-model" class="slide level2">
-<h2>Example: growth model</h2>
-<div class="columns">
-<div class="column" style="width:40%;">
-<p><img class="fragment" src="solow_generated.png" width="100%" data-fragment-index="2"></p>
-<p>Solow growth model:</p>
-<table class="caption-top">
-<tbody>
-<tr class="odd">
-<td>capital accumulation</td>
-<td><span class="math inline">\(k_t = (1-\delta)k_{t-1} + i_{t-1}\)</span></td>
-</tr>
-<tr class="even">
-<td>production</td>
-<td><span class="math inline">\(y_t = k_t^\alpha\)</span></td>
-</tr>
-<tr class="odd">
-<td>consumption</td>
-<td><span class="math inline">\(c_t = (1-{\color{red}s})y_t\)</span></td>
-</tr>
-<tr class="even">
-<td>investment</td>
-<td><span class="math inline">\(i_t = s y_t\)</span></td>
-</tr>
-</tbody>
-</table>
-</div><div class="column" style="width:60%;">
-<div class="fragment">
-<p>For a given value of <span class="math inline">\({\color{red} s}\in\mathbb{R}^{+}\)</span> ( <span class="math inline">\({\color{red} s}\)</span> is a <strong>decision rule</strong>) <span class="math display">\[k_{t+1} = f(k_t, {\color{red} s})\]</span></p>
-<ul>
-<li><strong>backward-looking</strong> iterations</li>
-<li>Solow hypothesis: saving rate is invariant</li>
-</ul>
-</div>
-<div class="fragment">
-<p><em>Questions</em>:</p>
-<ul>
-<li>What is the steady-state?</li>
-<li>Can we characterize the transition back the steady-state?</li>
-<li>Characterize the dynamics close to the steady-state?</li>
-<li>what is the optimal <span class="math inline">\(s\)</span> ?</li>
-</ul>
-</div>
-</div></div>
-</section>
-<section id="another-example-linear-new-keynesian-model" class="slide level2">
-<h2>Another example: linear new keynesian model</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p>Basic New Keynesian model (<a href="https://www.crei.cat/wp-content/uploads/users/pages/ch3_slides_june2015(1).pdf">full derivation</a> if curious )</p>
-<ul>
-<li>new Phillips curve (PC):<span class="math display">\[\pi_t = \beta \mathbb{E}_t \pi_{t+1} + \kappa y_t\]</span></li>
-<li>dynamic investment-saving equation (IS):<span class="math display">\[y_t = \beta \mathbb{E}_t y_{t+1} - \frac{1}{\sigma}(i_t - \mathbb{E}_t(\pi_{t+1}) ) - {\color{green} z_t}\]</span></li>
-<li>interest rate setting (taylor rule): <span class="math display">\[i_t = \alpha_{\pi} \pi_t + \alpha_{y} y_t\]</span></li>
-</ul>
-<div class="fragment">
-<p>Solving the system: <span class="math inline">\(\begin{bmatrix}\pi_t \\\\ y_t \end{bmatrix} = {\color{red} c} z_t\)</span></p>
-</div>
-</div><div class="column" style="width:55%;">
-<div class="fragment">
-<p>The system is <em>forward looking</em>:</p>
-<ul>
-<li>take <span class="math inline">\(\begin{bmatrix}\pi_{t+1} \\\\ y_{t+1} \end{bmatrix} = {\color{red} {c_n}} z_{t+1}\)</span> → deduce <span class="math inline">\(\begin{bmatrix}\pi_{t} \\\\ y_{t} \end{bmatrix} = {\color{red} {c_{n+1}}} z_{t}\)</span></li>
-</ul>
-<p><span class="math inline">\(\mathcal{T}: \underbrace{c_{n}}_{t+1: \; \text{tomorrow}} \rightarrow \underbrace{c_{n+1}}_{t: \text{today}}\)</span> is the <strong>time-iteration</strong> operator (a.k.a. <strong>Coleman</strong> operator)</p>
-</div>
-<p>&nbsp;</p>
-<div class="fragment">
-<p><em>Questions</em>:</p>
-<ul>
-<li>What is the limit to <span class="math inline">\(c_{t+1} = \mathcal{T} c_n\)</span>?</li>
-<li>Under which conditions (on <span class="math inline">\(\alpha_{\pi}, \alpha_y\)</span>) is it convergent?
-<ul>
-<li>determinacy conditions</li>
-<li>interpretation: does the central bank manage to control inflation expectations?</li>
-</ul></li>
-</ul>
-</div>
-</div></div>
-</section>
-<section id="recursive-sequence-2" class="slide level2">
-<h2>Recursive sequence (2)</h2>
-<p>🤔 Wait: does a fixed point exist?</p>
-<div class="fragment">
-<ul>
-<li>we’re not very concerned by the existence problem here</li>
-<li>we’ll be happy with local conditions (existence, uniqueness) around a solution</li>
-</ul>
-</div>
-<div class="fragment">
-<p>In theoretical work, there are many fixed-point theorems to choose from.</p>
-</div>
-<div class="fragment">
-<p>&nbsp;</p>
-<p>For example:</p>
-<p><br>
-</p>
-<p><em>Brouwer</em> fixed point: assume <span class="math inline">\(f\)</span> is continuous and there is an interval such that <span class="math inline">\(f([a,b])\subset[a,b]\)</span>. Then we know there exists <span class="math inline">\(x\)</span> in <span class="math inline">\([a,b]\)</span> such that <span class="math inline">\(f(x)=x\)</span>. (There can be many such points.)</p>
-</div>
-</section>
-<section id="example-growth-model-with-multiple-fixed-points" class="slide level2">
-<h2>Example: growth model with multiple fixed points</h2>
-
-<img data-src="solow_multiple_fixed_points.png" style="width:55.0%" class="r-stretch quarto-figure-center"><p class="caption">Multiple equilibria in the growth model</p><p>In the growth model, if we change the production function: <span class="math inline">\(y=k^{\alpha}\)</span> for a nonconvex/nonmonotonic one, we can get multiple fixed points.</p>
-</section>
-<section id="convergence" class="slide level2">
-<h2>Convergence</h2>
-<p>Given <span class="math inline">\(f: \mathbb{R} \rightarrow \mathbb{R}\)</span> consider the sequence <span class="math inline">\(x_n = f(x_{n-1})\)</span></p>
-<ul>
-<li>How do we characterize behaviour around <span class="math inline">\(x\)</span> such that <span class="math inline">\(f(x)=x\)</span>?</li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>Stability criterion:</p>
-<ul>
-<li>if <span class="math inline">\(|f^{\prime}(x)|&gt;1\)</span>: sequence is unstable and will not converge to <span class="math inline">\(x\)</span> except by chance</li>
-<li>if <span class="math inline">\(|f^{\prime}(x)|&lt;1\)</span>: <span class="math inline">\(x\)</span> is a stable fixed point</li>
-<li>if <span class="math inline">\(|f^{\prime}(x)|=1\)</span>: ??? (look at higher order terms, details ↓)</li>
-</ul></li>
-</ul>
-</div>
-</section>
-<section id="convergence-cobweb-intuition" class="slide level2">
-<h2>Convergence (Cobweb intuition)</h2>
-<p>Think of the graph of <span class="math inline">\(y=f(x)\)</span> and the 45-degree line <span class="math inline">\(y=x\)</span>.</p>
-
-<img data-src="cobweb_intuition.png" style="width:85.0%" class="r-stretch"><ul>
-<li class="fragment">If <span class="math inline">\(0&lt;f'(x^*)&lt;1\)</span>: iterates approach <span class="math inline">\(x^*\)</span> monotonically.</li>
-<li class="fragment">If <span class="math inline">\(-1&lt;f'(x^*)&lt;0\)</span>: iterates approach <span class="math inline">\(x^*\)</span> but typically oscillate (alternating sides).</li>
-<li class="fragment">If <span class="math inline">\(|f'(x^*)|&gt;1\)</span>: you generically move away from <span class="math inline">\(x^*\)</span>.</li>
-</ul>
-</section>
-<section id="convergence-first-order-approximation" class="slide level2">
-<h2>Convergence (first order approximation)</h2>
-<p>To get the intuition about local convergence, assume you have an initial point <span class="math inline">\(x_n\)</span> close to the steady state and consider the following expression:</p>
-<p><span class="math display">\[x_{n+1} - x = f(x_n) - f(x) = f^{\prime}(x) (x_n-x) + o(x_n-x)\]</span></p>
-<p>If one sets aside the error term (which one can do with full mathematical rigour), the dynamics for very small perturbations are given by:</p>
-<p><span class="math display">\[|x_{n+1} - x| \approx  |f^{\prime}(x)| |x_n-x|\]</span></p>
-<p>When <span class="math inline">\(|f^{\prime}(x)|&lt;1\)</span>, the distance to the target decreases at each iteration and we have convergence.</p>
-<p>When <span class="math inline">\(|f^{\prime}(x)|&gt;1\)</span> there is local divergence.</p>
-<p>This is conform to Cobweb intuition.</p>
-</section>
-<section id="borderline-case-fx1" class="slide level2">
-<h2>Borderline case <span class="math inline">\(|f'(x^*)|=1\)</span></h2>
-<p>When <span class="math inline">\(|f'(x^*)|=1\)</span>, the linear approximation does not tell you whether you converge.</p>
-<ul>
-<li class="fragment">You must look at higher-order terms (Taylor expansion), and behavior can depend on the side you start from.</li>
-<li class="fragment">In practice, treat this as a warning sign: add damping, change the iteration, or switch to a root-finding method.</li>
-</ul>
-</section>
-<section id="change-the-problem" class="slide level2">
-<h2>Change the problem</h2>
-<ul>
-<li><p>Sometimes, we are interested in tweaking the convergence speed: <span class="math display">\[x_{n+1} = (1-\lambda) x_n + \lambda f(x_n)\]</span></p>
-<ul>
-<li><span class="math inline">\(\lambda\)</span> is the learning rate:
-<ul>
-<li><span class="math inline">\(\lambda&gt;1\)</span>: acceleration</li>
-<li><span class="math inline">\(\lambda&lt;1\)</span>: dampening</li>
-</ul></li>
-</ul></li>
-</ul>
-<div class="fragment">
-<ul>
-<li class="fragment">We can also replace the function by another one <span class="math inline">\(g\)</span> such that <span class="math inline">\(g(x)=x\iff f(x)=x\)</span>, for instance: <span class="math display">\[g(x)=x-\frac{f(x)-x}{f^{\prime}(x)-1}\]</span>
-<ul>
-<li class="fragment">this is the Newton iteration</li>
-</ul></li>
-</ul>
-</div>
-</section>
-<section id="contraction-mapping-why-fixed-point-iteration-works" class="slide level2">
-<h2>Contraction mapping (why fixed-point iteration works)</h2>
-<p>Suppose there exists an interval <span class="math inline">\(I=[a,b]\)</span> such that <span class="math inline">\(f(I)\subseteq I\)</span> and <span class="math display">\[\sup_{x\in I} |f'(x)| \le L &lt; 1.\]</span></p>
-<ul>
-<li class="fragment">Then there is a unique fixed point <span class="math inline">\(x^*\in I\)</span>.</li>
-<li class="fragment">For any <span class="math inline">\(x_0\in I\)</span>, iterating <span class="math inline">\(x_{n+1}=f(x_n)\)</span> converges to <span class="math inline">\(x^*\)</span>.</li>
-<li class="fragment">The error shrinks at least linearly: <span class="math inline">\(|x_{n+1}-x^*|\le L\,|x_n-x^*|\)</span>.</li>
-</ul>
-<p>This is the one-dimensional version of the contraction logic used for many “time-iteration” operators in macro.</p>
-</section>
-<section id="dynamics-around-a-stable-point" class="slide level2">
-<h2>Dynamics around a stable point</h2>
-<ul>
-<li class="fragment">We can write successive approximation errors: <span class="math display">\[|x_t - x_{t-1}| =  | f(x_{t-1}) - f(x_{t-2})| \]</span> <span class="math display">\[|x_t - x_{t-1}| \sim |f^{\prime}(x_{t-1})| |x_{t-1} - x_{t-2}| \]</span></li>
-<li class="fragment">Ratio of successive approximation errors <span class="math display">\[\lambda_t =  \frac{ |x_{t} - x_{t-1}| } { |x_{t-1} - x_{t-2}|}\]</span></li>
-<li class="fragment">When the sequence converges: <span class="math display">\[\lambda_t \rightarrow | f^{\prime}(\overline{x}) |\]</span></li>
-</ul>
-</section>
-<section id="dynamics-around-a-stable-point-2" class="slide level2">
-<h2>Dynamics around a stable point (2)</h2>
-<p>How do we derive an error bound? Suppose that we have <span class="math inline">\(\overline{\lambda}&gt;|f^{\prime}(x_k)|\)</span> for all <span class="math inline">\(k\geq k_0\)</span>:</p>
-<p><span class="math display">\[|x_t - x| \leq |x_t - x_{t+1}| + |x_{t+1} - x_{t+2}| + |x_{t+2} - x_{t+3}| + ... \]</span></p>
-<p><span class="math display">\[|x_t - x| \leq |x_t - x_{t+1}| + |f(x_{t}) - f(x_{t+1})| + |f(x_{t+1}) - f(x_{t+2})| + ... \]</span></p>
-<p><span class="math display">\[|x_t - x| \leq |x_t - x_{t+1}| + \overline{\lambda} |x_t - x_{t+1}| + \overline{\lambda}^2 |x_t - x_{t+1}| + ... \]</span></p>
-<p><span class="math display">\[|x_t - x| \leq \frac{1} {1-\overline{\lambda}} | x_t - x_{t+1} |\]</span></p>
-</section>
-<section id="how-do-we-improve-convergence" class="slide level2">
-<h2>How do we improve convergence ?</h2>
-<p><span class="math display">\[\frac{|x_t - x_{t-1}|} {|x_{t-1} - x_{t-2}|} \sim |f^{\prime}(x_{t-1})|  \]</span></p>
-<p>corresponds to the case of <strong>linear</strong> convergence (kind of slow).</p>
-</section>
-<section id="aitkens-extrapolation" class="slide level2">
-<h2>Aitken’s extrapolation</h2>
-<p>When convergence is geometric, we have: <span class="math display">\[ \lim_{t\rightarrow \infty}\frac{ x_{t+1}-x}{x_t-x} = \lambda \in \mathbb{R}^{\star}\]</span></p>
-<p>Which implies:</p>
-<p><span class="math display">\[\frac{ x_{t+1}-x}{x_t-x} \sim \frac{ x_{t}-x}{x_{t-1}-x}\]</span></p>
-</section>
-<section id="aitkens-extrapolation-2" class="slide level2">
-<h2>Aitken’s extrapolation (2)</h2>
-<p>Take <span class="math inline">\(x_{t-1}, x_t\)</span> and <span class="math inline">\(x_{t+1}\)</span> as given and solve for <span class="math inline">\(x\)</span>:</p>
-<p><span class="math display">\[x = \frac{x_{t+1}x_{t-1} - x_{t}^2}{x_{t+1}-2x_{t} + x_{t-1}}\]</span></p>
-<p>or after some reordering</p>
-<p><span class="math display">\[x = x_{t-1} - \frac{(x_t-x_{t-1})^2}{x_{t+1}-2 x_t + x_{t-1}}\]</span></p>
-</section>
-<section id="steffensens-method" class="slide level2">
-<h2>Steffensen’s Method:</h2>
+<section id="the-key-question" class="slide level2">
+<h2>The key question</h2>
+<p>A rule <span class="math inline">\(x_t = X s_t\)</span> is useful only if the implied state dynamics <span class="math display">\[
+s_{t+1} = (E + F X)s_t
+\]</span> are <strong>non-diverging</strong>.</p>
+<p>So there are really two problems:</p>
 <ol type="1">
-<li>start with a guess <span class="math inline">\(x_0\)</span>, compute <span class="math inline">\(x_1=f(x_0)\)</span> and <span class="math inline">\(x_2=f(x_1)\)</span></li>
-<li>use Aitken’s guess for <span class="math inline">\(x^{\star}\)</span>. If required tolerance is met, stop.</li>
-<li>otherwise, set <span class="math inline">\(x_0 = x^{\star}\)</span> and go back to step 1.</li>
+<li>find <span class="math inline">\(X\)</span>;</li>
+<li>keep only the values of <span class="math inline">\(X\)</span> for which the dynamics are stable.</li>
 </ol>
-<p>It can be shown that the sequence generated from Steffensen’s method converges <strong>quadratically</strong>, that is</p>
-<p><span class="math inline">\(\lim_{t\rightarrow\infty} \frac{x_{t+1}-x_t}{(x_t-x_{t-1})^2} \leq M  \in \mathbb{R}^{\star}\)</span></p>
 </section>
-<section id="convergence-speed" class="slide level2">
-<h2>Convergence speed</h2>
-<p>Rate of convergence of series <span class="math inline">\(x_t\)</span> towards <span class="math inline">\(x^{\star}\)</span> is:</p>
+<section id="why-this-often-feels-unintuitive" class="slide level2">
+<h2>Why this often feels unintuitive</h2>
+<p>The original equations are written in terms of</p>
 <ul>
-<li>linear: <span class="math display">\[{\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|} = \mu \in R^+\]</span></li>
-<li>superlinear: <span class="math display">\[{\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|} = 0\]</span></li>
-<li>quadratic: <span class="math display">\[{\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|^{\color{red}2}} = \mu \in R^+\]</span></li>
+<li>today’s state <span class="math inline">\(s_t\)</span>,</li>
+<li>today’s jump/control <span class="math inline">\(x_t\)</span>,</li>
+<li>tomorrow’s state <span class="math inline">\(s_{t+1}\)</span>,</li>
+<li>tomorrow’s jump/control <span class="math inline">\(x_{t+1}\)</span>.</li>
+</ul>
+<p>So the policy matrix <span class="math inline">\(X\)</span> appears <strong>nonlinearly</strong> if we substitute <span class="math inline">\(x_t = X s_t\)</span> and <span class="math inline">\(x_{t+1} = X s_{t+1}\)</span>.</p>
+<p>QZ avoids solving that nonlinear matrix equation directly.</p>
+</section>
+<section id="first-intuition-assume-gamma_1-is-invertible" class="slide level2">
+<h2>First intuition: assume <span class="math inline">\(\Gamma_1\)</span> is invertible</h2>
+<p>Define <span class="math display">\[
+y_t = \begin{bmatrix} s_t \\ x_t \end{bmatrix},
+\qquad
+\Gamma_0 = \begin{bmatrix} A &amp; B \\ -E &amp; -F \end{bmatrix},
+\qquad
+\Gamma_1 = \begin{bmatrix} -C &amp; -D \\ I &amp; 0 \end{bmatrix}.
+\]</span></p>
+<p>Then the model is <span class="math display">\[
+\Gamma_0 y_t = \Gamma_1 y_{t+1}.
+\]</span></p>
+<p>If <span class="math inline">\(\Gamma_1\)</span> is invertible, this becomes the plain system <span class="math display">\[
+y_{t+1} = M y_t,
+\qquad M = \Gamma_1^{-1}\Gamma_0.
+\]</span></p>
+</section>
+<section id="ordinary-eigenvalue-intuition" class="slide level2">
+<h2>Ordinary eigenvalue intuition</h2>
+<p>If <span class="math display">\[
+y_{t+1} = M y_t,
+\]</span> and <span class="math inline">\(M = V \Lambda V^{-1}\)</span>, then <span class="math display">\[
+y_t = V \Lambda^t V^{-1} y_0.
+\]</span></p>
+<p>Each eigenvalue <span class="math inline">\(\lambda_i\)</span> gives one mode: <span class="math display">\[
+\text{mode } i \propto \lambda_i^t.
+\]</span></p>
+<ul>
+<li>If <span class="math inline">\(|\lambda_i| &lt; 1\)</span>: that mode dies out.</li>
+<li>If <span class="math inline">\(|\lambda_i| &gt; 1\)</span>: that mode explodes.</li>
+</ul>
+<p>So boundedness means:</p>
+<blockquote class="blockquote">
+<p>choose the initial point <span class="math inline">\(y_0\)</span> so that it has no component along unstable eigenvectors.</p>
+</blockquote>
+</section>
+<section id="stable-subspace-the-geometric-picture" class="slide level2">
+<h2>Stable subspace: the geometric picture</h2>
+<p>The bounded trajectories lie in the <strong>stable invariant subspace</strong> of <span class="math inline">\(M\)</span>.</p>
+<p>If the stable eigenvectors are the columns of <span class="math inline">\(Z_1\)</span>, then every bounded path has the form <span class="math display">\[
+y_t = Z_1 u_t.
+\]</span></p>
+<p>Partition by rows: <span class="math display">\[
+Z_1 = \begin{bmatrix} Z_s \\ Z_x \end{bmatrix},
+\qquad
+s_t = Z_s u_t,
+\qquad
+x_t = Z_x u_t.
+\]</span></p>
+<p>If <span class="math inline">\(Z_s\)</span> is square and invertible, then <span class="math display">\[
+u_t = Z_s^{-1}s_t,
+\qquad
+x_t = Z_x Z_s^{-1} s_t.
+\]</span> So <span class="math display">\[
+\boxed{X = Z_x Z_s^{-1}}.
+\]</span></p>
+</section>
+<section id="why-the-rule-is-unique-only-sometimes" class="slide level2">
+<h2>Why the rule is unique only sometimes</h2>
+<p>The state <span class="math inline">\(s_t\)</span> is predetermined.</p>
+<p>The control/jump variable <span class="math inline">\(x_t\)</span> can move on impact.</p>
+<p>So at time 0:</p>
+<ul>
+<li><span class="math inline">\(s_0\)</span> is given,</li>
+<li><span class="math inline">\(x_0\)</span> must be chosen so that <span class="math inline">\(y_0 = \binom{s_0}{x_0}\)</span> lies on the stable subspace.</li>
+</ul>
+<p>That is a <strong>shooting problem</strong>.</p>
+</section>
+<section id="counting-intuition" class="slide level2">
+<h2>Counting intuition</h2>
+<p>Let</p>
+<ul>
+<li><span class="math inline">\(n_s\)</span> = number of predetermined states,</li>
+<li><span class="math inline">\(n_x\)</span> = number of jump variables,</li>
+<li><span class="math inline">\(n_u\)</span> = number of unstable eigenvalues of <span class="math inline">\(M\)</span>,</li>
+<li><span class="math inline">\(k\)</span> = number of stable eigenvalues.</li>
+</ul>
+<p>Because <span class="math inline">\(k + n_u = n_s + n_x\)</span>, the condition <span class="math display">\[
+n_u = n_x
+\]</span> is equivalent to <span class="math display">\[
+k = n_s.
+\]</span></p>
+<p>Interpretation:</p>
+<ul>
+<li>each unstable mode gives one restriction,</li>
+<li>each jump variable gives one degree of freedom.</li>
 </ul>
 </section>
-<section id="convergence-speed-1" class="slide level2">
-<h2>Convergence speed</h2>
-<p>Remark: in the case of linear convergence with <span class="math inline">\(\mu\in(0,1)\)</span>,</p>
-<p><span class="math display">\[\mu = {\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|} = {\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x_t|}{|x_t-x_{t-1}|}.\]</span></p>
-<p>Moreover, asymptotically one has the useful heuristic bound <span class="math display">\[|x_t-x^{\star}| \approx \frac{1}{1-\mu}\,|x_{t+1}-x_t|.\]</span></p>
-</section>
-<section id="damping-relaxation-in-practice" class="slide level2">
-<h2>Damping / relaxation in practice</h2>
-<p>Consider the relaxed iteration <span class="math display">\[x_{n+1}=g(x_n)=(1-\lambda)x_n+\lambda f(x_n).\]</span></p>
-<p>Locally around a fixed point <span class="math inline">\(x^*\)</span>, <span class="math display">\[g'(x^*) = 1-\lambda+\lambda f'(x^*).\]</span></p>
+<section id="existence-and-uniqueness-in-the-invertible-case" class="slide level2">
+<h2>Existence and uniqueness in the invertible case</h2>
+<p>If <span class="math inline">\(M\)</span> has:</p>
 <ul>
-<li class="fragment">If you can estimate <span class="math inline">\(f'(x^*)\approx a\)</span>, choose <span class="math inline">\(\lambda\)</span> to make <span class="math inline">\(|g'(x^*)|\)</span> small.</li>
-<li class="fragment">The “ideal” choice (unconstrained) is <span class="math inline">\(\lambda^* = \frac{1}{1-a}\)</span>, which gives <span class="math inline">\(g'(x^*)=0\)</span>.</li>
-<li class="fragment">In practice you often restrict <span class="math inline">\(\lambda\in(0,1]\)</span> (safeguard), so you clamp <span class="math inline">\(\lambda\)</span> to that range.</li>
+<li>fewer than <span class="math inline">\(n_s\)</span> stable eigenvalues: <strong>no stable solution</strong>;</li>
+<li>exactly <span class="math inline">\(n_s\)</span> stable eigenvalues: <strong>unique stable rule</strong>;</li>
+<li>more than <span class="math inline">\(n_s\)</span> stable eigenvalues: <strong>multiple stable rules</strong>.</li>
+</ul>
+<p>Equivalently, in unstable counts:</p>
+<ul>
+<li>if <span class="math inline">\(n_u &gt; n_x\)</span>: no solution;</li>
+<li>if <span class="math inline">\(n_u = n_x\)</span>: unique solution;</li>
+<li>if <span class="math inline">\(n_u &lt; n_x\)</span>: indeterminacy.</li>
 </ul>
 </section>
-<section id="in-practice" class="slide level2">
-<h2>In practice</h2>
+<section id="tiny-one-state-one-control-picture" class="slide level2">
+<h2>Tiny one-state / one-control picture</h2>
+<p>Suppose <span class="math inline">\(n_s = n_x = 1\)</span>.</p>
+<p>Then <span class="math inline">\((s_t, x_t)\)</span> lives in a plane.</p>
 <ul>
-<li class="fragment">Problem: Suppose one is trying to find <span class="math inline">\(x\)</span> solving the model <span class="math inline">\(G(x)=0\)</span>
-<ul>
-<li class="fragment">An iterative algorithm provides a function <span class="math inline">\(f\)</span> defining a recursive series <span class="math inline">\(x_{t+1}\)</span>.</li>
-</ul></li>
-<li class="fragment">The best practice consists in monitoring at the same time:
-<ul>
-<li class="fragment">the success criterion: <span class="math display">\[\epsilon_n = |G(x_n)|\]</span>
-<ul>
-<li class="fragment"><!-- .element: class="fragment" -->
-have you found the solution?</li>
-</ul></li>
-<li class="fragment">the successive approximation errors <span class="math display">\[\eta_n = |x_{n+1} - x_n|\]</span>
-<ul>
-<li class="fragment"><!-- .element: class="fragment" -->
-are you making progress?</li>
-</ul></li>
-<li class="fragment">the ratio of successive approximation errors <span class="math display">\[\lambda_n = \frac{\eta_n}{\eta_{n-1}}\]</span>
-<ul>
-<li class="fragment"><!-- .element: class="fragment" -->
-what kind of convergence? (if <span class="math inline">\(|\lambda_n|&lt;1\)</span>: OK, otherwise: ❓)</li>
-</ul></li>
-</ul></li>
+<li>A stable solution must lie on the stable line.</li>
+<li>Any line through the origin has equation <span class="math inline">\(x = X s\)</span>.</li>
+<li>So <span class="math inline">\(X\)</span> is just the <strong>slope of the stable line</strong>.</li>
 </ul>
+<p>Hence:</p>
+<ul>
+<li>one stable line <span class="math inline">\(\Rightarrow\)</span> unique <span class="math inline">\(X\)</span>,</li>
+<li>many admissible stable lines <span class="math inline">\(\Rightarrow\)</span> many <span class="math inline">\(X\)</span>,</li>
+<li>no admissible stable line <span class="math inline">\(\Rightarrow\)</span> no <span class="math inline">\(X\)</span>.</li>
+</ul>
+</section>
+<section id="back-to-the-general-case" class="slide level2">
+<h2>Back to the general case</h2>
+<p>Now drop the assumption that <span class="math inline">\(\Gamma_1\)</span> is invertible.</p>
+<p>We still have the matrix pencil <span class="math display">\[
+\Gamma_0 y_t = \Gamma_1 y_{t+1}.
+\]</span></p>
+<p>We cannot always form <span class="math inline">\(M = \Gamma_1^{-1}\Gamma_0\)</span>, so we work directly with the pair <span class="math inline">\((\Gamma_0, \Gamma_1)\)</span>.</p>
+<p>This is exactly what the <strong>QZ decomposition</strong> is for.</p>
+</section>
+<section id="generalized-schur-qz-decomposition" class="slide level2">
+<h2>Generalized Schur / QZ decomposition</h2>
+<p>The QZ decomposition gives orthogonal matrices <span class="math inline">\(Q, Z\)</span> such that <span class="math display">\[
+Q^\top \Gamma_0 Z = S,
+\qquad
+Q^\top \Gamma_1 Z = T,
+\]</span> where <span class="math inline">\(S\)</span> and <span class="math inline">\(T\)</span> are upper quasi-triangular.</p>
+<p>The generalized eigenvalues are <span class="math display">\[
+\lambda_i = \frac{S_{ii}}{T_{ii}}.
+\]</span></p>
+<p>Interpretation:</p>
+<ul>
+<li>these play the same role as the ordinary eigenvalues of <span class="math inline">\(M\)</span>,</li>
+<li>they tell us which modes are stable and which are unstable,</li>
+<li>infinite eigenvalues appear naturally when <span class="math inline">\(T_{ii}=0\)</span>.</li>
+</ul>
+</section>
+<section id="why-qz-is-the-right-generalization" class="slide level2">
+<h2>Why QZ is the right generalization</h2>
+<p>Set <span class="math display">\[
+y_t = Z w_t.
+\]</span> Then the system becomes <span class="math display">\[
+S w_t = T w_{t+1}.
+\]</span></p>
+<p>If <span class="math inline">\(T\)</span> were invertible, this would read <span class="math display">\[
+w_{t+1} = T^{-1}S w_t,
+\]</span> so the diagonal ratios <span class="math inline">\(S_{ii}/T_{ii}\)</span> are again the growth factors.</p>
+<p>So QZ is doing the same stable/unstable decomposition as ordinary eigen-analysis, just without requiring <span class="math inline">\(\Gamma_1\)</span> to be invertible.</p>
+</section>
+<section id="ordered-qz-put-stable-roots-first" class="slide level2">
+<h2>Ordered QZ: put stable roots first</h2>
+<p>After reordering the QZ factors, write <span class="math display">\[
+S = \begin{bmatrix} S_{11} &amp; S_{12} \\ 0 &amp; S_{22} \end{bmatrix},
+\qquad
+T = \begin{bmatrix} T_{11} &amp; T_{12} \\ 0 &amp; T_{22} \end{bmatrix},
+\qquad
+w_t = \begin{bmatrix} u_t \\ v_t \end{bmatrix},
+\]</span> where the first block contains the stable generalized eigenvalues.</p>
+<p>Then boundedness forces <span class="math display">\[
+v_t \equiv 0.
+\]</span> So every non-diverging path must satisfy <span class="math display">\[
+y_t = Z_1 u_t,
+\]</span> where <span class="math inline">\(Z_1\)</span> contains the stable columns of <span class="math inline">\(Z\)</span>.</p>
+</section>
+<section id="extracting-x-from-the-qz-vectors" class="slide level2">
+<h2>Extracting <span class="math inline">\(X\)</span> from the QZ vectors</h2>
+<p>Partition the stable block by rows: <span class="math display">\[
+Z_1 = \begin{bmatrix} Z_s \\ Z_x \end{bmatrix},
+\qquad
+Z_s \in \mathbb{R}^{n_s \times k},
+\qquad
+Z_x \in \mathbb{R}^{n_x \times k},
+\]</span> where <span class="math inline">\(k\)</span> is the number of stable generalized eigenvalues.</p>
+<p>Then bounded solutions satisfy <span class="math display">\[
+s_t = Z_s u_t,
+\qquad
+x_t = Z_x u_t.
+\]</span></p>
+<p>If <span class="math inline">\(k=n_s\)</span> and <span class="math inline">\(Z_s\)</span> is invertible, then <span class="math display">\[
+\boxed{X = Z_x Z_s^{-1}}.
+\]</span></p>
+</section>
+<section id="the-closed-loop-matrix" class="slide level2">
+<h2>The closed-loop matrix</h2>
+<p>Under the unique stable rule, <span class="math display">\[
+s_{t+1} = (E + F X) s_t.
+\]</span></p>
+<p>But in QZ coordinates, <span class="math display">\[
+u_{t+1} = T_{11}^{-1} S_{11} u_t.
+\]</span> So <span class="math display">\[
+s_{t+1} = Z_s T_{11}^{-1} S_{11} Z_s^{-1} s_t.
+\]</span> Hence <span class="math display">\[
+E + F X
+\quad \text{is similar to} \quad
+T_{11}^{-1}S_{11}.
+\]</span></p>
+<p>Therefore the eigenvalues of <span class="math inline">\(E+FX\)</span> are exactly the selected stable generalized eigenvalues.</p>
+</section>
+<section id="determinacy-conditions-in-qz-form" class="slide level2">
+<h2>Determinacy conditions in QZ form</h2>
+<p>Let <span class="math inline">\(k\)</span> be the number of generalized eigenvalues with <span class="math inline">\(|\lambda|&lt;1\)</span>.</p>
+<p>Then:</p>
+<ul>
+<li>if <span class="math inline">\(k &lt; n_s\)</span>: <strong>no stable linear rule</strong>;</li>
+<li>if <span class="math inline">\(k = n_s\)</span>: <strong>unique stable linear rule</strong>;</li>
+<li>if <span class="math inline">\(k &gt; n_s\)</span>: <strong>multiple stable linear rules</strong>.</li>
+</ul>
+<p>This is the same logic as before, now expressed for the pencil <span class="math inline">\((\Gamma_0,\Gamma_1)\)</span>.</p>
+</section>
+<section id="if-there-are-multiple-solutions" class="slide level2">
+<h2>If there are multiple solutions</h2>
+<p>When <span class="math inline">\(k &gt; n_s\)</span>, the stable subspace is larger than the state dimension.</p>
+<p>Then <span class="math inline">\(s_t\)</span> does not pin down a unique coordinate vector <span class="math inline">\(u_t\)</span>, so there are many admissible rules.</p>
+<p>A convenient parametrization is:</p>
+<p>choose any full-column-rank matrix <span class="math inline">\(P \in \mathbb{R}^{k \times n_s}\)</span> such that <span class="math inline">\(Z_s P\)</span> is invertible, and set <span class="math display">\[
+X(P) = (Z_x P)(Z_s P)^{-1}.
+\]</span></p>
+<p>Different choices of <span class="math inline">\(P\)</span> give different stable equilibria.</p>
+</section>
+<section id="practical-algorithm" class="slide level2">
+<h2>Practical algorithm</h2>
+<ol type="1">
+<li>Build <span class="math display">\[
+\Gamma_0 = \begin{bmatrix} A &amp; B \\ -E &amp; -F \end{bmatrix},
+\qquad
+\Gamma_1 = \begin{bmatrix} -C &amp; -D \\ I &amp; 0 \end{bmatrix}.
+\]</span></li>
+<li>Compute QZ of <span class="math inline">\((\Gamma_0, \Gamma_1)\)</span>.</li>
+<li>Reorder so <span class="math inline">\(|S_{ii}/T_{ii}| &lt; 1\)</span> come first.</li>
+<li>Count stable roots: <span class="math inline">\(k\)</span>.</li>
+<li>Partition stable columns <span class="math inline">\(Z_1 = \binom{Z_s}{Z_x}\)</span>.</li>
+<li>If <span class="math inline">\(k=n_s\)</span> and <span class="math inline">\(Z_s\)</span> invertible, compute <span class="math display">\[
+X = Z_x Z_s^{-1}.
+\]</span></li>
+<li>Check that the eigenvalues of <span class="math inline">\(E+FX\)</span> are inside the unit circle.</li>
+</ol>
+</section>
+<section id="numerical-remarks" class="slide level2">
+<h2>Numerical remarks</h2>
+<ul>
+<li>Use a tolerance near the unit circle, e.g.&nbsp;classify roots by <span class="math inline">\(|\lambda| &lt; 1 - \varepsilon\)</span> or with a small tolerance around 1.</li>
+<li>Complex roots come in conjugate pairs in real QZ.</li>
+<li>Infinite generalized eigenvalues are handled automatically by QZ.</li>
+<li>In practice, ordered QZ is more robust than explicitly forming matrix inverses.</li>
+</ul>
+</section>
+<section id="main-takeaways" class="slide level2">
+<h2>Main takeaways</h2>
+<ul>
+<li>The intuition is easiest when <span class="math inline">\(\Gamma_1\)</span> is invertible: bounded paths live on the stable subspace of <span class="math inline">\(M = \Gamma_1^{-1}\Gamma_0\)</span>.</li>
+<li>The rule <span class="math inline">\(x_t = X s_t\)</span> is the graph of that stable subspace.</li>
+<li>QZ does the same job for the general pencil <span class="math inline">\((\Gamma_0,\Gamma_1)\)</span>, even when <span class="math inline">\(\Gamma_1\)</span> is singular.</li>
+<li>The unique stable rule exists when the number of stable generalized eigenvalues equals <span class="math inline">\(n_s\)</span>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
 
 
 </section>
@@ -742,7 +745,7 @@ what kind of convergence? (if <span class="math inline">\(|\lambda_n|&lt;1\)</sp
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp("https:\/\/albop\.github\.io\/econobits\/");
+            var filterRegex = new RegExp('/' + window.location.host + '/');
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

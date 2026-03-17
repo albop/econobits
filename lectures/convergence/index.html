@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.32">
 
   <meta name="author" content="Pablo Winant">
   <title>econobits – Convergence of Sequences (1)</title>
@@ -17,6 +17,9 @@
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -29,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -451,6 +454,67 @@ what kind of convergence? (if <span class="math inline">\(|\lambda_n|&lt;1\)</sp
 </ul></li>
 </ul></li>
 </ul>
+</section>
+<section id="quick-diagnostic-patterns" class="slide level2">
+<h2>Quick diagnostic patterns</h2>
+<ul>
+<li class="fragment"><span class="math inline">\(\eta_n\downarrow\)</span> but <span class="math inline">\(\epsilon_n\)</span> flat: “false convergence” / stagnation (bad scaling, poor conditioning, wrong stopping rule).</li>
+<li class="fragment"><span class="math inline">\(\epsilon_n\downarrow\)</span> but <span class="math inline">\(\eta_n\)</span> does not: cycling / non-contractive map / numerical noise.</li>
+<li class="fragment"><span class="math inline">\(\lambda_n\)</span> is informative only after a burn-in; early iterations can be chaotic.</li>
+</ul>
+</section>
+<section id="summary-methods-at-a-glance" class="slide level2">
+<h2>Summary: methods at a glance</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Needs</th>
+<th>Typical rate (local)</th>
+<th>Common failure mode</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fixed-point <span class="math inline">\(x\leftarrow f(x)\)</span></td>
+<td>function eval</td>
+<td>linear if <span class="math inline">\(|f'(x^*)|&lt;1\)</span></td>
+<td>diverges / cycles if not contractive</td>
+</tr>
+<tr class="even">
+<td>Relaxed <span class="math inline">\((1-\lambda)x+\lambda f(x)\)</span></td>
+<td>function eval + choose <span class="math inline">\(\lambda\)</span></td>
+<td>linear, often faster</td>
+<td>too small <span class="math inline">\(\lambda\)</span> (slow), too large (diverge)</td>
+</tr>
+<tr class="odd">
+<td>Newton on <span class="math inline">\(f(x)-x=0\)</span></td>
+<td>derivative (or approx)</td>
+<td>quadratic near solution</td>
+<td>bad initial guess; derivative near 1 makes step unstable</td>
+</tr>
+<tr class="even">
+<td>Steffensen (Aitken-accelerated)</td>
+<td>extra evals</td>
+<td>quadratic (often)</td>
+<td>noisy/flat denominator; not robust far from solution</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="check-yourself" class="slide level2">
+<h2>Check yourself</h2>
+<ol type="1">
+<li>Suppose <span class="math inline">\(\lambda_n\approx 0.8\)</span> and <span class="math inline">\(|x_{n+1}-x_n|\approx 10^{-4}\)</span>. Use <span class="math inline">\(|x_n-x^*|\approx \frac{1}{1-\lambda_n}|x_{n+1}-x_n|\)</span> to estimate the remaining error.</li>
+<li>You observe oscillations in <span class="math inline">\(x_n\)</span> but the amplitude shrinks. What does that suggest about the sign of <span class="math inline">\(f'(x^*)\)</span>?</li>
+</ol>
+<p>:::</p>
 
 
 </section>
