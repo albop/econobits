@@ -128,6 +128,34 @@ ul.task-list li input[type="checkbox"] {
       window['quarto-listing-loaded']();
     }
   })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-exercises-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title',{ data: ['index'] },{ data: ['categories'] }],
+      
+      searchColumns: [],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-exercises-listing'] = new List('listing-exercises-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
   </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -246,6 +274,10 @@ window.Quarto = {
 <ul>
 <li>First homework: <a href="../mie37/homework/coursework_1_perturbation.html">coursework 1 (perturbation)</a> <em>or</em> <a href="../mie37/homework/coursework_1_deeplearning.html">coursework 1 (deeplearning)</a></li>
 </ul>
+<p>For next weeek:</p>
+<ul>
+<li>do some of the <a href="../exercises/optimization_pushups.html">optimization pushups</a></li>
+</ul>
 </div>
 </div>
 </div>
@@ -266,23 +298,37 @@ Lectures
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1773314035638" data-listing-reading-time-sort="8" data-listing-word-count-sort="1489" data-listing-title-sort="Convergence of Sequences (1)" data-listing-filename-sort="convergence_1.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1769768302010" data-listing-reading-time-sort="5" data-listing-word-count-sort="851" data-listing-title-sort="Introduction" data-listing-filename-sort="index.qmd">
+<td>
+<a href="../mie37/introduction/index.html" class="title listing-title">Introduction</a>
+</td>
+
+</tr>
+
+<tr data-index="1" data-listing-file-modified-sort="1773314035638" data-listing-reading-time-sort="8" data-listing-word-count-sort="1489" data-listing-title-sort="Convergence of Sequences (1)" data-listing-filename-sort="convergence_1.qmd">
 <td>
 <a href="../lectures/convergence/convergence_1.html" class="title listing-title">Convergence of Sequences (1)</a>
 </td>
 
 </tr>
 
-<tr data-index="1" data-listing-file-modified-sort="1773433450805" data-listing-reading-time-sort="6" data-listing-word-count-sort="1106" data-listing-title-sort="Convergence of Sequences (2)" data-listing-filename-sort="convergence_2.qmd">
+<tr data-index="2" data-listing-file-modified-sort="1773433450805" data-listing-reading-time-sort="6" data-listing-word-count-sort="1106" data-listing-title-sort="Convergence of Sequences (2)" data-listing-filename-sort="convergence_2.qmd">
 <td>
 <a href="../lectures/convergence/convergence_2.html" class="title listing-title">Convergence of Sequences (2)</a>
 </td>
 
 </tr>
 
-<tr data-index="2" data-listing-file-modified-sort="1773401752022" data-listing-reading-time-sort="19" data-listing-word-count-sort="3774" data-listing-title-sort="Perturbation Analysis (f-g version)" data-listing-filename-sort="index.qmd">
+<tr data-index="3" data-listing-file-modified-sort="1773401752022" data-listing-reading-time-sort="19" data-listing-word-count-sort="3774" data-listing-title-sort="Perturbation Analysis (f-g version)" data-listing-filename-sort="index.qmd">
 <td>
 <a href="../lectures/perturbation/index.html" class="title listing-title">Perturbation Analysis (f-g version)</a>
+</td>
+
+</tr>
+
+<tr data-index="4" data-listing-file-modified-sort="1773917636896" data-listing-reading-time-sort="16" data-listing-word-count-sort="3086" data-listing-title-sort="Optimization" data-listing-filename-sort="index.qmd">
+<td>
+<a href="../lectures/optimization/index.html" class="title listing-title">Optimization</a>
 </td>
 
 </tr>
@@ -303,34 +349,52 @@ Tutorials
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-listing-file-modified-sort="1773314035641" data-listing-reading-time-sort="4" data-listing-word-count-sort="728" data-listing-title-sort="Epidemiology Models" data-listing-filename-sort="epidemiology.qmd">
-<td>
-<a href="../tutorials/epidemiology.html" class="title listing-title">Epidemiology Models</a>
-</td>
-
-</tr>
-
-<tr data-index="1" data-listing-file-modified-sort="1773314035641" data-listing-reading-time-sort="12" data-listing-word-count-sort="2216" data-listing-title-sort="Julia Basics" data-listing-filename-sort="Julia_Basics.qmd">
+<tr data-index="0" data-listing-file-modified-sort="1773314035641" data-listing-reading-time-sort="12" data-listing-word-count-sort="2216" data-listing-title-sort="Julia Basics" data-listing-filename-sort="Julia_Basics.qmd">
 <td>
 <a href="../tutorials/Julia_Basics.html" class="title listing-title">Julia Basics</a>
 </td>
 
 </tr>
 
-<tr data-index="2" data-listing-file-modified-sort="1773316846213" data-listing-reading-time-sort="3" data-listing-word-count-sort="463" data-listing-title-sort="Perturbation of Neoclassical Model" data-listing-filename-sort="perturbation.qmd">
-<td>
-<a href="../tutorials/perturbation.html" class="title listing-title">Perturbation of Neoclassical Model</a>
-</td>
-
-</tr>
-
-<tr data-index="3" data-listing-file-modified-sort="1773314035642" data-listing-reading-time-sort="2" data-listing-word-count-sort="226" data-listing-title-sort="Solow Model" data-listing-filename-sort="solow.qmd">
+<tr data-index="1" data-listing-file-modified-sort="1773314035642" data-listing-reading-time-sort="2" data-listing-word-count-sort="226" data-listing-title-sort="Solow Model" data-listing-filename-sort="solow.qmd">
 <td>
 <a href="../tutorials/solow.html" class="title listing-title">Solow Model</a>
 </td>
 
 </tr>
 
+<tr data-index="2" data-listing-file-modified-sort="1773314035641" data-listing-reading-time-sort="4" data-listing-word-count-sort="728" data-listing-title-sort="Epidemiology Models" data-listing-filename-sort="epidemiology.qmd">
+<td>
+<a href="../tutorials/epidemiology.html" class="title listing-title">Epidemiology Models</a>
+</td>
+
+</tr>
+
+<tr data-index="3" data-listing-file-modified-sort="1773316846213" data-listing-reading-time-sort="3" data-listing-word-count-sort="463" data-listing-title-sort="Perturbation of Neoclassical Model" data-listing-filename-sort="perturbation.qmd">
+<td>
+<a href="../tutorials/perturbation.html" class="title listing-title">Perturbation of Neoclassical Model</a>
+</td>
+
+</tr>
+
+<tr data-index="4" data-listing-file-modified-sort="1773739076838" data-listing-reading-time-sort="2" data-listing-word-count-sort="251" data-listing-title-sort="Optimization Methods" data-listing-filename-sort="optimization.qmd">
+<td>
+<a href="../tutorials/optimization.html" class="title listing-title">Optimization Methods</a>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+<div class="listing-no-matching d-none">No matching items</div>
+</div><div class="quarto-listing quarto-listing-container-table" id="listing-exercises-listing">
+<table class="quarto-listing-table table caption-top">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Exercises (pushups)</th>
+</tr>
+</thead>
+<tbody class="list">
 </tbody>
 </table>
 <div class="listing-no-matching d-none">No matching items</div>

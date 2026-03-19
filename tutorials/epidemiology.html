@@ -228,15 +228,15 @@ window.Quarto = {
 <p><strong>Write down the transition equations for <span class="math inline">\(n_I\)</span>, the number of infected people, for <span class="math inline">\(n_R\)</span> the number of recovered people and <span class="math inline">\(n_S\)</span> the number of susceptible people.</strong></p>
 <pre class="{markdown}"><code># your text here</code></pre>
 <p><strong>Compute the transition function <code>f</code> for the vector state <span class="math inline">\(s_t\)</span> returning <span class="math inline">\(s_{t+1}\)</span>.</strong></p>
-<div id="b48cb9e9" class="cell">
+<div id="d0a75315" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Compute the transitions over <span class="math inline">\(T\)</span> periods. Plot the result using Plots.jl. (bonus: check against closed form solution)</strong></p>
-<div id="5c25f4d9" class="cell">
+<div id="8aae1eb0" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>We now assume a Susceptible person who meets an infected one has a probability <span class="math inline">\(\mu\)</span> of catching the disease. Update the transition function. Update function <span class="math inline">\(f\)</span> and write a function of <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\pi\)</span> which returns the simulation. Compare different values of the parameters. How would you interpret “social distancing”? How would you choose parameters <span class="math inline">\(\Pi\)</span> and <span class="math inline">\(\mu\)</span></strong></p>
-<div id="275a0357" class="cell">
+<div id="295b5b39" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -251,27 +251,27 @@ window.Quarto = {
 <li>An agent of type <span class="math inline">\(S\)</span> in position <span class="math inline">\((x,y)\)</span> has a probability <span class="math inline">\(prob(x,y,S)\)</span> to be infected that is <span class="math inline">\(\mu\)</span> if there is another infected agent within a radius <span class="math inline">\(r&gt;0\)</span>.</li>
 </ul>
 <p><strong>Define a type <code>Agent</code>, which holds the type of an agent. The state of the whole system will be held in a <code>Vector[Agent]</code> type.</strong></p>
-<div id="14aa1438" class="cell">
+<div id="a89af8b4" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Write a function <code>spatial_transition(S::Vector{Agent})::Vector{Agent}</code> to compute the transition of the positions. Write another function <code>random_guess(T=100)</code> which simulates for <span class="math inline">\(T\)</span> periods in order to find a good initial guess.</strong></p>
-<div id="e48cabda" class="cell">
+<div id="c509ef78" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Write a function <code>show_population</code> to plot all agents with different colors for different health status.</strong></p>
-<div id="6802e5b9" class="cell">
+<div id="f5c9d6f8" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Write a function <code>evolve(S::Vector[Agent])::Vector[Agent]</code> which takes the population in a given state and returns the same population with updated health status.</strong></p>
-<div id="7f56ebed" class="cell">
+<div id="0311238f" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Write a function <code>simulate(S0::Vector[Agent], k=1)</code> to simulate the economy starting from an initially random position with <code>k</code> infected individuals. The returned object should be of type <code>Vector[Vector[Agent]]</code>.</strong></p>
-<div id="6a57f502" class="cell">
+<div id="30a1c5c4" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Compute statistics along a simulated path for <span class="math inline">\(n_I\)</span>, <span class="math inline">\(n_S\)</span>, <span class="math inline">\(n_R\)</span>. Plot and compare with the basic SIR model</strong></p>
-<div id="3872c970" class="cell">
+<div id="8862c8a9" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
