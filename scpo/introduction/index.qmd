@@ -15,10 +15,10 @@ format:
 - Website: [econobits](http://econobits.org)
 - Github repository for the course: [repo](https://github.com/albop/econobits)
   - 1 PR = 1 free coffee/tea!
-- Join on [Zulip](econforge.zulipchat.org) : we'll communicate in the `mie37_2026` room
+- Join on [Zulip](econforge.zulipchat.org) : we'll communicate in the `scpo_2026` room
   - you're welcome to ask questions and answer other's questions (nicely)
   - outside of the course hours, I'll answer when I can
-- Formal or infrequent communication: `pwinant@escp.eu` with subject starting by `[mie37]`
+- Formal or infrequent communication: `pwinant@escp.eu` with subject starting by `[scpo]`
 
 ---
 

@@ -9,6 +9,6 @@ make-solow-figs = "python scripts/make_solow_figures.py"
 
 [dependencies]
 python = ">=3.11,<3.13"
-matplotlib = "*"
+matplotlib = ">=3.10.8,<4"
 numpy = "*"
 jupyter = ">=1.1.1,<2"

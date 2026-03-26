@@ -9,7 +9,7 @@ listing:
       title: "Lectures"
     contents:
       - ../lectures/convergence/convergence_1.qmd
-      - ../tutorials/optimization.qmd
+      - ../lectures/optimization/index.qmd
       - ../lectures/convergence/convergence_2.qmd
 
       # - ../lectures/perturbation/index.qmd

@@ -10,7 +10,7 @@ format:
     height: 1080
     toc: true
     toc-depth: 1
-logo: logo.png
+# logo: logo.png
 execute:
   echo: false
 ---

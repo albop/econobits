@@ -3,19 +3,23 @@ listing:
   - id: lectures-listing
     type: table
     fields: [title]
+    sort: false
     sort-ui: false
     filter-ui: false
     field-display-names: 
       title: "Lectures"
     contents:
+      - introduction/index.qmd
       - ../lectures/convergence/convergence_1.qmd
       - ../lectures/convergence/convergence_2.qmd
       - ../lectures/perturbation/index.qmd
+      - ../lectures/optimization/index.qmd
       # - ../lectures/interpolation.qmd
       # - ../lectures/time_iteration.qmd
   - id: tutorials-listing
     type: table
     fields: [title]
+    sort: false
     sort-ui: false
     filter-ui: false
     field-display-names: 
@@ -25,6 +29,17 @@ listing:
       - ../tutorials/solow.qmd
       - ../tutorials/epidemiology.qmd
       - ../tutorials/perturbation.qmd
+      - ../tutorials/optimization.qmd
+  - id: exercises-listing
+    type: table
+    fields: [title]
+    sort: false
+    sort-ui: false
+    filter-ui: false
+    field-display-names: 
+      title: "Exercises (pushups)"
+    contents:
+      - ../exercises/optimization_pushups.qmd
 ---
 
 
@@ -46,5 +61,9 @@ To get a very nice working installation:
 Before April 2nd:
 
 - First homework: [coursework 1 (perturbation)](homework/coursework_1_perturbation.qmd) *or* [coursework 1 (deeplearning)](homework/coursework_1_deeplearning.ipynb)
+
+For next weeek:
+
+- do some of the [optimization pushups](../exercises/optimization_pushups.qmd)
 
 :::

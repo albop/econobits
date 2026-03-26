@@ -1,14 +1,12 @@
 ---
-date: 2025/03/21
 title: Optimization
-# subtitle: "Advanced Macro: Numerical Methods (MIE37)"
 author: Pablo Winant
 format:
   revealjs:
     html-math-method: mathjax
     width: 1920
     height: 1080
-logo: logo.png
+# logo: logo.png
 ---
 
 # Introduction
@@ -36,36 +34,6 @@ Optimization is everywhere in economics:
 
     $$x_0 = {argmin}_{x\in X} f(x) \overbrace{\iff}^{??} f^{\prime} (x_0) = 0$$
 
-
-## Plan
-
-- general consideration about optimization problems
-- one-dimensional root-finding
-- one-dimensional optimization
-- local root-finding
-- local optimization
-- constrained optimization
-- constrained root-finding
-
-
-## Optimization method map
-
-| Problem | First tool to try | Why | Watch out |
-|---|---|---|---|
-| 1D root, bracket known | Bisection | ✅ guaranteed convergence | ⚡ can be slow |
-| 1D root, smooth + good guess | Newton/Secant | ⚡ very fast locally | ⚠️ sensitive to initial guess |
-| 1D minimum on interval | Golden section | ✅ derivative-free + robust | ⚡ slower than Newton-like |
-| Multidim smooth minimization | Gradient / Quasi-Newton | 🛠️ scalable and practical | ⚠️ scaling and step-size matter |
-| Constraints/complementarity | KKT + NCP solver | ✅ handles corners naturally | ⚠️ formulation can be tricky |
-
-
-## How to read each method slide
-
-- 🧠 Intuition: what geometry the method exploits
-- ✅ Guarantee: when convergence is ensured
-- ⚡ Speed: local convergence rate (linear/superlinear/quadratic)
-- ⚠️ Failure mode: typical reason it breaks
-- 🛠️ Fix: one practical stabilization trick
 
 
 
@@ -132,21 +100,47 @@ $$f(x) = E_{\epsilon}[ \xi (\epsilon, x)]$$
 
 ## Math vs practice
 
-- The full mathematical treatment will typically assume that $f$ is smooth ($\mathcal{C}_1$ or $\mathcal{C}_2$ depending on the algorithm).
+The full mathematical treatment will typically assume that $f$ is smooth ($\mathcal{C}_1$ or $\mathcal{C}_2$ depending on the algorithm).
 
-- In practice we often don't know about these properties
-  - we still try and check thqt we have a local optimal
+In practice we often don't know about these properties
 
-- So: fingers crossed
+- we still try and check that we have a local optimal
 
+So: fingers crossed
 
-## Math vs practice
+. . . 
 
 Here is the surface representing the objective that a deep neural network training algorithm tries to minimize.
 
-<img src="nonsmooth.png" width=50%>
+<img src="nonsmooth.png" width=30%>
 
-And yet, neural networks do great things!
+It certainly doesn't meet any strong regularity condition. And yet, neural networks do great things!
+
+
+## Plan
+
+We'll review many optimization algorithms:
+
+- [one-dimensional root-finding](#one-dimensional-root-finding)
+- [one-dimensional optimization](#one-dimensional-minimization)
+- [local root-finding](#unconstrained-multidimensional-root-finding)
+- [local optimization](#unconstrained-multidimensional-minimization)
+- [constrained optimization](#constrained-optimization-and-complementarity-conditions)
+- [constrained root-finding](#solution-strategies-for-ncp-problems)
+
+
+## Optimization method map
+
+| Problem | First tool to try | Why | Watch out |
+|---|---|---|---|
+| 1D root, bracket known | (Grid Search) Bisection | ✅ guaranteed convergence | ⚡ can be slow |
+| 1D root, smooth + good guess | Newton | ⚡ very fast locally | ⚠️ sensitive to initial guess |
+| 1D minimum on interval | (Grid Search) Golden section | ✅ derivative-free + robust | ⚡ slower than Newton-like |
+| Multidim root | Multidim Safeguarded Newton | ⚡ very fast locally | ⚠️ sensitive to initial guess |
+| Multidim smooth minimization | Gradient / Quasi-Newton | 🛠️ scalable and practical | ⚠️ scaling and step-size matter |
+| Constraints/complementarity | KKT + NCP solver | ✅ handles corners naturally | ⚠️ formulation can be tricky |
+
+(Grid Search is not really a method, but it is robust and very easy to implement).
 
 
 ## What do you need to know?
@@ -162,30 +156,51 @@ And yet, neural networks do great things!
 # One-dimensional root-finding
 
 
+## Grid Search
+
+Assume you look for a root $x^{\star}$ of $f$ in $[a,b]$.
+
+__Grid Search Algorithm__
+
+- Choose a grid of $N$ evenly spaced points: $x_i = a+i\frac{b-a}{N}$ for $i=0,...,N$.
+- Evaluate $f$ at each point and check if there is a sign change between two consecutive points.
+- If there is a sign change, then there is a root in the interval $[x_i, x_{i+1}]$.
+  - best guess: $\overline{x} \approx \frac{x_i+x_{i+1}}{2}$ 
+- If there are multiple sign changes, you can find multiple roots.
+
+__Convergence__:
+
+- by construction $|\overline{x}-x^{\star}| \leq \frac{b-a}{N}$
+- no guarantee on $f(x^{\star})$:
+  - if too large, increase $N$ and try again
+  - or reapply the algorithm on $[x_i, x_{i+1}]$
+
 ## Bisection
 
-🧠 Split the interval in two and keep the side where the sign changes.
+Find $x \in [a,b]$ such that $f(x) = 0$. Assume $f(a)f(b) <0$.
 
-- Find $x \in [a,b]$ such that $f(x) = 0$. Assume $f(a)f(b) <0$.
-- Algorithm
-  1. Start with $a_n, b_n$. Set $c_n=(a_n+b_n)/2$
-  2. Compute $f(c_n)$
-    - if $f(c_n)f(a_n)<0$ then set $(a_{n+1},b_{n+1})=(a_n,c_n)$
-    - else set $(a_{n+1},b_{n+1})=(c_n,b_n)$
-  3. If $|f(c_n)|<\epsilon$ and/or $\frac{b-a}{2^n}<\delta$ stop. Otherwise go back to 1.
+__Bisection Algorithm__
+
+1. Start with $a_n, b_n$. Set $c_n=(a_n+b_n)/2$
+2. Compute $f(c_n)$
+
+  - if $f(c_n)f(a_n)<0$ then set $(a_{n+1},b_{n+1})=(a_n,c_n)$
+  - else set $(a_{n+1},b_{n+1})=(c_n,b_n)$
+
+3. If $|f(c_n)|<\epsilon$ and/or $\frac{b-a}{2^n}<\delta$ stop. Otherwise go back to 1.
 
 
-## Bisection (2)
+__Convergence__:
 
 - No need for initial guess: *globally convergent algorithm*
   - not a *global* algorithm...
   - ... in the sense that it doesn't find all solutions
 - $\delta$ is a guaranteed accuracy on $x$
 - $\epsilon$ is a measure of how good the solution is
-- think about your tradeoff: ($\delta$ or $\epsilon$ ?)
+<!-- - think about your tradeoff: ($\delta$ or $\epsilon$ ?) -->
 
 
-## Bisection intuition (visual)
+## Bisection intuition
 
 <img src="bisection_progress.png" width=82%>
 
@@ -195,9 +210,8 @@ And yet, neural networks do great things!
 
 ## Newton algorithm
 
-⚡ Local tangent approximation gives very fast convergence near the solution.
+Find $x$ such that $f(x) = 0$. Use $x_0$ as initial guess.
 
-- Find $x$ such that $f(x) = 0$. Use $x_0$ as initial guess.
 - $f$ must be $\mathcal{C_1}$ and we assume we can compute its derivative $f^{\prime}$
 - General idea: 
     - observe that the zero $x^{\star}$ must satisfy $$f(x^{\star})=0=f(x_0)+f^{\prime}(x_0)(x^{\star}-x_0) + o(x-x_0)$$
@@ -207,20 +221,13 @@ And yet, neural networks do great things!
 
 ## Newton algorithm (2)
 
-- Algorithm:
+- __Algorithm__:
   - start with $x_n$
   - compute $x_{n+1} = x_n- \frac{f(x_n)}{f^{\prime}(x_n)}=f^{\text{newton}}(x_n)$
   - stop if $|x_{n+1}-x_n|<\eta$ or $|f(x_n)| < \epsilon$
 
-- Convergence: __quadratic__
+- __Convergence__: __quadratic__
 
-----
-
-<!-- ## Newton algorithm (3)
-
-Proof that convergence is quadratic
-
---- -->
 
 ## Quasi-Newton
 
@@ -246,12 +253,21 @@ $$x_{n+1} = x_n- f(x_n)\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})}$$
     - -> if root of multiplicity $m$ try  $x_{n+1} = x_n- m \frac{f(x_n)}{f^{\prime}(x_n)}$
 
 
-## Newton: fast when local, fragile when not
+
+## Newton: bad initial guess
 
 <img src="newton_success_failure.png" width=90%>
 
 - Left: good initial guess, fast convergence ✅
 - Right: poor guess, unstable/cycling behavior ⚠️
+
+
+## Newton Overshoot Intuition {#newton-overshoot-intuition}
+
+![](newton_overshoot.png){width=82%}
+
+- First step goes in the correct direction (toward the root)
+- But the tangent approximation is too aggressive and jumps past it
 
 
 ## Backtracking

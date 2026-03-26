@@ -69,6 +69,84 @@ def make_newton_success_failure(out_path: pathlib.Path) -> None:
     fig.savefig(out_path, bbox_inches="tight")
 
 
+def make_newton_overshoot(out_path: pathlib.Path) -> None:
+    """Illustrate a Newton step that points to the root but goes too far."""
+
+    def f(x: np.ndarray) -> np.ndarray:
+        return np.arctan(4.0 * x)
+
+    def fp(x: np.ndarray) -> np.ndarray:
+        return 4.0 / (1.0 + (4.0 * x) ** 2)
+
+    x0 = 0.5
+    y0 = float(f(np.array(x0)))
+    slope0 = float(fp(np.array(x0)))
+    x1 = x0 - y0 / slope0
+
+    xgrid = np.linspace(-1.4, 1.4, 700)
+    ygrid = f(xgrid)
+    y_tangent = y0 + slope0 * (xgrid - x0)
+
+    fig, ax = plt.subplots(1, 1, figsize=(9.2, 5.0), dpi=OUT_DPI)
+
+    ax.plot(xgrid, ygrid, color="#1f77b4", lw=2.2, label="f(x) = arctan(4x)")
+    ax.plot(xgrid, y_tangent, color="#ff7f0e", lw=2.0, ls="--", label="Tangent at x0")
+    ax.axhline(0.0, color="black", lw=1.0)
+    ax.axvline(0.0, color="black", lw=0.8, alpha=0.3)
+
+    # Newton geometry: from x0 to curve, then tangent projection to x-axis.
+    ax.plot([x0, x0], [0.0, y0], color="#2ca02c", lw=2.0)
+    ax.plot([x0, x1], [y0, 0.0], color="#d62728", lw=2.0)
+
+    ax.scatter([x0], [0.0], color="#2ca02c", s=55, zorder=5)
+    ax.scatter([x1], [0.0], color="#d62728", s=55, zorder=5)
+    ax.scatter([0.0], [0.0], color="#111111", s=45, zorder=5)
+
+    ax.annotate(
+        "x0",
+        xy=(x0, 0.0),
+        xytext=(x0 + 0.04, -0.16),
+        color="#2ca02c",
+        fontsize=11,
+    )
+    ax.annotate(
+        "Newton step x1",
+        xy=(x1, 0.0),
+        xytext=(x1 - 0.55, 0.18),
+        arrowprops=dict(arrowstyle="->", color="#d62728", lw=1.2),
+        color="#d62728",
+        fontsize=10,
+    )
+    ax.annotate(
+        "root x*",
+        xy=(0.0, 0.0),
+        xytext=(0.07, 0.11),
+        color="#111111",
+        fontsize=10,
+    )
+    ax.text(
+        0.02,
+        0.94,
+        "Starts moving left toward x* but overshoots past the root",
+        transform=ax.transAxes,
+        fontsize=10,
+        color="#444444",
+        va="top",
+    )
+
+    ax.set_xlim(-1.4, 1.4)
+    ax.set_ylim(-1.7, 1.7)
+    ax.set_xlabel("x")
+    ax.set_ylabel("f(x)")
+    ax.set_title("Newton overshooting in one step", fontsize=14)
+    ax.grid(True, alpha=0.2)
+    ax.legend(loc="upper left", frameon=True, fontsize=9)
+
+    fig.tight_layout()
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight")
+
+
 def make_bisection_progress(out_path: pathlib.Path) -> None:
     """Show shrinking brackets for bisection on cos(x)-x."""
 
@@ -194,10 +272,12 @@ def main() -> None:
     out_dir = repo_root / "lectures" / "optimization"
 
     make_newton_success_failure(out_dir / "newton_success_failure.png")
+    make_newton_overshoot(out_dir / "newton_overshoot.png")
     make_bisection_progress(out_dir / "bisection_progress.png")
     make_kkt_geometry(out_dir / "kkt_geometry.png")
 
     print(f"Wrote {out_dir / 'newton_success_failure.png'}")
+    print(f"Wrote {out_dir / 'newton_overshoot.png'}")
     print(f"Wrote {out_dir / 'bisection_progress.png'}")
     print(f"Wrote {out_dir / 'kkt_geometry.png'}")
 
