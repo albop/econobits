@@ -9,12 +9,20 @@
     <lastmod>2026-03-26T06:51:52.296Z</lastmod>
   </url>
   <url>
+    <loc>https://www.econobits.org/eco309/steps.html</loc>
+    <lastmod>2026-03-26T08:32:29.580Z</lastmod>
+  </url>
+  <url>
     <loc>https://www.econobits.org/tutorials/perturbation.html</loc>
     <lastmod>2026-03-12T12:00:46.213Z</lastmod>
   </url>
   <url>
-    <loc>https://www.econobits.org/tutorials/optimization.html</loc>
-    <lastmod>2026-03-17T09:17:56.838Z</lastmod>
+    <loc>https://www.econobits.org/tutorials/mccall.html</loc>
+    <lastmod>2026-03-26T11:58:39.262Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/tutorials/discrete_dynamic_programming.html</loc>
+    <lastmod>2026-03-26T11:56:10.762Z</lastmod>
   </url>
   <url>
     <loc>https://www.econobits.org/tutorials/Julia_Basics.html</loc>
@@ -22,7 +30,7 @@
   </url>
   <url>
     <loc>https://www.econobits.org/mie37/index_2026.html</loc>
-    <lastmod>2026-03-19T12:23:02.355Z</lastmod>
+    <lastmod>2026-03-26T11:54:15.986Z</lastmod>
   </url>
   <url>
     <loc>https://www.econobits.org/mie37/corrections/optimization_correction.html</loc>
@@ -61,12 +69,16 @@
     <lastmod>2026-03-24T11:25:47.182Z</lastmod>
   </url>
   <url>
-    <loc>https://www.econobits.org/about.html</loc>
-    <lastmod>2026-01-28T16:45:49.020Z</lastmod>
+    <loc>https://www.econobits.org/1_1_Julia_Basics.html</loc>
+    <lastmod>2026-03-26T09:08:12.349Z</lastmod>
   </url>
   <url>
     <loc>https://www.econobits.org/solow.html</loc>
     <lastmod>2026-02-19T12:31:08.523Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/about.html</loc>
+    <lastmod>2026-01-28T16:45:49.020Z</lastmod>
   </url>
   <url>
     <loc>https://www.econobits.org/perturbation (4).html</loc>
@@ -86,7 +98,7 @@
   </url>
   <url>
     <loc>https://www.econobits.org/lectures/convergence/convergence_1.html</loc>
-    <lastmod>2026-03-12T11:13:55.638Z</lastmod>
+    <lastmod>2026-03-26T11:50:29.836Z</lastmod>
   </url>
   <url>
     <loc>https://www.econobits.org/lectures/qz/qz_policy.html</loc>
@@ -94,7 +106,7 @@
   </url>
   <url>
     <loc>https://www.econobits.org/lectures/discrete_dynamic_programming/index.html</loc>
-    <lastmod>2026-03-19T08:42:35.050Z</lastmod>
+    <lastmod>2026-03-26T11:53:13.116Z</lastmod>
   </url>
   <url>
     <loc>https://www.econobits.org/index.html</loc>
@@ -117,12 +129,20 @@
     <lastmod>2026-03-11T22:18:00.053Z</lastmod>
   </url>
   <url>
+    <loc>https://www.econobits.org/tutorials/optimization.html</loc>
+    <lastmod>2026-03-17T09:17:56.838Z</lastmod>
+  </url>
+  <url>
     <loc>https://www.econobits.org/tutorials/solow.html</loc>
     <lastmod>2026-03-12T11:13:55.642Z</lastmod>
   </url>
   <url>
     <loc>https://www.econobits.org/tutorials/epidemiology.html</loc>
     <lastmod>2026-03-12T11:13:55.641Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/eco309/corrections/Julia_Basics.html</loc>
+    <lastmod>2026-03-26T08:38:48.975Z</lastmod>
   </url>
   <url>
     <loc>https://www.econobits.org/eco309/introduction/index.html</loc>

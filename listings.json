@@ -21,6 +21,8 @@
       "/tutorials/epidemiology.html",
       "/tutorials/perturbation.html",
       "/tutorials/optimization.html",
+      "/tutorials/discrete_dynamic_programming.html",
+      "/tutorials/mccall.html",
       "/exercises/optimization_pushups.html"
     ]
   },

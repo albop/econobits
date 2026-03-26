@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pablo Winant">
 
-<title>Solow Model – econobits</title>
+<title>McCall Model – econobits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -107,6 +107,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -148,14 +177,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="test.ipynb" download="test.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#job-search-model" id="toc-job-search-model" class="nav-link active" data-scroll-target="#job-search-model">Job-Search Model</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="mccall.ipynb" download="mccall.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Solow Model</h1>
+<h1 class="title">McCall Model</h1>
 </div>
 
 
@@ -178,18 +213,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This is a cell</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># jkj</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>And another one</p>
-<div id="871834f0" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="job-search-model" class="level3">
+<h3 class="anchored" data-anchor-id="job-search-model">Job-Search Model</h3>
+<ul>
+<li>When unemployed in date, a job-seeker
+<ul>
+<li>consumes unemployment benefit <span class="math inline">\(c_t = \underline{c}\)</span></li>
+<li>receives in every date <span class="math inline">\(t\)</span> a job offer <span class="math inline">\(w_t\)</span>
+<ul>
+<li><span class="math inline">\(w_t\)</span> is i.i.d.,</li>
+<li>takes values <span class="math inline">\(w_1, w_2, w_3\)</span> with probabilities <span class="math inline">\(p_1, p_2, p_3\)</span></li>
+</ul></li>
+<li>if job-seeker accepts, becomes employed at rate <span class="math inline">\(w_t\)</span> in the next period</li>
+<li>else he stays unemployed</li>
+</ul></li>
+<li>When employed at rate <span class="math inline">\(w\)</span>
+<ul>
+<li>worker consumes salary <span class="math inline">\(c_t = w\)</span></li>
+<li>with small probability <span class="math inline">\(\lambda&gt;0\)</span> looses his job:
+<ul>
+<li>starts next period unemployed</li>
+</ul></li>
+<li>otherwise stays employed at same rate</li>
+</ul></li>
+<li>Objective: <span class="math inline">\(\max E_0 \left\{ \sum \beta^t \log(c_t) \right\}\)</span></li>
+</ul>
+<ol class="example" type="1">
+<li><strong>What are the states, the controls, the reward of this problem ? Write down the Bellman equation.</strong></li>
+</ol>
+<div id="3f1515d7" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>And another qnother one</p>
-<div id="4a431e48" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="2" class="example" type="1">
+<li><strong>Define a named tuple for the model.</strong></li>
+</ol>
+<div id="b542848c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="3" class="example" type="1">
+<li><strong>Define a function <code>value_update(V_U::Vector{Float64}, V_E::Vector{Float64}, x::Vector{Bool}, p::Parameters)::Tuple{Vector, Vector}</code>, which takes in value functions tomorrow and a policy vector and return updated values for today.</strong></li>
+</ol>
+<div id="6e1acaff" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="4" class="example" type="1">
+<li><strong>Define a function <code>policy_eval(x::Vector{Bool}, p::Parameter)::Tuple{Vector, Vector}</code> which takes in a policy vector and returns the value(s) of following this policies forever. You can add relevant arguments to the function.</strong></li>
+</ol>
+<div id="83fd2aa1" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="5" class="example" type="1">
+<li><strong>Define a function <code>bellman_step(V_E::Vector, V_U::Vector, p::Parameters)::Tuple{Vector, Vector, Vector}</code> which returns updated values, together with improved policy rules.</strong></li>
+</ol>
+<div id="0a858704" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="6" class="example" type="1">
+<li><strong>Implement Value Function Iteration</strong></li>
+</ol>
+<div id="771ad119" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="7" class="example" type="1">
+<li><strong>Implement Policy Iteration and compare rates of convergence.</strong></li>
+</ol>
+<div id="37b7359f" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="8" class="example" type="1">
+<li><strong>Discuss the Effects of the Parameters</strong></li>
+</ol>
+<div id="ea6d3c9f" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
