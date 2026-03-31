@@ -33,88 +33,92 @@
     <lastmod>2026-03-26T12:13:12.417Z</lastmod>
   </url>
   <url>
-    <loc>https://www.econobits.org/mie37/corrections/optimization_correction.html</loc>
-    <lastmod>2026-03-19T14:06:11.623Z</lastmod>
+    <loc>https://www.econobits.org/mie37/corrections/discrete_dynamic_programming.html</loc>
+    <lastmod>2026-03-26T14:06:41.521Z</lastmod>
   </url>
   <url>
-    <loc>https://www.econobits.org/mie37/homework/coursework_1_deeplearning.html</loc>
+    <loc>https://www.econobits.org/mie37/homework/coursework_1_perturbation.html</loc>
     <lastmod>2026-03-17T09:17:56.838Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/comments.html</loc>
-    <lastmod>2026-02-05T13:11:35.912Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/lectures/optimization/index.html</loc>
-    <lastmod>2026-03-19T12:53:12.145Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/lectures/perturbation/index.html</loc>
-    <lastmod>2026-03-13T11:35:52.022Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/lectures/convergence/convergence_2.html</loc>
-    <lastmod>2026-03-13T20:24:10.805Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/scpo/introduction/index.html</loc>
-    <lastmod>2026-03-19T08:27:57.825Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/scpo/corrections/solow_correction.html</loc>
-    <lastmod>2026-03-17T11:17:30.561Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/scpo/corrections/optimization_correction.html</loc>
-    <lastmod>2026-03-24T11:25:47.182Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/1_1_Julia_Basics.html</loc>
-    <lastmod>2026-03-26T09:08:12.349Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/solow.html</loc>
-    <lastmod>2026-02-19T12:31:08.523Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/about.html</loc>
-    <lastmod>2026-01-28T16:45:49.020Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/perturbation (4).html</loc>
-    <lastmod>2026-03-12T14:10:02.050Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/scpo/corrections/random_explanations.html</loc>
-    <lastmod>2026-03-17T09:57:17.591Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/scpo/index_2026.html</loc>
-    <lastmod>2026-03-19T08:46:44.934Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/scpo/wip.html</loc>
-    <lastmod>2026-03-12T11:13:55.640Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/lectures/convergence/convergence_1.html</loc>
-    <lastmod>2026-03-26T11:50:29.836Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/lectures/qz/qz_policy.html</loc>
-    <lastmod>2026-03-13T11:39:41.581Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.econobits.org/lectures/discrete_dynamic_programming/index.html</loc>
-    <lastmod>2026-03-26T11:53:13.116Z</lastmod>
   </url>
   <url>
     <loc>https://www.econobits.org/index.html</loc>
     <lastmod>2026-03-12T11:13:51.621Z</lastmod>
   </url>
   <url>
-    <loc>https://www.econobits.org/mie37/homework/coursework_1_perturbation.html</loc>
+    <loc>https://www.econobits.org/lectures/discrete_dynamic_programming/index.html</loc>
+    <lastmod>2026-03-26T11:53:13.116Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/lectures/qz/qz_policy.html</loc>
+    <lastmod>2026-03-13T11:39:41.581Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/lectures/convergence/convergence_1.html</loc>
+    <lastmod>2026-03-26T11:50:29.836Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/scpo/wip.html</loc>
+    <lastmod>2026-03-12T11:13:55.640Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/scpo/index_2026.html</loc>
+    <lastmod>2026-03-31T09:31:32.740Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/scpo/corrections/random_explanations.html</loc>
+    <lastmod>2026-03-17T09:57:17.591Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/perturbation (4).html</loc>
+    <lastmod>2026-03-12T14:10:02.050Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/about.html</loc>
+    <lastmod>2026-01-28T16:45:49.020Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/solow.html</loc>
+    <lastmod>2026-02-19T12:31:08.523Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/1_1_Julia_Basics.html</loc>
+    <lastmod>2026-03-26T09:08:12.349Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/scpo/corrections/optimization_correction.html</loc>
+    <lastmod>2026-03-31T09:23:07.307Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/scpo/corrections/solow_correction.html</loc>
+    <lastmod>2026-03-17T11:17:30.561Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/scpo/introduction/index.html</loc>
+    <lastmod>2026-03-19T08:27:57.825Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/lectures/convergence/convergence_2.html</loc>
+    <lastmod>2026-03-13T20:24:10.805Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/lectures/perturbation/index.html</loc>
+    <lastmod>2026-03-13T11:35:52.022Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/lectures/optimization/index.html</loc>
+    <lastmod>2026-03-19T12:53:12.145Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/comments.html</loc>
+    <lastmod>2026-03-31T08:33:46.044Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/mie37/homework/coursework_1_deeplearning.html</loc>
     <lastmod>2026-03-17T09:17:56.838Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.econobits.org/mie37/corrections/optimization_correction.html</loc>
+    <lastmod>2026-03-19T14:06:11.623Z</lastmod>
   </url>
   <url>
     <loc>https://www.econobits.org/mie37/corrections/perturbation_correction.html</loc>
