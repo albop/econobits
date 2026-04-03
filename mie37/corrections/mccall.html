@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>McCall Model – econobits</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f67b63dbfc378573cfd6da3a14783f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo_full2.png" alt="" class="navbar-logo light-content">
+    <img src="../../images/logo_full2.png" alt="" class="navbar-logo dark-content">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#job-search-model" id="toc-job-search-model" class="nav-link active" data-scroll-target="#job-search-model">Job-Search Model</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">McCall Model</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Pablo Winant</p>
+<section id="job-search-model" class="level3">
+<h3 class="anchored" data-anchor-id="job-search-model">Job-Search Model</h3>
+<ul>
+<li>When unemployed in date, a job-seeker
+<ul>
+<li>consumes unemployment benefit <span class="math inline">\(c_t = \underline{c}\)</span></li>
+<li>receives in every date <span class="math inline">\(t\)</span> a job offer <span class="math inline">\(w_t\)</span>
+<ul>
+<li><span class="math inline">\(w_t\)</span> is i.i.d.,</li>
+<li>takes values <span class="math inline">\(w_1, w_2, w_3\)</span> with probabilities <span class="math inline">\(p_1, p_2, p_3\)</span></li>
+</ul></li>
+<li>if job-seeker accepts, becomes employed at rate <span class="math inline">\(w_t\)</span> in the next period</li>
+<li>else he stays unemployed</li>
+</ul></li>
+<li>When employed at rate <span class="math inline">\(w\)</span>
+<ul>
+<li>worker consumes salary <span class="math inline">\(c_t = w\)</span></li>
+<li>with small probability <span class="math inline">\(\lambda&gt;0\)</span> looses his job:
+<ul>
+<li>starts next period unemployed</li>
+</ul></li>
+<li>otherwise stays employed at same rate</li>
+</ul></li>
+<li>Objective: <span class="math inline">\(\max E_0 \left\{ \sum \beta^t \log(c_t) \right\}\)</span></li>
+</ul>
+<ol type="1">
+<li><strong>What are the states, the controls, the reward of this problem ? Write down the Bellman equation.</strong></li>
+</ol>
+<p>The state variables are the employment status (“employed”/“unemployed”) and the 3 wage rate / job offer. In total it yields 3x2=6 states.</p>
+<p>The only control is the decision to accept/reject when unemployed (2 choices in the 3 unemployed states).</p>
+<p>The reward is utility of consumption, that is <span class="math inline">\(U(\underline{c})\)</span> if unemployed, and <span class="math inline">\(U(w)\)</span> if employed.</p>
+<p>Bellman equation: as in the slides.</p>
+<ol type="1">
+<li><strong>Define a named tuple for the model.</strong></li>
+</ol>
+<div id="c2cc408d" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> (; β<span class="op">=</span><span class="fl">0.96</span>, λ<span class="op">=</span><span class="fl">0.05</span>, w<span class="op">=</span>[<span class="fl">0.9</span>, <span class="fl">1.0</span>, <span class="fl">1.1</span>], p<span class="op">=</span>[<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>]<span class="op">/</span><span class="fl">3</span>, cbar<span class="op">=</span><span class="fl">0.8</span>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>(β = 0.96, λ = 0.05, w = [0.9, 1.0, 1.1], p = [0.3333333333333333, 0.3333333333333333, 0.3333333333333333], cbar = 0.8)</code></pre>
+</div>
+</div>
+<ol type="1">
+<li><strong>Define a function <code>value_update(V_U::Vector{Float64}, V_E::Vector{Float64}, x::Vector{Bool}, p::Parameters)::Tuple{Vector, Vector}</code>, which takes in value functions tomorrow and a policy vector and return updated values for today.</strong></li>
+</ol>
+<div id="3d6da549" class="cell" data-execution_count="89">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">value_update</span>(V_U, V_E, x, model)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#extract parameters form model</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    (;β, λ, w, p, cbar) <span class="op">=</span> model</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># initialize return variables</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    n_V_E <span class="op">=</span> V_E<span class="op">*</span><span class="fl">0</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    n_V_U <span class="op">=</span> V_U<span class="op">*</span><span class="fl">0</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="fu">length</span>(V_U) <span class="co"># here 3</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># continuation value of being unemployed tomorrow</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># EVU = sum(V_U'*p)</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    EVU <span class="op">=</span> <span class="fu">sum</span>( (V_U[k]<span class="op">*</span>p[k] <span class="cf">for</span> k<span class="op">=</span><span class="fl">1</span><span class="op">:</span>n) )</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update employed values</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k<span class="op">=</span><span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        n_V_E[k] <span class="op">=</span> <span class="fu">log</span>(w[k]) <span class="op">+</span> (<span class="fl">1</span><span class="op">-</span>λ)<span class="op">*</span>β<span class="op">*</span>V_E[k] <span class="op">+</span> λ<span class="op">*</span>β<span class="op">*</span>EVU</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update uneployed values</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k<span class="op">=</span><span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        n_V_U[k] <span class="op">=</span> <span class="fu">log</span>(cbar)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> x[k] <span class="co"># if accept</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>            n_V_U[k] <span class="op">+=</span> β<span class="op">*</span>V_E[k]</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="co"># if reject</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            n_V_U[k] <span class="op">+=</span> β<span class="op">*</span>EVU</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n_V_U, n_V_E</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>value_update (generic function with 1 method)</code></pre>
+</div>
+</div>
+<div id="5fe05a5c" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>V_U_0 <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>V_E_0 <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>x_0 <span class="op">=</span> [<span class="cn">true</span>, <span class="cn">false</span>, <span class="cn">false</span>]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">value_update</span>(V_U_0, V_E_0, x_0, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>([-0.1271435513142097, -0.0951435513142097, -0.0951435513142097], [-0.007760515657826278, 0.0976, 0.28411017980432496])</code></pre>
+</div>
+</div>
+<ol type="1">
+<li><strong>Define a function <code>policy_eval(x::Vector{Bool}, p::Parameter)::Tuple{Vector, Vector}</code> which takes in a policy vector and returns the value(s) of following this policies forever. You can add relevant arguments to the function.</strong></li>
+</ol>
+<div id="a37ef2e2" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> [<span class="fl">3</span>,<span class="fl">2</span>,<span class="fl">3</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>: norm</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">norm</span>(v)  <span class="co">#euclidean distance</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>4.69041575982343</code></pre>
+</div>
+</div>
+<div id="f9a8cb84" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">distance</span>(u, v) <span class="op">=</span> <span class="fu">sqrt</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">norm</span>(u[<span class="fl">1</span>]<span class="op">-</span>v[<span class="fl">1</span>])<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fu">norm</span>(u[<span class="fl">2</span>]<span class="op">-</span>v[<span class="fl">2</span>])<span class="op">^</span><span class="fl">2</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">distance</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    (<span class="fu">ones</span>(<span class="fl">3</span>), <span class="fu">zeros</span>(<span class="fl">3</span>)),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    (<span class="fu">zeros</span>(<span class="fl">3</span>), <span class="fu">ones</span>(<span class="fl">3</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>0.0</code></pre>
+</div>
+</div>
+<div id="8799faa0" class="cell" data-execution_count="99">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">policy_eval</span>(x, model; T<span class="op">=</span><span class="fl">1000</span>, τ_η<span class="op">=</span><span class="fl">1e-8</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="fu">length</span>(x)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    V_U_0, V_E_0 <span class="op">=</span> <span class="fu">zeros</span>(n), <span class="fu">zeros</span>(n)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># local V_U_1, V_E_1</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>T</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        V_U_1, V_E_1 <span class="op">=</span> <span class="fu">value_update</span>(V_U_0, V_E_0, x, model)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># compute successive approximation errors</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        η <span class="op">=</span> <span class="fu">distance</span>(</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>            (V_U_1, V_E_1),</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>            (V_U_0, V_E_0)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> η<span class="op">&lt;</span>τ_η</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span> <span class="co"># get out of the for loop</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        V_U_0, V_E_0 <span class="op">=</span> V_U_1, V_E_1</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> V_U_0, V_E_0</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>policy_eval (generic function with 1 method)</code></pre>
+</div>
+</div>
+<div id="59610c8f" class="cell" data-execution_count="83">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">policy_eval</span>(x_0, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1:0.41178149802215236
+2:0.3454536656155482
+3:0.2884728398813436
+4:0.25279279833645685
+5:0.22908532182379376
+6:0.2122296137570257
+7:0.19941994584039033
+8:0.18909381645452292
+9:0.18035843205753282
+10:0.17268891571822756
+11:0.1657677619310827
+12:0.15939737425786862
+13:0.15345114701197146
+14:0.14784544537422492
+15:0.14252322686260735
+16:0.13744429544092157
+17:0.13257940232588034
+18:0.12790661000208317
+19:0.12340900493145222
+20:0.11907322450710894
+21:0.11488848291853279
+22:0.1108459082069814
+23:0.10693807765833939
+24:0.10315868287343095
+25:0.09950228210261303
+26:0.09596411313405545
+27:0.09253994950919033
+28:0.08922598864028099
+29:0.08601876401376557
+30:0.08291507595654818
+31:0.07991193693865264
+32:0.07700652839189819
+33:0.07419616672344348
+34:0.07147827670537131
+35:0.0688503707937719
+36:0.06631003321447991
+37:0.06385490787380715
+38:0.06148268932819292
+39:0.05919111618798304
+40:0.05697796644536251
+41:0.05484105431038297
+42:0.05277822821616802
+43:0.05078736971795263
+44:0.04886639306300609
+45:0.04701324525173109
+46:0.045225906445866444
+47:0.04350239060907419
+48:0.041840746289301324
+49:0.04023905747210233
+50:0.03869544445028115
+51:0.03720806466837472
+52:0.035775113511233775
+53:0.03439482501458145
+54:0.0330654724823596
+55:0.03178536900124957
+56:0.0305528678470891
+57:0.02936636278137262
+58:0.028224288238647827
+59:0.027125119407642274
+60:0.02606737221045127
+61:0.025049603185174664
+62:0.024070409278153744
+63:0.023128427552393905
+64:0.022222334819020844
+65:0.02135084719872034
+66:0.02051271962000764
+67:0.019706745261090255
+68:0.01893175494179294
+69:0.018186616471793763
+70:0.017470233961059366
+71:0.01678154709804244
+72:0.016119530400847983
+73:0.015483192446210157
+74:0.014871575080748886
+75:0.014283752618643135
+76:0.013718831029495013
+77:0.01317594711981781
+78:0.012654267711299
+79:0.012152988818635803
+80:0.011671334829511125
+81:0.01120855768895767
+82:0.0107639360901498
+83:0.010336774673407274
+84:0.009926403234984345
+85:0.00953217594701565
+86:0.009153470589815346
+87:0.00878968779754949
+88:0.008440250318139835
+89:0.008104602288143208
+90:0.007782208523182242
+91:0.007472553824427068
+92:0.00717514230148637
+93:0.006889496712008459
+94:0.006615157818167434
+95:0.0063516837601623015
+96:0.006098649446775719
+97:0.005855645962989596
+98:0.0056222799945722865
+99:0.005398173269542413
+100:0.005182962016351081
+101:0.004976296438577252
+102:0.004777840205931623
+103:0.004587269961305247
+104:0.004404274843586605
+105:0.004228556025970219
+106:0.004059826269420554
+107:0.00389780949099141
+108:0.003742240346649253
+109:0.0035928638282654436
+110:0.0034494348744184785
+111:0.003311717994674206
+112:0.0031794869069484283
+113:0.003052524187639501
+114:0.0029306209341304346
+115:0.0028135764393379527
+116:0.002701197877933934
+117:0.00259330000388904
+118:0.002489704859007141
+119:0.002390241492089712
+120:0.002294745688402432
+121:0.002203059709116231
+122:0.002115032040387901
+123:0.002030517151771961
+124:0.0019493752636460158
+125:0.0018714721233473453
+126:0.0017966787897289896
+127:0.0017248714258349268
+128:0.0016559310994201295
+129:0.0015897435910408877
+130:0.0015261992094465924
+131:0.0014651926140131614
+132:0.0014066226439655987
+133:0.0013503921541530126
+134:0.0012964078571221138
+135:0.0012445801712815882
+136:0.001194823074916446
+137:0.001147053965849594
+138:0.0011011935265285312
+139:0.0010571655943563262
+140:0.0010148970370467629
+141:0.0009743176328366324
+142:0.0009353599553640955
+143:0.0008979592630338084
+144:0.0008620533927055408
+145:0.0008275826575438836
+146:0.000794489748860003
+147:0.0007627196418119558
+148:0.0007322195047900563
+149:0.0007029386123760453
+150:0.0006748282617145464
+151:0.0006478416921792228
+152:0.0006219340081987483
+153:0.000597062105128465
+154:0.0005731845980440463
+155:0.0005502617533449077
+156:0.0005282554230579246
+157:0.0005071289817419002
+158:0.0004868472658830771
+159:0.00046737651568839447
+160:0.00044868431918501276
+161:0.0004307395585363017
+162:0.00041351235847887326
+163:0.00039697403681089274
+164:0.0003810970568397427
+165:0.0003658549817158318
+166:0.0003512224305855516
+167:0.0003371750364807952
+168:0.0003236894058787213
+169:0.0003107430798770996
+170:0.0002983144969053699
+171:0.0002863829569227795
+172:0.0002749285870349289
+173:0.0002639323084924182
+174:0.00025337580498189485
+175:0.00024324149219980083
+176:0.00023351248862578394
+177:0.00022417258745846826
+178:0.00021520622968570967
+179:0.0002065984782022644
+180:0.00019833499298194316
+181:0.0001904020072293711
+182:0.0001827863044796728
+183:0.00017547519661820611
+184:0.00016845650277189266
+185:0.0001617185290472613
+186:0.00015525004907114838
+187:0.0001490402853094433
+188:0.00014307889113818043
+189:0.00013735593361739078
+190:0.00013186187696345426
+191:0.00012658756667394654
+192:0.00012152421429632389
+193:0.00011666338278859453
+194:0.00011199697247891066
+195:0.00010751720758265474
+196:0.00010321662324950749
+197:9.90880531409964e-5
+198:9.512461749247467e-5
+199:9.131971166070894e-5
+200:8.766699512117876e-5
+201:8.416038091377317e-5
+202:8.079402550257374e-5
+203:7.756231904337847e-5
+204:7.445987604115397e-5
+205:7.148152638028318e-5
+206:6.862230671242486e-5
+207:6.587745218874998e-5
+208:6.324238852504253e-5
+209:6.071272437867955e-5
+210:5.8284244035450416e-5
+211:5.595290038627311e-5
+212:5.3714808185013745e-5
+213:5.15662375760335e-5
+214:4.9503607880267346e-5
+215:4.7523481629591385e-5
+216:4.5622558839461934e-5
+217:4.3797671511033507e-5
+218:4.2045778353282646e-5
+219:4.036395971625414e-5
+220:3.8749412724370276e-5
+221:3.7199446609667265e-5
+222:3.5711478225378464e-5
+223:3.428302774140554e-5
+224:3.291171451655581e-5
+225:3.1595253126968386e-5
+226:3.033144955965812e-5
+227:2.9118197558214408e-5
+228:2.7953475109958294e-5
+229:2.6835341080087506e-5
+230:2.5761931974498165e-5
+231:2.4731458833186873e-5
+232:2.3742204252918805e-5
+233:2.2792519524159198e-5
+234:2.1880821882721627e-5
+235:2.1005591869062346e-5
+236:2.01653708049202e-5
+237:1.9358758353535205e-5
+238:1.8584410190821905e-5
+239:1.7841035762931578e-5
+240:1.7127396137817757e-5
+241:1.644230194056176e-5
+242:1.5784611364299744e-5
+243:1.515322827909639e-5
+244:1.4547100397972942e-5
+245:1.3965217521392297e-5
+246:1.3406609859067938e-5
+247:1.2870346413006504e-5
+248:1.2355533420786835e-5
+249:1.1861312871766408e-5
+250:1.1386861076000357e-5
+251:1.0931387288728535e-5
+252:1.0494132394963067e-5
+253:1.0074367644023716e-5
+254:9.671393436423209e-6
+255:9.284538152224632e-6
+256:8.913157039136765e-6
+257:8.556631135464041e-6
+258:8.214366233894063e-6
+259:7.885791898858858e-6
+260:7.570360508915347e-6
+261:7.2675463491642615e-6
+262:6.976844733402013e-6
+263:6.697771160945954e-6
+264:6.42986051221222e-6
+265:6.172666272938759e-6
+266:5.925759785920432e-6
+267:5.688729545122682e-6
+268:5.461180499902593e-6
+269:5.242733404735924e-6
+270:5.03302418254153e-6
+271:4.831703319597092e-6
+272:4.638435281168196e-6
+273:4.4528979561905485e-6
+274:4.274782116954631e-6
+275:4.103790903900238e-6
+276:3.939639334161131e-6
+277:3.782053820760989e-6
+278:3.630771721678314e-6
+279:3.485540903188608e-6
+280:3.346119311954211e-6
+281:3.212274580291786e-6
+282:3.0837836351111143e-6
+283:2.960432323986603e-6
+284:2.842015062531391e-6
+285:2.72833448897808e-6
+286:2.6192011352123053e-6
+287:2.514433114349829e-6
+288:2.4138558109424456e-6
+289:2.3173015981067515e-6
+290:2.224609552114725e-6
+291:2.135625186201971e-6
+292:2.0502001936221906e-6
+293:1.968192199449316e-6
+294:1.889464524209384e-6
+295:1.8138859552175948e-6
+296:1.7413305268443406e-6
+297:1.6716773152397938e-6
+298:1.6048102310188886e-6
+299:1.5406178300308466e-6
+300:1.4789931236301238e-6
+301:1.4198334054002202e-6
+302:1.3630400755659227e-6
+303:1.308518478504385e-6
+304:1.2561777436102233e-6
+305:1.2059306383076307e-6
+306:1.1576934174818382e-6
+307:1.1113856840604439e-6
+308:1.0669302604726636e-6
+309:1.0242530528566339e-6
+310:9.832829341217753e-7
+311:9.439516193966125e-7
+312:9.061935565243836e-7
+313:8.699458164679998e-7
+314:8.351479858452634e-7
+315:8.017420683477225e-7
+316:7.696723874286131e-7
+317:7.388854932513226e-7
+318:7.093300747142148e-7
+319:6.809568730618172e-7
+320:6.537185990313339e-7
+321:6.275698563899346e-7
+322:6.024670629338643e-7
+323:5.783683817762496e-7
+324:5.552336466067268e-7
+325:5.330243016815848e-7
+326:5.117033301654693e-7
+327:4.912351978381489e-7
+328:4.715857904558281e-7
+329:4.527223590442754e-7
+330:4.346134653732523e-7
+331:4.172289271589922e-7
+332:4.005397710625232e-7
+333:3.8451818006773137e-7
+334:3.6913745323305837e-7
+335:3.5437195510917494e-7
+336:3.401970768504184e-7
+337:3.2658919415350286e-7
+338:3.135256265106458e-7
+339:3.0098460194697834e-7
+340:2.8894521795068354e-7
+341:2.773874095644328e-7
+342:2.662919134882502e-7
+343:2.556402369867929e-7
+344:2.4541462752182505e-7
+345:2.3559804270196499e-7
+346:2.26174120368406e-7
+347:2.1712715624985663e-7
+348:2.0844207042228825e-7
+349:2.0010438745673182e-7
+350:1.9210021167201064e-7
+351:1.8441620374721323e-7
+352:1.7703955506793257e-7
+353:1.6995797326769833e-7
+354:1.6315965439863192e-7
+355:1.5663326829158015e-7
+356:1.5036793720819755e-7
+357:1.4435322011328772e-7
+358:1.385790911455874e-7
+359:1.3303592769737946e-7
+360:1.277144906982635e-7
+361:1.2260591088178234e-7
+362:1.1770167464412657e-7
+363:1.1299360772725501e-7
+364:1.084738632985077e-7
+365:1.0413490876112844e-7
+366:9.99695123834885e-8
+367:9.597073174129704e-8
+368:9.213190297565543e-8
+369:8.844662647046307e-8
+370:8.490876150410687e-8
+371:8.151241156426974e-8
+372:7.825191519234829e-8
+373:7.512183782501297e-8
+374:7.211696476888508e-8
+375:6.923228628872185e-8
+376:6.646299466131328e-8
+377:6.380447506522434e-8
+378:6.125229601729071e-8
+379:5.8802203978983536e-8
+380:5.645011560589178e-8
+381:5.419211171954166e-8
+382:5.202442665610038e-8
+383:4.9943449626116094e-8
+384:4.794571147971564e-8
+385:4.6027882712319294e-8
+386:4.4186768116330264e-8
+387:4.241929758022766e-8
+388:4.072252540869653e-8
+389:3.9093624385096725e-8
+390:3.752987924471107e-8
+391:3.60286838646162e-8
+392:3.458753677654057e-8
+393:3.320403531998284e-8
+394:3.187587428247175e-8
+395:3.0600838738269124e-8
+396:2.9376805408109728e-8
+397:2.820173327699571e-8
+398:2.7073664546014465e-8
+399:2.5990717697664838e-8
+400:2.495108831170126e-8
+401:2.3953044940589017e-8
+402:2.2994922990674585e-8
+403:2.2075126535172173e-8
+404:2.119212137948998e-8
+405:2.0344436239671486e-8
+406:1.9530659207071546e-8
+407:1.874943249069525e-8
+408:1.7999455317976503e-8
+409:1.7279477362701538e-8
+410:1.658829820111298e-8
+411:1.592476636009181e-8
+412:1.5287775509885593e-8
+413:1.4676264509433022e-8
+414:1.4089213236494841e-8
+415:1.3525645624406264e-8
+416:1.298461928272881e-8
+417:1.2465234562183284e-8
+418:1.1966625353742664e-8
+419:1.1487960312398169e-8
+420:1.1028441814691862e-8
+421:1.0587304191054828e-8
+422:1.0163812275417778e-8</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>([-3.084359692900152, -3.3614962473857597, -3.3614962473857597], [-2.980433484968049, -1.7831548979472962, -0.70008467289815])</code></pre>
+</div>
+</div>
+<ol type="1">
+<li><strong>Define a function <code>bellman_step(V_E::Vector, V_U::Vector, p::Parameters)::Tuple{Vector, Vector, Vector}</code> which returns updated values, together with improved policy rules.</strong></li>
+</ol>
+<div id="1092c665" class="cell" data-execution_count="49">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">zeros</span>(<span class="dt">Bool</span>, <span class="fl">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>3-element Vector{Bool}:
+ 0
+ 0
+ 0</code></pre>
+</div>
+</div>
+<div id="9d6aabd9" class="cell" data-execution_count="92">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">bellman_step</span>(V_U, V_E, model)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#extract parameters form model</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    (;β, λ, w, p, cbar) <span class="op">=</span> model</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="fu">length</span>(V_U) <span class="co"># here 3</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># initialize return variables</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    n_V_E <span class="op">=</span> V_E<span class="op">*</span><span class="fl">0</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    n_V_U <span class="op">=</span> V_U<span class="op">*</span><span class="fl">0</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Bool</span>, n)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># continuation value of being unemployed tomorrow</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># EVU = sum(V_U'*p)</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    EVU <span class="op">=</span> <span class="fu">sum</span>( (V_U[k]<span class="op">*</span>p[k] <span class="cf">for</span> k<span class="op">=</span><span class="fl">1</span><span class="op">:</span>n) )</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update employed values</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k<span class="op">=</span><span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        n_V_E[k] <span class="op">=</span> <span class="fu">log</span>(w[k]) <span class="op">+</span> (<span class="fl">1</span><span class="op">-</span>λ)<span class="op">*</span>β<span class="op">*</span>V_E[k] <span class="op">+</span> λ<span class="op">*</span>β<span class="op">*</span>EVU</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update unemployed values</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k<span class="op">=</span><span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">#what if I accept:</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>        V_accept <span class="op">=</span> <span class="fu">log</span>(cbar) <span class="op">+</span> β<span class="op">*</span>V_E[k]</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>        <span class="co">#what if I reject:</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>        V_reject <span class="op">=</span> <span class="fu">log</span>(cbar) <span class="op">+</span> β<span class="op">*</span>EVU</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> V_accept<span class="op">&gt;</span>V_reject</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>            n_V_U[k] <span class="op">=</span> V_accept</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>            x[k] <span class="op">=</span> <span class="cn">true</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="co"># if reject</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>            n_V_U[k] <span class="op">=</span> V_reject</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>            x[k] <span class="op">=</span> <span class="cn">false</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n_V_U, n_V_E, x</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>bellman_step (generic function with 1 method)</code></pre>
+</div>
+</div>
+<div id="0c748cae" class="cell" data-execution_count="53">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bellman_step</span>(V_U_0, V_E_0, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>([-0.0951435513142097, -0.0951435513142097, -0.031143551314209705], [-0.007760515657826278, 0.0976, 0.28411017980432496], Bool[0, 0, 1])</code></pre>
+</div>
+</div>
+<ol type="1">
+<li><strong>Implement Value Function Iteration</strong></li>
+</ol>
+<div id="814a7ae5" class="cell" data-execution_count="93">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">vfi</span>(model; T<span class="op">=</span><span class="fl">1000</span>, τ_η<span class="op">=</span><span class="fl">1e-8</span>, verbose<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="fu">length</span>(model.w)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    V_U_0, V_E_0 <span class="op">=</span> <span class="fu">zeros</span>(n), <span class="fu">zeros</span>(n)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> x_1</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    η_0 <span class="op">=</span> <span class="cn">NaN</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>T</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>        V_U_1, V_E_1, x_1 <span class="op">=</span> <span class="fu">bellman_step</span>(V_U_0, V_E_0, model)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># compute successive approximation errors</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>        η <span class="op">=</span> <span class="fu">distance</span>(</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>            (V_U_1, V_E_1),</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>            (V_U_0, V_E_0)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>        λ <span class="op">=</span> η <span class="op">/</span> η_0</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>        verbose ? (<span class="pp">@show</span> (i,η,λ)) <span class="op">:</span> <span class="cn">nothing</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> η<span class="op">&lt;</span>τ_η</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span> <span class="co"># get out of the for loop</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>        η_0 <span class="op">=</span> η</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>        V_U_0, V_E_0 <span class="op">=</span> V_U_1, V_E_1</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> V_U_0, V_E_0, x_1</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>vfi (generic function with 1 method)</code></pre>
+</div>
+</div>
+<div id="0b968381" class="cell" data-execution_count="77">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vfi</span>(model; verbose<span class="op">=</span><span class="cn">true</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(i, η, λ) = (1, 0.41178149802215236, NaN)
+(i, η, λ) = (2, 0.18955616020190472, 0.46033190202175445)
+(i, η, λ) = (3, 0.1743435805221963, 0.9197463186450664)
+(i, η, λ) = (4, 0.1313743587844406, 0.7535371155676985)
+(i, η, λ) = (5, 0.11739275606321094, 0.8935743409094715)
+(i, η, λ) = (6, 0.1083925140301558, 0.9233322196796462)
+(i, η, λ) = (7, 0.09974323800703834, 0.9202041201783441)
+(i, η, λ) = (8, 0.09162892370385649, 0.9186479758897613)
+(i, η, λ) = (9, 0.08418839942230115, 0.9187972096496188)
+(i, η, λ) = (10, 0.07742317191816776, 0.9196418087223867)
+(i, η, λ) = (11, 0.07128976550490142, 0.9207807396505399)
+(i, η, λ) = (12, 0.06573496500400663, 0.922081375053578)
+(i, η, λ) = (13, 0.06070622935222232, 0.9234998352630476)
+(i, η, λ) = (14, 0.056627288512807315, 0.9328085291585371)
+(i, η, λ) = (15, 0.05560223195275818, 0.9818981874822189)
+(i, η, λ) = (16, 0.05466414931105856, 0.9831286873070734)
+(i, η, λ) = (17, 0.053251412788989795, 0.9741560686505923)
+(i, η, λ) = (18, 0.051501168919065976, 0.9671324425352017)
+(i, η, λ) = (19, 0.04958281543652998, 0.9627512632664574)
+(i, η, λ) = (20, 0.04761984238386463, 0.9604102139948444)
+(i, η, λ) = (21, 0.04568784293121487, 0.959428688632023)
+(i, η, λ) = (22, 0.043827624134407425, 0.9592841623184512)
+(i, η, λ) = (23, 0.04205775954829764, 0.9596176014314147)
+(i, η, λ) = (24, 0.040383651143671845, 0.9601950169812706)
+(i, η, λ) = (25, 0.03880342246786217, 0.9608695937326782)
+(i, η, λ) = (26, 0.03731153882495751, 0.961552781996478)
+(i, η, λ) = (27, 0.03590093817743001, 0.9621939836321102)
+(i, η, λ) = (28, 0.03456423137596557, 0.9627668002752978)
+(i, η, λ) = (29, 0.03329433871573428, 0.9632599190064929)
+(i, η, λ) = (30, 0.03208479405628866, 0.9636711613414923)
+(i, η, λ) = (31, 0.030929858520319927, 0.9640036481473888)
+(i, η, λ) = (32, 0.02982452936067015, 0.9642633619250598)
+(i, η, λ) = (33, 0.02876449469534633, 0.9644576230355644)
+(i, η, λ) = (34, 0.02774606355972979, 0.9645941586527746)
+(i, η, λ) = (35, 0.02676608793433054, 0.9646805528542949)
+(i, η, λ) = (36, 0.02582188579427865, 0.9647239393979258)
+(i, η, λ) = (37, 0.02491116975563497, 0.9647308470845508)
+(i, η, λ) = (38, 0.024031983313445263, 0.9647071393750655)
+(i, η, λ) = (39, 0.023182645216393225, 0.9646580107028929)
+(i, η, λ) = (40, 0.022361701742458384, 0.9645880154627772)
+(i, η, λ) = (41, 0.02156788625172622, 0.9645011144556616)
+(i, η, λ) = (42, 0.020800085230089208, 0.9644007292751945)
+(i, η, λ) = (43, 0.020057310001705082, 0.9642897988076686)
+(i, η, λ) = (44, 0.019338673319985816, 0.9641708343911435)
+(i, η, λ) = (45, 0.018643370112092952, 0.9640459716968126)
+(i, η, λ) = (46, 0.017970661730564205, 0.96391701835644)
+(i, η, λ) = (47, 0.01731986314668123, 0.9637854969594076)
+(i, η, λ) = (48, 0.01669033259752725, 0.9636526834061844)
+(i, η, λ) = (49, 0.01608146326950483, 0.9635196408181448)
+(i, η, λ) = (50, 0.015492676664226325, 0.9633872493185981)
+(i, η, λ) = (51, 0.014923417348004548, 0.9632562320534168)
+(i, η, λ) = (52, 0.014373148834028807, 0.9631271778344174)
+(i, η, λ) = (53, 0.013841350387361772, 0.9630005607812264)
+(i, η, λ) = (54, 0.013327514577853321, 0.9628767573157008)
+(i, η, λ) = (55, 0.012831145435688624, 0.962756060834514)
+(i, η, λ) = (56, 0.012351757089296301, 0.9626386943554587)
+(i, η, λ) = (57, 0.01188887278635723, 0.9625248214004958)
+(i, η, λ) = (58, 0.011442024216295683, 0.962414555350082)
+(i, η, λ) = (59, 0.011010751067362575, 0.9623079674731949)
+(i, η, λ) = (60, 0.010594600763732621, 0.962205093813856)
+(i, η, λ) = (61, 0.010193128338267746, 0.9621059410903718)
+(i, η, λ) = (62, 0.009805896405102073, 0.9620104917435504)
+(i, η, λ) = (63, 0.009432475203250596, 0.9619187082521916)
+(i, η, λ) = (64, 0.009072442688260303, 0.9618305368175026)
+(i, η, λ) = (65, 0.008725384653724967, 0.9617459105049595)
+(i, η, λ) = (66, 0.008390894868426016, 0.9616647519194292)
+(i, η, λ) = (67, 0.008068575218096447, 0.9615869754795259)
+(i, η, λ) = (68, 0.007758035843433401, 0.9615124893467488)
+(i, η, λ) = (69, 0.007458895268139593, 0.9614411970593035)
+(i, η, λ) = (70, 0.007170780512498262, 0.961372998911514)
+(i, η, λ) = (71, 0.006893327189379661, 0.9613077931147083)
+(i, η, λ) = (72, 0.006626179580699626, 0.9612454767718525)
+(i, η, λ) = (73, 0.00636899069321818, 0.9611859466908244)
+(i, η, λ) = (74, 0.006121422293267019, 0.9611291000605832)
+(i, η, λ) = (75, 0.00588314492052653, 0.9610748350097377)
+(i, η, λ) = (76, 0.005653837881374633, 0.9610230510637542)
+(i, η, λ) = (77, 0.005433189222638903, 0.9609736495164443)
+(i, η, λ) = (78, 0.005220895686797932, 0.9609265337278535)
+(i, η, λ) = (79, 0.005016662649826384, 0.9608816093591008)
+(i, η, λ) = (80, 0.0048202040429767825, 0.9608387845540299)
+(i, η, λ) = (81, 0.004631242259841755, 0.9607979700754884)
+(i, η, λ) = (82, 0.00444950805005763, 0.9607590794029561)
+(i, η, λ) = (83, 0.004274740401003965, 0.9607220287979024)
+(i, η, λ) = (84, 0.004106686408821085, 0.9606867373411935)
+(i, η, λ) = (85, 0.0039451011400302854, 0.960653126948355)
+(i, η, λ) = (86, 0.003789747484978154, 0.960621122364701)
+(i, η, λ) = (87, 0.003640396004271114, 0.9605906511452171)
+(i, η, λ) = (88, 0.0034968247692918173, 0.9605616436204053)
+(i, η, λ) = (89, 0.0033588191978273937, 0.9605340328527893)
+(i, η, λ) = (90, 0.0032261718857547555, 0.9605077545827893)
+(i, η, λ) = (91, 0.003098682435670616, 0.9604827471694635)
+(i, η, λ) = (92, 0.002976157283271076, 0.9604589515243361)
+(i, η, λ) = (93, 0.002858409522226134, 0.9604363110421617)
+(i, η, λ) = (94, 0.0027452587282215894, 0.9604147715277611)
+(i, η, λ) = (95, 0.00263653078278214, 0.9603942811212244)
+(i, η, λ) = (96, 0.0025320576974269494, 0.9603747902215093)
+(i, η, λ) = (97, 0.0024316774386545065, 0.9603562514098916)
+(i, η, λ) = (98, 0.0023352337541952127, 0.9603386193718777)
+(i, η, λ) = (99, 0.0022425760009290754, 0.9603218508212812)
+(i, η, λ) = (100, 0.0021535589748101548, 0.9603059044232874)
+(i, η, λ) = (101, 0.0020680427431057037, 0.9602907407204905)
+(i, η, λ) = (102, 0.0019858924792078903, 0.9602763220578104)
+(i, η, λ) = (103, 0.0019069783002503605, 0.9602626125111233)
+(i, η, λ) = (104, 0.0018311751077205057, 0.9602495778164319)
+(i, η, λ) = (105, 0.0017583624312307094, 0.9602371853009539)
+(i, η, λ) = (106, 0.0016884242755839107, 0.9602254038162953)
+(i, η, λ) = (107, 0.0016212489712436858, 0.9602142036740181)
+(i, η, λ) = (108, 0.001556729028293041, 0.9602035565819663)
+(i, η, λ) = (109, 0.0014947609939501693, 0.960193435584085)
+(i, η, λ) = (110, 0.0014352453136867228, 0.960183815001644)
+(i, η, λ) = (111, 0.0013780861959793232, 0.960174670377028)
+(i, η, λ) = (112, 0.0013231914807063196, 0.9601659784176322)
+(i, η, λ) = (113, 0.0012704725111967888, 0.9601577169455554)
+(i, η, λ) = (114, 0.001219844009915584, 0.9601498648455506)
+(i, η, λ) = (115, 0.0011712239577664613, 0.9601424020170518)
+(i, η, λ) = (116, 0.0011245334769822203, 0.9601353093277905)
+(i, η, λ) = (117, 0.001079696717562594, 0.9601285685687637)
+(i, η, λ) = (118, 0.0010366407472147013, 0.960122162411412)
+(i, η, λ) = (119, 0.0009952954447451346, 0.9601160743674649)
+(i, η, λ) = (120, 0.0009555933968440886, 0.9601102887482696)
+(i, η, λ) = (121, 0.0009174697982026568, 0.9601047906281713)
+(i, η, λ) = (122, 0.0008808623548970232, 0.9600995658087619)
+(i, η, λ) = (123, 0.0008457111909699518, 0.9600946007833645)
+(i, η, λ) = (124, 0.0008119587581404997, 0.9600898827048259)
+(i, η, λ) = (125, 0.0007795497485693475, 0.9600853993552907)
+(i, η, λ) = (126, 0.0007484310106021147, 0.9600811391135168)
+(i, η, λ) = (127, 0.000718551467419653, 0.9600770909286301)
+(i, η, λ) = (128, 0.0006898620385165033, 0.9600732442921944)
+(i, η, λ) = (129, 0.0006623155639311055, 0.9600695892114394)
+(i, η, λ) = (130, 0.0006358667311519889, 0.9600661161846593)
+(i, η, λ) = (131, 0.0006104720046241871, 0.9600628161788012)
+(i, η, λ) = (132, 0.0005860895577769024, 0.9600596806035441)
+(i, η, λ) = (133, 0.0005626792075027018, 0.9600567012949379)
+(i, η, λ) = (134, 0.0005402023510063718, 0.9600538704885019)
+(i, η, λ) = (135, 0.000518621904957422, 0.9600511808052178)
+(i, η, λ) = (136, 0.0004979022468686617, 0.9600486252302411)
+(i, η, λ) = (137, 0.0004780091586310582, 0.9600461970944851)
+(i, η, λ) = (138, 0.00045890977213612676, 0.9600438900592846)
+(i, η, λ) = (139, 0.00044057251691642234, 0.960041698100373)
+(i, η, λ) = (140, 0.00042296706973615105, 0.9600396154905616)
+(i, η, λ) = (141, 0.000406064306067659, 0.9600376367856814)
+(i, η, λ) = (142, 0.0003898362533909906, 0.9600357568144282)
+(i, η, λ) = (143, 0.00037425604624992284, 0.9600339706593645)
+(i, η, λ) = (144, 0.00035929788300726845, 0.9600322736465143)
+(i, η, λ) = (145, 0.0003449369842399222, 0.9600306613355255)
+(i, η, λ) = (146, 0.00033114955271444874, 0.9600291295064969)
+(i, η, λ) = (147, 0.0003179127348875908, 0.9600276741479639)
+(i, η, λ) = (148, 0.00030520458387814565, 0.9600262914477504)
+(i, η, λ) = (149, 0.00029300402385729404, 0.9600249777843352)
+(i, η, λ) = (150, 0.0002812908158051982, 0.9600237297157369)
+(i, η, λ) = (151, 0.0002700455245844879, 0.960022543969235)
+(i, η, λ) = (152, 0.00025924948728462847, 0.9600214174388892)
+(i, η, λ) = (153, 0.00024888478278648754, 0.9600203471694368)
+(i, η, λ) = (154, 0.00023893420250617884, 0.9600193303547808)
+(i, η, λ) = (155, 0.00022938122227200868, 0.9600183643280492)
+(i, η, λ) = (156, 0.00022020997529281024, 0.9600174465531323)
+(i, η, λ) = (157, 0.00021140522617903566, 0.9600165746257997)
+(i, η, λ) = (158, 0.0002029523459724127, 0.9600157462547101)
+(i, η, λ) = (159, 0.00019483728815212256, 0.9600149592683535)
+(i, η, λ) = (160, 0.00018704656557499448, 0.9600142115966769)
+(i, η, λ) = (161, 0.00017956722832056381, 0.9600135012827493)
+(i, η, λ) = (162, 0.00017238684239913129, 0.9600128264573194)
+(i, η, λ) = (163, 0.00016549346929700925, 0.9600121853490323)
+(i, η, λ) = (164, 0.00015887564632349223, 0.9600115762777316)
+(i, η, λ) = (165, 0.00015252236772750992, 0.9600109976387056)
+(i, η, λ) = (166, 0.0001464230665593146, 0.9600104479161242)
+(i, η, λ) = (167, 0.0001405675972430139, 0.9600099256633947)
+(i, η, λ) = (168, 0.00013494621883652824, 0.9600094295076594)
+(i, η, λ) = (169, 0.0001295495789516525, 0.9600089581508532)
+(i, η, λ) = (170, 0.00012436869830527677, 0.960008510345609)
+(i, η, λ) = (171, 0.00011939495588450916, 0.9600080849237562)
+(i, η, λ) = (172, 0.00011462007469369728, 0.96000768076475)
+(i, η, λ) = (173, 0.00011003610806620879, 0.960007296804348)
+(i, η, λ) = (174, 0.00010563542651744325, 0.9600069320325502)
+(i, η, λ) = (175, 0.00010141070511826642, 0.9600065854945053)
+(i, η, λ) = (176, 9.735491136681343e-5, 0.9600062562751824)
+(i, η, λ) = (177, 9.346129354229498e-5, 0.9600059435127203)
+(i, η, λ) = (178, 8.972336951895766e-5, 0.9600056463840214)
+(i, η, λ) = (179, 8.613491602396938e-5, 0.960005364107173)
+(i, η, λ) = (180, 8.268995832123417e-5, 0.96000509593837)
+(i, η, λ) = (181, 7.938276030495405e-5, 0.9600048411751242)
+(i, η, λ) = (182, 7.620781498582527e-5, 0.9600045991480767)
+(i, η, λ) = (183, 7.315983535509279e-5, 0.9600043692198837)
+(i, η, λ) = (184, 7.023374561139095e-5, 0.9600041507816467)
+(i, η, λ) = (185, 6.742467273715714e-5, 0.9600039432643015)
+(i, η, λ) = (186, 6.472793840882186e-5, 0.9600037461234997)
+(i, η, λ) = (187, 6.21390512285598e-5, 0.9600035588355891)
+(i, η, λ) = (188, 5.965369926595247e-5, 0.9600033809099254)
+(i, η, λ) = (189, 5.7267742895873825e-5, 0.9600032118806011)
+(i, η, λ) = (190, 5.497720792085954e-5, 0.9600030512957527)
+(i, η, λ) = (191, 5.2778278968916844e-5, 0.9600028987447292)
+(i, η, λ) = (192, 5.066729315202175e-5, 0.9600027538196474)
+(i, η, λ) = (193, 4.864073397870831e-5, 0.9600026161406933)
+(i, η, λ) = (194, 4.669522550844422e-5, 0.9600024853425175)
+(i, η, λ) = (195, 4.482752673920334e-5, 0.9600023610785832)
+(i, η, λ) = (196, 4.303452621930599e-5, 0.9600022430340932)
+(i, η, λ) = (197, 4.131323687251304e-5, 0.9600021308932001)
+(i, η, λ) = (198, 3.9660791030005356e-5, 0.9600020243485906)
+(i, η, λ) = (199, 3.807443566206473e-5, 0.9600019231401494)
+(i, η, λ) = (200, 3.655152779701429e-5, 0.9600018269852445)
+(i, η, λ) = (201, 3.508953012544695e-5, 0.9600017356405341)
+(i, η, λ) = (202, 3.368600677827437e-5, 0.9600016488634956)
+(i, η, λ) = (203, 3.233861927370159e-5, 0.9600015664236649)
+(i, η, λ) = (204, 3.104512262607902e-5, 0.9600014881069934)
+(i, η, λ) = (205, 2.980336160971991e-5, 0.9600014137062551)
+(i, η, λ) = (206, 2.8611267171813574e-5, 0.9600013430190522)
+(i, η, λ) = (207, 2.746685298915411e-5, 0.9600012758684493)
+(i, η, λ) = (208, 2.636821216174979e-5, 0.9600012120850487)
+(i, η, λ) = (209, 2.5313514037806288e-5, 0.9600011514821826)
+(i, η, λ) = (210, 2.4301001166910782e-5, 0.9600010939064685)
+(i, η, λ) = (211, 2.3328986374142596e-5, 0.9600010392126674)
+(i, η, λ) = (212, 2.239584995071348e-5, 0.9600009872497767)
+(i, η, λ) = (213, 2.150003695760258e-5, 0.960000937893301)
+(i, η, λ) = (214, 2.064005463586303e-5, 0.9600008910014708)
+(i, η, λ) = (215, 1.981446992108469e-5, 0.9600008464442799)
+(i, η, λ) = (216, 1.902190705766196e-5, 0.960000804130553)
+(i, η, λ) = (217, 1.8261045306679652e-5, 0.9600007639257268)
+(i, η, λ) = (218, 1.7530616746895857e-5, 0.960000725724249)
+(i, η, λ) = (219, 1.682940416347341e-5, 0.96000068944827)
+(i, η, λ) = (220, 1.6156239019542168e-5, 0.9600006549612563)
+(i, η, λ) = (221, 1.5509999511612013e-5, 0.9600006222272102)
+(i, η, λ) = (222, 1.4889608699363645e-5, 0.9600005911164669)
+(i, η, λ) = (223, 1.4294032712536656e-5, 0.960000561542464)
+(i, η, λ) = (224, 1.3722279029725203e-5, 0.9600005334876565)
+(i, η, λ) = (225, 1.3173394822962467e-5, 0.960000506798197)
+(i, η, λ) = (226, 1.2646465372649005e-5, 0.9600004814708071)
+(i, η, λ) = (227, 1.2140612542309681e-5, 0.960000457405802)
+(i, η, λ) = (228, 1.165499331587597e-5, 0.960000434513387)
+(i, η, λ) = (229, 1.118879839436628e-5, 0.9600004127952044)
+(i, η, λ) = (230, 1.0741250846434596e-5, 0.9600003921639136)
+(i, η, λ) = (231, 1.0311604814147302e-5, 0.9600003725422809)
+(i, η, λ) = (232, 9.89914427108729e-6, 0.9600003539222017)
+(i, η, λ) = (233, 9.503181828570221e-6, 0.9600003362236506)
+(i, η, λ) = (234, 9.123057590924746e-6, 0.9600003194190523)
+(i, η, λ) = (235, 8.758138055598827e-6, 0.9600003034411482)
+(i, η, λ) = (236, 8.407815058114806e-6, 0.9600002882735937)
+(i, η, λ) = (237, 8.071504758315265e-6, 0.96000027385534)
+(i, η, λ) = (238, 7.748646667876986e-6, 0.9600002601614438)
+(i, η, λ) = (239, 7.438702716260229e-6, 0.9600002471526197)
+(i, η, λ) = (240, 7.141156354209506e-6, 0.9600002347989632)
+(i, η, λ) = (241, 6.855511692970183e-6, 0.9600002230631817)
+(i, η, λ) = (242, 6.581292678019827e-6, 0.9600002119124751)
+(i, η, λ) = (243, 6.318042295773239e-6, 0.960000201309115)
+(i, η, λ) = (244, 6.0653218122867114e-6, 0.9600001912529778)
+(i, η, λ) = (245, 5.8227100417632416e-6, 0.9600001816833521)
+(i, η, λ) = (246, 5.589802645130675e-6, 0.9600001726065622)
+(i, η, λ) = (247, 5.366211455882625e-6, 0.9600001639695058)
+(i, η, λ) = (248, 5.151563833522127e-6, 0.9600001557662818)
+(i, η, λ) = (249, 4.945502042409746e-6, 0.9600001479606056)
+(i, η, λ) = (250, 4.747682656016189e-6, 0.9600001405929726)
+(i, η, λ) = (251, 4.5577759838825495e-6, 0.9600001335613716)
+(i, η, λ) = (252, 4.3754655228519245e-6, 0.9600001268874729)
+(i, η, λ) = (253, 4.2004474293316715e-6, 0.9600001205343343)
+(i, η, λ) = (254, 4.032430013130212e-6, 0.9600001145048986)
+(i, η, λ) = (255, 3.871133251259338e-6, 0.9600001087816362)
+(i, η, λ) = (256, 3.7162883213847806e-6, 0.9600001033743325)
+(i, η, λ) = (257, 3.5676371533386352e-6, 0.9600000981649469)
+(i, η, λ) = (258, 3.42493199989479e-6, 0.9600000932521122)
+(i, η, λ) = (259, 3.287935023339987e-6, 0.9600000885976682)
+(i, η, λ) = (260, 3.156417899245597e-6, 0.9600000841985037)
+(i, η, λ) = (261, 3.0301614356044603e-6, 0.9600000799414701)
+(i, η, λ) = (262, 2.908955208284603e-6, 0.9600000759379742)
+(i, η, λ) = (263, 2.792597209876392e-6, 0.9600000721644572)
+(i, η, λ) = (264, 2.68089351288495e-6, 0.9600000685396423)
+(i, η, λ) = (265, 2.573657947154509e-6, 0.9600000651965309)
+(i, η, λ) = (266, 2.470711788555949e-6, 0.9600000618915271)
+(i, η, λ) = (267, 2.371883462223554e-6, 0.9600000587724734)
+(i, η, λ) = (268, 2.2770082562164375e-6, 0.9600000558551158)
+(i, η, λ) = (269, 2.185928046873734e-6, 0.9600000530986015)
+(i, η, λ) = (270, 2.0984910350703724e-6, 0.9600000503546253)
+(i, η, λ) = (271, 2.0145514941892735e-6, 0.960000047901904)
+(i, η, λ) = (272, 1.933969526025369e-6, 0.9600000454709977)
+(i, η, λ) = (273, 1.8566108285420132e-6, 0.9600000432052616)
+(i, η, λ) = (274, 1.7823464713552551e-6, 0.9600000409105243)
+(i, η, λ) = (275, 1.7110526821640177e-6, 0.9600000390849781)
+(i, η, λ) = (276, 1.6426106381433241e-6, 0.9600000369748213)
+(i, η, λ) = (277, 1.5769062704590175e-6, 0.9600000352131083)
+(i, η, λ) = (278, 1.5138300724311159e-6, 0.9600000334772333)
+(i, η, λ) = (279, 1.453276917691254e-6, 0.9600000318116172)
+(i, η, λ) = (280, 1.395145884889543e-6, 0.9600000302116813)
+(i, η, λ) = (281, 1.3393400894040865e-6, 0.9600000286064172)
+(i, η, λ) = (282, 1.2857665223930956e-6, 0.9600000273008872)
+(i, η, λ) = (283, 1.2343358946514161e-6, 0.9600000257854313)
+(i, η, λ) = (284, 1.184962489260044e-6, 0.960000024624322)
+(i, η, λ) = (285, 1.1375640172270645e-6, 0.9600000232390666)
+(i, η, λ) = (286, 1.0920614818309309e-6, 0.9600000222343082)
+(i, η, λ) = (287, 1.048379045615234e-6, 0.9600000211137749)
+(i, η, λ) = (288, 1.0064439048847035e-6, 0.9600000201206605)
+(i, η, λ) = (289, 9.661861678045221e-7, 0.9600000189928188)
+(i, η, λ) = (290, 9.275387385051558e-7, 0.9600000180222147)
+(i, η, λ) = (291, 8.904372047904965e-7, 0.9600000170618718)
+(i, η, λ) = (292, 8.548197312169763e-7, 0.9600000164167665)
+(i, η, λ) = (293, 8.206269552320973e-7, 0.9600000155164878)
+(i, η, λ) = (294, 7.878018888652332e-7, 0.9600000144309419)
+(i, η, λ) = (295, 7.562898242936894e-7, 0.9600000139414054)
+(i, η, λ) = (296, 7.260382414030474e-7, 0.9600000133296857)
+(i, η, λ) = (297, 6.969967208997828e-7, 0.9600000126065774)
+(i, η, λ) = (298, 6.691168605286211e-7, 0.9600000121447195)
+(i, η, λ) = (299, 6.423521936694392e-7, 0.9600000113014084)
+(i, η, λ) = (300, 6.16658112806568e-7, 0.9600000107167165)
+(i, η, λ) = (301, 5.919917946524463e-7, 0.960000010310642)
+(i, η, λ) = (302, 5.68312128715947e-7, 0.9600000098812156)
+(i, η, λ) = (303, 5.455796487714848e-7, 0.960000009157249)
+(i, η, λ) = (304, 5.237564677048094e-7, 0.960000008952284)
+(i, η, λ) = (305, 5.028062134012661e-7, 0.9600000084097274)
+(i, η, λ) = (306, 4.82693968917239e-7, 0.9600000080588176)
+(i, η, λ) = (307, 4.633862138073707e-7, 0.9600000075551414)
+(i, η, λ) = (308, 4.4485076860184793e-7, 0.9600000072224247)
+(i, η, λ) = (309, 4.270567408473879e-7, 0.9600000067204871)
+(i, η, λ) = (310, 4.0997447391302866e-7, 0.960000006321259)
+(i, η, λ) = (311, 3.935754975182568e-7, 0.9600000062485581)
+(i, η, λ) = (312, 3.778324801421097e-7, 0.9600000064144826)
+(i, η, λ) = (313, 3.627191827920166e-7, 0.960000004911148)
+(i, η, λ) = (314, 3.482104174410805e-7, 0.9600000054056821)
+(i, η, λ) = (315, 3.342820026099065e-7, 0.9600000053601763)
+(i, η, λ) = (316, 3.20910724047455e-7, 0.9600000046127064)
+(i, η, λ) = (317, 3.0807429654501075e-7, 0.9600000045478504)
+(i, η, λ) = (318, 2.957513260674253e-7, 0.9600000044931206)
+(i, η, λ) = (319, 2.8392127424124206e-7, 0.9600000041132996)
+(i, η, λ) = (320, 2.725644242252231e-7, 0.9600000033587858)
+(i, η, λ) = (321, 2.616618483258761e-7, 0.960000003924437)
+(i, η, λ) = (322, 2.5119537522772124e-7, 0.9600000031906837)
+(i, η, λ) = (323, 2.4114756096284326e-7, 0.9600000029627571)
+(i, η, λ) = (324, 2.3150165935920974e-7, 0.9600000034621134)
+(i, η, λ) = (325, 2.2224159362210601e-7, 0.9600000027527433)
+(i, η, λ) = (326, 2.1335193045375145e-7, 0.9600000025941574)
+(i, η, λ) = (327, 2.0481785390096742e-7, 0.9600000031186314)
+(i, η, λ) = (328, 1.9662514029063763e-7, 0.960000002664362)
+(i, η, λ) = (329, 1.8876013525010283e-7, 0.9600000029044643)
+(i, η, λ) = (330, 1.8120973025164663e-7, 0.9600000021802693)
+(i, η, λ) = (331, 1.7396134140055208e-7, 0.9600000019809716)
+(i, η, λ) = (332, 1.6700288799653507e-7, 0.9600000014486268)
+(i, η, λ) = (333, 1.6032277286283982e-7, 0.9600000023123322)
+(i, η, λ) = (334, 1.5390986208611316e-7, 0.9600000008594346)
+(i, η, λ) = (335, 1.477534681329672e-7, 0.9600000034455138)
+(i, η, λ) = (336, 1.418433294992043e-7, 0.9600000006196524)
+(i, η, λ) = (337, 1.3616959668183344e-7, 0.9600000025563226)
+(i, η, λ) = (338, 1.3072281305206133e-7, 0.9600000017441576)
+(i, η, λ) = (339, 1.25493900781984e-7, 0.9600000019277823)
+(i, η, λ) = (340, 1.2047414470900593e-7, 0.9599999996677232)
+(i, η, λ) = (341, 1.1565517923701185e-7, 0.9600000026260087)
+(i, η, λ) = (342, 1.1102897220078589e-7, 0.9600000011521708)
+(i, η, λ) = (343, 1.0658781337620898e-7, 0.9600000005715132)
+(i, η, λ) = (344, 1.023243009508463e-7, 0.9600000010290639)
+(i, η, λ) = (345, 9.82313290823267e-8, 0.9600000016566372)
+(i, η, λ) = (346, 9.430207600061801e-8, 0.9600000008305332)
+(i, η, λ) = (347, 9.052999301679587e-8, 0.9600000005959847)
+(i, η, λ) = (348, 8.690879335051363e-8, 0.9600000006007908)
+(i, η, λ) = (349, 8.343244170532943e-8, 0.960000001022179)
+(i, η, λ) = (350, 8.009514409331883e-8, 0.9600000006736298)
+(i, η, λ) = (351, 7.689133843020683e-8, 0.9600000012562654)
+(i, η, λ) = (352, 7.381568510783747e-8, 0.9600000027940586)
+(i, η, λ) = (353, 7.086305777060448e-8, 0.9600000009087568)
+(i, η, λ) = (354, 6.802853551960885e-8, 0.9600000008442842)
+(i, η, λ) = (355, 6.530739407434918e-8, 0.9599999996402198)
+(i, η, λ) = (356, 6.269509847545049e-8, 0.9600000025123537)
+(i, η, λ) = (357, 6.018729454096495e-8, 0.960000000072294)
+(i, η, λ) = (358, 5.777980270221727e-8, 0.9599999990511439)
+(i, η, λ) = (359, 5.5468610706533746e-8, 0.9600000019454059)
+(i, η, λ) = (360, 5.3249866206659423e-8, 0.959999998708946)
+(i, η, λ) = (361, 5.111987159374628e-8, 0.9600000006639121)
+(i, η, λ) = (362, 4.907507676806915e-8, 0.9600000007447735)
+(i, η, λ) = (363, 4.7112073858702195e-8, 0.960000003287938)
+(i, η, λ) = (364, 4.52275908100788e-8, 0.9599999979989141)
+(i, η, λ) = (365, 4.341848725744706e-8, 0.9600000017637776)
+(i, η, λ) = (366, 4.16817476148583e-8, 0.9599999964924878)
+(i, η, λ) = (367, 4.001447769847956e-8, 0.9599999997172766)
+(i, η, λ) = (368, 3.841389856243908e-8, 0.9599999992977216)
+(i, η, λ) = (369, 3.687734271421682e-8, 0.9600000024541978)
+(i, η, λ) = (370, 3.540224901561958e-8, 0.9600000002703944)
+(i, η, λ) = (371, 3.398615912479477e-8, 0.9600000019716255)
+(i, η, λ) = (372, 3.262671271447832e-8, 0.9599999986663788)
+(i, η, λ) = (373, 3.132164414063167e-8, 0.9599999979995681)
+(i, η, λ) = (374, 3.0068778476533654e-8, 0.9600000032414406)
+(i, η, λ) = (375, 2.8866027252261937e-8, 0.9599999971661513)
+(i, η, λ) = (376, 2.7711386233784432e-8, 0.9600000024808738)
+(i, η, λ) = (377, 2.6602930822505772e-8, 0.9600000013739016)
+(i, η, λ) = (378, 2.5538813607735407e-8, 0.9600000006814988)
+(i, η, λ) = (379, 2.4517261012662366e-8, 0.9599999980122951)
+(i, η, λ) = (380, 2.3536570552213018e-8, 0.9599999991865791)
+(i, η, λ) = (381, 2.259510788694784e-8, 0.9600000066629648)
+(i, η, λ) = (382, 2.1691303446373852e-8, 0.9599999944635771)
+(i, η, λ) = (383, 2.0823651341152654e-8, 0.9600000015044626)
+(i, η, λ) = (384, 1.9990705215893576e-8, 0.9599999965609791)
+(i, η, λ) = (385, 1.919107720668636e-8, 0.9600000099760626)
+(i, η, λ) = (386, 1.84234338618813e-8, 0.9599999866324541)
+(i, η, λ) = (387, 1.7686496572673566e-8, 0.9600000035426358)
+(i, η, λ) = (388, 1.6979036814013354e-8, 0.9600000058941425)
+(i, η, λ) = (389, 1.6299875170125588e-8, 0.9599999899094847)
+(i, η, λ) = (390, 1.5647880382691944e-8, 0.9600000134584699)
+(i, η, λ) = (391, 1.5021965090332334e-8, 0.959999995075887)
+(i, η, λ) = (392, 1.4421086485812547e-8, 0.9599999999396555)
+(i, η, λ) = (393, 1.3844243052668353e-8, 0.9600000018229076)
+(i, η, λ) = (394, 1.3290473341439537e-8, 0.9600000007857359)
+(i, η, λ) = (395, 1.27588544286313e-8, 0.9600000015687435)
+(i, η, λ) = (396, 1.224850017171464e-8, 0.9599999937477609)
+(i, η, λ) = (397, 1.1758560211983706e-8, 0.9600000038484428)
+(i, η, λ) = (398, 1.1288217844296556e-8, 0.960000003469149)
+(i, η, λ) = (399, 1.083668911058184e-8, 0.9599999982333036)
+(i, η, λ) = (400, 1.0403221530748181e-8, 0.9599999985779434)
+(i, η, λ) = (401, 9.987092606970218e-9, 0.9599999939876281)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>([0.4158342892103646, 0.4158342892103646, 1.1651371859598578], [-0.8342230398289807, 0.363055547191771, 1.4461257722409178], Bool[0, 0, 1])</code></pre>
+</div>
+</div>
+<ol type="1">
+<li><strong>Implement Policy Iteration and compare rates of convergence.</strong></li>
+</ol>
+<div id="a6a88f4f" class="cell" data-execution_count="97">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">policy_iteration</span>(model; T<span class="op">=</span><span class="fl">1000</span>, τ_η<span class="op">=</span><span class="fl">1e-8</span>, verbose<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="fu">length</span>(model.w)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    V_U_0, V_E_0 <span class="op">=</span> <span class="fu">zeros</span>(n), <span class="fu">zeros</span>(n)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> x_1</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    η_0 <span class="op">=</span> <span class="cn">NaN</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>T</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>        V_U_, V_E_, x_1 <span class="op">=</span> <span class="fu">bellman_step</span>(V_U_0, V_E_0, model)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        V_U_1, V_E_1 <span class="op">=</span> <span class="fu">policy_eval</span>(x_1, model)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># compute successive approximation errors</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>        η <span class="op">=</span> <span class="fu">distance</span>(</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>            (V_U_1, V_E_1),</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>            (V_U_0, V_E_0)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        λ <span class="op">=</span> η <span class="op">/</span> η_0</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>        verbose ? (<span class="pp">@show</span> (i,η,λ, x_1)) <span class="op">:</span> <span class="cn">nothing</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> η<span class="op">&lt;</span>τ_η</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span> <span class="co"># get out of the for loop</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>        η_0 <span class="op">=</span> η</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>        V_U_0, V_E_0 <span class="op">=</span> V_U_1, V_E_1</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> V_U_0, V_E_0, x_1</span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>policy_iteration (generic function with 1 method)</code></pre>
+</div>
+</div>
+<div id="e00a838d" class="cell" data-execution_count="98">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">policy_iteration</span>(model; verbose<span class="op">=</span><span class="cn">true</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(i, η, λ, x_1) = (1, 11.155295764214697, NaN, Bool[0, 0, 0])
+(i, η, λ, x_1) = (2, 10.050777979466549, 0.900987135787887, Bool[1, 1, 1])
+(i, η, λ, x_1) = (3, 2.104636943993661, 0.20940040147074923, Bool[0, 1, 1])
+(i, η, λ, x_1) = (4, 0.6128475729454325, 0.29118921184692376, Bool[0, 0, 1])
+(i, η, λ, x_1) = (5, 0.0, 0.0, Bool[0, 0, 1])</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>([0.41583429078597567, 0.41583429078597567, 1.165137187535469], [-0.8342230382533695, 0.3630555487673824, 1.446125773816529], Bool[0, 0, 1])</code></pre>
+</div>
+</div>
+<ol type="1">
+<li><strong>Discuss the Effects of the Parameters</strong></li>
+</ol>
+<div id="6096bb2c" class="cell" data-execution_count="105">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">policy_iteration</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">merge</span>(</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>        model,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>        (;λ<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>)[<span class="fl">3</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>3-element Vector{Bool}:
+ 0
+ 1
+ 1</code></pre>
+</div>
+</div>
+<div id="fdcd7353" class="cell" data-execution_count="110">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">policy_iteration</span>(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">merge</span>(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>        model,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>        (;cbar<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>)[<span class="fl">3</span>]</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co"># decreasing unemployment benefits makes job-seekers accept lower paid jobs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>3-element Vector{Bool}:
+ 1
+ 1
+ 1</code></pre>
+</div>
+</div>
+<div id="0c6bc226" class="cell" data-execution_count="114">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">policy_iteration</span>(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">merge</span>(</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>        model,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>        (;β<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>)[<span class="fl">3</span>]</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co"># more impatient: tend to accept any offer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>3-element Vector{Bool}:
+ 0
+ 1
+ 1</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/www\.econobits\.org");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

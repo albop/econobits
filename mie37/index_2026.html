@@ -156,6 +156,34 @@ ul.task-list li input[type="checkbox"] {
       window['quarto-listing-loaded']();
     }
   })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-corrections-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-corrections-listing'] = new List('listing-corrections-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
   </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -424,6 +452,50 @@ Exercises (pushups)
 <tr data-index="0" data-listing-file-modified-sort="1773739076836" data-listing-reading-time-sort="2" data-listing-word-count-sort="276" data-listing-title-sort="Optimization Pushups" data-listing-filename-sort="optimization_pushups.qmd">
 <td>
 <a href="../exercises/optimization_pushups.html" class="title listing-title">Optimization Pushups</a>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+<div class="listing-no-matching d-none">No matching items</div>
+</div><div class="quarto-listing quarto-listing-container-table" id="listing-corrections-listing">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+
+<th>
+Corrections
+</th>
+
+</tr>
+</thead>
+<tbody class="list">
+
+<tr data-index="0" data-listing-file-modified-sort="1774534001521" data-listing-reading-time-sort="2" data-listing-word-count-sort="342" data-listing-title-sort="Discrete Dynamic Programming" data-listing-filename-sort="discrete_dynamic_programming.ipynb">
+<td>
+<a href="../mie37/corrections/discrete_dynamic_programming.html" class="title listing-title">Discrete Dynamic Programming</a>
+</td>
+
+</tr>
+
+<tr data-index="1" data-listing-file-modified-sort="1775134934992" data-listing-reading-time-sort="2" data-listing-word-count-sort="322" data-listing-title-sort="McCall Model" data-listing-filename-sort="mccall.ipynb">
+<td>
+<a href="../mie37/corrections/mccall.html" class="title listing-title">McCall Model</a>
+</td>
+
+</tr>
+
+<tr data-index="2" data-listing-file-modified-sort="1773929171623" data-listing-reading-time-sort="2" data-listing-word-count-sort="251" data-listing-title-sort="Optimization Methods" data-listing-filename-sort="optimization_correction.ipynb">
+<td>
+<a href="../mie37/corrections/optimization_correction.html" class="title listing-title">Optimization Methods</a>
+</td>
+
+</tr>
+
+<tr data-index="3" data-listing-file-modified-sort="1773338691878" data-listing-reading-time-sort="3" data-listing-word-count-sort="471" data-listing-title-sort="Perturbation of Neoclassical Model" data-listing-filename-sort="perturbation_correction.ipynb">
+<td>
+<a href="../mie37/corrections/perturbation_correction.html" class="title listing-title">Perturbation of Neoclassical Model</a>
 </td>
 
 </tr>

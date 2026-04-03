@@ -156,6 +156,34 @@ ul.task-list li input[type="checkbox"] {
       window['quarto-listing-loaded']();
     }
   })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-corrections-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-corrections-listing'] = new List('listing-corrections-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
   </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -392,6 +420,43 @@ Exercises
 <tr data-index="0" data-listing-file-modified-sort="1773739076836" data-listing-reading-time-sort="2" data-listing-word-count-sort="276" data-listing-title-sort="Optimization Pushups" data-listing-filename-sort="optimization_pushups.qmd">
 <td>
 <a href="../exercises/optimization_pushups.html" class="title listing-title">Optimization Pushups</a>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+<div class="listing-no-matching d-none">No matching items</div>
+</div><div class="quarto-listing quarto-listing-container-table" id="listing-corrections-listing">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+
+<th>
+Correction
+</th>
+
+</tr>
+</thead>
+<tbody class="list">
+
+<tr data-index="0" data-listing-file-modified-sort="1774948987307" data-listing-reading-time-sort="2" data-listing-word-count-sort="251" data-listing-title-sort="Optimization Methods" data-listing-filename-sort="optimization_correction.ipynb">
+<td>
+<a href="../scpo/corrections/optimization_correction.html" class="title listing-title">Optimization Methods</a>
+</td>
+
+</tr>
+
+<tr data-index="1" data-listing-file-modified-sort="1773746250561" data-listing-reading-time-sort="1" data-listing-word-count-sort="199" data-listing-title-sort="Solow Model" data-listing-filename-sort="solow_correction.ipynb">
+<td>
+<a href="../scpo/corrections/solow_correction.html" class="title listing-title">Solow Model</a>
+</td>
+
+</tr>
+
+<tr data-index="2" data-listing-file-modified-sort="1775204167778" data-listing-reading-time-sort="1" data-listing-word-count-sort="4" data-listing-title-sort="macros" data-listing-filename-sort="random_explanations.ipynb">
+<td>
+<a href="../scpo/corrections/random_explanations.html" class="title listing-title">macros</a>
 </td>
 
 </tr>
