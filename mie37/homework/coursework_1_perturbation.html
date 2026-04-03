@@ -244,7 +244,7 @@ window.Quarto = {
 <li><strong>Warm-up: install the <code>ForwardDiff</code> library. Use it to differentiate the function below. Check the jacobian function.</strong></li>
 </ol>
 <p>Note: the signature of function <code>f</code> needs to be fixed first to allow for dual numbers as arguments.</p>
-<div id="12b0ee87" class="cell">
+<div id="d4988c2b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function f(x::Vector{T}) where T &lt;: Number</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">f</span>(x)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> x[<span class="fl">1</span>]</span>
@@ -254,7 +254,7 @@ window.Quarto = {
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [x1,x2]</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="50dbef63" class="cell">
+<div id="889a29dd" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="model-definition" class="level2">
@@ -276,13 +276,13 @@ z_{t} &amp; = \rho z_{t-1} + \epsilon_{t}
 <ol start="2" class="example" type="1">
 <li><strong>Which variables are states and which are controls?</strong></li>
 </ol>
-<div id="2b9702bc" class="cell">
+<div id="127de132" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="3" class="example" type="1">
 <li><strong>Create a NamedTuple to hold the model parameters. Choose and justify plausible values.</strong></li>
 </ol>
-<div id="d9dcad1e" class="cell">
+<div id="fe7bedf0" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="4" class="example" type="1">
@@ -293,7 +293,7 @@ z_{t} &amp; = \rho z_{t-1} + \epsilon_{t}
 <li><p><code>arbitrage(z::Number, k::Number, i::Number, c::Number, y::Number,Z::Number, K::Number, I::Number,  C::Number,  Y::Number p)::Tuple{Number, Number}</code> which returns the residual of the euler equation (lower case variable for date <span class="math inline">\(t\)</span>, upper case for date <span class="math inline">\(t+1\)</span>) and the residual of the budget constraint. Argument <code>p</code> represents the model parameters.</p></li>
 </ul>
 <p>Note that the arbitrage equation here is defined for a specific realization of the shock in <span class="math inline">\(t\)</span> and <span class="math inline">\(t+1\)</span>: there is no need to code the expectation operator here.</p>
-<div id="e6411f78" class="cell">
+<div id="63386500" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="5" class="example" type="1">
@@ -304,13 +304,13 @@ z_{t} &amp; = \rho z_{t-1} + \epsilon_{t}
 <li><code>transition(s::Vector, x::Vector, e::Vector, p)</code></li>
 </ul>
 <p>where <code>s</code> is the vector of states (capital and productivity), <code>x</code> is the vector of controls (investment, consumption, production), <code>S</code> and <code>X</code> are the same variables at date t+1, and <code>e</code> is the vector of shocks.</p>
-<div id="8f0859c9" class="cell">
+<div id="50925f34" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="6" class="example" type="1">
 <li><strong>Write a function <code>steady_state(p)::Tuple{Vector,Vector}</code> which computes the steady-state of the model computed by hand.</strong> It returns three vectors, one for the states, one for the controls, one for the exogenous shocks. Check that the steady-state satisfies the model equations.</li>
 </ol>
-<div id="063ec6a5" class="cell">
+<div id="c2adb15c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The first order system satisfies: <span class="math display">\[\begin{align}
@@ -320,7 +320,7 @@ s_{t+1} &amp; = &amp; E s_t + F x_t + G e_t
 <ol start="7" class="example" type="1">
 <li><strong>Define a structure <code>PerturbedModel</code> to hold matrices A,B,C,D,E,F,G.</strong></li>
 </ol>
-<div id="fba4f61d" class="cell">
+<div id="7cab7f34" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -329,55 +329,55 @@ s_{t+1} &amp; = &amp; E s_t + F x_t + G e_t
 <ol start="8" class="example" type="1">
 <li><strong>Write a function <code>first_order_model(s::Vector, x::Vector, e::Vector, p)::PerturbedModel</code>, which returns the first order model, given the steady-state and the calibration. Suggestion: use <code>ForwardDiff.jl</code> library.</strong></li>
 </ol>
-<div id="92293784" class="cell">
+<div id="4be9f2fb" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="9" class="example" type="1">
 <li><strong>We look for a linear solution <span class="math inline">\(x_t = X s_t\)</span> . Write the matrix equation which <code>X</code> must satisfy. Write a function <code>riccati_residual(X::Array, M::PerturbedModel)</code> to compute the residual of this equation for a given <code>X</code>.</strong></li>
 </ol>
-<div id="2a039e3b" class="cell">
+<div id="4346fee9" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="10" class="example" type="1">
 <li><strong>Write a function <code>T(X, M::PerturbedModel)</code> which implements the linear time iteration step.</strong></li>
 </ol>
-<div id="2195ab28" class="cell">
+<div id="682a513a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="11" class="example" type="1">
 <li><strong>Write function <code>linear_time_iteration(X_0::Matrix, m::PerturbedModel)::Matrix</code> which implements the time iteration algorithm. Apply it to <code>X0 = rand(1,2)</code> and check that the result satisfies the first order model.</strong></li>
 </ol>
-<div id="9d90807d" class="cell">
+<div id="c19dcd0d" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="12" class="example" type="1">
 <li><strong>Check blanchard Kahn Conditions (i.e.&nbsp;non-divergence and unicity using the conditions from the lecture).</strong></li>
 </ol>
-<div id="0ad4fe87" class="cell">
+<div id="5d27a1d2" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="13" class="example" type="1">
 <li><strong>Write a function <code>irf(X::Matrix, p, T::Int64;σ=0.01)::Tuple{Matrix, Matrix}</code> to compute the response of the model to a standard deviation productivity shock (i.e.&nbsp;<span class="math inline">\(e_0=\sigma\)</span> and <span class="math inline">\(e_1=e_2=...=0\)</span> ) by using the formula <span class="math inline">\(\Delta s_t = (E + F X) \Delta s_{t-1} + G e_t\)</span>. Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variable levels or log-deviations. If possible, return a DataFrame object.</strong></li>
 </ol>
-<div id="7c5041f9" class="cell">
+<div id="277b41e7" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="14" class="example" type="1">
 <li><strong>Compare irfs for different values of a parameter of your choice and comment using nice plots.</strong></li>
 </ol>
-<div id="d7ccafca" class="cell">
+<div id="4b781fca" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="15" class="example" type="1">
 <li><strong>Write a function <code>simulate(s0::Vector, X::Matrix, p, T::Int64; n_draws=100)::VectorTuple{Matrix, Matrix}</code> to compute many draws of the model over <span class="math inline">\(T\)</span> periods. Bonus: return the result as an AxisArrays object.</strong></li>
 </ol>
-<div id="e68831b3" class="cell">
+<div id="51317604" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="16" class="example" type="1">
 <li><strong>Compute standard deviations of the variables and their correlations. Comment?</strong></li>
 </ol>
-<div id="44528b47" class="cell">
+<div id="6e6b1cee" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
