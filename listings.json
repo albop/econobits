@@ -3,14 +3,27 @@
     "listing": "/eco309/index_2026.html",
     "items": [
       "/lectures/convergence/convergence_1.html",
-      "/lectures/discrete_dynamic_programming/index.html",
-      "/lectures/optimization/index.html",
-      "/tutorials/discrete_dynamic_programming.html",
       "/tutorials/epidemiology.html",
       "/tutorials/Julia_Basics.html",
-      "/tutorials/mccall.html",
-      "/tutorials/optimization.html",
       "/tutorials/solow.html"
+    ]
+  },
+  {
+    "listing": "/scpo/index_2026.html",
+    "items": [
+      "/lectures/convergence/convergence_1.html",
+      "/lectures/convergence/convergence_2.html",
+      "/lectures/discretization/index.html",
+      "/lectures/interpolation/index.html",
+      "/lectures/optimization/index.html",
+      "/lectures/perturbation/index.html",
+      "/tutorials/monte_carlo_interpolation.html",
+      "/tutorials/epidemiology.html",
+      "/tutorials/Julia_Basics.html",
+      "/tutorials/optimization.html",
+      "/tutorials/perturbation.html",
+      "/tutorials/solow.html",
+      "/exercises/optimization_pushups.html"
     ]
   },
   {
@@ -21,43 +34,12 @@
       "/lectures/convergence/convergence_2.html",
       "/lectures/perturbation/index.html",
       "/lectures/optimization/index.html",
-      "/lectures/discrete_dynamic_programming/index.html",
-      "/lectures/differentiation/index.html",
       "/tutorials/Julia_Basics.html",
       "/tutorials/solow.html",
       "/tutorials/epidemiology.html",
       "/tutorials/perturbation.html",
       "/tutorials/optimization.html",
-      "/tutorials/discrete_dynamic_programming.html",
-      "/tutorials/mccall.html",
-      "/exercises/optimization_pushups.html",
-      "/mie37/corrections/discrete_dynamic_programming.html",
-      "/mie37/corrections/mccall.html",
-      "/mie37/corrections/optimization_correction.html",
-      "/mie37/corrections/perturbation_correction.html"
-    ]
-  },
-  {
-    "listing": "/scpo/index_2026.html",
-    "items": [
-      "/lectures/convergence/convergence_1.html",
-      "/lectures/convergence/convergence_2.html",
-      "/lectures/discrete_dynamic_programming/index.html",
-      "/lectures/optimization/index.html",
-      "/lectures/perturbation/index.html",
-      "/tutorials/discrete_dynamic_programming.html",
-      "/tutorials/epidemiology.html",
-      "/tutorials/Julia_Basics.html",
-      "/tutorials/mccall.html",
-      "/tutorials/optimization.html",
-      "/tutorials/perturbation.html",
-      "/tutorials/solow.html",
-      "/exercises/optimization_pushups.html",
-      "/scpo/corrections/ddp.html",
-      "/scpo/corrections/mccall.html",
-      "/scpo/corrections/optimization_correction.html",
-      "/scpo/corrections/solow_correction.html",
-      "/scpo/corrections/random_explanations.html"
+      "/exercises/optimization_pushups.html"
     ]
   }
 ]

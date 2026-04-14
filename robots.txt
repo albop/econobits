@@ -1,1 +1,1 @@
-Sitemap: https://www.econobits.org/sitemap.xml
+Sitemap: https://albop.github.io/econobits/sitemap.xml
