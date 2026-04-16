@@ -84,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
     const options = {
       valueNames: ['listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
       
-      searchColumns: ["listing-title","listing-author"],
+      searchColumns: ["listing-date","listing-title","listing-author"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -145,6 +145,34 @@ ul.task-list li input[type="checkbox"] {
 
     window['quarto-listings'] = window['quarto-listings'] || {};
     window['quarto-listings']['listing-exercises-listing'] = new List('listing-exercises-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-corrections-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-corrections-listing'] = new List('listing-corrections-listing', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -272,11 +300,7 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>Before April 2nd:</p>
 <ul>
-<li>First homework: <a href="../mie37/homework/coursework_1_perturbation.html">coursework 1 (perturbation)</a> <em>or</em> <a href="../mie37/homework/coursework_1_deeplearning.html">coursework 1 (deeplearning)</a></li>
-</ul>
-<p>For next weeek:</p>
-<ul>
-<li>do some of the <a href="../exercises/optimization_pushups.html">optimization pushups</a></li>
+<li>Second Homework</li>
 </ul>
 </div>
 </div>
@@ -333,6 +357,34 @@ Lectures
 
 </tr>
 
+<tr data-index="5" data-listing-file-modified-sort="1776152594462" data-listing-reading-time-sort="9" data-listing-word-count-sort="1709" data-listing-title-sort="Discretization" data-listing-filename-sort="index.qmd">
+<td>
+<a href="../lectures/discretization/index.html" class="title listing-title">Discretization</a>
+</td>
+
+</tr>
+
+<tr data-index="6" data-listing-date-sort="1743631200000" data-listing-file-modified-sort="1776152592398" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4427" data-listing-title-sort="Discrete Dynamic Programming" data-listing-filename-sort="index.qmd">
+<td>
+<a href="../lectures/discrete_dynamic_programming/index.html" class="title listing-title">Discrete Dynamic Programming</a>
+</td>
+
+</tr>
+
+<tr data-index="7" data-listing-file-modified-sort="1776152594469" data-listing-reading-time-sort="8" data-listing-word-count-sort="1423" data-listing-title-sort="Interpolation" data-listing-filename-sort="index.qmd">
+<td>
+<a href="../lectures/interpolation/index.html" class="title listing-title">Interpolation</a>
+</td>
+
+</tr>
+
+<tr data-index="8" data-listing-file-modified-sort="1776336305664" data-listing-reading-time-sort="9" data-listing-word-count-sort="1638" data-listing-title-sort="Time Iteration" data-listing-filename-sort="index.qmd">
+<td>
+<a href="../lectures/time_iteration/index.html" class="title listing-title">Time Iteration</a>
+</td>
+
+</tr>
+
 </tbody>
 </table>
 <div class="listing-no-matching d-none">No matching items</div>
@@ -384,6 +436,27 @@ Tutorials
 
 </tr>
 
+<tr data-index="5" data-listing-file-modified-sort="1774526319262" data-listing-reading-time-sort="2" data-listing-word-count-sort="261" data-listing-title-sort="McCall Model" data-listing-filename-sort="mccall.qmd">
+<td>
+<a href="../tutorials/mccall.html" class="title listing-title">McCall Model</a>
+</td>
+
+</tr>
+
+<tr data-index="6" data-listing-file-modified-sort="1774526170762" data-listing-reading-time-sort="2" data-listing-word-count-sort="348" data-listing-title-sort="Discrete Dynamic Programming" data-listing-filename-sort="discrete_dynamic_programming.qmd">
+<td>
+<a href="../tutorials/discrete_dynamic_programming.html" class="title listing-title">Discrete Dynamic Programming</a>
+</td>
+
+</tr>
+
+<tr data-index="7" data-listing-file-modified-sort="1776336569297" data-listing-reading-time-sort="5" data-listing-word-count-sort="997" data-listing-title-sort="Time Iteration - Consumption Saving" data-listing-filename-sort="time_iteration.qmd">
+<td>
+<a href="../tutorials/time_iteration.html" class="title listing-title">Time Iteration - Consumption Saving</a>
+</td>
+
+</tr>
+
 </tbody>
 </table>
 <div class="listing-no-matching d-none">No matching items</div>
@@ -403,6 +476,57 @@ Exercises (pushups)
 <tr data-index="0" data-listing-file-modified-sort="1773739076836" data-listing-reading-time-sort="2" data-listing-word-count-sort="276" data-listing-title-sort="Optimization Pushups" data-listing-filename-sort="optimization_pushups.qmd">
 <td>
 <a href="../exercises/optimization_pushups.html" class="title listing-title">Optimization Pushups</a>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+<div class="listing-no-matching d-none">No matching items</div>
+</div><div class="quarto-listing quarto-listing-container-table" id="listing-corrections-listing">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+
+<th>
+Corrections
+</th>
+
+</tr>
+</thead>
+<tbody class="list">
+
+<tr data-index="0" data-listing-file-modified-sort="1771504268523" data-listing-reading-time-sort="2" data-listing-word-count-sort="222" data-listing-title-sort="Solow Model" data-listing-filename-sort="solow.ipynb">
+<td>
+<a href="../mie37/corrections/solow.html" class="title listing-title">Solow Model</a>
+</td>
+
+</tr>
+
+<tr data-index="1" data-listing-file-modified-sort="1774534001521" data-listing-reading-time-sort="2" data-listing-word-count-sort="342" data-listing-title-sort="Discrete Dynamic Programming" data-listing-filename-sort="discrete_dynamic_programming.ipynb">
+<td>
+<a href="../mie37/corrections/discrete_dynamic_programming.html" class="title listing-title">Discrete Dynamic Programming</a>
+</td>
+
+</tr>
+
+<tr data-index="2" data-listing-file-modified-sort="1775134934992" data-listing-reading-time-sort="2" data-listing-word-count-sort="322" data-listing-title-sort="McCall Model" data-listing-filename-sort="mccall.ipynb">
+<td>
+<a href="../mie37/corrections/mccall.html" class="title listing-title">McCall Model</a>
+</td>
+
+</tr>
+
+<tr data-index="3" data-listing-file-modified-sort="1773929171623" data-listing-reading-time-sort="2" data-listing-word-count-sort="251" data-listing-title-sort="Optimization Methods" data-listing-filename-sort="optimization_correction.ipynb">
+<td>
+<a href="../mie37/corrections/optimization_correction.html" class="title listing-title">Optimization Methods</a>
+</td>
+
+</tr>
+
+<tr data-index="4" data-listing-file-modified-sort="1773338691878" data-listing-reading-time-sort="3" data-listing-word-count-sort="471" data-listing-title-sort="Perturbation of Neoclassical Model" data-listing-filename-sort="perturbation_correction.ipynb">
+<td>
+<a href="../mie37/corrections/perturbation_correction.html" class="title listing-title">Perturbation of Neoclassical Model</a>
 </td>
 
 </tr>

@@ -241,44 +241,273 @@ window.Quarto = {
 <ol type="1">
 <li><strong>Define a named tuple for the model.</strong></li>
 </ol>
-<div id="7947ab81" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="7947ab81" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> (;</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    λ<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    β<span class="op">=</span><span class="fl">0.9</span>, <span class="co"># yearly discount</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    w<span class="op">=</span>[<span class="fl">0.9</span>, <span class="fl">1.0</span>, <span class="fl">1.1</span>],</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    p<span class="op">=</span><span class="fu">ones</span>(<span class="fl">3</span>)<span class="op">/</span><span class="fl">3</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    cbar<span class="op">=</span><span class="fl">0.5</span>, </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>(λ = 0.05, β = 0.9, w = [0.9, 1.0, 1.1], p = [0.3333333333333333, 0.3333333333333333, 0.3333333333333333], cbar = 0.5)</code></pre>
+</div>
 </div>
 <ol type="1">
 <li><strong>Define a function <code>value_update(V_U::Vector{Float64}, V_E::Vector{Float64}, x::Vector{Bool}, p::Parameters)::Tuple{Vector, Vector}</code>, which takes in value functions tomorrow and a policy vector and return updated values for today.</strong></li>
 </ol>
-<div id="2e70b718" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2e70b718" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>V_U_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>V_E_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x_0 <span class="op">=</span> [<span class="cn">false</span>, <span class="cn">false</span>, <span class="cn">false</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">value_update</span>(V_U, V_E, x, model)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    (;cbar, λ, β, w, p) <span class="op">=</span> model</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    new_V_U <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    new_V_E <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># expected value of being unemployed without knowing the future offer</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    EVU <span class="op">=</span> <span class="fu">sum</span>(p[i]<span class="op">*</span>V_U[i] <span class="cf">for</span> i<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># unemployed</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># EVU = p'*V_U</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> x[i]</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>            <span class="co"># if reject</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>            new_V_U[i] <span class="op">=</span> <span class="fu">log</span>(cbar) <span class="op">+</span> β<span class="op">*</span>EVU</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>            <span class="co"># if accept</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>            new_V_U[i] <span class="op">=</span> <span class="fu">log</span>(cbar) <span class="op">+</span> β<span class="op">*</span>V_E[i]</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># employed</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        new_V_E[i] <span class="op">=</span> <span class="fu">log</span>(w[i]) <span class="op">+</span> (<span class="fl">1</span><span class="op">-</span>λ)<span class="op">*</span>β<span class="op">*</span>V_E[i] <span class="op">+</span> λ<span class="op">*</span>β<span class="op">*</span>EVU</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> new_V_U, new_V_E</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="fu">value_update</span>(V_U_0, V_E_0, x_0, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>([-0.6931471805599453, -0.6931471805599453, -0.6931471805599453], [-0.10536051565782628, 0.0, 0.09531017980432493])</code></pre>
+</div>
 </div>
 <ol type="1">
 <li><strong>Define a function <code>policy_eval(x::Vector{Bool}, p::Parameter)::Tuple{Vector, Vector}</code> which takes in a policy vector and returns the value(s) of following this policies forever. You can add relevant arguments to the function.</strong></li>
 </ol>
-<div id="b800ec43" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ab8304a9" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>: norm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="b800ec43" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">policy_eval</span>(x, model; T<span class="op">=</span><span class="fl">1000</span>, τ<span class="op">=</span><span class="fl">1e-8</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    V_U_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    V_E_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    η_0 <span class="op">=</span> <span class="cn">NaN</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t<span class="op">=</span><span class="fl">1</span><span class="op">:</span>T</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        V_U_1, V_E_1 <span class="op">=</span> <span class="fu">value_update</span>(V_U_0, V_E_0, x, model)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        η <span class="op">=</span> <span class="fu">norm</span>( [V_U_1, V_E_1] <span class="op">.-</span> [V_U_0, V_E_0])</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        λ <span class="op">=</span> η<span class="op">/</span>η_0</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        η_0 <span class="op">=</span> η</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="pp">@show</span> (t, η, λ)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> η<span class="op">&lt;</span>τ</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        V_U_0, V_E_0 <span class="op">=</span> V_U_1, V_E_1</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> V_U_0, V_E_0</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">policy_eval</span>(x_0, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(t, η, λ) = (1, 1.208943303215093, NaN)
+(t, η, λ) = (2, 0.18590374068089768, 0.1537737462017456)
+(t, η, λ) = (3, 0.16759036136579744, 0.9014899902066252)
+(t, η, λ) = (4, 0.14409682402816418, 0.8598157009378707)
+(t, η, λ) = (5, 0.12456251750964775, 0.8644362452103845)
+(t, η, λ) = (6, 0.10774709002397113, 0.8650041134214054)
+(t, η, λ) = (7, 0.09329138586429168, 0.8658367093119322)
+(t, η, λ) = (8, 0.08085585077337948, 0.8667022150469302)
+(t, η, λ) = (9, 0.07015150893870908, 0.8676120313832053)
+(t, η, λ) = (10, 0.060931055972414, 0.8685637257731558)
+(t, η, λ) = (11, 0.05298290181068721, 0.8695549578965898)
+(t, η, λ) = (12, 0.04612599856416276, 0.8705827160802782)
+(t, η, λ) = (13, 0.04020542076978306, 0.8716433686276952)
+(t, η, λ) = (14, 0.035088585123295185, 0.8727326925444465)
+(t, η, λ) = (15, 0.03066201714702989, 0.8738459256561328)
+(t, η, λ) = (16, 0.02682858550713838, 0.8749778391451052)
+(t, η, λ) = (17, 0.02350513622827459, 0.8761228288394293)
+(t, η, λ) = (18, 0.020620468906519977, 0.8772750222019724)
+(t, η, λ) = (19, 0.01811360544435845, 0.8784283968746762)
+(t, η, λ) = (20, 0.015932309029454035, 0.8795769057902391)
+(t, η, λ) = (21, 0.014031817227731797, 0.8807146033755182)
+(t, η, λ) = (22, 0.012373758311463421, 0.8818357672881122)
+(t, η, λ) = (23, 0.010925224424185887, 0.8829350104619734)
+(t, η, λ) = (24, 0.00965797900768291, 0.8840073789516313)
+(t, η, λ) = (25, 0.008547779177765509, 0.8850484320752573)
+(t, η, λ) = (26, 0.007573796517822373, 0.8860543025635641)
+(t, η, λ) = (27, 0.006718122133031255, 0.887021735693905)
+(t, η, λ) = (28, 0.005965343834777606, 0.8879481076188784)
+(t, η, λ) = (29, 0.00530218505639216, 0.8888314241805696)
+(t, η, λ) = (30, 0.004717196582312246, 0.8896703023643678)
+(t, η, λ) = (31, 0.004200493441016206, 0.8904639371542227)
+(t, η, λ) = (32, 0.0037435303995208193, 0.8912120568899554)
+(t, η, λ) = (33, 0.0033389104308300765, 0.8919148703206644)
+(t, η, λ) = (34, 0.00298022132813135, 0.8925730084321088)
+(t, η, λ) = (35, 0.002661896329782045, 0.8931874638489014)
+(t, η, λ) = (36, 0.0023790952132189003, 0.8937595302269716)
+(t, η, λ) = (37, 0.002127602827346997, 0.8942907436093591)
+(t, η, λ) = (38, 0.0019037424731458467, 0.8947828272627877)
+(t, η, λ) = (39, 0.0017043019208583907, 0.8952376410671294)
+(t, η, λ) = (40, 0.0015264701775529663, 0.8956571361394362)
+(t, η, λ) = (41, 0.0013677833981875296, 0.8960433150290416)
+(t, η, λ) = (42, 0.001226078572761503, 0.8963981975407789)
+(t, η, λ) = (43, 0.0010994538270940647, 0.8967237920305215)
+(t, η, λ) = (44, 0.0009862343498922516, 0.8970220718581149)
+(t, η, λ) = (45, 0.0008849431081649426, 0.8972949565806796)
+(t, η, λ) = (46, 0.0007942756402544126, 0.8975442973972168)
+(t, η, λ) = (47, 0.0007130783239464416, 0.8977718663486106)
+(t, η, λ) = (48, 0.0006403296089427596, 0.8979793487466238)
+(t, η, λ) = (49, 0.0005751237808714189, 0.8981683383671711)
+(t, η, λ) = (50, 0.0005166568899288756, 0.8983403349206753)
+(t, η, λ) = (51, 0.00046421453306268407, 0.8984967434124204)
+(t, η, λ) = (52, 0.0004171612257506645, 0.8986388750012145)
+(t, η, λ) = (53, 0.0003749311392878583, 0.8987679490422081)
+(t, η, λ) = (54, 0.00033702001314177765, 0.8988850960256627)
+(t, η, λ) = (55, 0.0003029780803585839, 0.8989913611780883)
+(t, η, λ) = (56, 0.00027240386800474317, 0.8990877085310752)
+(t, η, λ) = (57, 0.00024493875489719417, 0.8991750252714078)
+(t, η, λ) = (58, 0.00022026218602573433, 0.8992541262740675)
+(t, η, λ) = (59, 0.00019808745755403007, 0.8993257586705624)
+(t, η, λ) = (60, 0.00017815799857135746, 0.8993906064080979)
+(t, η, λ) = (61, 0.00016024408616100236, 0.899449294704666)
+(t, η, λ) = (62, 0.00014413993918353161, 0.8995023943580022)
+(t, η, λ) = (63, 0.0001296611436812692, 0.8995504258966924)
+(t, η, λ) = (64, 0.00011664236919216542, 0.8995938635162256)
+(t, η, λ) = (65, 0.00010493534071262415, 0.8996331387932096)
+(t, η, λ) = (66, 9.440703570918438e-5, 0.8996686442151783)
+(t, η, λ) = (67, 8.493807955019661e-5, 0.8997007364137948)
+(t, η, λ) = (68, 7.642131616721584e-5, 0.899729739263206)
+(t, η, λ) = (69, 6.876053367511682e-5, 0.8997559466872224)
+(t, η, λ) = (70, 6.186932722414715e-5, 0.8997796252785125)
+(t, η, λ) = (71, 5.567008354170619e-5, 0.8998010167464461)
+(t, η, λ) = (72, 5.0093073506095555e-5, 0.89982034010363)
+(t, η, λ) = (73, 4.507564074643248e-5, 0.899837793760997)
+(t, η, λ) = (74, 4.0561475676734994e-5, 0.8998535573772235)
+(t, η, λ) = (75, 3.6499965620692134e-5, 0.899867793558299)
+(t, η, λ) = (76, 3.284561276838112e-5, 0.8998806494700003)
+(t, η, λ) = (77, 2.9557512648347497e-5, 0.8998922582683883)
+(t, η, λ) = (78, 2.659888663084228e-5, 0.8999027403724844)
+(t, η, λ) = (79, 2.39366627096778e-5, 0.8999122046680877)
+(t, η, λ) = (80, 2.154109944943313e-5, 0.8999207496341534)
+(t, η, λ) = (81, 1.938544854565654e-5, 0.8999284642440423)
+(t, η, λ) = (82, 1.7445651952774298e-5, 0.8999354289732506)
+(t, η, λ) = (83, 1.5700069963850037e-5, 0.899941716500502)
+(t, η, λ) = (84, 1.4129237025704043e-5, 0.8999473924789576)
+(t, η, λ) = (85, 1.2715642414578669e-5, 0.8999525162927234)
+(t, η, λ) = (86, 1.1443533200346731e-5, 0.8999571415461128)
+(t, η, λ) = (87, 1.0298737206291e-5, 0.8999613166656392)
+(t, η, λ) = (88, 9.268503908822757e-6, 0.8999650853466847)
+(t, η, λ) = (89, 8.341361441012738e-6, 0.8999684871549264)
+(t, η, λ) = (90, 7.506988049391728e-6, 0.899971557698175)
+(t, η, λ) = (91, 6.756096534512284e-6, 0.8999743292597506)
+(t, η, λ) = (92, 6.080330347850897e-6, 0.8999768308209691)
+(t, η, λ) = (93, 5.472170166033378e-6, 0.8999790887953194)
+(t, η, λ) = (94, 4.924849872145837e-6, 0.8999811268142128)
+(t, η, λ) = (95, 4.432280996045139e-6, 0.8999829662043936)
+(t, η, λ) = (96, 3.98898475644838e-6, 0.8999846264277228)
+(t, η, λ) = (97, 3.5900309333650956e-6, 0.8999861249310726)
+(t, η, λ) = (98, 3.2309828834148534e-6, 0.8999874773742714)
+(t, η, λ) = (99, 2.9078480784349163e-6, 0.8999886979783647)
+(t, η, λ) = (100, 2.6170336096227364e-6, 0.8999897996842036)
+(t, η, λ) = (101, 2.3553061564217136e-6, 0.8999907940659758)
+(t, η, λ) = (102, 2.1197559715661743e-6, 0.8999916914353938)
+(t, η, λ) = (103, 1.9077644792042275e-6, 0.89999250139849)
+(t, η, λ) = (104, 1.7169751201563923e-6, 0.8999932323263415)
+(t, η, λ) = (105, 1.5452671211489797e-6, 0.8999938921702182)
+(t, η, λ) = (106, 1.3907318909232781e-6, 0.8999944876127325)
+(t, η, λ) = (107, 1.2516517828768979e-6, 0.8999950249547756)
+(t, η, λ) = (108, 1.1264809848255158e-6, 0.8999955101220889)
+(t, η, λ) = (109, 1.0138283214190158e-6, 0.8999959476244963)
+(t, η, λ) = (110, 9.12441781507555e-7, 0.8999963428033319)
+(t, η, λ) = (111, 8.211945917278353e-7, 0.8999966993741132)
+(t, η, λ) = (112, 7.390726864772187e-7, 0.8999970213176539)
+(t, η, λ) = (113, 6.651634307612572e-7, 0.8999973114034979)
+(t, η, λ) = (114, 5.986454738892841e-7, 0.8999975738355827)
+(t, η, λ) = (115, 5.387796153600888e-7, 0.8999978098217993)
+(t, η, λ) = (116, 4.84900589215738e-7, 0.8999980240374514)
+(t, η, λ) = (117, 4.364096654011938e-7, 0.8999982163499288)
+(t, η, λ) = (118, 3.927679962529045e-7, 0.8999983900261024)
+(t, η, λ) = (119, 3.534906260905203e-7, 0.8999985473941381)
+(t, η, λ) = (120, 3.1814110012332036e-7, 0.8999986891925451)
+(t, η, λ) = (121, 2.8632661356926955e-7, 0.8999988164317071)
+(t, η, λ) = (122, 2.5769364622140495e-7, 0.8999989313220527)
+(t, η, λ) = (123, 2.319240334630884e-7, 0.8999990370884975)
+(t, η, λ) = (124, 2.0873142838866253e-7, 0.8999991301974444)
+(t, η, λ) = (125, 1.8785812171476148e-7, 0.8999992150916799)
+(t, η, λ) = (126, 1.6907217635729623e-7, 0.8999992910288472)
+(t, η, λ) = (127, 1.5216485078784512e-7, 0.8999993616115685)
+(t, η, λ) = (128, 1.3694827780421936e-7, 0.8999994223052119)
+(t, η, λ) = (129, 1.2325337855238803e-7, 0.8999994781138504)
+(t, η, λ) = (130, 1.1092798296678496e-7, 0.899999531612318)
+(t, η, λ) = (131, 9.983513759861825e-8, 0.8999995756572241)
+(t, η, λ) = (132, 8.985158567455476e-8, 0.8999996177277602)
+(t, η, λ) = (133, 8.08663960143864e-8, 0.8999996539547672)
+(t, η, λ) = (134, 7.277973113528676e-8, 0.8999996874145226)
+(t, η, λ) = (135, 6.550173744187651e-8, 0.8999997172305907)
+(t, η, λ) = (136, 5.895154716811074e-8, 0.8999997476467226)
+(t, η, λ) = (137, 5.305637889049673e-8, 0.8999997699669715)
+(t, η, λ) = (138, 4.775073003034628e-8, 0.8999997932180633)
+(t, η, λ) = (139, 4.2975648109793166e-8, 0.8999998132485413)
+(t, η, λ) = (140, 3.8678076087083386e-8, 0.8999998321903036)
+(t, η, λ) = (141, 3.481026262141723e-8, 0.8999998485716351)
+(t, η, λ) = (142, 3.132923158862985e-8, 0.8999998629528968)
+(t, η, λ) = (143, 2.8196304492336813e-8, 0.8999998743208866)
+(t, η, λ) = (144, 2.5376670927516314e-8, 0.8999998895037178)
+(t, η, λ) = (145, 2.2839001149829124e-8, 0.8999998941966988)
+(t, η, λ) = (146, 2.055509915057007e-8, 0.8999999174974365)
+(t, η, λ) = (147, 1.8499587319435713e-8, 0.8999999067833565)
+(t, η, λ) = (148, 1.6649627353949685e-8, 0.899999933320542)
+(t, η, λ) = (149, 1.49846636652564e-8, 0.8999999427435644)
+(t, η, λ) = (150, 1.3486196207613159e-8, 0.8999999271843783)
+(t, η, λ) = (151, 1.2137575901607175e-8, 0.8999999491891815)
+(t, η, λ) = (152, 1.0923817732279531e-8, 0.8999999522831469)
+(t, η, λ) = (153, 9.831435471775681e-9, 0.89999995539326)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>([-1.623803790848331, -0.9698419695587606, -0.3782615432186312], [-1.0340629047854952, -0.3074386589025771, 0.34987292592487074])</code></pre>
+</div>
 </div>
 <ol type="1">
 <li><strong>Define a function <code>bellman_step(V_E::Vector, V_U::Vector, p::Parameters)::Tuple{Vector, Vector, Vector}</code> which returns updated values, together with improved policy rules.</strong></li>
 </ol>
 <div id="f06ee089" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol type="1">
 <li><strong>Implement Value Function Iteration</strong></li>
 </ol>
 <div id="96fc9104" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol type="1">
 <li><strong>Implement Policy Iteration and compare rates of convergence.</strong></li>
 </ol>
 <div id="0bb34fde" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol type="1">
 <li><strong>Discuss the Effects of the Parameters</strong></li>
 </ol>
 <div id="1c1a22b8" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 

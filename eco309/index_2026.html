@@ -128,6 +128,34 @@ ul.task-list li input[type="checkbox"] {
       window['quarto-listing-loaded']();
     }
   })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-corrections-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-corrections-listing'] = new List('listing-corrections-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
   </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -244,7 +272,7 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>For next time:</p>
 <ul>
-<li>make sure you have Julia installed and working (**)</li>
+<li>finish McCall tutorial</li>
 </ul>
 </div>
 </div>
@@ -320,6 +348,57 @@ Tutorials
 <tr data-index="4" data-listing-file-modified-sort="1773314035642" data-listing-reading-time-sort="2" data-listing-word-count-sort="226" data-listing-title-sort="Solow Model" data-listing-filename-sort="solow.qmd">
 <td>
 <a href="../tutorials/solow.html" class="title listing-title">Solow Model</a>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+<div class="listing-no-matching d-none">No matching items</div>
+</div><div class="quarto-listing quarto-listing-container-table" id="listing-corrections-listing">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+
+<th>
+Corrections
+</th>
+
+</tr>
+</thead>
+<tbody class="list">
+
+<tr data-index="0" data-listing-file-modified-sort="1775741735223" data-listing-reading-time-sort="2" data-listing-word-count-sort="342" data-listing-title-sort="Discrete Dynamic Programming" data-listing-filename-sort="discrete_dynamic_programming.ipynb">
+<td>
+<a href="../eco309/corrections/discrete_dynamic_programming.html" class="title listing-title">Discrete Dynamic Programming</a>
+</td>
+
+</tr>
+
+<tr data-index="1" data-listing-file-modified-sort="1774514328975" data-listing-reading-time-sort="13" data-listing-word-count-sort="2451" data-listing-title-sort="Julia Basics" data-listing-filename-sort="Julia_Basics.ipynb">
+<td>
+<a href="../eco309/corrections/Julia_Basics.html" class="title listing-title">Julia Basics</a>
+</td>
+
+</tr>
+
+<tr data-index="2" data-listing-file-modified-sort="1776329242783" data-listing-reading-time-sort="2" data-listing-word-count-sort="267" data-listing-title-sort="McCall Model" data-listing-filename-sort="mccall.ipynb">
+<td>
+<a href="../eco309/corrections/mccall.html" class="title listing-title">McCall Model</a>
+</td>
+
+</tr>
+
+<tr data-index="3" data-listing-file-modified-sort="1775716548257" data-listing-reading-time-sort="2" data-listing-word-count-sort="203" data-listing-title-sort="Solow Model" data-listing-filename-sort="solow.ipynb">
+<td>
+<a href="../eco309/corrections/solow.html" class="title listing-title">Solow Model</a>
+</td>
+
+</tr>
+
+<tr data-index="4" data-listing-file-modified-sort="1776332344151" data-listing-reading-time-sort="1" data-listing-word-count-sort="12" data-listing-title-sort="how do we represent the model?" data-listing-filename-sort="random.ipynb">
+<td>
+<a href="../eco309/corrections/random.html" class="title listing-title">how do we represent the model?</a>
 </td>
 
 </tr>

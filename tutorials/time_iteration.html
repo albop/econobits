@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pablo Winant">
 
-<title>Coursework 2026 - Perturbation of Stochastic Neoclassical Growth Model – econobits</title>
+<title>Time Iteration - Consumption Saving – econobits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -62,23 +62,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-f67b63dbfc378573cfd6da3a14783f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-f67b63dbfc378573cfd6da3a14783f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -137,7 +137,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -147,9 +147,9 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/logo_full2.png" alt="" class="navbar-logo light-content">
-    <img src="../../images/logo_full2.png" alt="" class="navbar-logo dark-content">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../images/logo_full2.png" alt="" class="navbar-logo light-content">
+    <img src="../images/logo_full2.png" alt="" class="navbar-logo dark-content">
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -158,11 +158,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html"> 
+    <a class="nav-link" href="../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -181,17 +181,22 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#model-definition" id="toc-model-definition" class="nav-link active" data-scroll-target="#model-definition">Model Definition</a></li>
-  <li><a href="#perturbation" id="toc-perturbation" class="nav-link" data-scroll-target="#perturbation">Perturbation</a></li>
+  <li><a href="#general-problem" id="toc-general-problem" class="nav-link active" data-scroll-target="#general-problem">General Problem</a></li>
+  <li><a href="#calibration" id="toc-calibration" class="nav-link" data-scroll-target="#calibration">Calibration</a></li>
+  <li><a href="#representing-the-decision-function" id="toc-representing-the-decision-function" class="nav-link" data-scroll-target="#representing-the-decision-function">Representing the decision function</a></li>
+  <li><a href="#discretizing-epsilon_t1" id="toc-discretizing-epsilon_t1" class="nav-link" data-scroll-target="#discretizing-epsilon_t1">Discretizing <span class="math inline">\(\epsilon_{t+1}\)</span></a></li>
+  <li><a href="#euler-equation" id="toc-euler-equation" class="nav-link" data-scroll-target="#euler-equation">Euler equation</a></li>
+  <li><a href="#time-iteration" id="toc-time-iteration" class="nav-link" data-scroll-target="#time-iteration">Time Iteration</a></li>
+  <li><a href="#bonuses" id="toc-bonuses" class="nav-link" data-scroll-target="#bonuses">Bonuses</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="coursework_1_perturbation.ipynb" download="coursework_1_perturbation.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="time_iteration.ipynb" download="time_iteration.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Coursework 2026 - Perturbation of Stochastic Neoclassical Growth Model</h1>
+<h1 class="title">Time Iteration - Consumption Saving</h1>
 </div>
 
 
@@ -214,172 +219,225 @@ window.Quarto = {
 </header>
 
 
-<p><strong>Name</strong>:</p>
-<p><strong>Surname</strong>:</p>
-<p>After completing the following questions, send the edited notebook to <code>pablo.winant@ensae.fr</code>. You can work in (small) teams. Don’t forget to comment your code and take any initiative you find relevant.</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Differences With the Tutorial Version">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Differences With the Tutorial Version
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>If you have worked on the tutorial version of this homework, pay attention to the following differences:</p>
-<ul>
-<li>The controls are now (<code>y,c,i</code>) instead of just <code>i</code>. This facilitates the production of graphs with the simulations.</li>
-<li>The exogenous shock <span class="math inline">\(\epsilon_t\)</span> drives the productivity process. Function <code>arbitrage</code> and <code>transition</code> need to be defined a bit differently and produce a new jacobian (<code>G</code>). Note that it doesn’t have any effect on the first order solution and that <code>X</code> is still a function of <code>A,B,C,D,E,F</code>.</li>
-<li>You can check Blanchard-Kahn conditions using the simple formula in the slides rather than by studying the time-iteration operator.</li>
-<li>Thre are now two kinds of simulations: irf (how the economy reacts to the shock), and stochastic simulations (produce many draws from the same initial state)</li>
-</ul>
-</div>
-</div>
-</div>
-<p>Our goal here is to compute a linear approximation of solution to the neoclassical model, close to the steady-state, and use it to study the effect of productivity shocks.</p>
+<section id="general-problem" class="level2">
+<h2 class="anchored" data-anchor-id="general-problem">General Problem</h2>
+<p>We seek to solve numerically the following consumption-saving problem using the time-iteration algorithm.</p>
+<p>Income is an iid normally distributed process with standard deviation <span class="math inline">\(\sigma\)</span>. Interest rate is <span class="math inline">\(r\in [1,\frac{1}{\beta}[\)</span> where <span class="math inline">\(\beta\in]0,1[\)</span> is the discount factor.</p>
+<p>Available income is <span class="math inline">\(w_t\)</span> and follows the law of motion:</p>
+<p><span class="math display">\[w_{t+1} = e^ {\epsilon_{t+1}} +  (w_{t} - c_{t}) r\]</span></p>
+<p>where <span class="math inline">\(c_t \in ]0,w_t]\)</span> is consumption chosen at date <span class="math inline">\(t\)</span> (which includes an implicit no borrowing constraint).</p>
+</section>
+<section id="calibration" class="level2">
+<h2 class="anchored" data-anchor-id="calibration">Calibration</h2>
+<p>We will use the following calibration:</p>
+<p><span class="math inline">\(\sigma = 0.01\)</span></p>
+<p><span class="math inline">\(\beta = 0.96\)</span></p>
+<p><span class="math inline">\(r = 1.03\)</span></p>
 <ol class="example" type="1">
-<li><strong>Warm-up: install the <code>ForwardDiff</code> library. Use it to differentiate the function below. Check the jacobian function.</strong></li>
+<li><strong>Choose a structure <code>model</code> to represent the model parameters.</strong></li>
 </ol>
-<p>Note: the signature of function <code>f</code> needs to be fixed first to allow for dual numbers as arguments.</p>
-<div id="8e99d705" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function f(x::Vector{T}) where T &lt;: Number</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">f</span>(x)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> x[<span class="fl">1</span>]</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> x[<span class="fl">2</span>]</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> a<span class="op">+</span>b</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span> <span class="fu">a*exp</span>(b)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [x1,x2]</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="7fd92aa6" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<section id="model-definition" class="level2">
-<h2 class="anchored" data-anchor-id="model-definition">Model Definition</h2>
-<p>We use the following version of the neoclassical model:</p>
-<ul>
-<li><p>transition equations: <span class="math display">\[\begin{align}
-k_{t} &amp; = (1-\delta) k_{t-1} + i_{t-1} \\\\
-z_{t} &amp; = \rho z_{t-1} + \epsilon_{t}
-\end{align}\]</span></p></li>
-<li><p>first order equations: <span class="math display">\[\begin{align}
-0 &amp; = \mathbb{E}_t\left[exp(z_t) k_t^\alpha - y_t \right]\\\\
-0 &amp; = \mathbb{E}_t\left[ y_t - c_t + i_t \right]\\\\
-0 &amp; = \mathbb{E}_t\left[ \beta (c_{t+1}/c_t) ( (1-\delta) + \alpha exp(z_{t+1}) k_{t+1}^{\alpha-1}) -  1 \right]
-\end{align}
-\]</span></p></li>
-</ul>
-<p>where <span class="math inline">\(k\)</span> is capital, <span class="math inline">\(i\)</span> is investment, <span class="math inline">\(z\)</span> is productivity, <span class="math inline">\(c\)</span> is consumption, <span class="math inline">\(\delta\)</span> is the depreciation rate, <span class="math inline">\(\alpha\)</span> is the capital share in production and <span class="math inline">\(\beta\)</span> is the discount factor. The shock <span class="math inline">\(\epsilon_t\)</span> is an i.i.d. shock with variance <span class="math inline">\(\sigma^2\)</span>.</p>
-<ol start="2" class="example" type="1">
-<li><strong>Which variables are states and which are controls?</strong></li>
-</ol>
-<div id="2d2df3be" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="3" class="example" type="1">
-<li><strong>Create a NamedTuple to hold the model parameters. Choose and justify plausible values.</strong></li>
-</ol>
-<div id="315933d0" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="4" class="example" type="1">
-<li><strong>Define two functions:</strong></li>
-</ol>
-<ul>
-<li><p><code>transition(z::Number, k::Number, i::Number, c: Number, y: Number, e::Number, p::NamedTuple)::Tuple{Number}</code> which returns productivity and capital at date <span class="math inline">\(t+1\)</span> as a function of productivity, capital, investment, and shock at date <span class="math inline">\(t\)</span> as well as the exogenous shock at date <span class="math inline">\(t+1\)</span>. Argument <code>p</code> represents the model parameters.</p></li>
-<li><p><code>arbitrage(z::Number, k::Number, i::Number, c::Number, y::Number,Z::Number, K::Number, I::Number,  C::Number,  Y::Number p)::Tuple{Number, Number}</code> which returns the residual of the euler equation (lower case variable for date <span class="math inline">\(t\)</span>, upper case for date <span class="math inline">\(t+1\)</span>) and the residual of the budget constraint. Argument <code>p</code> represents the model parameters.</p></li>
-</ul>
-<p>Note that the arbitrage equation here is defined for a specific realization of the shock in <span class="math inline">\(t\)</span> and <span class="math inline">\(t+1\)</span>: there is no need to code the expectation operator here.</p>
-<div id="300f3f9a" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="5" class="example" type="1">
-<li><strong>Using multiple dispatch, define two variants of the same functions, that take vectors as input and output arguments:</strong></li>
-</ol>
-<ul>
-<li><code>arbitrage(s::Vector, x::Vector, S::Vector, X::Vector, p)</code></li>
-<li><code>transition(s::Vector, x::Vector, e::Vector, p)</code></li>
-</ul>
-<p>where <code>s</code> is the vector of states (capital and productivity), <code>x</code> is the vector of controls (investment, consumption, production), <code>S</code> and <code>X</code> are the same variables at date t+1, and <code>e</code> is the vector of shocks.</p>
-<div id="552738be" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="6" class="example" type="1">
-<li><strong>Write a function <code>steady_state(p)::Tuple{Vector,Vector}</code> which computes the steady-state of the model computed by hand.</strong> It returns three vectors, one for the states, one for the controls, one for the exogenous shocks. Check that the steady-state satisfies the model equations.</li>
-</ol>
-<div id="7cb0f726" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The first order system satisfies: <span class="math display">\[\begin{align}
-\mathbb{E} \left[A s_t + B x_t + C s_{t+1} + D x_{t+1} \right] &amp; = &amp; 0 \\\\
-s_{t+1} &amp; = &amp; E s_t + F x_t + G e_t
-\end{align}\]</span></p>
-<ol start="7" class="example" type="1">
-<li><strong>Define a structure <code>PerturbedModel</code> to hold matrices A,B,C,D,E,F,G.</strong></li>
-</ol>
-<div id="9819f7a9" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="14af1edf" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model = ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="perturbation" class="level2">
-<h2 class="anchored" data-anchor-id="perturbation">Perturbation</h2>
-<ol start="8" class="example" type="1">
-<li><strong>Write a function <code>first_order_model(s::Vector, x::Vector, e::Vector, p)::PerturbedModel</code>, which returns the first order model, given the steady-state and the calibration. Suggestion: use <code>ForwardDiff.jl</code> library.</strong></li>
+<section id="representing-the-decision-function" class="level2">
+<h2 class="anchored" data-anchor-id="representing-the-decision-function">Representing the decision function</h2>
+<p>The solution of the model is a decision rule <span class="math inline">\(c(w)\)</span>.</p>
+<p>In what follows, we will approximate it by a function defined over <span class="math inline">\([0,w_{max}[\)</span>, pinned down by the values it takes on <span class="math inline">\(N\)</span> linearly spaced grid points.</p>
+<p>In our solutions algorithm, we will use the initial guess <span class="math inline">\(\varphi_0(w) = min(w, p_0+p_1(w-p_0))\)</span>.</p>
+<ol start="2" class="example" type="1">
+<li><strong>Create a structure <code>approx</code> to represent the approximation space. This structure should contain the parameters, as well as a <code>points::Vector{Float64}</code> array coontaining the (regularly spaced) list of grid points.</strong></li>
 </ol>
-<div id="8e76b6cb" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To start with you can take <span class="math inline">\(w_{max}=5\)</span>, <span class="math inline">\(N=20\)</span>, <span class="math inline">\(p_0=0.95, p_1=0.03\)</span> but don’t hesitate to change these values later if needed.</p>
+<div id="dc215dfa" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># approx = ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="3" class="example" type="1">
+<li><strong>Define a method <code>φ_0(w::Float64)::Float64</code> for the initial guess. Plot it against <span class="math inline">\(w\)</span> in the approximation space.</strong></li>
+</ol>
+<div id="f6b24fe9" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="4" class="example" type="1">
+<li><strong>Compute the values <code>c_0::{Float64}</code>of <code>φ_0()</code> on the grid <code>points</code></strong></li>
+</ol>
+<div id="1378c8bb" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="5" class="example" type="1">
+<li><strong>Use the <code>Interpolations.jl</code> library to define a function <code>φ(w::Float64)</code> defined for any <code>w</code> using piecewise <em>linear</em> interpolation in such a way that it takes values <code>c_0</code> on the grid <code>points</code>.</strong></li>
+</ol>
+<div id="eb64811e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="6" class="example" type="1">
+<li><strong>Create a single plot with</strong>:</li>
+</ol>
+<ul>
+<li>the function <code>φ_0()</code></li>
+<li>the interpolated function <span class="math inline">\(φ\)</span></li>
+<li>its values <code>c_0</code> on the grid points</li>
+</ul>
+<div id="7fe5c174" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="7" class="example" type="1">
+<li><strong>Bonus: add to the graph the function obtained using cubic spline interpolation. What <em>could</em> be the problem?</strong></li>
+</ol>
+<div id="737e9dbd" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="discretizing-epsilon_t1" class="level2">
+<h2 class="anchored" data-anchor-id="discretizing-epsilon_t1">Discretizing <span class="math inline">\(\epsilon_{t+1}\)</span></h2>
+<ol start="8" class="example" type="1">
+<li><strong>Represent the shock <span class="math inline">\(\epsilon\)</span> by two vectors <span class="math inline">\((e_1, ... e_q)\)</span> and <span class="math inline">\((l_1, ..., l_q)\)</span> with <span class="math inline">\(q=10\)</span> such that for a suitable function <span class="math inline">\(g\)</span> we can approximate <span class="math inline">\(E_{\epsilon} (g(\epsilon))\)</span> by <span class="math inline">\(\sum_{i=1}^q l_i e_i\)</span> .</strong></li>
+</ol>
+<p>(choose the method you want)</p>
+<div id="63da8ecd" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># e = ...</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># w = ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="9" class="example" type="1">
-<li><strong>We look for a linear solution <span class="math inline">\(x_t = X s_t\)</span> . Write the matrix equation which <code>X</code> must satisfy. Write a function <code>riccati_residual(X::Array, M::PerturbedModel)</code> to compute the residual of this equation for a given <code>X</code>.</strong></li>
+<li><strong>Test that it works by computing <span class="math inline">\(E_{\epsilon} \left[ \epsilon^2 \right]\)</span>.</strong></li>
 </ol>
-<div id="0e504916" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="6be90cff" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="10" class="example" type="1">
-<li><strong>Write a function <code>T(X, M::PerturbedModel)</code> which implements the linear time iteration step.</strong></li>
+<li><strong>Redefine <code>approx</code> so as to include the discretized shock</strong></li>
 </ol>
-<div id="1316fbb0" class="cell">
+<div id="ce6415c3" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="euler-equation" class="level2">
+<h2 class="anchored" data-anchor-id="euler-equation">Euler equation</h2>
+<ol start="11" class="example" type="1">
+<li><strong>Write down the Euler equation, paying attention to the slackness condition.</strong></li>
+</ol>
+<p>It should be of the form <span class="math display">\[0 \leq \underbrace{E_t \left[ f(w_t, c_t, w_{t+1}, c_{t+1}, \epsilon_{t+1}) \right]}_{\Phi_t} \perp c_t \leq w_t\]</span></p>
+<p>where <span class="math inline">\(f\)</span> is a function to be explicited.</p>
+<div id="1b4d3b65" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="11" class="example" type="1">
-<li><strong>Write function <code>linear_time_iteration(X_0::Matrix, m::PerturbedModel)::Matrix</code> which implements the time iteration algorithm. Apply it to <code>X0 = rand(1,2)</code> and check that the result satisfies the first order model.</strong></li>
+<ol start="12" class="example" type="1">
+<li><strong>Define the function <code>Phi(w::Float64,c::Float64,φ::Fun, model, approx)</code> which approximates the residuals of the euler equation given the available income today, the consumption choice today, the consumption <em>function</em> tomorrow and the model/approx structures.</strong></li>
 </ol>
-<div id="010cef39" class="cell">
+<div id="c0a3127e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="12" class="example" type="1">
-<li><strong>Check blanchard Kahn Conditions (i.e.&nbsp;non-divergence and unicity using the conditions from the lecture).</strong></li>
+<ol start="13" class="example" type="1">
+<li><strong>Overload <code>Phi</code> function with another method <code>Phi(w::Float64,c::Float64,φ::Fun, model, approx, slackness=true)</code> which uses the Fisher-Burmeister transform to incorporate the credit constraint.</strong></li>
 </ol>
-<div id="a2ac9c6c" class="cell">
+<div id="c3f8f921" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="13" class="example" type="1">
-<li><strong>Write a function <code>irf(X::Matrix, p, T::Int64;σ=0.01)::Tuple{Matrix, Matrix}</code> to compute the response of the model to a standard deviation productivity shock (i.e.&nbsp;<span class="math inline">\(e_0=\sigma\)</span> and <span class="math inline">\(e_1=e_2=...=0\)</span> ) by using the formula <span class="math inline">\(\Delta s_t = (E + F X) \Delta s_{t-1} + G e_t\)</span>. Return a matrix for the states (one line per date) and another matrix for the controls. Bonus: add a keyword option to compute variable levels or log-deviations. If possible, return a DataFrame object.</strong></li>
+<ol start="14" class="example" type="1">
+<li><strong>Plot the optization residuals (i.e.&nbsp;values of <span class="math inline">\(\Phi_t\)</span>) corresponding to the initial guess function with and without the complementarity constraints.</strong></li>
 </ol>
-<div id="b4d2e7cc" class="cell">
+<div id="8478507b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="14" class="example" type="1">
-<li><strong>Compare irfs for different values of a parameter of your choice and comment using nice plots.</strong></li>
+</section>
+<section id="time-iteration" class="level2">
+<h2 class="anchored" data-anchor-id="time-iteration">Time Iteration</h2>
+<ol start="15" class="example" type="1">
+<li><strong>(prep): Assuming the initial guess <span class="math inline">\(φ_0()\)</span> is the decision rule followed tomorrow, determine, for a given value <code>w</code> in the state-space, the optimal consumption choice made today. This can be achieved by feeding the appropriate function into the right nonlinear root-finder.</strong></li>
 </ol>
-<div id="abaa93b6" class="cell">
+<div id="1f093dd7" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="15" class="example" type="1">
-<li><strong>Write a function <code>simulate(s0::Vector, X::Matrix, p, T::Int64; n_draws=100)::VectorTuple{Matrix, Matrix}</code> to compute many draws of the model over <span class="math inline">\(T\)</span> periods. Bonus: return the result as an AxisArrays object.</strong></li>
+<ol start="16" class="example" type="1">
+<li><strong>(prep): Find the vector of all the optimal consumption choices on the grid today, given the decision rule tomorrow.</strong></li>
 </ol>
-<div id="d8c2ab3c" class="cell">
+<div id="3c66978c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="16" class="example" type="1">
-<li><strong>Compute standard deviations of the variables and their correlations. Comment?</strong></li>
+<ol start="17" class="example" type="1">
+<li><strong>Plot the optimization residuals (i.e.&nbsp;values of <span class="math inline">\(\Phi_t\)</span>) for the initial guess function</strong></li>
 </ol>
-<div id="2d0a4c25" class="cell">
+<div id="ee407c72" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<ol start="18" class="example" type="1">
+<li><strong>Write down the time-iteration algorithm.</strong></li>
+</ol>
+<p>You can use the course as reference and/or repeat the recurrence steps below:</p>
+<ul>
+<li>given an initial guess for the consumption vector <code>c0</code></li>
+<li>create a function defined <code>φ</code> on <code>[0,wmax]</code> which interpolates <code>c0</code> on the grid</li>
+<li>for each grid point <code>w</code> in the grid, solve the system <code>u-&gt;Phi(w,u,φ, model, approx, slackness=true)</code>
+<ul>
+<li>store the result as a vector <code>c1</code></li>
+</ul></li>
+<li>check whether <code>c1</code> is close to <code>c0</code>
+<ul>
+<li>yes: check the system is indeed solved and return</li>
+<li>no: start again with <code>c1</code> as <code>c0</code></li>
+</ul></li>
+</ul>
+<div id="ddd1b581" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># here is a placeholder implementation to help you structure your program.</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  feel free to modify or discard</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="st">φ: Float64-&gt;Float64 Initial guess for the consumption function</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">model: parameters representing the model</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="st">approx: parameters defining the approximation and solution method</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">K: max number of iterations</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">... other parameters for you to choose</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">time_iteration</span>(φ<span class="fl">0</span>, model, approx; K<span class="op">=</span><span class="fl">200</span>, <span class="op">...</span> )</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ...</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># convert initial function φ0 into a consumption vector by evaluating φ on the grid</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># c0 = ... :: Vector{Float64}</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k<span class="op">=</span><span class="fl">1</span><span class="op">:</span>K</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># convert consumption vector c0 into a function φ</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># φ = ...</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># solve for the optimal consumption for all grid points</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ...</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># c1  :: Vector{Float64}</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># check distance between c0 and c1</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># η = ...</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if distance is small return function `varphi`</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="19" class="example" type="1">
+<li><strong>Check that the value returned by <code>time_iteration</code> is actually a solution to the system. How fast is the convergence? Graphical representation.</strong></li>
+</ol>
+<div id="b57e1f0c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="bonuses" class="level2">
+<h2 class="anchored" data-anchor-id="bonuses">Bonuses</h2>
+<ol start="20" class="example" type="1">
+<li><strong>(easy): perform some sensitivity analysis on the model to explain the effect of the main parameters</strong></li>
+</ol>
+<div id="85b197fe" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="21" class="example" type="1">
+<li><p><strong>(medium): Give the solution to the above problem, simulate the law of motion for the available income. Find a way to plot the distriution of that income over a long period of time.</strong></p></li>
+<li><p><strong>(hard): Propose and implement some ideas to speed up the solution process.</strong></p></li>
+</ol>
+<p>One promising avenue consists in solving for all consumption values at all grid points as one single system of equation after recognizing that the jacobian of this particular system has a specific structure.</p>
 
 
 </section>
