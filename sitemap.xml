@@ -53,48 +53,52 @@
     <lastmod>2026-03-26T14:06:41.521Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/mie37/corrections/mccall.html</loc>
-    <lastmod>2026-04-02T13:02:14.992Z</lastmod>
+    <loc>https://albop.github.io/econobits/mie37/corrections/optimization_correction.html</loc>
+    <lastmod>2026-03-19T14:06:11.623Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/mie37/homework/coursework_1_perturbation.html</loc>
+    <loc>https://albop.github.io/econobits/mie37/corrections/solow.html</loc>
+    <lastmod>2026-02-19T12:31:08.523Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/mie37/homework/coursework_1_deeplearning.html</loc>
     <lastmod>2026-03-17T09:17:56.838Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/index.html</loc>
-    <lastmod>2026-03-12T11:13:51.621Z</lastmod>
+    <loc>https://albop.github.io/econobits/comments.html</loc>
+    <lastmod>2026-03-31T08:33:46.044Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/interpolation/index.html</loc>
-    <lastmod>2026-04-14T07:43:14.469Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/time_iteration/index.html</loc>
+    <lastmod>2026-04-16T10:45:05.664Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/discrete_dynamic_programming/index.html</loc>
-    <lastmod>2026-04-14T07:43:12.398Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/optimization/index.html</loc>
+    <lastmod>2026-03-19T12:53:12.145Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/differentiation/index.html</loc>
-    <lastmod>2026-04-07T08:08:34.801Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/discretization/index.html</loc>
+    <lastmod>2026-04-14T07:43:14.462Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/qz/qz_policy.html</loc>
-    <lastmod>2026-03-13T11:39:41.581Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/perturbation/index.html</loc>
+    <lastmod>2026-03-13T11:35:52.022Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/convergence/convergence_1.html</loc>
-    <lastmod>2026-04-14T07:43:12.397Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/convergence/convergence_2.html</loc>
+    <lastmod>2026-03-13T20:24:10.805Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/scpo/wip.html</loc>
-    <lastmod>2026-03-12T11:13:55.640Z</lastmod>
+    <loc>https://albop.github.io/econobits/scpo/introduction/index.html</loc>
+    <lastmod>2026-03-19T08:27:57.825Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/scpo/index_2026.html</loc>
-    <lastmod>2026-04-14T07:50:37.500Z</lastmod>
+    <loc>https://albop.github.io/econobits/scpo/corrections/monte_carlo_interpolation.html</loc>
+    <lastmod>2026-04-17T10:15:54.856Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/scpo/corrections/perturbation.html</loc>
-    <lastmod>2026-04-14T10:21:58.766Z</lastmod>
+    <lastmod>2026-04-17T08:46:49.919Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/scpo/corrections/optimization_correction.html</loc>
@@ -133,44 +137,48 @@
     <lastmod>2026-03-17T11:17:30.561Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/scpo/introduction/index.html</loc>
-    <lastmod>2026-03-19T08:27:57.825Z</lastmod>
+    <loc>https://albop.github.io/econobits/scpo/index_2026.html</loc>
+    <lastmod>2026-04-17T08:18:01.236Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/convergence/convergence_2.html</loc>
-    <lastmod>2026-03-13T20:24:10.805Z</lastmod>
+    <loc>https://albop.github.io/econobits/scpo/wip.html</loc>
+    <lastmod>2026-03-12T11:13:55.640Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/perturbation/index.html</loc>
-    <lastmod>2026-03-13T11:35:52.022Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/convergence/convergence_1.html</loc>
+    <lastmod>2026-04-14T07:43:12.397Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/discretization/index.html</loc>
-    <lastmod>2026-04-14T07:43:14.462Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/qz/qz_policy.html</loc>
+    <lastmod>2026-03-13T11:39:41.581Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/optimization/index.html</loc>
-    <lastmod>2026-03-19T12:53:12.145Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/differentiation/index.html</loc>
+    <lastmod>2026-04-07T08:08:34.801Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/time_iteration/index.html</loc>
-    <lastmod>2026-04-16T10:45:05.664Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/discrete_dynamic_programming/index.html</loc>
+    <lastmod>2026-04-14T07:43:12.398Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/comments.html</loc>
-    <lastmod>2026-03-31T08:33:46.044Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/interpolation/index.html</loc>
+    <lastmod>2026-04-14T07:43:14.469Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/mie37/homework/coursework_1_deeplearning.html</loc>
+    <loc>https://albop.github.io/econobits/index.html</loc>
+    <lastmod>2026-03-12T11:13:51.621Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/mie37/homework/coursework_1_perturbation.html</loc>
     <lastmod>2026-03-17T09:17:56.838Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/mie37/corrections/solow.html</loc>
-    <lastmod>2026-02-19T12:31:08.523Z</lastmod>
+    <loc>https://albop.github.io/econobits/mie37/corrections/mccall.html</loc>
+    <lastmod>2026-04-02T13:02:14.992Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/mie37/corrections/optimization_correction.html</loc>
-    <lastmod>2026-03-19T14:06:11.623Z</lastmod>
+    <loc>https://albop.github.io/econobits/mie37/corrections/time_iteration.html</loc>
+    <lastmod>2026-04-17T08:12:32.333Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/mie37/corrections/perturbation_correction.html</loc>
@@ -202,7 +210,7 @@
   </url>
   <url>
     <loc>https://albop.github.io/econobits/tutorials/time_iteration.html</loc>
-    <lastmod>2026-04-16T10:49:29.297Z</lastmod>
+    <lastmod>2026-04-16T10:51:10.356Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/eco309/corrections/solow.html</loc>

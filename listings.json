@@ -52,12 +52,14 @@
       "/lectures/interpolation/index.html",
       "/lectures/optimization/index.html",
       "/lectures/perturbation/index.html",
+      "/lectures/time_iteration/index.html",
       "/tutorials/monte_carlo_interpolation.html",
       "/tutorials/epidemiology.html",
       "/tutorials/Julia_Basics.html",
       "/tutorials/optimization.html",
       "/tutorials/perturbation.html",
       "/tutorials/solow.html",
+      "/tutorials/time_iteration.html",
       "/exercises/optimization_pushups.html"
     ]
   }
