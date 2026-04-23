@@ -9,6 +9,7 @@ listing:
       title: "Lectures"
     contents:
       - ../lectures/convergence/convergence_1.qmd
+      - ../lectures/discrete_dynamic_programming/index.qmd
     #   - ../lectures/convergence/convergence_2.qmd
     #   - ../lectures/perturbation/index.qmd
       # - ../lectures/interpolation.qmd
@@ -24,6 +25,22 @@ listing:
       - ../tutorials/Julia_Basics.qmd
       - ../tutorials/solow.qmd
       - ../tutorials/epidemiology.qmd
+      - ../tutorials/discrete_dynamic_programming.qmd
+      - ../tutorials/mccall.qmd
+  - id: corrections-listing
+    type: table
+    fields: [title]
+    sort-ui: false
+    filter-ui: false
+    field-display-names: 
+      title: "Corrections"
+    contents:
+      - ./corrections/Julia_Basics.ipynb
+      - ./corrections/solow.ipynb
+      - ./corrections/random.ipynb
+      - ./corrections/discrete_dynamic_programming.ipynb
+      - ./corrections/mccall.ipynb
+  
 ---
 
 
@@ -44,7 +61,6 @@ To get a very nice working installation:
 
 For next time: 
 
-- make sure you have Julia installed and working (**)
-
+- finish McCall tutorial
 
 :::

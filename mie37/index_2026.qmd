@@ -14,8 +14,10 @@ listing:
       - ../lectures/convergence/convergence_2.qmd
       - ../lectures/perturbation/index.qmd
       - ../lectures/optimization/index.qmd
-      # - ../lectures/interpolation.qmd
-      # - ../lectures/time_iteration.qmd
+      - ../lectures/discretization/index.qmd
+      - ../lectures/discrete_dynamic_programming/index.qmd
+      - ../lectures/interpolation/index.qmd
+      - ../lectures/time_iteration/index.qmd
   - id: tutorials-listing
     type: table
     fields: [title]
@@ -30,6 +32,9 @@ listing:
       - ../tutorials/epidemiology.qmd
       - ../tutorials/perturbation.qmd
       - ../tutorials/optimization.qmd
+      - ../tutorials/mccall.qmd
+      - ../tutorials/discrete_dynamic_programming.qmd
+      - ../tutorials/time_iteration.qmd
   - id: exercises-listing
     type: table
     fields: [title]
@@ -40,6 +45,20 @@ listing:
       title: "Exercises (pushups)"
     contents:
       - ../exercises/optimization_pushups.qmd
+  - id: corrections-listing
+    type: table
+    fields: [title]
+    sort: false
+    sort-ui: false
+    filter-ui: false
+    field-display-names: 
+      title: "Corrections"
+    contents:
+      - ./corrections/solow.ipynb
+      - ./corrections/discrete_dynamic_programming.ipynb
+      - ./corrections/mccall.ipynb
+      - ./corrections/optimization_correction.ipynb
+      - ./corrections/perturbation_correction.ipynb
 ---
 
 
@@ -60,10 +79,7 @@ To get a very nice working installation:
 
 Before April 2nd:
 
-- First homework: [coursework 1 (perturbation)](homework/coursework_1_perturbation.qmd) *or* [coursework 1 (deeplearning)](homework/coursework_1_deeplearning.ipynb)
+- Second Homework
 
-For next weeek:
-
-- do some of the [optimization pushups](../exercises/optimization_pushups.qmd)
 
 :::

@@ -1,5 +1,5 @@
 ---
-title: Computing expected consumption
+title: Discretization, Integration and Interpolation
 author: Pablo Winant
 format:
   html: default
@@ -8,6 +8,8 @@ jupyter: julia-1.12
 execute: 
   enabled: false
 ---
+
+## Expected Utility of Consumption
 
 Assume consumption is given by $C(\epsilon)=(\exp({\epsilon}))$ with $\epsilon$ is a random variable with standard deviation ${\sigma}_{\epsilon}=0.05$.
 
@@ -20,101 +22,26 @@ We'll use the calibration $\gamma=40$ and ${\sigma}_{\epsilon}=0.05$.
 
 __(optional) Compute the result in closed form__
 
-Hint: $$\int_{-\infty}^{\infty}e^{-a x^2+bx +c} dx = \sqrt{\frac{\pi}{a}} e^{\frac{b^2}{4a}+c}$$
+Hint: $$\int_{-\infty}^{\infty}e^{-(a x^2+bx +c)} dx = \sqrt{\frac{\pi}{a}} e^{\frac{b^2}{4a}+c}$$
 
-
-__Compute the result by approximating an integral with `QuadGK`__
 
 ```{julia}
-γ = 40
-σ = 0.05
-C(e) = exp(e)
-U(C) = C^(-γ)/(-γ)
-μ(x) = 1/sqrt(2*π*σ^2)*exp(-x^2/(2*σ^2))
-```
-
-```{julia}
-using QuadGK
-
-res_quad, tol = quadgk(e-> U(C(e))*μ(e), -1, 1)
+# your code
 ```
 
 __Compute the result using Monte-Carlo simulations. Evaluate the variance of the estimation.__
 
 ```{julia}
-using Distributions
-```
-
-```{julia}
-N(0,σ^2)
-```
-
-```{julia}
-dis = Normal(0, σ)
-```
-
-```{julia}
-E_ϵ(N) = sum(U(C(rand(dis))) for i=1:N)/N
-```
-
-```{julia}
-@time E_ϵ(1000)
-```
-
-```{julia}
-using Plots
-```
-
-```{julia}
-#| collapsed: true
-#| jupyter: {outputs_hidden: true}
-vals = [E_ϵ(n) for n=1:10000];
-```
-
-```{julia}
-pl = plot(vals, legend=:bottomright)
-plot!(pl, vals*0 .+ res_quad )
-```
-
-```{julia}
-Nvec=1000:1000:10000
-variance_estimator(K) = [std([E_ϵ(n) for k=1:K]) for n=Nvec]
-```
-
-```{julia}
-varvec = variance_estimator(1000)
-```
-
-```{julia}
-plot(Nvec, varvec, xscale=:log10, yscale=:log10)
+# your code
 ```
 
 __Compute the result using Gauss-Hermite quadrature__
 
 ```{julia}
-using FastGaussQuadrature
-
+# your code
 ```
 
-```{julia}
-x, w = gausshermite( 5 );
-plot(x,w)
-```
-
-```{julia}
-x, w = gausshermite( 10 );
-x = x.*σ*sqrt(2) # renormalize nodes
-s = sum( w_*U(C(x_)) for (w_,x_) in zip(w,x))
-s /= sqrt(π) # renormalize output
-```
-
-```{julia}
-pl = plot(vals, legend=:bottomright)
-plot!(pl, vals*0 .+ res_quad )
-plot!(pl, vals*0 .+ s)
-```
-
-## Exercise: Compare interpolation methods
+## Interpolation Methods
 
 Take
 
@@ -125,12 +52,40 @@ $$
 and compare several interpolation methods.
 
 @. __Implement **piecewise linear interpolation** on an equally spaced grid.__
+
+```{julia}
+# your code
+```
+
+
 @. __Compute interpolation errors (max error and RMSE) on a fine grid.__
+
+```{julia}
+# your code
+```
+
+@. __Plot__
+
 @. __Compare with:__
 
   - **nearest-neighbor interpolation** on the same nodes
   - **natural cubic spline interpolation** on the same nodes
   - **global polynomial interpolation on Chebyshev nodes**
 
-@. Repeat for $N=9$ and $N=21$.
-@. Comments
+```{julia}
+# your code
+```
+
+
+@. __Repeat for $N=9$ and $N=21$.__
+
+```{julia}
+# your code
+```
+
+
+@. __Comments__
+
+```{julia}
+# your code
+```

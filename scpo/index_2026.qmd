@@ -11,10 +11,11 @@ listing:
       - ../lectures/convergence/convergence_1.qmd
       - ../lectures/optimization/index.qmd
       - ../lectures/convergence/convergence_2.qmd
-
-      # - ../lectures/perturbation/index.qmd
-      # - ../lectures/interpolation.qmd
-      # - ../lectures/time_iteration.qmd
+      - ../lectures/discrete_dynamic_programming.qmd
+      - ../lectures/perturbation/index.qmd
+      - ../lectures/discretization/index.qmd
+      - ../lectures/interpolation/index.qmd
+      - ../lectures/time_iteration/index.qmd
   - id: tutorials-listing
     type: table
     fields: [title]
@@ -27,8 +28,9 @@ listing:
       - ../tutorials/solow.qmd
       - ../tutorials/epidemiology.qmd
       - ../tutorials/optimization.qmd
-
-      # - ../tutorials/perturbation.qmd
+      - ../tutorials/perturbation.qmd
+      - ../tutorials/monte_carlo_interpolation.qmd
+      - ../tutorials/time_iteration.qmd
   - id: exercises-listing
     type: table
     fields: [title]
@@ -58,6 +60,6 @@ To get a very nice working installation:
 
 For next time:
 
-- Some Optimization Pushups: [optimization pushups](../exercises/optimization_pushups.qmd)
+- Finish [perturbation](../tutorials/perturbation.qmd) tutorial 
 
 :::
