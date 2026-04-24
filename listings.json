@@ -3,6 +3,7 @@
     "listing": "/eco309/index_2026.html",
     "items": [
       "/lectures/convergence/convergence_1.html",
+      "/lectures/discrete_dynamic_programming/index.html",
       "/tutorials/discrete_dynamic_programming.html",
       "/tutorials/epidemiology.html",
       "/tutorials/Julia_Basics.html",

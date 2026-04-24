@@ -61,7 +61,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -105,6 +105,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -241,7 +244,7 @@ window.Quarto = {
 <ol type="1">
 <li><strong>Define a named tuple for the model.</strong></li>
 </ol>
-<div id="7947ab81" class="cell" data-execution_count="2">
+<div id="7947ab81" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> (;</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    λ<span class="op">=</span><span class="fl">0.05</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    β<span class="op">=</span><span class="fl">0.9</span>, <span class="co"># yearly discount</span></span>
@@ -249,14 +252,14 @@ window.Quarto = {
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    p<span class="op">=</span><span class="fu">ones</span>(<span class="fl">3</span>)<span class="op">/</span><span class="fl">3</span>,</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    cbar<span class="op">=</span><span class="fl">0.5</span>, </span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>(λ = 0.05, β = 0.9, w = [0.9, 1.0, 1.1], p = [0.3333333333333333, 0.3333333333333333, 0.3333333333333333], cbar = 0.5)</code></pre>
 </div>
 </div>
 <ol type="1">
 <li><strong>Define a function <code>value_update(V_U::Vector{Float64}, V_E::Vector{Float64}, x::Vector{Bool}, p::Parameters)::Tuple{Vector, Vector}</code>, which takes in value functions tomorrow and a policy vector and return updated values for today.</strong></li>
 </ol>
-<div id="2e70b718" class="cell" data-execution_count="8">
+<div id="2e70b718" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>V_U_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>V_E_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x_0 <span class="op">=</span> [<span class="cn">false</span>, <span class="cn">false</span>, <span class="cn">false</span>]</span>
@@ -293,17 +296,17 @@ window.Quarto = {
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
 <span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="fu">value_update</span>(V_U_0, V_E_0, x_0, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>([-0.6931471805599453, -0.6931471805599453, -0.6931471805599453], [-0.10536051565782628, 0.0, 0.09531017980432493])</code></pre>
 </div>
 </div>
 <ol type="1">
 <li><strong>Define a function <code>policy_eval(x::Vector{Bool}, p::Parameter)::Tuple{Vector, Vector}</code> which takes in a policy vector and returns the value(s) of following this policies forever. You can add relevant arguments to the function.</strong></li>
 </ol>
-<div id="ab8304a9" class="cell" data-execution_count="14">
+<div id="ab8304a9" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>: norm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="b800ec43" class="cell" data-execution_count="19">
+<div id="b800ec43" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">policy_eval</span>(x, model; T<span class="op">=</span><span class="fl">1000</span>, τ<span class="op">=</span><span class="fl">1e-8</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    V_U_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
@@ -315,7 +318,7 @@ window.Quarto = {
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        η <span class="op">=</span> <span class="fu">norm</span>( [V_U_1, V_E_1] <span class="op">.-</span> [V_U_0, V_E_0])</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        λ <span class="op">=</span> η<span class="op">/</span>η_0</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        η_0 <span class="op">=</span> η</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="pp">@show</span> (t, η, λ)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># @show (t, η, λ)</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> η<span class="op">&lt;</span>τ</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
@@ -326,188 +329,433 @@ window.Quarto = {
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">policy_eval</span>(x_0, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(t, η, λ) = (1, 1.208943303215093, NaN)
-(t, η, λ) = (2, 0.18590374068089768, 0.1537737462017456)
-(t, η, λ) = (3, 0.16759036136579744, 0.9014899902066252)
-(t, η, λ) = (4, 0.14409682402816418, 0.8598157009378707)
-(t, η, λ) = (5, 0.12456251750964775, 0.8644362452103845)
-(t, η, λ) = (6, 0.10774709002397113, 0.8650041134214054)
-(t, η, λ) = (7, 0.09329138586429168, 0.8658367093119322)
-(t, η, λ) = (8, 0.08085585077337948, 0.8667022150469302)
-(t, η, λ) = (9, 0.07015150893870908, 0.8676120313832053)
-(t, η, λ) = (10, 0.060931055972414, 0.8685637257731558)
-(t, η, λ) = (11, 0.05298290181068721, 0.8695549578965898)
-(t, η, λ) = (12, 0.04612599856416276, 0.8705827160802782)
-(t, η, λ) = (13, 0.04020542076978306, 0.8716433686276952)
-(t, η, λ) = (14, 0.035088585123295185, 0.8727326925444465)
-(t, η, λ) = (15, 0.03066201714702989, 0.8738459256561328)
-(t, η, λ) = (16, 0.02682858550713838, 0.8749778391451052)
-(t, η, λ) = (17, 0.02350513622827459, 0.8761228288394293)
-(t, η, λ) = (18, 0.020620468906519977, 0.8772750222019724)
-(t, η, λ) = (19, 0.01811360544435845, 0.8784283968746762)
-(t, η, λ) = (20, 0.015932309029454035, 0.8795769057902391)
-(t, η, λ) = (21, 0.014031817227731797, 0.8807146033755182)
-(t, η, λ) = (22, 0.012373758311463421, 0.8818357672881122)
-(t, η, λ) = (23, 0.010925224424185887, 0.8829350104619734)
-(t, η, λ) = (24, 0.00965797900768291, 0.8840073789516313)
-(t, η, λ) = (25, 0.008547779177765509, 0.8850484320752573)
-(t, η, λ) = (26, 0.007573796517822373, 0.8860543025635641)
-(t, η, λ) = (27, 0.006718122133031255, 0.887021735693905)
-(t, η, λ) = (28, 0.005965343834777606, 0.8879481076188784)
-(t, η, λ) = (29, 0.00530218505639216, 0.8888314241805696)
-(t, η, λ) = (30, 0.004717196582312246, 0.8896703023643678)
-(t, η, λ) = (31, 0.004200493441016206, 0.8904639371542227)
-(t, η, λ) = (32, 0.0037435303995208193, 0.8912120568899554)
-(t, η, λ) = (33, 0.0033389104308300765, 0.8919148703206644)
-(t, η, λ) = (34, 0.00298022132813135, 0.8925730084321088)
-(t, η, λ) = (35, 0.002661896329782045, 0.8931874638489014)
-(t, η, λ) = (36, 0.0023790952132189003, 0.8937595302269716)
-(t, η, λ) = (37, 0.002127602827346997, 0.8942907436093591)
-(t, η, λ) = (38, 0.0019037424731458467, 0.8947828272627877)
-(t, η, λ) = (39, 0.0017043019208583907, 0.8952376410671294)
-(t, η, λ) = (40, 0.0015264701775529663, 0.8956571361394362)
-(t, η, λ) = (41, 0.0013677833981875296, 0.8960433150290416)
-(t, η, λ) = (42, 0.001226078572761503, 0.8963981975407789)
-(t, η, λ) = (43, 0.0010994538270940647, 0.8967237920305215)
-(t, η, λ) = (44, 0.0009862343498922516, 0.8970220718581149)
-(t, η, λ) = (45, 0.0008849431081649426, 0.8972949565806796)
-(t, η, λ) = (46, 0.0007942756402544126, 0.8975442973972168)
-(t, η, λ) = (47, 0.0007130783239464416, 0.8977718663486106)
-(t, η, λ) = (48, 0.0006403296089427596, 0.8979793487466238)
-(t, η, λ) = (49, 0.0005751237808714189, 0.8981683383671711)
-(t, η, λ) = (50, 0.0005166568899288756, 0.8983403349206753)
-(t, η, λ) = (51, 0.00046421453306268407, 0.8984967434124204)
-(t, η, λ) = (52, 0.0004171612257506645, 0.8986388750012145)
-(t, η, λ) = (53, 0.0003749311392878583, 0.8987679490422081)
-(t, η, λ) = (54, 0.00033702001314177765, 0.8988850960256627)
-(t, η, λ) = (55, 0.0003029780803585839, 0.8989913611780883)
-(t, η, λ) = (56, 0.00027240386800474317, 0.8990877085310752)
-(t, η, λ) = (57, 0.00024493875489719417, 0.8991750252714078)
-(t, η, λ) = (58, 0.00022026218602573433, 0.8992541262740675)
-(t, η, λ) = (59, 0.00019808745755403007, 0.8993257586705624)
-(t, η, λ) = (60, 0.00017815799857135746, 0.8993906064080979)
-(t, η, λ) = (61, 0.00016024408616100236, 0.899449294704666)
-(t, η, λ) = (62, 0.00014413993918353161, 0.8995023943580022)
-(t, η, λ) = (63, 0.0001296611436812692, 0.8995504258966924)
-(t, η, λ) = (64, 0.00011664236919216542, 0.8995938635162256)
-(t, η, λ) = (65, 0.00010493534071262415, 0.8996331387932096)
-(t, η, λ) = (66, 9.440703570918438e-5, 0.8996686442151783)
-(t, η, λ) = (67, 8.493807955019661e-5, 0.8997007364137948)
-(t, η, λ) = (68, 7.642131616721584e-5, 0.899729739263206)
-(t, η, λ) = (69, 6.876053367511682e-5, 0.8997559466872224)
-(t, η, λ) = (70, 6.186932722414715e-5, 0.8997796252785125)
-(t, η, λ) = (71, 5.567008354170619e-5, 0.8998010167464461)
-(t, η, λ) = (72, 5.0093073506095555e-5, 0.89982034010363)
-(t, η, λ) = (73, 4.507564074643248e-5, 0.899837793760997)
-(t, η, λ) = (74, 4.0561475676734994e-5, 0.8998535573772235)
-(t, η, λ) = (75, 3.6499965620692134e-5, 0.899867793558299)
-(t, η, λ) = (76, 3.284561276838112e-5, 0.8998806494700003)
-(t, η, λ) = (77, 2.9557512648347497e-5, 0.8998922582683883)
-(t, η, λ) = (78, 2.659888663084228e-5, 0.8999027403724844)
-(t, η, λ) = (79, 2.39366627096778e-5, 0.8999122046680877)
-(t, η, λ) = (80, 2.154109944943313e-5, 0.8999207496341534)
-(t, η, λ) = (81, 1.938544854565654e-5, 0.8999284642440423)
-(t, η, λ) = (82, 1.7445651952774298e-5, 0.8999354289732506)
-(t, η, λ) = (83, 1.5700069963850037e-5, 0.899941716500502)
-(t, η, λ) = (84, 1.4129237025704043e-5, 0.8999473924789576)
-(t, η, λ) = (85, 1.2715642414578669e-5, 0.8999525162927234)
-(t, η, λ) = (86, 1.1443533200346731e-5, 0.8999571415461128)
-(t, η, λ) = (87, 1.0298737206291e-5, 0.8999613166656392)
-(t, η, λ) = (88, 9.268503908822757e-6, 0.8999650853466847)
-(t, η, λ) = (89, 8.341361441012738e-6, 0.8999684871549264)
-(t, η, λ) = (90, 7.506988049391728e-6, 0.899971557698175)
-(t, η, λ) = (91, 6.756096534512284e-6, 0.8999743292597506)
-(t, η, λ) = (92, 6.080330347850897e-6, 0.8999768308209691)
-(t, η, λ) = (93, 5.472170166033378e-6, 0.8999790887953194)
-(t, η, λ) = (94, 4.924849872145837e-6, 0.8999811268142128)
-(t, η, λ) = (95, 4.432280996045139e-6, 0.8999829662043936)
-(t, η, λ) = (96, 3.98898475644838e-6, 0.8999846264277228)
-(t, η, λ) = (97, 3.5900309333650956e-6, 0.8999861249310726)
-(t, η, λ) = (98, 3.2309828834148534e-6, 0.8999874773742714)
-(t, η, λ) = (99, 2.9078480784349163e-6, 0.8999886979783647)
-(t, η, λ) = (100, 2.6170336096227364e-6, 0.8999897996842036)
-(t, η, λ) = (101, 2.3553061564217136e-6, 0.8999907940659758)
-(t, η, λ) = (102, 2.1197559715661743e-6, 0.8999916914353938)
-(t, η, λ) = (103, 1.9077644792042275e-6, 0.89999250139849)
-(t, η, λ) = (104, 1.7169751201563923e-6, 0.8999932323263415)
-(t, η, λ) = (105, 1.5452671211489797e-6, 0.8999938921702182)
-(t, η, λ) = (106, 1.3907318909232781e-6, 0.8999944876127325)
-(t, η, λ) = (107, 1.2516517828768979e-6, 0.8999950249547756)
-(t, η, λ) = (108, 1.1264809848255158e-6, 0.8999955101220889)
-(t, η, λ) = (109, 1.0138283214190158e-6, 0.8999959476244963)
-(t, η, λ) = (110, 9.12441781507555e-7, 0.8999963428033319)
-(t, η, λ) = (111, 8.211945917278353e-7, 0.8999966993741132)
-(t, η, λ) = (112, 7.390726864772187e-7, 0.8999970213176539)
-(t, η, λ) = (113, 6.651634307612572e-7, 0.8999973114034979)
-(t, η, λ) = (114, 5.986454738892841e-7, 0.8999975738355827)
-(t, η, λ) = (115, 5.387796153600888e-7, 0.8999978098217993)
-(t, η, λ) = (116, 4.84900589215738e-7, 0.8999980240374514)
-(t, η, λ) = (117, 4.364096654011938e-7, 0.8999982163499288)
-(t, η, λ) = (118, 3.927679962529045e-7, 0.8999983900261024)
-(t, η, λ) = (119, 3.534906260905203e-7, 0.8999985473941381)
-(t, η, λ) = (120, 3.1814110012332036e-7, 0.8999986891925451)
-(t, η, λ) = (121, 2.8632661356926955e-7, 0.8999988164317071)
-(t, η, λ) = (122, 2.5769364622140495e-7, 0.8999989313220527)
-(t, η, λ) = (123, 2.319240334630884e-7, 0.8999990370884975)
-(t, η, λ) = (124, 2.0873142838866253e-7, 0.8999991301974444)
-(t, η, λ) = (125, 1.8785812171476148e-7, 0.8999992150916799)
-(t, η, λ) = (126, 1.6907217635729623e-7, 0.8999992910288472)
-(t, η, λ) = (127, 1.5216485078784512e-7, 0.8999993616115685)
-(t, η, λ) = (128, 1.3694827780421936e-7, 0.8999994223052119)
-(t, η, λ) = (129, 1.2325337855238803e-7, 0.8999994781138504)
-(t, η, λ) = (130, 1.1092798296678496e-7, 0.899999531612318)
-(t, η, λ) = (131, 9.983513759861825e-8, 0.8999995756572241)
-(t, η, λ) = (132, 8.985158567455476e-8, 0.8999996177277602)
-(t, η, λ) = (133, 8.08663960143864e-8, 0.8999996539547672)
-(t, η, λ) = (134, 7.277973113528676e-8, 0.8999996874145226)
-(t, η, λ) = (135, 6.550173744187651e-8, 0.8999997172305907)
-(t, η, λ) = (136, 5.895154716811074e-8, 0.8999997476467226)
-(t, η, λ) = (137, 5.305637889049673e-8, 0.8999997699669715)
-(t, η, λ) = (138, 4.775073003034628e-8, 0.8999997932180633)
-(t, η, λ) = (139, 4.2975648109793166e-8, 0.8999998132485413)
-(t, η, λ) = (140, 3.8678076087083386e-8, 0.8999998321903036)
-(t, η, λ) = (141, 3.481026262141723e-8, 0.8999998485716351)
-(t, η, λ) = (142, 3.132923158862985e-8, 0.8999998629528968)
-(t, η, λ) = (143, 2.8196304492336813e-8, 0.8999998743208866)
-(t, η, λ) = (144, 2.5376670927516314e-8, 0.8999998895037178)
-(t, η, λ) = (145, 2.2839001149829124e-8, 0.8999998941966988)
-(t, η, λ) = (146, 2.055509915057007e-8, 0.8999999174974365)
-(t, η, λ) = (147, 1.8499587319435713e-8, 0.8999999067833565)
-(t, η, λ) = (148, 1.6649627353949685e-8, 0.899999933320542)
-(t, η, λ) = (149, 1.49846636652564e-8, 0.8999999427435644)
-(t, η, λ) = (150, 1.3486196207613159e-8, 0.8999999271843783)
-(t, η, λ) = (151, 1.2137575901607175e-8, 0.8999999491891815)
-(t, η, λ) = (152, 1.0923817732279531e-8, 0.8999999522831469)
-(t, η, λ) = (153, 9.831435471775681e-9, 0.89999995539326)</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>([-1.623803790848331, -0.9698419695587606, -0.3782615432186312], [-1.0340629047854952, -0.3074386589025771, 0.34987292592487074])</code></pre>
 </div>
 </div>
 <ol type="1">
 <li><strong>Define a function <code>bellman_step(V_E::Vector, V_U::Vector, p::Parameters)::Tuple{Vector, Vector, Vector}</code> which returns updated values, together with improved policy rules.</strong></li>
 </ol>
-<div id="f06ee089" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="5cbc3585" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zeros</span>(<span class="dt">Bool</span>, <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>3-element Vector{Bool}:
+ 0
+ 0
+ 0</code></pre>
+</div>
+</div>
+<div id="f06ee089" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">bellman_step</span>(V_U, V_E, model)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    (;cbar, λ, β, w, p) <span class="op">=</span> model</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    new_V_U <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    new_V_E <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    new_x <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Bool</span>, <span class="fl">3</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># expected value of being unemployed without knowing the future offer</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    EVU <span class="op">=</span> <span class="fu">sum</span>(p[i]<span class="op">*</span>V_U[i] <span class="cf">for</span> i<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># unemployed</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># EVU = p'*V_U</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># test both choices</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if reject</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        V_reject <span class="op">=</span> <span class="fu">log</span>(cbar) <span class="op">+</span> β<span class="op">*</span>EVU</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        V_accept <span class="op">=</span> <span class="fu">log</span>(cbar) <span class="op">+</span> β<span class="op">*</span>V_E[i]</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> V_accept <span class="op">&gt;</span> V_reject</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            new_V_U[i] <span class="op">=</span> V_accept</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>            new_x[i] <span class="op">=</span> <span class="cn">true</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="co"># V_accept &lt;= V_reject</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>            new_V_U[i] <span class="op">=</span> V_reject</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>            new_x[i] <span class="op">=</span> <span class="cn">false</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># employed</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>        new_V_E[i] <span class="op">=</span> <span class="fu">log</span>(w[i]) <span class="op">+</span> (<span class="fl">1</span><span class="op">-</span>λ)<span class="op">*</span>β<span class="op">*</span>V_E[i] <span class="op">+</span> λ<span class="op">*</span>β<span class="op">*</span>EVU</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> new_V_U, new_V_E, new_x</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="fu">bellman_step</span>(V_U_0, V_E_0, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>([-0.6931471805599453, -0.6931471805599453, -0.6931471805599453], [-0.10536051565782628, 0.0, 0.09531017980432493], Bool[0, 0, 0])</code></pre>
+</div>
 </div>
 <ol type="1">
 <li><strong>Implement Value Function Iteration</strong></li>
 </ol>
-<div id="96fc9104" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="96fc9104" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we want to iterate on bellman_step to find a fixed</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We can reuse the code from value_update</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># DIFF: policy_eval becomes vfi : no need for x argument</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">vfi</span>(model; T<span class="op">=</span><span class="fl">1000</span>, τ<span class="op">=</span><span class="fl">1e-10</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    V_U_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    V_E_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> x <span class="co"># to access x outside of the loop</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    η_0 <span class="op">=</span> <span class="cn">NaN</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t<span class="op">=</span><span class="fl">1</span><span class="op">:</span>T</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># value_update becomes bellman_step: returns x</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        V_U_1, V_E_1, x  <span class="op">=</span> <span class="fu">bellman_step</span>(V_U_0, V_E_0,  model)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        η <span class="op">=</span> <span class="fu">norm</span>( [V_U_1, V_E_1] <span class="op">.-</span> [V_U_0, V_E_0])</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        λ <span class="op">=</span> η<span class="op">/</span>η_0</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>        η_0 <span class="op">=</span> η</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># @show (t, η, λ, x)</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> η<span class="op">&lt;</span>τ</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        V_U_0, V_E_0 <span class="op">=</span> V_U_1, V_E_1</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> V_U_0, V_E_0, x</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>vfi (generic function with 1 method)</code></pre>
+</div>
+</div>
+<div id="c5cd26dc" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> <span class="fu">vfi</span>(model)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>result[<span class="fl">3</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(t, η, λ, x) = (1, 1.208943303215093, NaN, Bool[0, 0, 0])
+(t, η, λ, x) = (2, 0.18590374068089768, 0.1537737462017456, Bool[1, 1, 1])
+(t, η, λ, x) = (3, 0.16759036136579744, 0.9014899902066252, Bool[1, 1, 1])
+(t, η, λ, x) = (4, 0.14409682402816418, 0.8598157009378707, Bool[1, 1, 1])
+(t, η, λ, x) = (5, 0.12456251750964775, 0.8644362452103845, Bool[1, 1, 1])
+(t, η, λ, x) = (6, 0.10774709002397113, 0.8650041134214054, Bool[1, 1, 1])
+(t, η, λ, x) = (7, 0.09329138586429168, 0.8658367093119322, Bool[1, 1, 1])
+(t, η, λ, x) = (8, 0.08085585077337948, 0.8667022150469302, Bool[1, 1, 1])
+(t, η, λ, x) = (9, 0.07015150893870908, 0.8676120313832053, Bool[1, 1, 1])
+(t, η, λ, x) = (10, 0.060931055972414, 0.8685637257731558, Bool[1, 1, 1])
+(t, η, λ, x) = (11, 0.05298290181068721, 0.8695549578965898, Bool[1, 1, 1])
+(t, η, λ, x) = (12, 0.04612599856416276, 0.8705827160802782, Bool[1, 1, 1])
+(t, η, λ, x) = (13, 0.04020542076978306, 0.8716433686276952, Bool[1, 1, 1])
+(t, η, λ, x) = (14, 0.035088585123295185, 0.8727326925444465, Bool[1, 1, 1])
+(t, η, λ, x) = (15, 0.03066201714702989, 0.8738459256561328, Bool[1, 1, 1])
+(t, η, λ, x) = (16, 0.02682858550713838, 0.8749778391451052, Bool[1, 1, 1])
+(t, η, λ, x) = (17, 0.02350513622827459, 0.8761228288394293, Bool[1, 1, 1])
+(t, η, λ, x) = (18, 0.020620468906519977, 0.8772750222019724, Bool[1, 1, 1])
+(t, η, λ, x) = (19, 0.017270875833434222, 0.8375598009787911, Bool[0, 1, 1])
+(t, η, λ, x) = (20, 0.012884293924819408, 0.7460127702312034, Bool[0, 1, 1])
+(t, η, λ, x) = (21, 0.010885781082806259, 0.8448876707039915, Bool[0, 1, 1])
+(t, η, λ, x) = (22, 0.009418989205449042, 0.8652561661676288, Bool[0, 1, 1])
+(t, η, λ, x) = (23, 0.00819391251241007, 0.8699354393218495, Bool[0, 1, 1])
+(t, η, λ, x) = (24, 0.0071428399902937235, 0.8717251959275318, Bool[0, 1, 1])
+(t, η, λ, x) = (25, 0.006234435765422858, 0.8728231031207083, Bool[0, 1, 1])
+(t, η, λ, x) = (26, 0.005447244380140326, 0.8737349433210273, Bool[0, 1, 1])
+(t, η, λ, x) = (27, 0.004764153931626459, 0.8745988979300632, Bool[0, 1, 1])
+(t, η, λ, x) = (28, 0.004170797624310516, 0.875454001732187, Bool[0, 1, 1])
+(t, η, λ, x) = (29, 0.003654912252253696, 0.8763101405232765, Bool[0, 1, 1])
+(t, η, λ, x) = (30, 0.0032059734746141344, 0.8771683841759166, Bool[0, 1, 1])
+(t, η, λ, x) = (31, 0.0028149316304308357, 0.878027111802488, Bool[0, 1, 1])
+(t, η, λ, x) = (32, 0.0024739980643820173, 0.8788838910461789, Bool[0, 1, 1])
+(t, η, λ, x) = (33, 0.002176465343231272, 0.8797360735910411, Bool[0, 1, 1])
+(t, η, λ, x) = (34, 0.0019165540305492675, 0.8805810009838572, Bool[0, 1, 1])
+(t, η, λ, x) = (35, 0.0016892815616776616, 0.8814160909377172, Bool[0, 1, 1])
+(t, η, λ, x) = (36, 0.0014903498818809164, 0.8822388852695568, Bool[0, 1, 1])
+(t, η, λ, x) = (37, 0.0013160491165099537, 0.8830470834466173, Bool[0, 1, 1])
+(t, η, λ, x) = (38, 0.0011631749672868302, 0.8838385685569758, Bool[0, 1, 1])
+(t, η, λ, x) = (39, 0.0010289578682209104, 0.8846114274802624, Bool[0, 1, 1])
+(t, η, λ, x) = (40, 0.0009110022187093137, 0.8853639656640709, Bool[0, 1, 1])
+(t, η, λ, x) = (41, 0.0008072342528612961, 0.8860947166571849, Bool[0, 1, 1])
+(t, η, λ, x) = (42, 0.0007158573103971952, 0.8868024465758122, Bool[0, 1, 1])
+(t, η, λ, x) = (43, 0.0006353134510969796, 0.8874861538320735, Bool[0, 1, 1])
+(t, η, λ, x) = (44, 0.0005642505060389109, 0.8881450645577138, Bool[0, 1, 1])
+(t, η, λ, x) = (45, 0.0005014937884990328, 0.8887786242666649, Bool[0, 1, 1])
+(t, η, λ, x) = (46, 0.0004460217984818055, 0.8893864863545876, Bool[0, 1, 1])
+(t, η, λ, x) = (47, 0.00039694535010575466, 0.8899684980799144, Bool[0, 1, 1])
+(t, η, λ, x) = (48, 0.0003534896327259612, 0.8905246846493707, Bool[0, 1, 1])
+(t, η, λ, x) = (49, 0.0003149787867114732, 0.891055232037475, Bool[0, 1, 1])
+(t, η, λ, x) = (50, 0.0002808226348305722, 0.8915604690794979, Bool[0, 1, 1])
+(t, η, λ, x) = (51, 0.0002505052616968053, 0.8920408493707848, Bool[0, 1, 1])
+(t, η, λ, x) = (52, 0.00022357517786046111, 0.8924969333820278, Bool[0, 1, 1])
+(t, η, λ, x) = (53, 0.00019963684297218446, 0.8929293711522074, Bool[0, 1, 1])
+(t, η, λ, x) = (54, 0.00017834335487937705, 0.8933388858700082, Bool[0, 1, 1])
+(t, η, λ, x) = (55, 0.00015939013928790912, 0.8937262585180873, Bool[0, 1, 1])
+(t, η, λ, x) = (56, 0.00014250949842570305, 0.8940923137552802, Bool[0, 1, 1])
+(t, η, λ, x) = (57, 0.00012746589751478347, 0.8944379071072057, Bool[0, 1, 1])
+(t, η, λ, x) = (58, 0.00011405188530486061, 0.8947639135529006, Bool[0, 1, 1])
+(t, η, λ, x) = (59, 0.00010208455982658721, 0.895071217400004, Bool[0, 1, 1])
+(t, η, λ, x) = (60, 9.140250330976317e-5, 0.8953607035680046, Bool[0, 1, 1])
+(t, η, λ, x) = (61, 8.186312110373301e-5, 0.8956332500686421, Bool[0, 1, 1])
+(t, η, λ, x) = (62, 7.33403287819916e-5, 0.8958897216862555, Bool[0, 1, 1])
+(t, η, λ, x) = (63, 6.572253958952334e-5, 0.8961309647913827, Bool[0, 1, 1])
+(t, η, λ, x) = (64, 5.89109111998203e-5, 0.896357803087864, Bool[0, 1, 1])
+(t, η, λ, x) = (65, 5.281781658642279e-5, 0.8965710343075444, Bool[0, 1, 1])
+(t, η, λ, x) = (66, 4.736550878618238e-5, 0.8967714276617416, Bool[0, 1, 1])
+(t, η, λ, x) = (67, 4.2484953594519214e-5, 0.8969597220269502, Bool[0, 1, 1])
+(t, η, λ, x) = (68, 3.811480786828639e-5, 0.8971366246991359, Bool[0, 1, 1])
+(t, η, λ, x) = (69, 3.420052422935741e-5, 0.8973028106961579, Bool[0, 1, 1])
+(t, η, λ, x) = (70, 3.069356562284897e-5, 0.897458922471776, Bool[0, 1, 1])
+(t, η, λ, x) = (71, 2.7550715466423874e-5, 0.8976055700063243, Bool[0, 1, 1])
+(t, η, λ, x) = (72, 2.4733471080580328e-5, 0.8977433312293858, Bool[0, 1, 1])
+(t, η, λ, x) = (73, 2.2207509760694406e-5, 0.8978727526089454, Bool[0, 1, 1])
+(t, η, λ, x) = (74, 1.9942218293667264e-5, 0.8979943500447523, Bool[0, 1, 1])
+(t, η, λ, x) = (75, 1.7910277947624822e-5, 0.8981086097784973, Bool[0, 1, 1])
+(t, η, λ, x) = (76, 1.6087298029146785e-5, 0.8982159895112185, Bool[0, 1, 1])
+(t, η, λ, x) = (77, 1.4451492010725856e-5, 0.8983169196308047, Bool[0, 1, 1])
+(t, η, λ, x) = (78, 1.2983391012013096e-5, 0.8984118042882258, Bool[0, 1, 1])
+(t, η, λ, x) = (79, 1.1665590104379513e-5, 0.8985010228518677, Bool[0, 1, 1])
+(t, η, λ, x) = (80, 1.0482523478393217e-5, 0.8985849309464297, Bool[0, 1, 1])
+(t, η, λ, x) = (81, 9.420265030608289e-6, 0.898663861810138, Bool[0, 1, 1])
+(t, η, λ, x) = (82, 8.466351355174962e-6, 0.8987381276074639, Bool[0, 1, 1])
+(t, η, λ, x) = (83, 7.6096245024206816e-6, 0.8988080205021711, Bool[0, 1, 1])
+(t, η, λ, x) = (84, 6.840092197987819e-6, 0.898873813788306, Bool[0, 1, 1])
+(t, η, λ, x) = (85, 6.148803501188889e-6, 0.8989357633216861, Bool[0, 1, 1])
+(t, η, λ, x) = (86, 5.527738119394225e-6, 0.8989941080936186, Bool[0, 1, 1])
+(t, η, λ, x) = (87, 4.969707825721918e-6, 0.8990490718591675, Bool[0, 1, 1])
+(t, η, λ, x) = (88, 4.4682685979236636e-6, 0.8991008635954543, Bool[0, 1, 1])
+(t, η, λ, x) = (89, 4.017642274338246e-6, 0.8991496787380201, Bool[0, 1, 1])
+(t, η, λ, x) = (90, 3.612646657908332e-6, 0.8991957001705381, Bool[0, 1, 1])
+(t, η, λ, x) = (91, 3.248633123792774e-6, 0.899239098482353, Bool[0, 1, 1])
+(t, η, λ, x) = (92, 2.9214309044314802e-6, 0.899280033511668, Bool[0, 1, 1])
+(t, η, λ, x) = (93, 2.6272973104026558e-6, 0.8993186545734636, Bool[0, 1, 1])
+(t, η, λ, x) = (94, 2.3628732389864177e-6, 0.8993551013928786, Bool[0, 1, 1])
+(t, η, λ, x) = (95, 2.1251433919325263e-6, 0.8993895046372151, Bool[0, 1, 1])
+(t, η, λ, x) = (96, 1.911400690588448e-6, 0.8994219862266759, Bool[0, 1, 1])
+(t, η, λ, x) = (97, 1.719214437514534e-6, 0.8994526610667137, Bool[0, 1, 1])
+(t, η, λ, x) = (98, 1.546401814675393e-6, 0.8994816358749431, Bool[0, 1, 1])
+(t, η, λ, x) = (99, 1.3910023666258909e-6, 0.8995090108051106, Bool[0, 1, 1])
+(t, η, λ, x) = (100, 1.2512551472045525e-6, 0.8995348801883647, Bool[0, 1, 1])
+(t, η, λ, x) = (101, 1.125578243696548e-6, 0.8995593314530764, Bool[0, 1, 1])
+(t, η, λ, x) = (102, 1.0125504310783384e-6, 0.8995824472877058, Bool[0, 1, 1])
+(t, η, λ, x) = (103, 9.108947267038113e-7, 0.8996043048776676, Bool[0, 1, 1])
+(t, η, λ, x) = (104, 8.194636473887703e-7, 0.8996249768116499, Bool[0, 1, 1])
+(t, η, λ, x) = (105, 7.372259885945101e-7, 0.8996445308387854, Bool[0, 1, 1])
+(t, η, λ, x) = (106, 6.632549675674283e-7, 0.8996630311851805, Bool[0, 1, 1])
+(t, η, λ, x) = (107, 5.967175852009782e-7, 0.8996805367165446, Bool[0, 1, 1])
+(t, η, λ, x) = (108, 5.36865083791614e-7, 0.8996971048051055, Bool[0, 1, 1])
+(t, η, λ, x) = (109, 4.830243810160599e-7, 0.8997127874375742, Bool[0, 1, 1])
+(t, η, λ, x) = (110, 4.345903838802645e-7, 0.8997276347957578, Bool[0, 1, 1])
+(t, η, λ, x) = (111, 3.9101908806700527e-7, 0.8997416937203477, Bool[0, 1, 1])
+(t, η, λ, x) = (112, 3.518213821564744e-7, 0.899755006579592, Bool[0, 1, 1])
+(t, η, λ, x) = (113, 3.165574862840755e-7, 0.8997676160094354, Bool[0, 1, 1])
+(t, η, λ, x) = (114, 2.8483195590408325e-7, 0.8997795605708024, Bool[0, 1, 1])
+(t, η, λ, x) = (115, 2.5628919521513045e-7, 0.8997908763489848, Bool[0, 1, 1])
+(t, η, λ, x) = (116, 2.30609427598751e-7, 0.8998015987571238, Bool[0, 1, 1])
+(t, η, λ, x) = (117, 2.0750507476801712e-7, 0.8998117593399767, Bool[0, 1, 1])
+(t, η, λ, x) = (118, 1.867175043011134e-7, 0.8998213875485048, Bool[0, 1, 1])
+(t, η, λ, x) = (119, 1.6801410819255447e-7, 0.8998305157378467, Bool[0, 1, 1])
+(t, η, λ, x) = (120, 1.5118567503263372e-7, 0.8998391662405258, Bool[0, 1, 1])
+(t, η, λ, x) = (121, 1.3604403188309186e-7, 0.89984736883125, Bool[0, 1, 1])
+(t, η, λ, x) = (122, 1.2241992185235918e-7, 0.8998551436461364, Bool[0, 1, 1])
+(t, η, λ, x) = (123, 1.1016109942817084e-7, 0.899862520423982, Bool[0, 1, 1])
+(t, η, λ, x) = (124, 9.913061452943667e-8, 0.8998695096908826, Bool[0, 1, 1])
+(t, η, λ, x) = (125, 8.920527486552291e-8, 0.8998761410788345, Bool[0, 1, 1])
+(t, η, λ, x) = (126, 8.027425975589907e-8, 0.8998824327026921, Bool[0, 1, 1])
+(t, η, λ, x) = (127, 7.223787502749915e-8, 0.8998883981884448, Bool[0, 1, 1])
+(t, η, λ, x) = (128, 6.500643421952519e-8, 0.8998940541202087, Bool[0, 1, 1])
+(t, η, λ, x) = (129, 5.8499252653384375e-8, 0.8998994231222371, Bool[0, 1, 1])
+(t, η, λ, x) = (130, 5.2643741752926884e-8, 0.8999045178379944, Bool[0, 1, 1])
+(t, η, λ, x) = (131, 4.737459543407698e-8, 0.8999093502209701, Bool[0, 1, 1])
+(t, η, λ, x) = (132, 4.263305859122131e-8, 0.8999139348967391, Bool[0, 1, 1])
+(t, η, λ, x) = (133, 3.836626887362867e-8, 0.8999182826992567, Bool[0, 1, 1])
+(t, η, λ, x) = (134, 3.452666536006114e-8, 0.899922415541254, Bool[0, 1, 1])
+(t, η, λ, x) = (135, 3.107145522216428e-8, 0.8999263293496716, Bool[0, 1, 1])
+(t, η, λ, x) = (136, 2.79621362688457e-8, 0.8999300505532615, Bool[0, 1, 1])
+(t, η, λ, x) = (137, 2.51640653815748e-8, 0.8999335794529977, Bool[0, 1, 1])
+(t, η, λ, x) = (138, 2.2646071542292952e-8, 0.8999369219122467, Bool[0, 1, 1])
+(t, η, λ, x) = (139, 2.038010828548996e-8, 0.8999401175355661, Bool[0, 1, 1])
+(t, η, λ, x) = (140, 1.8340938140613602e-8, 0.8999431153009041, Bool[0, 1, 1])
+(t, η, λ, x) = (141, 1.65058537950567e-8, 0.8999459934116812, Bool[0, 1, 1])
+(t, η, λ, x) = (142, 1.4854421672221292e-8, 0.8999487004222713, Bool[0, 1, 1])
+(t, η, λ, x) = (143, 1.3368256088350987e-8, 0.8999512995750263, Bool[0, 1, 1])
+(t, η, λ, x) = (144, 1.203081211358917e-8, 0.8999537437102766, Bool[0, 1, 1])
+(t, η, λ, x) = (145, 1.0827202303874519e-8, 0.8999560629531288, Bool[0, 1, 1])
+(t, η, λ, x) = (146, 9.744030361202752e-9, 0.8999582798703084, Bool[0, 1, 1])
+(t, η, λ, x) = (147, 8.769241188105215e-9, 0.8999603719443652, Bool[0, 1, 1])
+(t, η, λ, x) = (148, 7.891987119041668e-9, 0.8999623741386571, Bool[0, 1, 1])
+(t, η, λ, x) = (149, 7.102506215618674e-9, 0.8999642432869479, Bool[0, 1, 1])
+(t, η, λ, x) = (150, 6.392014657995406e-9, 0.8999660773177683, Bool[0, 1, 1])
+(t, η, λ, x) = (151, 5.752606932156785e-9, 0.8999677316073075, Bool[0, 1, 1])
+(t, η, λ, x) = (152, 5.177170207804122e-9, 0.8999693997627405, Bool[0, 1, 1])
+(t, η, λ, x) = (153, 4.659302522883407e-9, 0.899970898360638, Bool[0, 1, 1])
+(t, η, λ, x) = (154, 4.193243568683187e-9, 0.8999723774296159, Bool[0, 1, 1])
+(t, η, λ, x) = (155, 3.773809125162774e-9, 0.8999737466592886, Bool[0, 1, 1])
+(t, η, λ, x) = (156, 3.396334198748251e-9, 0.8999750877972024, Bool[0, 1, 1])
+(t, η, λ, x) = (157, 3.0566203533866907e-9, 0.8999763199137574, Bool[0, 1, 1])
+(t, η, λ, x) = (158, 2.7508895007111417e-9, 0.8999774858082052, Bool[0, 1, 1])
+(t, η, λ, x) = (159, 2.4757417923561597e-9, 0.8999786402602312, Bool[0, 1, 1])
+(t, η, λ, x) = (160, 2.2281174996317412e-9, 0.8999797581924911, Bool[0, 1, 1])
+(t, η, λ, x) = (161, 2.0052627941514338e-9, 0.8999807211616351, Bool[0, 1, 1])
+(t, η, λ, x) = (162, 1.804699650779068e-9, 0.8999816163959508, Bool[0, 1, 1])
+(t, η, λ, x) = (163, 1.624198471480393e-9, 0.8999827039248582, Bool[0, 1, 1])
+(t, η, λ, x) = (164, 1.461751750370431e-9, 0.8999834540159994, Bool[0, 1, 1])
+(t, η, λ, x) = (165, 1.3155535652306779e-9, 0.8999842585427353, Bool[0, 1, 1])
+(t, η, λ, x) = (166, 1.1839787037968147e-9, 0.8999851736095656, Bool[0, 1, 1])
+(t, η, λ, x) = (167, 1.0655641271312262e-9, 0.8999858897074301, Bool[0, 1, 1])
+(t, η, λ, x) = (168, 9.589932407438448e-10, 0.8999864168904619, Bool[0, 1, 1])
+(t, η, λ, x) = (169, 8.630819122830559e-10, 0.8999874823034257, Bool[0, 1, 1])
+(t, η, λ, x) = (170, 7.767631512766277e-10, 0.8999877534473006, Bool[0, 1, 1])
+(t, η, λ, x) = (171, 6.990778180591958e-10, 0.8999883901678982, Bool[0, 1, 1])
+(t, η, λ, x) = (172, 6.291623628993668e-10, 0.8999890236055111, Bool[0, 1, 1])
+(t, η, λ, x) = (173, 5.66239670530316e-10, 0.8999897386120105, Bool[0, 1, 1])
+(t, η, λ, x) = (174, 5.096100629909202e-10, 0.8999900386944649, Bool[0, 1, 1])
+(t, η, λ, x) = (175, 4.5864431975510164e-10, 0.8999907047818115, Bool[0, 1, 1])
+(t, η, λ, x) = (176, 4.1277581402879645e-10, 0.8999911178431312, Bool[0, 1, 1])
+(t, η, λ, x) = (177, 3.714946880368441e-10, 0.8999914127985404, Bool[0, 1, 1])
+(t, η, λ, x) = (178, 3.343420969827624e-10, 0.8999915954373028, Bool[0, 1, 1])
+(t, η, λ, x) = (179, 3.009055409175282e-10, 0.8999929821372208, Bool[0, 1, 1])
+(t, η, λ, x) = (180, 2.7081276787039353e-10, 0.8999926257410379, Bool[0, 1, 1])
+(t, η, λ, x) = (181, 2.4372955359415736e-10, 0.8999928456504763, Bool[0, 1, 1])
+(t, η, λ, x) = (182, 2.1935501023653052e-10, 0.899993484589014, Bool[0, 1, 1])
+(t, η, λ, x) = (183, 1.9741818665165739e-10, 0.8999939706815054, Bool[0, 1, 1])
+(t, η, λ, x) = (184, 1.7767514529148822e-10, 0.8999938065736285, Bool[0, 1, 1])
+(t, η, λ, x) = (185, 1.5990671892737527e-10, 0.8999948679655636, Bool[0, 1, 1])
+(t, η, λ, x) = (186, 1.4391508762525982e-10, 0.8999940001934605, Bool[0, 1, 1])
+(t, η, λ, x) = (187, 1.2952278282523834e-10, 0.8999944687001993, Bool[0, 1, 1])
+(t, η, λ, x) = (188, 1.165700802853462e-10, 0.8999967244575893, Bool[0, 1, 1])
+(t, η, λ, x) = (189, 1.0491230362949172e-10, 0.8999934063070216, Bool[0, 1, 1])
+(t, η, λ, x) = (190, 9.442073070831556e-11, 0.8999967348136002, Bool[0, 1, 1])</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre><code>3-element Vector{Bool}:
+ 0
+ 1
+ 1</code></pre>
+</div>
 </div>
 <ol type="1">
 <li><strong>Implement Policy Iteration and compare rates of convergence.</strong></li>
 </ol>
-<div id="0bb34fde" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="0bb34fde" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we want to iterate on bellman_step to find a fixed</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We can recycle the code from vfi</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">policy_iteration</span>(model; T<span class="op">=</span><span class="fl">1000</span>, τ<span class="op">=</span><span class="fl">1e-8</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    V_U_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    V_E_0 <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> x <span class="co"># to access x outside of the loop</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    η_0 <span class="op">=</span> <span class="cn">NaN</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t<span class="op">=</span><span class="fl">1</span><span class="op">:</span>T</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># DIFF: change the output names (we don't reuse the values)</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        V_U_1_t, V_E_1_t, x  <span class="op">=</span> <span class="fu">bellman_step</span>(V_U_0, V_E_0,  model)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        V_U_1, V_E_1 <span class="op">=</span> <span class="fu">policy_eval</span>(x, model)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        η <span class="op">=</span> <span class="fu">norm</span>( [V_U_1, V_E_1] <span class="op">.-</span> [V_U_0, V_E_0])</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        λ <span class="op">=</span> η<span class="op">/</span>η_0</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        η_0 <span class="op">=</span> η</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># @show (t, η, λ, x)</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> η<span class="op">&lt;</span>τ</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>        V_U_0, V_E_0 <span class="op">=</span> V_U_1, V_E_1</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> V_U_0, V_E_0, x</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>policy_iteration (generic function with 1 method)</code></pre>
+</div>
+</div>
+<div id="c5896663" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">policy_iteration</span>(model) <span class="co">## bug </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>([-6.931471765376201, -6.931471765376201, -6.931471765376201], [-2.8777706281225095, -2.151146382206878, -1.4938347973498374], Bool[1, 1, 1])</code></pre>
+</div>
 </div>
 <ol type="1">
 <li><strong>Discuss the Effects of the Parameters</strong></li>
 </ol>
 <div id="1c1a22b8" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vfi</span>(model)[<span class="fl">3</span>]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># what could make me reject the middle offer ?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<pre><code>3-element Vector{Bool}:
+ 0
+ 1
+ 1</code></pre>
+</div>
+</div>
+<div id="4f4665f1" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># increase unemployment benefits</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>model.w</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="35">
+<pre><code>3-element Vector{Float64}:
+ 0.9
+ 1.0
+ 1.1</code></pre>
+</div>
+</div>
+<div id="edf7f577" class="cell" data-execution_count="51">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="9eee4b82" class="cell" data-execution_count="59">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> <span class="fu">range</span>(start<span class="op">=</span><span class="fl">0.2</span>, stop<span class="op">=</span><span class="fl">1.1</span>; length<span class="op">=</span><span class="fl">100</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>accepts <span class="op">=</span> [</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">vfi</span>(</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">merge</span>(</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                model,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                (;cbar<span class="op">=</span>cbar)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        )[<span class="fl">3</span>]</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    ) for cbar <span class="kw">in</span> vec]</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vec, accepts)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="fu">vline!</span>([<span class="fl">0.9</span>, <span class="fl">1.0</span>, <span class="fl">1.1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="59">
+<img src="data:image/png;base64,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">
+</div>
+</div>
+<div id="42ed1db8" class="cell" data-execution_count="64">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> <span class="fu">range</span>(start<span class="op">=</span><span class="fl">0.8</span>, stop<span class="op">=</span><span class="fl">0.990</span>; length<span class="op">=</span><span class="fl">100</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>accepts <span class="op">=</span> [</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">vfi</span>(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">merge</span>(</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                model,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                (;β<span class="op">=</span>β)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>        )[<span class="fl">3</span>]</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    ) for β <span class="kw">in</span> vec]</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vec, accepts)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co"># vline!([0.9, 1.0, 1.1])</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="64">
+<img src="data:image/png;base64,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">
+</div>
+</div>
+<div id="0a7aaf39" class="cell" data-execution_count="67">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> <span class="fu">range</span>(start<span class="op">=</span><span class="fl">0.001</span>, stop<span class="op">=</span><span class="fl">0.2</span>; length<span class="op">=</span><span class="fl">100</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>accepts <span class="op">=</span> [</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">vfi</span>(</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">merge</span>(</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                model,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>                (;λ)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        )[<span class="fl">3</span>]</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    ) for λ <span class="kw">in</span> vec]</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vec, accepts)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> <span class="fu">range</span>(start<span class="op">=</span><span class="fl">0.001</span>, stop<span class="op">=</span><span class="fl">0.2</span>; length<span class="op">=</span><span class="fl">100</span>)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>accepts <span class="op">=</span> [</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">vfi</span>(</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">merge</span>(</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>                model,</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>                (;λ<span class="op">=</span>λ, cbar<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>        )[<span class="fl">3</span>]</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>    ) for λ <span class="kw">in</span> vec]</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plot!</span>(vec, accepts)</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="co"># vline!([0.9, 1.0, 1.1])</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="67">
+<img src="data:image/png;base64,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UtIPP/zwww8/zJ07NyUlxTAMv99vNSgsLNy/f//YsWOjo6MfffTRa6+9tsVqBgAgbBz2X/k+e/bsbt26nfcc4fvvv9+3b9+srCx7qsIZrV+/vrKy8vrrr5ddSEQ7fPjw+++/P3PmTNmFRLRAIPD4448//vjjsguJdM8888yMGTPCe5pQ3bVGP/vss/Xr18uuItJ98803X375pewqIt3OnTvfe+892VVEuoaGhueff152FRDz58+vrKwM73OqG4QAANiAIAQARDSCEAAQ0SRMlhkzZkxpaem5l1UTQlRXV7vdbi5flau2ttbv9ycmJsouJKL5fL7jx4+npqbKLiSimaa5f//+Sy65RHYhke7gwYMXX3zxeReLCbrtttueeOKJc7eREIS1tbVVVVVOp/PczTRNczqdUVH0WWWybjAZ+nsOLcTn88XGxsquItJxFFTQ3KOQmprarl27c7eREIQAAKiD/hYAIKIRhACAiEYQAgAiGkEIAIho0mYD+v3+hQsX7ty5c8CAAZMnTz7j7NDly5d/9tlnXbp0ueuuu5KSkqydJ0+enD9//qFDh0aOHDl+/Hh7q26DrBc5JSXl7rvvDr7IjZWXlxcVFXm93oKCgoEDB1o733vvvVOnTlnbXbt2HTt2rH0Vt0UlJSUffvhhp06dpkyZkpaW1uSnuq7/8MMPZWVlpmnecccdjX/00UcfrVq1Kj09/Z577jnvJUk4t4qKijfffLOmpubGG28cOnTo6Q0OHDhQWlp69OjRCRMmXHzxxdbOjRs3btiwIdimsLAwLi7OporboiNHjixYsKC6unrcuHEjR45s8lNN01auXLl27Vqv1zt06ND8/PzgTXr37NlTVFTk9/sLCgquuOKKZv1RaT3CwsLCd99999JLL33llVfuv//+0xu88847kydPzsjI2LZt25VXXun1eoUQhmFcffXV//nPfzIzM2fOnPnXv/7V9sLblH/961+FhYUZGRnbt28fOnSox+Np0uDgwYODBw/2eDyJiYkjRoxYt26dtf+Pf/zj2rVry8vLy8vLq6qqbC+8Tfnss88mTJiQnp5eWVk5ZMiQmpqaJg0+/vjjsWPHvvrqq3PmzGm8/8UXX3zggQcyMzPXrl17zTXXBAIBG6tua44fPz5kyJCqqqr09PTx48f/+9//btLANM3LLrvspZdemjlz5p49e4L7P/300zfeeKP8J7qu21t4m9LQ0JCbm7tr165LLrlk0qRJixYtatLg008/ffjhh03TTEpKuv/++2fNmmXt379//+DBg/1+f0JCwvDhw5u9TrUpw/bt29u1a3fixAnTNH/88Ue3233kyJEmbfr167do0SLTNAOBwKBBg95++23TNJctW9azZ09d103T/Oqrr7p27appmu3ltx39+5z4rSYAAAeXSURBVPd/9913TdMMBAI5OTlFRUVNGvzhD38oKCiwtufNm3fjjTda2z179tywYYOdpbZhw4YNe+2116ztUaNGvfjii00aWFdzrlq1Kjk5ObhT07S0tLSvv/7aNE1d1zMyMj7//HO7Sm6Dnnvuuby8PGv71VdfHT58+OltrAORmJhYUlIS3PnEE0/cd999ttTY9i1YsGDw4MHW9j//+c+srKwmDTweT3B77dq1sbGxfr/fNM2HHnqosLDQ2v/YY4/dfPPNzfq7cnqEa9asycnJ6dSpkxDikksuycjICHY1LEePHt22bZt1U0OHwzFq1KhVq1YJIVatWjVy5EjrYvwRI0YcOXKk8VczNMuxY8e2bt16+ovc2KpVq/Ly8qzta6+9tnGD4uLiF154YeXKlbYV3Cbpur527drg/TubvMiWM5442LVr17Fjx4YPHy6EcDqdI0eOPP0XEbrVq1c3PgolJSWGYTRpc7b1PbZv3/7MM8+88847dXV1LVtlW9f4KOTl5W3atOnEiRONG7jd7uC21+tt166dtdzHqlWrzv2f6NzkBGFVVVVycnLwYUpKyqFDhxo3qKysjI6OTkhIsB526dLFatD4F10uV+fOncN+P47IUVlZab2G1sPgi9ykTfAFT0lJOX78uM/nE0Lk5OQEAoEDBw7cfvvtd999t51ltzGHDx8OBAIpKSnWwy5duoT4lq6qqurcuXNwhaYzHj6Erslb3TCMI0eOhPKLycnJPXr0qK2t/fvf//6LX/yCo3AhGh+FxMREl8t1tv8OPp9vzpw5v//9761zhE0OX3V1taZpof9dOZNlXC5X429bmqbFxMQ0bhAdHR0IBAKBgPUVTNM0a02d8/4iQudyuawX2fowDb7ITdoEz3nouh4VFWU1Do7dP/DAA7179541axa3UP55rO+zwRc59Ld040MjznL4ELomb3UhRIgHYtq0adOmTbO2x48f/+yzz77wwgstVGSb1/goGIZhGMYZj4JhGJMnT+7evfuDDz54+i82/qQKkZweYXp6ekVFRfBhRUVFk5lyaWlphmEEZ2FUVFRYKw43/sX6+vqamprTp9ghRGlpaaZpBr9wBV/kxtLT04PfcCsqKrp06dJk3dFu3bp169atvLzchoLbpOTk5JiYmOC7+oxH4YzS0tJOnDjR0NDQ3F/EGTV5q7vd7uBgSeiuvPJK/i9ciMZHwdo4/V1tGMZtt93m8XgWLVoU/DhqcvhSU1ObtU61nCDMy8vbsmWLdXpv/fr1p06duuqqq4QQe/fu/f7774UQHTt2/NWvflVcXCyE8Hg8n3zyyYQJE4QQ+fn5X375pTVxf+nSpf369cvIyJDyT2gD4uPjhw8fbr3IXq83+CLX1dWtWLHCmoKYn5+/ePFi0zSFEMXFxfn5+UIIn88XnKC4efPmffv29evXT9o/o5WLiooaN26cdRR0Xf/www+to+Dz+VasWOH3+8/2i5mZmX369Fm6dKkQ4uTJk1999ZX1i/h58vPzly5davUqiouLx48fb425bdiwofG39tMF51rruv75559fdtllNlTbVuXn5y9btsy6RqC4uHjkyJEXXXSREKKsrGzfvn1CCMMwfv3rX9fU1BQXFzfuLJ7xk6oZfubkngv22GOPde/efcqUKRdffPGrr74a3HnddddZ26tXr05MTJw8efKgQYPGjh1rzdcyTbOgoKB///533nlnUlLSp59+Kqf6tmLNmjXWi5ydnT169GjrRd64caMQoqGhwTTNkydPXn755SNHjrzpppvS0tL27NljmmZJSUlGRsbNN9984403dujQ4fHHH5f8z2jlNm7cmJSUNGnSpKFDhw4bNszr9Zqm+eOPPwohKioqrO3s7Ow+ffq4XK7s7OxbbrnF+sWPP/44MTHxzjvv7NevX3DKHH4ej8eTm5s7dOjQSZMmJScnb9q0ydo/cODA4AfUTTfdlJ2d7XK5+vTpk52dvX//ftM0BwwYMHr06MLCwszMzOzsbGsyPH4eXdevvfbanJycwsLCxMTEtWvXWvtHjhz55JNPmqb57rvvCiH69++f/ZOqqirTNGtqavr373/NNddMnDgxPT197969zfq7Mu8+8e233+7cuTMrK6t///7WnoqKivr6+t69e1sPDx06tGbNmuTk5BEjRgT7uaZprlmz5tChQ0OHDu3evbuc0tuQysrK1atXJyUljRgxwhpVb2ho2LJly+DBg61vxF6v9+uvv/Z6vaNGjerYsaMQIhAIbNmyZfv27dHR0QMHDqRTfuGOHj26cuXKTp06XX311dHR0UIIv99fVlY2cODA6Ohor9e7devWYON27doFu+D79u1bu3Zt165dhw0bFryyGD+PpmkrVqw4efLkNddcE7wH59atW5OTk63ZTFu3brU6K5bLLrssNja2qqqqtLS0tra2R48eQ4YM4c5xF8gwjJUrV1ozooOrFuzYsSM+Pj41NfXYsWPWd8Sgyy+/3Ooaer3e5cuX+3y+4CdV6LgNEwAgovHlBQAQ0QhCAEBEIwgBABGNIAQARDSCEAAQ0QhCAEBEIwgBABGNIAQARDSCEAAQ0QhCAEBEIwgBABHt/wP/GPZ95YbE5AAAAABJRU5ErkJggg==">
+</div>
 </div>
 
 
