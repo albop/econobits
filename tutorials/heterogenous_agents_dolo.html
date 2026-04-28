@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pablo Winant">
 
-<title>Optimization Methods – econobits</title>
+<title>Solving the Aiyagari Model with Dolo.jl – econobits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,41 +23,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -181,18 +146,32 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#profit-optimization-by-a-monopolist" id="toc-profit-optimization-by-a-monopolist" class="nav-link active" data-scroll-target="#profit-optimization-by-a-monopolist">Profit optimization by a monopolist</a></li>
-  <li><a href="#constrained-optimization" id="toc-constrained-optimization" class="nav-link" data-scroll-target="#constrained-optimization">Constrained optimization</a></li>
-  <li><a href="#consumption-optimization" id="toc-consumption-optimization" class="nav-link" data-scroll-target="#consumption-optimization">Consumption optimization</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#the-model-definition" id="toc-the-model-definition" class="nav-link" data-scroll-target="#the-model-definition">1. The Model Definition</a>
+  <ul class="collapse">
+  <li><a href="#question-1-inspecting-the-yaml" id="toc-question-1-inspecting-the-yaml" class="nav-link" data-scroll-target="#question-1-inspecting-the-yaml">Question 1: Inspecting the YAML</a></li>
+  </ul></li>
+  <li><a href="#solving-the-individual-problem" id="toc-solving-the-individual-problem" class="nav-link" data-scroll-target="#solving-the-individual-problem">2. Solving the Individual Problem</a>
+  <ul class="collapse">
+  <li><a href="#question-2-using-dolo.jl-for-decision-rules" id="toc-question-2-using-dolo.jl-for-decision-rules" class="nav-link" data-scroll-target="#question-2-using-dolo.jl-for-decision-rules">Question 2: Using Dolo.jl for Decision Rules</a></li>
+  </ul></li>
+  <li><a href="#the-stationary-distribution" id="toc-the-stationary-distribution" class="nav-link" data-scroll-target="#the-stationary-distribution">3. The Stationary Distribution</a>
+  <ul class="collapse">
+  <li><a href="#question-3-the-ergodic-distribution" id="toc-question-3-the-ergodic-distribution" class="nav-link" data-scroll-target="#question-3-the-ergodic-distribution">Question 3: The Ergodic Distribution</a></li>
+  </ul></li>
+  <li><a href="#general-equilibrium" id="toc-general-equilibrium" class="nav-link" data-scroll-target="#general-equilibrium">4. General Equilibrium</a>
+  <ul class="collapse">
+  <li><a href="#question-4-clearing-the-market" id="toc-question-4-clearing-the-market" class="nav-link" data-scroll-target="#question-4-clearing-the-market">Question 4: Clearing the Market</a></li>
+  </ul></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="optimization.ipynb" download="optimization.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="heterogenous_agents_dolo.ipynb" download="heterogenous_agents_dolo.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Optimization Methods</h1>
+<h1 class="title">Solving the Aiyagari Model with Dolo.jl</h1>
 </div>
 
 
@@ -215,87 +194,62 @@ window.Quarto = {
 </header>
 
 
-<p>In this tutorial you will learn to code and use common optimization algorithms for static models.</p>
-<hr>
-<section id="profit-optimization-by-a-monopolist" class="level2">
-<h2 class="anchored" data-anchor-id="profit-optimization-by-a-monopolist">Profit optimization by a monopolist</h2>
-<p>A monopolist produces quantity <span class="math inline">\(q\)</span> of goods X at price <span class="math inline">\(p\)</span>. Its cost function is <span class="math inline">\(c(q) = 0.5 + q (1-qe^{-q})\)</span></p>
-<p>The consumer’s demand for price <span class="math inline">\(p\)</span> is <span class="math inline">\(x(p)=2 e^{-0.5 p}\)</span> (constant elasticity of demand to price).</p>
-<ol class="example" type="1">
-<li><strong>Write down the profit function of the monopolist and find the optimal production (if any). Don’t use any library except for plotting.</strong></li>
-</ol>
-<div id="4e05ebdd" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<hr>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>In this tutorial, we will quantitatively solve the <strong>Aiyagari (1994)</strong> heterogeneous agent model. Instead of writing custom value-function iteration or endogenous grid method (EGM) loops from scratch, we will learn how to leverage <strong>Dolo.jl</strong>. Dolo is a powerful Julia library that allows us to define the model concisely and rapidly solve for the individual agent’s decision rules.</p>
 </section>
-<section id="constrained-optimization" class="level2">
-<h2 class="anchored" data-anchor-id="constrained-optimization">Constrained optimization</h2>
-<p>Consider the function <span class="math inline">\(f(x,y) = 1-(x-0.5)^2 -(y-0.3)^2\)</span>.</p>
-<ol start="2" class="example" type="1">
-<li><strong>Use Optim.jl to maximize <span class="math inline">\(f\)</span> without constraint. Check you understand diagnostic information returned by the optimizer.</strong></li>
-</ol>
-<div id="5fb32027" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="3" class="example" type="1">
-<li><strong>Now, consider the constraint <span class="math inline">\(x&lt;0.3\)</span> and maximize <span class="math inline">\(f\)</span> under this new constraint.</strong></li>
-</ol>
-<div id="7f4b7d52" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="4" class="example" type="1">
-<li><strong>Reformulate the problem as a root finding problem with lagrangians. Write the complementarity conditions.</strong></li>
-</ol>
-<div id="d0170ba8" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="5" class="example" type="1">
-<li><strong>Solve using NLSolve.jl</strong></li>
-</ol>
-<div id="515dde92" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<hr>
+<section id="the-model-definition" class="level2">
+<h2 class="anchored" data-anchor-id="the-model-definition">1. The Model Definition</h2>
+<p>The Aiyagari model considers an economy populated by a continuum of agents who face idiosyncratic labor income risk and face a borrowing constraint.</p>
+<p>We will use a standard Dolo model file, conventionally named <code>aiyagari.yaml</code>. Download it <a href="ayiagari.yaml">here</a></p>
+<section id="question-1-inspecting-the-yaml" class="level3">
+<h3 class="anchored" data-anchor-id="question-1-inspecting-the-yaml">Question 1: Inspecting the YAML</h3>
+<p>Assume you are provided with or have written the <code>aiyagari.yaml</code> file. Open the file and inspect its structure. - In the <code>symbols</code> section, identifying the state variables and control variables of the agent. - How is the borrowing constraint <span class="math inline">\(a_t \geq \underline{a}\)</span> implemented? Look at the <code>arbitrage</code> or <code>controls</code> block. How are complementarity conditions (KKT) specified in Dolo? - What is the assumed stochastic process for the idiosyncratic productivity shock <span class="math inline">\(z_t\)</span>? (Check the <code>exogenous</code> block).</p>
 </section>
-<section id="consumption-optimization" class="level2">
-<h2 class="anchored" data-anchor-id="consumption-optimization">Consumption optimization</h2>
-<p>A consumer has preferences <span class="math inline">\(U(c_1, c_2)\)</span> over two consumption goods <span class="math inline">\(c_1\)</span> and <span class="math inline">\(c_2\)</span>.</p>
-<p>Given a budget <span class="math inline">\(I\)</span>, consumer wants to maximize utility subject to the budget constraint <span class="math inline">\(p_1 c_1 + p_2 c_2 \leq I\)</span>.</p>
-<p>We choose a Stone-Geary specification where</p>
-<p><span class="math inline">\(U(c_1, c_2)=\beta_1 \log(c_1-\gamma_1) + \beta_2 \log(c_2-\gamma_2)\)</span></p>
-<ol start="6" class="example" type="1">
-<li><strong>Write the Karush-Kuhn-Tucker necessary conditions for the problem.</strong></li>
+</section>
+<section id="solving-the-individual-problem" class="level2">
+<h2 class="anchored" data-anchor-id="solving-the-individual-problem">2. Solving the Individual Problem</h2>
+<p>In a general equilibrium setting, we must first be able to solve the individual agent’s partial-equilibrium problem for <strong>given, fixed prices</strong>: an interest rate <span class="math inline">\(r\)</span> and wage <span class="math inline">\(w\)</span>.</p>
+<section id="question-2-using-dolo.jl-for-decision-rules" class="level3">
+<h3 class="anchored" data-anchor-id="question-2-using-dolo.jl-for-decision-rules">Question 2: Using Dolo.jl for Decision Rules</h3>
+<p>In a new Julia script: 1. Import the package and load the model using <code>model = yaml_import("aiyagari.yaml")</code>. 2. Update the model’s calibration dictionary so that the interest rate <span class="math inline">\(r = 0.03\)</span> and <span class="math inline">\(w\)</span> is the corresponding competitive wage (assuming a standard Cobb-Douglas production function). 3. Solve for the agent’s optimal decision rules using Time Iteration.</p>
+<p><em>(Hint: Use <code>sol = time_iteration(model)</code> or <code>improved_time_iteration(model)</code>).</em> 4. Plot the optimal savings policy function <span class="math inline">\(a'(a, z)\)</span> against current assets <span class="math inline">\(a\)</span>. Plot a separate line for each realization of the Markov shock <span class="math inline">\(z\)</span>. Where is the policy function the most non-linear?</p>
+</section>
+</section>
+<section id="the-stationary-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="the-stationary-distribution">3. The Stationary Distribution</h2>
+<p>Once we have the optimal policies, we must compute how the continuum of agents is distributed across the state space <span class="math inline">\((a, z)\)</span>.</p>
+<section id="question-3-the-ergodic-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="question-3-the-ergodic-distribution">Question 3: The Ergodic Distribution</h3>
+<ol type="1">
+<li>Extract the evaluated policy rule from your Dolo solution. Since Dolo solves on a coarse grid with interpolation, you will likely need to evaluate the policy function over a much finer grid for <span class="math inline">\(a\)</span>.</li>
+<li>Write a routine to form the transition matrix <span class="math inline">\(M\)</span> using the “lottery” approach (Young, 2010), assigning fractional mass to the nearest grid points.</li>
+<li>Find the stationary distribution <span class="math inline">\(\Gamma(a, z)\)</span> by solving for the dominant eigenvector of your transition matrix, or simply iterate <span class="math inline">\(\Gamma_{k+1} = M \Gamma_k\)</span> until convergence.</li>
+<li>Plot the marginal distribution of assets. Do you observe a mass point of agents exactly at the borrowing constraint?</li>
 </ol>
-<div id="a2d2576d" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="7" class="example" type="1">
-<li><strong>Verify the KKT conditions are sufficient for optimality.</strong></li>
+</section>
+</section>
+<section id="general-equilibrium" class="level2">
+<h2 class="anchored" data-anchor-id="general-equilibrium">4. General Equilibrium</h2>
+<p>The final step is to close the model by clearing the capital market. - Aggregate capital supply is the sum over the stationary distribution: <span class="math inline">\(K^s(r) = \sum_{a,z} a \cdot \Gamma(a,z)\)</span>. - Capital demand <span class="math inline">\(K^d(r)\)</span> is given by substituting the firm’s first-order condition.</p>
+<section id="question-4-clearing-the-market" class="level3">
+<h3 class="anchored" data-anchor-id="question-4-clearing-the-market">Question 4: Clearing the Market</h3>
+<p>You need to find the equilibrium rate <span class="math inline">\(r^*\)</span> such that <span class="math inline">\(Excess Supply(r) = K^s(r) - K^d(r) = 0\)</span>.</p>
+<ol type="1">
+<li>Using your code from Parts 2 and 3, write a wrapper function <code>excess_capital(r)</code> that:
+<ul>
+<li>Updates the model calibration with the guessed <span class="math inline">\(r\)</span> and implied <span class="math inline">\(w\)</span>.</li>
+<li>Solves for the policy function using Dolo.</li>
+<li>Computes the stationary distribution.</li>
+<li>Returns <span class="math inline">\(K^s(r) - K^d(r)\)</span>.</li>
+</ul></li>
+<li>What are the natural theoretical bounds for the equilibrium interest rate <span class="math inline">\(r^*\)</span> in this model? (Consider the subjective discount factor <span class="math inline">\(\beta\)</span>).</li>
+<li>Use a root-finding algorithm (like <code>Roots.find_zero</code> with the Bisection or Brent method) to find <span class="math inline">\(r^*\)</span>.</li>
+<li>What is the final equilibrium interest rate and aggregate capital stock for this economy?</li>
 </ol>
-<div id="152777c4" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="8" class="example" type="1">
-<li><strong>Derive analytically the demand functions, and the shadow price.</strong></li>
-</ol>
-<div id="c173dd43" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="9" class="example" type="1">
-<li><strong>Interpret this problem as a complementarity problem and solve it using NLSolve.</strong></li>
-</ol>
-<div id="5873d7e4" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="10" class="example" type="1">
-<li><strong>Produce some nice graphs with isoutility curves, the budget constraint and the optimal choice.</strong></li>
-</ol>
-<div id="70c88007" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

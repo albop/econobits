@@ -49,8 +49,10 @@
     "items": [
       "/lectures/convergence/convergence_1.html",
       "/lectures/convergence/convergence_2.html",
+      "/lectures/deterministic_simulation/index.html",
       "/lectures/discretization/index.html",
       "/lectures/interpolation/index.html",
+      "/lectures/heterogenous_agents/index.html",
       "/lectures/optimization/index.html",
       "/lectures/perturbation/index.html",
       "/lectures/time_iteration/index.html",
@@ -59,7 +61,9 @@
       "/tutorials/Julia_Basics.html",
       "/tutorials/optimization.html",
       "/tutorials/perturbation.html",
+      "/tutorials/deterministic_simulation.html",
       "/tutorials/solow.html",
+      "/tutorials/heterogenous_agents_dolo.html",
       "/tutorials/time_iteration.html",
       "/exercises/optimization_pushups.html"
     ]

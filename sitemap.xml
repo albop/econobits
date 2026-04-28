@@ -21,28 +21,32 @@
     <lastmod>2026-03-26T08:32:29.580Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/tutorials/epidemiology.html</loc>
-    <lastmod>2026-03-12T11:13:55.641Z</lastmod>
+    <loc>https://albop.github.io/econobits/tutorials/time_iteration.html</loc>
+    <lastmod>2026-04-16T10:51:10.356Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/tutorials/coursework_3.html</loc>
+    <loc>https://albop.github.io/econobits/tutorials/perturbation.html</loc>
+    <lastmod>2026-03-12T12:00:46.213Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/tutorials/solow.html</loc>
+    <lastmod>2026-03-12T11:13:55.642Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/tutorials/coursework_1.html</loc>
     <lastmod>2026-04-16T10:27:50.266Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/tutorials/mccall.html</loc>
-    <lastmod>2026-03-26T11:58:39.262Z</lastmod>
+    <loc>https://albop.github.io/econobits/tutorials/monte_carlo_interpolation.html</loc>
+    <lastmod>2026-04-14T07:54:10.013Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/tutorials/optimization.html</loc>
-    <lastmod>2026-03-17T09:17:56.838Z</lastmod>
+    <loc>https://albop.github.io/econobits/tutorials/test.html</loc>
+    <lastmod>2026-03-11T22:18:00.053Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/tutorials/discrete_dynamic_programming.html</loc>
-    <lastmod>2026-03-26T11:56:10.762Z</lastmod>
-  </url>
-  <url>
-    <loc>https://albop.github.io/econobits/tutorials/Julia_Basics.html</loc>
-    <lastmod>2026-03-12T11:13:55.641Z</lastmod>
+    <loc>https://albop.github.io/econobits/tutorials/deterministic_simulation.html</loc>
+    <lastmod>2026-04-28T08:18:49.180Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/mie37/index_2026.html</loc>
@@ -69,12 +73,16 @@
     <lastmod>2026-03-31T08:33:46.044Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/time_iteration/index.html</loc>
-    <lastmod>2026-04-16T10:45:05.664Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/heterogenous_agents/index.html</loc>
+    <lastmod>2026-04-28T08:16:41.821Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/optimization/index.html</loc>
-    <lastmod>2026-03-19T12:53:12.145Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/discrete_dynamic_programming/index.html</loc>
+    <lastmod>2026-04-14T07:43:12.398Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/differentiation/index.html</loc>
+    <lastmod>2026-04-07T08:08:34.801Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/lectures/discretization/index.html</loc>
@@ -113,16 +121,20 @@
     <lastmod>2026-04-03T09:20:24.487Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/perturbation (4).html</loc>
-    <lastmod>2026-03-12T14:10:02.050Z</lastmod>
+    <loc>https://albop.github.io/econobits/time_iteration.html</loc>
+    <lastmod>2026-04-24T10:26:23.993Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/1_1_Julia_Basics.html</loc>
+    <lastmod>2026-03-26T09:08:12.349Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/about.html</loc>
     <lastmod>2026-01-28T16:45:49.020Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/1_1_Julia_Basics.html</loc>
-    <lastmod>2026-03-26T09:08:12.349Z</lastmod>
+    <loc>https://albop.github.io/econobits/perturbation (4).html</loc>
+    <lastmod>2026-03-12T14:10:02.050Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/coursework_3.html</loc>
@@ -146,7 +158,7 @@
   </url>
   <url>
     <loc>https://albop.github.io/econobits/scpo/index_2026.html</loc>
-    <lastmod>2026-04-24T08:20:37.929Z</lastmod>
+    <lastmod>2026-04-28T08:16:18.483Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/scpo/wip.html</loc>
@@ -161,12 +173,16 @@
     <lastmod>2026-03-13T11:39:41.581Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/differentiation/index.html</loc>
-    <lastmod>2026-04-07T08:08:34.801Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/deterministic_simulation/index.html</loc>
+    <lastmod>2026-04-28T08:07:47.479Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/lectures/discrete_dynamic_programming/index.html</loc>
-    <lastmod>2026-04-14T07:43:12.398Z</lastmod>
+    <loc>https://albop.github.io/econobits/lectures/optimization/index.html</loc>
+    <lastmod>2026-03-19T12:53:12.145Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/lectures/time_iteration/index.html</loc>
+    <lastmod>2026-04-16T10:45:05.664Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/lectures/interpolation/index.html</loc>
@@ -197,28 +213,32 @@
     <lastmod>2026-01-30T10:18:22.010Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/tutorials/test.html</loc>
-    <lastmod>2026-03-11T22:18:00.053Z</lastmod>
+    <loc>https://albop.github.io/econobits/tutorials/Julia_Basics.html</loc>
+    <lastmod>2026-03-12T11:13:55.641Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/tutorials/monte_carlo_interpolation.html</loc>
-    <lastmod>2026-04-14T07:54:10.013Z</lastmod>
+    <loc>https://albop.github.io/econobits/tutorials/discrete_dynamic_programming.html</loc>
+    <lastmod>2026-03-26T11:56:10.762Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/tutorials/coursework_1.html</loc>
+    <loc>https://albop.github.io/econobits/tutorials/optimization.html</loc>
+    <lastmod>2026-03-17T09:17:56.838Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/tutorials/mccall.html</loc>
+    <lastmod>2026-03-26T11:58:39.262Z</lastmod>
+  </url>
+  <url>
+    <loc>https://albop.github.io/econobits/tutorials/coursework_3.html</loc>
     <lastmod>2026-04-16T10:27:50.266Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/tutorials/solow.html</loc>
-    <lastmod>2026-03-12T11:13:55.642Z</lastmod>
+    <loc>https://albop.github.io/econobits/tutorials/epidemiology.html</loc>
+    <lastmod>2026-03-12T11:13:55.641Z</lastmod>
   </url>
   <url>
-    <loc>https://albop.github.io/econobits/tutorials/perturbation.html</loc>
-    <lastmod>2026-03-12T12:00:46.213Z</lastmod>
-  </url>
-  <url>
-    <loc>https://albop.github.io/econobits/tutorials/time_iteration.html</loc>
-    <lastmod>2026-04-16T10:51:10.356Z</lastmod>
+    <loc>https://albop.github.io/econobits/tutorials/heterogenous_agents_dolo.html</loc>
+    <lastmod>2026-04-28T08:18:32.737Z</lastmod>
   </url>
   <url>
     <loc>https://albop.github.io/econobits/eco309/corrections/solow.html</loc>

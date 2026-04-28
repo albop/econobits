@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pablo Winant">
 
-<title>Optimization Methods – econobits</title>
+<title>Tutorial: Simulating the Ecological Transition – econobits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -24,61 +24,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f67b63dbfc378573cfd6da3a14783f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f67b63dbfc378573cfd6da3a14783f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -137,7 +102,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -147,9 +112,9 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../images/logo_full2.png" alt="" class="navbar-logo light-content">
-    <img src="../images/logo_full2.png" alt="" class="navbar-logo dark-content">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo_full2.png" alt="" class="navbar-logo light-content">
+    <img src="../../images/logo_full2.png" alt="" class="navbar-logo dark-content">
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -158,11 +123,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -181,18 +146,33 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#profit-optimization-by-a-monopolist" id="toc-profit-optimization-by-a-monopolist" class="nav-link active" data-scroll-target="#profit-optimization-by-a-monopolist">Profit optimization by a monopolist</a></li>
-  <li><a href="#constrained-optimization" id="toc-constrained-optimization" class="nav-link" data-scroll-target="#constrained-optimization">Constrained optimization</a></li>
-  <li><a href="#consumption-optimization" id="toc-consumption-optimization" class="nav-link" data-scroll-target="#consumption-optimization">Consumption optimization</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#the-model-equations" id="toc-the-model-equations" class="nav-link" data-scroll-target="#the-model-equations">1. The Model Equations</a>
+  <ul class="collapse">
+  <li><a href="#question-1-finding-the-optimality-conditions" id="toc-question-1-finding-the-optimality-conditions" class="nav-link" data-scroll-target="#question-1-finding-the-optimality-conditions">Question 1: Finding the Optimality Conditions</a></li>
+  </ul></li>
+  <li><a href="#setting-up-the-f-and-g-system" id="toc-setting-up-the-f-and-g-system" class="nav-link" data-scroll-target="#setting-up-the-f-and-g-system">2. Setting up the <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> System</a>
+  <ul class="collapse">
+  <li><a href="#question-2-states-and-controls" id="toc-question-2-states-and-controls" class="nav-link" data-scroll-target="#question-2-states-and-controls">Question 2: States and Controls</a></li>
+  </ul></li>
+  <li><a href="#the-steady-states" id="toc-the-steady-states" class="nav-link" data-scroll-target="#the-steady-states">3. The Steady States</a>
+  <ul class="collapse">
+  <li><a href="#question-3-the-boundary-conditions" id="toc-question-3-the-boundary-conditions" class="nav-link" data-scroll-target="#question-3-the-boundary-conditions">Question 3: The Boundary Conditions</a></li>
+  </ul></li>
+  <li><a href="#the-stacked-time-method" id="toc-the-stacked-time-method" class="nav-link" data-scroll-target="#the-stacked-time-method">4. The Stacked Time Method</a>
+  <ul class="collapse">
+  <li><a href="#question-4-matrix-dimensions" id="toc-question-4-matrix-dimensions" class="nav-link" data-scroll-target="#question-4-matrix-dimensions">Question 4: Matrix Dimensions</a></li>
+  <li><a href="#question-5-computational-implementation" id="toc-question-5-computational-implementation" class="nav-link" data-scroll-target="#question-5-computational-implementation">Question 5: Computational Implementation</a></li>
+  </ul></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="optimization.ipynb" download="optimization.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Optimization Methods</h1>
+<h1 class="title">Tutorial: Simulating the Ecological Transition</h1>
 </div>
 
 
@@ -215,87 +195,53 @@ window.Quarto = {
 </header>
 
 
-<p>In this tutorial you will learn to code and use common optimization algorithms for static models.</p>
-<hr>
-<section id="profit-optimization-by-a-monopolist" class="level2">
-<h2 class="anchored" data-anchor-id="profit-optimization-by-a-monopolist">Profit optimization by a monopolist</h2>
-<p>A monopolist produces quantity <span class="math inline">\(q\)</span> of goods X at price <span class="math inline">\(p\)</span>. Its cost function is <span class="math inline">\(c(q) = 0.5 + q (1-qe^{-q})\)</span></p>
-<p>The consumer’s demand for price <span class="math inline">\(p\)</span> is <span class="math inline">\(x(p)=2 e^{-0.5 p}\)</span> (constant elasticity of demand to price).</p>
-<ol class="example" type="1">
-<li><strong>Write down the profit function of the monopolist and find the optimal production (if any). Don’t use any library except for plotting.</strong></li>
-</ol>
-<div id="4e05ebdd" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<hr>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>In this tutorial, we will set up and solve a deterministic perfect foresight model of an ecological transition using the Stacked Time approach. We consider a firm that produces output using both “Brown” (carbon-heavy) and “Green” (clean) installed capital.</p>
+<p>The firm faces an exogenous trajectory for a carbon tax <span class="math inline">\(\tau_t\)</span> which starts at zero, ramps up linearly, and stabilizes.</p>
 </section>
-<section id="constrained-optimization" class="level2">
-<h2 class="anchored" data-anchor-id="constrained-optimization">Constrained optimization</h2>
-<p>Consider the function <span class="math inline">\(f(x,y) = 1-(x-0.5)^2 -(y-0.3)^2\)</span>.</p>
-<ol start="2" class="example" type="1">
-<li><strong>Use Optim.jl to maximize <span class="math inline">\(f\)</span> without constraint. Check you understand diagnostic information returned by the optimizer.</strong></li>
-</ol>
-<div id="5fb32027" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="3" class="example" type="1">
-<li><strong>Now, consider the constraint <span class="math inline">\(x&lt;0.3\)</span> and maximize <span class="math inline">\(f\)</span> under this new constraint.</strong></li>
-</ol>
-<div id="7f4b7d52" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="4" class="example" type="1">
-<li><strong>Reformulate the problem as a root finding problem with lagrangians. Write the complementarity conditions.</strong></li>
-</ol>
-<div id="d0170ba8" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="5" class="example" type="1">
-<li><strong>Solve using NLSolve.jl</strong></li>
-</ol>
-<div id="515dde92" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<hr>
+<section id="the-model-equations" class="level2">
+<h2 class="anchored" data-anchor-id="the-model-equations">1. The Model Equations</h2>
+<p>Let <span class="math inline">\(K^b_t\)</span> and <span class="math inline">\(K^g_t\)</span> denote Brown and Green capital.</p>
+<p><strong>Production:</strong> Output is given by a simple decreasing returns to scale function: <span class="math display">\[ Y_t = A (K^b_t)^\alpha + A (K^g_t)^\alpha \quad \text{with } \alpha \in (0,1)\]</span></p>
+<p><strong>Capital Accumulation:</strong> Both capitals depreciate at rate <span class="math inline">\(\delta\)</span>. <span class="math display">\[ K^b_{t} = (1-\delta) K^b_{t-1} + I^b_t \]</span> <span class="math display">\[ K^g_{t} = (1-\delta) K^g_{t-1} + I^g_t \]</span></p>
+<p><strong>Adjustment Costs:</strong> Changing the capital stock is costly due to friction. <span class="math display">\[ \Phi(K_{t-1}, I_t) = \frac{\phi}{2} \left( \frac{I_t}{K_{t-1}} \right)^2 K_{t-1} \]</span></p>
+<p><strong>Firm’s Problem:</strong> Maximize the discounted sum of profits given a fixed interest rate <span class="math inline">\(r\)</span> and a time-varying carbon tax <span class="math inline">\(\tau_t\)</span>: <span class="math display">\[ \max \sum_{t=0}^\infty \left(\frac{1}{1+r}\right)^t \left[ Y_t - I^b_t - I^g_t - \tau_t K^b_t - \Phi(K^b_{t-1}, I^b_t) - \Phi(K^g_{t-1}, I^g_t) \right] \]</span></p>
+<section id="question-1-finding-the-optimality-conditions" class="level3">
+<h3 class="anchored" data-anchor-id="question-1-finding-the-optimality-conditions">Question 1: Finding the Optimality Conditions</h3>
+<p>Set up the discrete-time Lagrangian and derive the first-order conditions with respect to <span class="math inline">\(I^b_t, K^b_{t}, I^g_t, K^g_{t}\)</span>.</p>
+<p><em>Hint:</em> Introduce Lagrange multipliers (Tobin’s marginal <span class="math inline">\(q_t\)</span>) for the two capital accumulation equations. What is the interpretation of <span class="math inline">\(q_t\)</span> in this context?</p>
 </section>
-<section id="consumption-optimization" class="level2">
-<h2 class="anchored" data-anchor-id="consumption-optimization">Consumption optimization</h2>
-<p>A consumer has preferences <span class="math inline">\(U(c_1, c_2)\)</span> over two consumption goods <span class="math inline">\(c_1\)</span> and <span class="math inline">\(c_2\)</span>.</p>
-<p>Given a budget <span class="math inline">\(I\)</span>, consumer wants to maximize utility subject to the budget constraint <span class="math inline">\(p_1 c_1 + p_2 c_2 \leq I\)</span>.</p>
-<p>We choose a Stone-Geary specification where</p>
-<p><span class="math inline">\(U(c_1, c_2)=\beta_1 \log(c_1-\gamma_1) + \beta_2 \log(c_2-\gamma_2)\)</span></p>
-<ol start="6" class="example" type="1">
-<li><strong>Write the Karush-Kuhn-Tucker necessary conditions for the problem.</strong></li>
-</ol>
-<div id="a2d2576d" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="7" class="example" type="1">
-<li><strong>Verify the KKT conditions are sufficient for optimality.</strong></li>
-</ol>
-<div id="152777c4" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="8" class="example" type="1">
-<li><strong>Derive analytically the demand functions, and the shadow price.</strong></li>
-</ol>
-<div id="c173dd43" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="9" class="example" type="1">
-<li><strong>Interpret this problem as a complementarity problem and solve it using NLSolve.</strong></li>
-</ol>
-<div id="5873d7e4" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ol start="10" class="example" type="1">
-<li><strong>Produce some nice graphs with isoutility curves, the budget constraint and the optimal choice.</strong></li>
-</ol>
-<div id="70c88007" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
+</section>
+<section id="setting-up-the-f-and-g-system" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-the-f-and-g-system">2. Setting up the <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> System</h2>
+<p>To apply our numerical solver cleanly, it is standard practice to separate the system into backward-looking transition equations and forward-looking optimality conditions.</p>
+<section id="question-2-states-and-controls" class="level3">
+<h3 class="anchored" data-anchor-id="question-2-states-and-controls">Question 2: States and Controls</h3>
+<p>Identify the state variables (<span class="math inline">\(s_t\)</span>) and control variables (<span class="math inline">\(x_t\)</span>) for this model. - Write down the transition functions <span class="math inline">\(s_t = g(s_{t-1}, x_{t-1}, z_t)\)</span> explicitly. - Write down the grouped optimality conditions <span class="math inline">\(f(s_t, x_t, x_{t+1}, s_{t+1}) = 0\)</span>.</p>
+</section>
+</section>
+<section id="the-steady-states" class="level2">
+<h2 class="anchored" data-anchor-id="the-steady-states">3. The Steady States</h2>
+<p>Assume the tax <span class="math inline">\(\tau_t\)</span> is constant at <span class="math inline">\(\bar{\tau}\)</span> forever.</p>
+<section id="question-3-the-boundary-conditions" class="level3">
+<h3 class="anchored" data-anchor-id="question-3-the-boundary-conditions">Question 3: The Boundary Conditions</h3>
+<p>Find the analytical expressions for the steady-state capital levels <span class="math inline">\(K^{b*}\)</span> and <span class="math inline">\(K^{g*}\)</span> as a function of the tax <span class="math inline">\(\bar{\tau}\)</span>. - Compute the initial steady state when there is no climate policy (<span class="math inline">\(\tau = 0\)</span>). - Compute the final steady state after the policy is fully phased in (<span class="math inline">\(\tau = \tau_{\max}\)</span>).</p>
+</section>
+</section>
+<section id="the-stacked-time-method" class="level2">
+<h2 class="anchored" data-anchor-id="the-stacked-time-method">4. The Stacked Time Method</h2>
+<p>We want to simulate a long policy transition over <span class="math inline">\(T = 100\)</span> periods. At <span class="math inline">\(t=0\)</span>, the government announces that starting tomorrow, the tax <span class="math inline">\(\tau_t\)</span> will increase by <span class="math inline">\(\Delta \tau\)</span> each period until it reaches <span class="math inline">\(\tau_{\max}\)</span> at year <span class="math inline">\(20\)</span>, and remain there forever.</p>
+<section id="question-4-matrix-dimensions" class="level3">
+<h3 class="anchored" data-anchor-id="question-4-matrix-dimensions">Question 4: Matrix Dimensions</h3>
+<p>Suppose we stack the model equations into a single nonlinear root-finding problem <span class="math inline">\(F(Y) = 0\)</span> solving for the path from <span class="math inline">\(t=1\)</span> to <span class="math inline">\(T\)</span>. - How many endogenous variables are there per period? - What is the total dimension of the vector <span class="math inline">\(Y\)</span>? - Describe the exact boundary conditions you will append to the top (initial) and bottom (terminal) of the stacked system.</p>
+</section>
+<section id="question-5-computational-implementation" class="level3">
+<h3 class="anchored" data-anchor-id="question-5-computational-implementation">Question 5: Computational Implementation</h3>
+<p>If you were to pass this massive stacked system to a standard solver like <code>scipy.optimize.root</code>, why would using a dense Jacobian matrix be computationally disastrous? How does providing a sparse, banded Jacobian fix this problem, and why is our system guaranteed to be banded?</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -372,7 +318,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/albop\.github\.io\/econobits\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
