@@ -1,0 +1,81 @@
+---
+title: McCall Model
+author: Pablo Winant
+format:
+  html: default
+  ipynb: default
+jupyter: julia-1.12
+execute: 
+  enabled: false
+---
+
+### Job-Search Model
+
+- When unemployed in date, a job-seeker
+  - consumes unemployment benefit $c_t = \underline{c}$
+  - receives in every date $t$ a job offer $w_t$
+    - $w_t$ is i.i.d., 
+    - takes values $w_1, w_2, w_3$ with probabilities $p_1, p_2, p_3$
+  - if job-seeker accepts, becomes employed at rate $w_t$ in the next period
+  - else he stays unemployed
+  
+- When employed at rate $w$
+  - worker consumes salary $c_t = w$
+  - with small probability $\lambda>0$ looses his job:
+    - starts next period unemployed
+  - otherwise stays employed at same rate
+- Objective: $\max E_0 \left\{ \sum \beta^t \log(c_t) \right\}$
+
+@. __What are the states, the controls, the reward of this problem ? Write down the Bellman equation.__
+
+
+```{julia}
+#  your code here
+```
+
+@. __Define a named tuple for the model.__
+
+
+```{julia}
+#  your code here
+```
+
+@. __Define a function  `value_update(V_U::Vector{Float64}, V_E::Vector{Float64}, x::Vector{Bool}, p::Parameters)::Tuple{Vector, Vector}`, which takes in value functions tomorrow and a policy vector and return updated values for today.__
+
+```{julia}
+#  your code here
+```
+
+@. __Define a function `policy_eval(x::Vector{Bool}, p::Parameter)::Tuple{Vector, Vector}` which takes in a policy vector and returns the value(s) of following this policies forever. You can add relevant arguments to the function.__
+
+
+```{julia}
+#  your code here
+```
+
+@. __Define a function `bellman_step(V_E::Vector, V_U::Vector, p::Parameters)::Tuple{Vector, Vector, Vector}` which returns updated values, together with improved policy rules.__
+
+
+```{julia}
+#  your code here
+```
+
+@. __Implement Value Function Iteration__
+
+
+```{julia}
+#  your code here
+```
+
+@. __Implement Policy Iteration and compare rates of convergence.__
+
+
+```{julia}
+#  your code here
+```
+
+@. __Discuss the Effects of the Parameters__
+
+```{julia}
+#  your code here
+```

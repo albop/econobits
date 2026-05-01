@@ -1,0 +1,5 @@
+{
+    "julia.environmentPath": "/home/pablo/Teaching/econobits",
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": []
+}

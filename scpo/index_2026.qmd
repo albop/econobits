@@ -16,6 +16,8 @@ listing:
       - ../lectures/discretization/index.qmd
       - ../lectures/interpolation/index.qmd
       - ../lectures/time_iteration/index.qmd
+      - ../lectures/heterogenous_agents/index.qmd
+      - ../lectures/deterministic_simulation/index.qmd
   - id: tutorials-listing
     type: table
     fields: [title]
@@ -31,6 +33,8 @@ listing:
       - ../tutorials/perturbation.qmd
       - ../tutorials/monte_carlo_interpolation.qmd
       - ../tutorials/time_iteration.qmd
+      - ../tutorials/heterogenous_agents_dolo.qmd
+      - ../tutorials/deterministic_simulation.qmd
   - id: exercises-listing
     type: table
     fields: [title]
@@ -56,10 +60,17 @@ To get a very nice working installation:
 :::
 
 
+
 ::: {.callout-important title="Homework" collapse="false"}
 
-For next time:
+For April 24th (first homework)
 
-- Finish [perturbation](../tutorials/perturbation.qmd) tutorial 
+- [Deep learning](homework/coursework_1_deeplearning.ipynb)
+
+For May 24th (second homework)
+
+- [Consumption Saving](homework/coursework_2.qmd)
+
 
 :::
+

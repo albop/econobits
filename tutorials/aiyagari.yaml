@@ -1,0 +1,56 @@
+name: Aiyagari
+
+symbols:
+
+  exogenous: [z]
+  states: [a]
+  controls: [i]
+  parameters: [beta, gamma, r, w, a_min]
+
+definitions: |
+  # Consumption is determined by the budget constraint
+  c[t] = (1+r)*a[t] + w*exp(z[t]) - i[t]
+
+equations:
+
+  arbitrage:
+    # Euler Equation. The complementarity condition after the pipe `|` 
+    # enforces that savings (i) cannot fall below a_min.
+    - 1 - beta*(1+r)*(c[t+1]/c[t])^(-gamma)  |  a_min <= i[t] <= inf
+
+  transition:
+    # Tomorrow's assets are today's savings
+    - a[t] = i[t-1]
+
+calibration:
+
+  # Structural parameters
+  beta: 0.96
+  gamma: 2.0
+  a_min: 0.0
+  
+  # Prices (Initial Guess for Partial Equilibrium)
+  r: 0.03
+  w: 1.0
+  
+  # Exogenous state steady-state point
+  z: 0.0
+
+  # Endogenous variables initial guess for the solver
+  a: 0.5
+  i: 0.5
+  c: (1+r)*a + w*exp(z) - i
+
+exogenous: !AR1
+  # The idiosyncratic income shock process
+  rho: 0.9
+  sigma: 0.1
+  N: 5
+
+domain:
+  # The state space for assets
+  a: [a_min, 20.0]
+
+options:
+  grid: !Cartesian
+    n: [200]

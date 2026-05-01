@@ -1,0 +1,103 @@
+---
+title: Discrete Dynamic Programming
+author: Pablo Winant
+format:
+  html: default
+  ipynb: default
+jupyter: julia-1.12
+execute: 
+  enabled: false
+---
+
+
+## Markov Chains
+
+A worker’s employment dynamics obey the stochastic matrix
+
+$$P = \begin{bmatrix}
+1-\alpha & \alpha \\
+\beta & 1-\beta
+\end{bmatrix}$$
+
+
+with $\alpha\in(0,1)$ and $\beta\in (0,1)$. First line corresponds to employment, second line to unemployment.
+
+@. __Which is the stationary equilibrium? (choose any value for $\alpha$ and $\beta$)__
+
+```{julia}
+# your code here
+```
+
+@. __In the long run, what will the the fraction $p$ of time spent unemployed? (Denote by $X_m$ the fraction of dates were one is unemployed)__
+
+```{julia}
+# your code here
+```
+
+@. __Illustrate this convergence by generating a simulated series of length 10000 starting at $X_0=1$. Plot $X_m-p$ against $m$. (Take $\alpha=\beta=0.1$).__
+
+
+## Basic Asset Pricing model
+
+A financial asset yields dividend $(x_t)$, which follows an AR1. It is evaluated using the stochastic discount factor: $\rho_{0,t} = \beta^t \exp(y_t)$  where $\beta<1$ and $y_t$ is an $AR1$.
+The price of the asset is given by $p_0 = \sum_{t\geq 0} \rho_{0,t} U(x_t)$ where $U(u)=\exp(u)^{0.5}/{0.5}$.
+Our goal is to find the pricing function $p(x,y)$, which yields the price of the asset in any state.
+
+@. __Write down the recursive equation which must be satisfied by $p$.__
+
+```{julia}
+# your code here
+```
+
+@. __Compute the ergodic distribution of $x$ and $y$.__
+
+```{julia}
+# your code here
+```
+
+@. __Discretize processes $(x_t)$ and $(y_t)$ using 2 states each. How would you represent the unknown $p()$?__
+
+```{julia}
+# your code here
+```
+
+@. __Solve for $p()$ using successive approximations__
+
+```{julia}
+# your code here
+```
+
+@. __Solve for $p()$ by solving a linear system (homework)__
+
+```{julia}
+# your code here
+```
+
+## Asset replacement (from Compecon)
+
+At the beginning of each year, a manufacturer must decide whether to continue to operate an aging physical asset or replace it with a new one.
+
+An asset that is $a$ years old yields a profit contribution $p(a)$ up to $n$ years, at which point, the asset becomes unsafe and must be replaced by law.
+
+The cost of a new asset is $c$. What replacement policy maximizes profits?
+
+Calibration: profit $p(a)=50-2.5a-2.5a^2$. Maximum asset age: 5 years. Asset replacement cost: 75, annual discount factor $\delta=0.9$.
+
+@. __Define kind of problem, the state space, the actions, the reward function, and the Bellman updating equation__
+
+```{julia}
+# your code here
+```
+
+@. __Solve the problem using Value Function Iteration__
+
+```{julia}
+# your code here
+```
+
+@. __Solve the problem using Policy Iteration. Compare with VFI.__
+
+```{julia}
+# your code here
+```
+

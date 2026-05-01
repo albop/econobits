@@ -1,0 +1,26 @@
+---
+title: Solow Model
+author: Pablo Winant
+format:
+  html: default
+  ipynb: default
+jupyter: julia-1.12
+execute: 
+  enabled: false
+---
+
+This is a cell
+
+```julia
+# jkj
+```
+
+And another one
+```{julia}
+#
+```
+
+And another qnother one
+```{julia}
+#
+```

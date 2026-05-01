@@ -1,0 +1,145 @@
+---
+title: Deterministic Simulations
+subtitle: "The Stacked Time Method"
+author: Pablo Winant
+format:
+  revealjs:
+    html-math-method: mathjax
+    navigation-mode: grid
+    width: 1920
+    height: 1080
+---
+
+# Introduction
+
+## Deterministic Simulations
+
+- **What are they?** 
+  - Simulations where the entire path of future shocks is known at $t=0$. 
+  - Known as **Perfect Foresight** or **MIT Shocks**.
+- **Why use them?**
+  - Essential for examining large, structural deviations from steady states.
+  - Analyzing gradual, anticipated policy changes.
+  - Solving models with "lumpy" transitions.
+- **Contrast with Stochastic Simulations:**
+  - No uncertainty about the future after $t=0$.
+  - Agents do not form expectations over distributions, saving us from the "curse of dimensionality."
+
+# The Stacked Time Method
+
+## The Core Concept
+
+Dynamic models consist of difference equations linking periods:
+$$ f(x_{t-1}, x_t, x_{t+1}) = 0 $$
+
+- Instead of time-stepping (which can be unstable), the **Stacked Time Method** (Laffargue 1990; Boucekkine 1995; Juillard 1996) solves the entire path simultaneously.
+- We "stack" the variables for all $T$ periods into one giant vector:
+$$ X = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_T \end{bmatrix} $$
+- We define a stacked function $F(X) = 0$ encompassing the equations for every time step.
+
+## Boundary Conditions
+
+To solve the system $F(X) = 0$, we need to anchor the start and the end of the simulation:
+
+1. **Initial Condition:** $x_0$ is given (usually the economy's state before the shock).
+2. **Terminal Condition:** $x_{T+1}$ is assumed to reach a new steady state ($x^*$).
+   - We must choose $T$ large enough so that the transition is fully complete before the terminal date.
+
+$$
+\begin{align*}
+f(x_0, x_1, x_2) &= 0 \quad \text{(Initial boundary)} \\
+f(x_1, x_2, x_3) &= 0 \\
+\vdots \\
+f(x_{T-1}, x_T, x^*) &= 0 \quad \text{(Terminal boundary)}
+\end{align*}
+$$
+
+## Solving the System
+
+- The system $F(X) = 0$ is highly non-linear and very large ($N \times T$ equations, where $N$ is the number of variables per period).
+- We solve it using exactly the same tools as a static non-linear problem: **Newton's Method**.
+$$ X^{(k+1)} = X^{(k)} - [J_F(X^{(k)})]^{-1} F(X^{(k)}) $$
+- **Sparsity:** The Jacobian $J_F$ is massive but **banded** (sparse). 
+  - An equation at time $t$ only depends on variables at $t-1, t, t+1$.
+  - Modern sparse linear algebra solvers invert this matrix  efficiently.
+
+# Example: The Ecological Transition
+
+## An Ecological Transition Model
+
+Consider an economy forced to transition from polluting to clean energy.
+
+- **Two Types of Capital:**
+  - $K^b_t$: "Brown" (carbon-intensive) capital.
+  - $K^g_t$: "Green" (clean) capital.
+- **Production:** Output requires both types of energy.
+- **The Policy:** The government introduces a carbon tax $\tau_t$ on the use of Brown capital.
+  - The tax is announced at $t=0$, ramps up linearly for 20 years, and remains permanently high.
+  - The entire path of the tax is **perfectly foreseeable**.
+
+## The Dynamics of Transition
+
+Firms face adjustment costs to changing capital. How will they react to the announcement?
+
+- **Euler Equations & Arbitrage:** 
+  - Firms immediately foresee that brown capital will be unprofitable in the future.
+  - Even before the tax is fully implemented, they stop investing in $K^b_t$.
+- **Stranded Assets:**
+  - The shadow value (Tobin's q) of brown capital drops sharply at $t=0$.
+- **Green Investment Boom:**
+  - Massive investments scale up $K^g_t$ to replace the lost energy capacity.
+
+## Applying Stacked Time to the Transition
+
+**How do we compute this?**
+
+1. **Initial SS ($t=0$):** Solve the steady state with $\tau=0$. This yields initial capital $K^b_0, K^g_0$.
+2. **Final SS ($t=T$):** Solve a *new* steady state with $\tau = \tau_{max}$. This yields terminal capital $K^{b*}, K^{g*}$.
+3. **Stack the Equations:** For $t=1 \dots T$, stack the Euler equations, budget constraints, and capital accumulation rules.
+4. **Solve:** Use a sparse Newton solver to find the optimal sequences $(K^b_t, K^g_t, C_t, \dots)_{t=1}^T$.
+
+This provides a deterministic trajectory showing the macro-financial effects of climate policy!
+
+# Conclusion
+
+## Summary
+
+1. **Deterministic Simulations** are crucial for studying structured transitions over time (like climate change or demographics).
+2. **Stacked Time** converts a dynamic problem into a large, sparse static root-finding problem.
+3. Leveraging **sparse Jacobians** allows us to rapidly simulate hundreds of variables over hundreds of periods simultaneously.
+
+# Appendix
+
+## Notation Conventions: $f$ and $g$
+
+In other parts of this course, we split models into:
+
+- **Transition functions (backward-looking):** $s_t = g(s_{t-1}, x_{t-1}, z_t)$
+- **Optimality conditions (forward-looking):** $0 = f(s_t, x_t, x_{t+1}, s_{t+1})$
+
+*(Where $s$ are states, $x$ are controls, and $z$ are exogenous variables.)*
+
+## Translating $f$-$g$ to $F$
+
+How do we take this two-part system and bridge it back to the general difference equation form $F(y_{t-1}, y_t, y_{t+1}) = 0$ from earlier? 
+
+We define a combined variable vector $y_t = \begin{bmatrix} s_t \\ x_t \end{bmatrix}$. We can then stack the rules into a single generic function $F$:
+
+$$
+F(y_{t-1}, y_t, y_{t+1}, z_t) = \begin{bmatrix}
+s_t - g(s_{t-1}, x_{t-1}, z_t) \\
+f(s_t, x_t, x_{t+1}, s_{t+1})
+\end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+$$
+
+Notice how the top block is backward-looking (depends on $y_{t-1}, y_t$) and the bottom block is forward-looking (depends on $y_t, y_{t+1}$), but the combined system exactly matches $F(y_{t-1}, y_t, y_{t+1}) = 0$.
+
+## Implications for Stacked Time
+
+How does this explicit separation affect the Stacked Time approach compared to an arbitrary system $F(y_{t-1}, y_t, y_{t+1}) = 0$?
+
+- **Variable Condensation:** Sometimes, you can evaluate the transition function $g$ recursively or substitute it algebraically into $f$, significantly reducing the dimension of the stacked Jacobian.
+
+- **Boundary Condition Clarity:** The formal separation clearly allocates boundary conditions: the initial period requires a fixed state $s_0$, while the terminal date $T+1$ targets a steady state condition for $(s, x)$.
+
+- **Block Solving Structure:** Advanced Newton solvers can exploit the explicit state / control division to reorder the Jacobian elements into a beautifully banded structure, making the inversion step even faster.

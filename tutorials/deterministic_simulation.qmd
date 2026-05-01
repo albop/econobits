@@ -1,0 +1,67 @@
+---
+title: "Simulating the Ecological Transition"
+author: "Pablo Winant"
+format: html
+---
+
+## Introduction
+
+In this tutorial, we will set up and solve a deterministic perfect foresight model of an ecological transition using the Stacked Time approach. We consider a firm that produces output using both "Brown" (carbon-heavy) and "Green" (clean) installed capital. 
+
+The firm faces an exogenous trajectory for a carbon tax $\tau_t$ which starts at zero, ramps up linearly, and stabilizes.
+
+## 1. The Model Equations
+
+Let $K^b_t$ and $K^g_t$ denote Brown and Green capital. 
+
+**Production:** Output is given by a simple decreasing returns to scale function:
+$$ Y_t = A (K^b_t)^\alpha + A (K^g_t)^\alpha \quad \text{with } \alpha \in (0,1)$$
+
+**Capital Accumulation:** Both capitals depreciate at rate $\delta$.
+$$ K^b_{t} = (1-\delta) K^b_{t-1} + I^b_t $$
+$$ K^g_{t} = (1-\delta) K^g_{t-1} + I^g_t $$
+
+**Adjustment Costs:** Changing the capital stock is costly due to friction. 
+$$ \Phi(K_{t-1}, I_t) = \frac{\phi}{2} \left( \frac{I_t}{K_{t-1}} \right)^2 K_{t-1} $$
+
+**Firm's Problem:** Maximize the discounted sum of profits given a fixed interest rate $r$ and a time-varying carbon tax $\tau_t$:
+$$ \max \sum_{t=0}^\infty \left(\frac{1}{1+r}\right)^t \left[ Y_t - I^b_t - I^g_t - \tau_t K^b_t - \Phi(K^b_{t-1}, I^b_t) - \Phi(K^g_{t-1}, I^g_t) \right] $$
+
+### Question 1: Finding the Optimality Conditions
+Set up the discrete-time Lagrangian and derive the first-order conditions with respect to $I^b_t, K^b_{t}, I^g_t, K^g_{t}$. 
+
+*Hint:* Introduce Lagrange multipliers (Tobin's marginal $q_t$) for the two capital accumulation equations. What is the interpretation of $q_t$ in this context?
+
+## 2. Setting up the $f$ and $g$ System
+
+To apply our numerical solver cleanly, it is standard practice to separate the system into backward-looking transition equations and forward-looking optimality conditions.
+
+### Question 2: States and Controls
+Identify the state variables ($s_t$) and control variables ($x_t$) for this model. 
+
+- Write down the transition functions $s_t = g(s_{t-1}, x_{t-1}, z_t)$ explicitly. 
+- Write down the grouped optimality conditions $f(s_t, x_t, x_{t+1}, s_{t+1}) = 0$.
+
+## 3. The Steady States
+
+Assume the tax $\tau_t$ is constant at $\bar{\tau}$ forever.
+
+### Question 3: The Boundary Conditions
+Find the analytical expressions for the steady-state capital levels $K^{b*}$ and $K^{g*}$ as a function of the tax $\bar{\tau}$. 
+
+- Compute the initial steady state when there is no climate policy ($\tau = 0$).
+- Compute the final steady state after the policy is fully phased in ($\tau = \tau_{\max}$).
+
+## 4. The Stacked Time Method
+
+We want to simulate a long policy transition over $T = 100$ periods. At $t=0$, the government announces that starting tomorrow, the tax $\tau_t$ will increase by $\Delta \tau$ each period until it reaches $\tau_{\max}$ at year $20$, and remain there forever.
+
+### Question 4: Matrix Dimensions
+Suppose we stack the model equations into a single nonlinear root-finding problem $F(Y) = 0$ solving for the path from $t=1$ to $T$.
+
+- How many endogenous variables are there per period?
+- What is the total dimension of the vector $Y$?
+- Describe the exact boundary conditions you will append to the top (initial) and bottom (terminal) of the stacked system.
+
+### Question 5: Computational Implementation
+If you were to pass this massive stacked system to a standard solver in Julia like `NLsolve.nlsolve`, why would using a dense Jacobian matrix be computationally disastrous? How does providing a sparse, banded Jacobian (using Julia's `SparseArrays`) fix this problem, and why is our system mathematically guaranteed to be banded?

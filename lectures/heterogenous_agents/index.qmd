@@ -1,0 +1,254 @@
+---
+title: Numerical Methods for Heterogeneous Agents
+subtitle: "Solving the Bewley-Huggett-Aiyagari Model"
+author: Pablo Winant
+format:
+  revealjs:
+    html-math-method: mathjax
+    navigation-mode: grid
+    width: 1920
+    height: 1080
+---
+
+# Introduction
+
+## The Computational Challenge
+
+- Heterogeneous Agent (HA) models feature idiosyncratic risk and incomplete markets.
+- **Why is it hard?** We must solve for both:
+
+    1. Individual decision rules (Value and Policy functions) that depend on non-linearities like borrowing constraints.
+    2. The aggregate distribution of agents $\Gamma(a, z)$ which is a high-dimensional object.
+
+- **General Equilibrium:** Prices ($r$, $w$) depend on aggregate capital $K$, which is the integral of individual asset holdings over the distribution $\Gamma(a, z)$.
+
+## The Solution Algorithm: Overview
+
+Solving an Aiyagari model in steady state typically involves these nested loops:
+
+1. **Outer Loop (Equilibrium Prices):** Guess an interest rate $r$.
+2. **Inner Loop 1 (Individual Problem):** Solve for the policy function $a'(a, z)$ given prices.
+3. **Inner Loop 2 (Distribution):** Find the stationary distribution $\Gamma(a, z)$ given the policy function.
+4. **Aggregation:** Compute aggregate capital supply $K^s(r)$ from $\Gamma(a, z)$.
+5. **Update:** Compare $K^s(r)$ to capital demand $K^d(r)$. If they don't match, update $r$ and repeat.
+
+# Step 1: Discretizing the State Space
+
+## The State Space
+
+The individual state consists of:
+
+- $z$: Exogenous idiosyncratic productivity/income shock. Usually a continuous AR(1) process.
+- $a$: Endogenous asset holdings. Continuous, subject to $a \geq \underline{a}$.
+
+To solve numerically, we restrict both to finite, discrete grids.
+
+## Discretizing the Income Process ($z$)
+
+If income follows an AR(1) process:
+$$ \log z_{t} = \rho \log z_{t-1} + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \sigma^2) $$
+
+We approximate this with a discrete Markov Chain:
+
+- **State space:** $n_z$ grid points, $Z = \{z_1, z_2, \dots, z_{n_z}\}$.
+- **Transition Matrix:** An $n_z \times n_z$ matrix $\Pi$ where $\Pi_{i,j} = \text{Pr}(z_{t+1} = z_j | z_t = z_i)$.
+
+**Standard Methods:**
+
+- **Tauchen (1986):** Simple integration over normal CDF.
+- **Rouwenhorst (1995):** Extremely accurate for highly persistent processes ($\rho \to 1$).
+
+## Discretizing the Asset Space ($a$)
+
+We define a grid of $n_a$ points: $A = \{a_1, a_2, \dots, a_{n_a}\}$ where $a_1 = \underline{a}$.
+
+- *Curvature matters:* Because the policy function is highly non-linear near the borrowing constraint (high MPCs), we need more grid points near $\underline{a}$.
+- **Common practice:** Use an exponentially or logarithmically spaced grid.
+
+$$ a_i = \underline{a} + (a_{max} - \underline{a}) \left( \frac{i-1}{n_a-1} \right)^\theta $$
+where $\theta > 1$ (e.g., $\theta = 2$ or $3$).
+
+# Step 2: Solving the Individual Problem
+
+## Value Function Iteration (VFI)
+
+The standard Bellman equation approach:
+$$ V^{(k+1)}(a, z) = \max_{c, a'} \left\{ u(c) + \beta \sum_{z'} \Pi(z, z') V^{(k)}(a', z') \right\} $$
+Subject to the budget constraint.
+
+- Start with a guess $V^{(0)}(a, z)$.
+- For every point $(a_i, z_j)$ on the grid, search for the optimal $a'$ that maximizes the RHS.
+- Update $V$ until it converges: $\| V^{(k+1)} - V^{(k)} \|_{\infty} < \epsilon$.
+- *Drawback:* Maximization at every step is extremely slow.
+
+## Time Iteration (Euler Equation)
+
+Instead of the Value Function, iterate on the **policy function** using the Euler Equation.
+
+Given a current guess of next period's savings policy $a'^{(k)}(a,z)$:
+
+1. For each grid point $(a_i, z_j)$, define the **residual function**:
+$$R(x) = u'\!\left((1+r)a_i + w z_j - x\right) - \max\!\left\{ u'\!\left((1+r)a_i + wz_j - \underline{a}\right),\; \beta(1+r)\,\mathbb{E}_{z_j}\!\left[u'\!\left(c^{(k)}(x, z')\right)\right]\right\}$$
+where $x = a'$ is the unknown savings choice.
+
+2. **Root-finding** finds the $x^* = a'^{(k+1)}(a_i, z_j)$ such that $R(x^*) = 0$:
+   - The left-hand side is the marginal cost of saving one more unit today.
+   - The right-hand side is the marginal benefit (discounted expected marginal utility tomorrow), subject to the borrowing constraint.
+   - The root $x^*$ is the savings level that equates these two at the current grid point.
+
+3. Repeat for all $(a_i, z_j)$ and iterate until $\|a'^{(k+1)} - a'^{(k)}\|_{\infty} < \varepsilon$.
+
+*Faster than VFI, but requires a scalar root-finding call (e.g., bisection) at every grid point.*
+
+## The Endogenous Grid Method (EGM)
+
+**Carroll (2006):** A massive speedup for solving HA models.
+Instead of fixing $a$ and finding $a'$ using root-finding, we heavily reduce the computational burden.
+
+The trick: **Fix tomorrow's assets $a'$, and solve for today's endogenous assets $a$.**
+
+1. Set up an exogenous grid for *tomorrow's* assets: $\vec{a}'$.
+2. Use the Euler equation to directly compute consumption today corresponding to each $a'$.
+
+    $$ c_i = \left( \beta (1+r) \mathbb{E}[u'(c(a'_i, z'))] \right)^{-1/\gamma} $$
+
+3. Compute *today's* endogenous assets using the budget constraint:
+
+    $$ a_i = \frac{c_i + a'_i - w \cdot z}{1+r} $$
+
+4. Interpolate the policy function defined on the endogenous grid $(a_i, c_i)$ back onto the standard exogenous grid.
+
+*No root finding required!* 
+
+# Step 3: The Stationary Distribution
+
+## Tracking the Measure of Agents
+
+Once the policy function $a'(a, z)$ is converged, we need to know how many people are at each state.
+Let $\Gamma(a, z)$ be the probability mass function.
+
+We track the evolution of the distribution over the state space.
+$$ \Gamma_{t+1}(a', z') = \sum_{z} \Pi(z, z') \sum_{\{a | a'(a,z) = a'\}} \Gamma_t(a, z) $$
+
+## Continuous Policies on Discrete Grids
+
+- The target policy $a'(a, z)$ typically does *not* land exactly on a grid point.
+- E.g., suppose optimal savings is $a^*$, which falls between grid points $a_k$ and $a_{k+1}$.
+- **Lottery Approach (Young 2010):** Assign weights to the adjacent grid points.
+
+    - Send fraction $\omega$ of the agent's mass to $a_{k+1}$.
+    - Send fraction $1-\omega$ to $a_k$.
+    - Where $\omega = \frac{a^* - a_k}{a_{k+1} - a_k}$.
+
+## Matrix Formulation and Eigenvectors
+
+The law of motion for the distribution can be written as a large linear system:
+$$ \vec{\Gamma}_{t+1} = M \vec{\Gamma}_t $$
+Where $M$ is the transition matrix of size $(n_a \times n_z) \times (n_a \times n_z)$.
+
+To find the steady-state distribution $\Gamma^*$:
+
+1. **Iterate:** Seed an initial $\Gamma_0$ and multiply by $M$ until convergence.
+2. **Eigenvector:** The stationary distribution is the eigenvector of $M$ associated with eigenvalue 1.
+
+# Step 4: General Equilibrium
+
+## Clearing the Asset Market
+
+We have aggregated capital supply:
+$$ K^s(r) = \sum_{a, z} a \cdot \Gamma^*(a, z) $$
+*(Assuming wage $w$ is determined by $r$ via the Firm's FOC: $w(r) = (1-\alpha) \left( \frac{\alpha}{r+\delta} \right)^{\frac{\alpha}{1-\alpha}}$).*
+
+And we have capital demand from firms: $K^d(r)$.
+
+**The Objective:** Find $r^*$ such that $Excess Demand = K^d(r) - K^s(r) = 0$.
+
+## Root Finding Algorithms
+
+We treat $ExcessDemand(r)$ as a black box function.
+
+- Compute $K^s$ (VFI/EGM $\to$ Distribution $\to$ Integration).
+- Determine zero.
+
+**Algorithms:**
+
+- **Bisection Method:** Very robust. Bracket the root (e.g., $r \in [0, 1/\beta-1]$). Halve the interval iteratively. Guaranteed to converge, but slow.
+- **Brent's Method:** Combines bisection with secant/inverse quadratic interpolation. Standard choice in practice (e.g., `scipy.optimize.brentq`).
+- **Newton's Method:** Faster, but requires numerical derivatives of the black-box function, which is often noisy.
+
+# Step 5: Transition Dynamics
+
+## Foreseeable Aggregate Shocks
+
+- Steady states assume constant aggregate conditions. What if an aggregate shock (e.g., a TFP shock or policy change) occurs?
+- **Perfect Foresight (MIT) shock:** An aggregate shock whose entire path over time $(Z_0, Z_1, \dots, Z_T)$ is fully known by all agents at $t=0$.
+- The economy begins in an initial steady state and converges to a new (or the same) final steady state at $T$.
+- Prices are no longer constant; we must find an entire sequence of prices (e.g., $(r_t, w_t)_{t=0}^T$) that clears the market in *every* period.
+
+## Computing the Perfect Foresight Path
+
+Solving for transition dynamics involves these steps:
+
+1. **Final Steady State:** Compute the long-run steady state at period $T$ to get the terminal value function and policies.
+2. **Backward Induction (Individual Problem):** Guess a price path $(r_t, w_t)_{t=0}^T$. Solve the household problem *backward* from $T-1$ down to $0$ using EGM to find a sequence of policy functions $a'_t(a, z)$.
+3. **Forward Simulation (Distribution):** Start with the initial steady state distribution $\Gamma_0$. Use the time-varying policy functions to simulate the distribution *forward* from $t=0$ to $t=T$ to find the sequence of distributions $\Gamma_t$.
+4. **General Equilibrium:** Check if the paths of aggregate supply and demand match in every period. If not, update the entire price path guess and repeat using root-finding over sequence spaces (e.g., Sequence Space Jacobians).
+
+# Perturbation and Linearization
+
+## The Aggregate Equilibrium System
+
+In any period $t$, general equilibrium requires three objects to be mutually consistent:
+
+| Object | Symbol | Determined by |
+|---|---|---|
+| Household policy | $a'_t(a,z)$ | Euler equation given $(r_t, w_t)$ |
+| Cross-sectional distribution | $\Gamma_t(a,z)$ | Law of motion given $a'_{t-1}$ |
+| Prices | $(r_t, w_t)$ | Firm FOCs: $r_t = F_K(K_t, Z_t)-\delta$, $w_t = F_L(K_t, Z_t)$ |
+
+Market clearing links them into a **nonlinear system for the aggregate capital path** $(K_t)_{t\geq 0}$:
+$$\underbrace{K_{t+1}}_{\text{supply}} = \mathcal{A}(K_t, Z_t, K_{t+1}, \ldots) \equiv \int a'_t(a,z; r_t, w_t)\, d\Gamma_t(a,z)$$
+
+where $\mathcal{A}$ encodes *all* the micro behavior. This is the equation whose solution is the equilibrium.
+
+## Linearization Around the Steady State
+
+Let $\bar{K}$ be the steady-state capital stock and $\hat{K}_t = K_t - \bar{K}$ be the deviation. A first-order approximation yields:
+
+$$\hat{K}_{t+1} = \phi_{KK}\, \hat{K}_t + \phi_{KZ}\, \hat{Z}_t$$
+
+where the coefficients $\phi_{KK}$, $\phi_{KZ}$ are functions of **two Jacobian matrices**:
+
+$$\mathbf{J}^{K} = \frac{\partial \mathcal{A}}{\partial r}\bigg|_{\bar{K}}, \qquad \mathbf{J}^{Z} = \frac{\partial \mathcal{A}}{\partial Z}\bigg|_{\bar{K}}$$
+
+Each column of $\mathbf{J}^K$ answers: *"If $r$ is 1% higher in period $s$, how does aggregate capital supply in period $t$ respond?"*
+
+## The Sequence-Space System (Auclert et al. 2021)
+
+For a finite horizon $T$, stack all deviations into vectors $\hat{\mathbf{K}} = (\hat{K}_0,\dots,\hat{K}_T)^\top$ and $\hat{\mathbf{Z}} = (\hat{Z}_0,\dots,\hat{Z}_T)^\top$.
+
+The **full aggregate equilibrium system** becomes:
+
+$$\underbrace{(I - \mathbf{J}^K \mathbf{H}^{rK})}_{\text{$(T\!+\!1)\times(T\!+\!1)$ matrix}}\hat{\mathbf{K}} = \mathbf{J}^Z \hat{\mathbf{Z}}$$
+
+where $\mathbf{H}^{rK}$ maps capital to interest rates via firm FOCs. **Key steps:**
+
+1. Solve the steady state.
+2. Compute $\mathbf{J}^K$ and $\mathbf{J}^Z$ column-by-column (one HA solve per column — or using automatic differentiation).
+3. Invert the $(T\!+\!1)\times(T\!+\!1)$ linear system — cheap since it is done *once*.
+4. Multiply by any shock $\hat{\mathbf{Z}}$ to get the **impulse response** instantly.
+
+*Libraries: Sequence Space Jacobians (Auclert et al.), Dolo.*
+
+# Conclusion
+
+## Summary of Numerical Steps
+
+1. **Discretize:** Use Rouwenhorst for $z$, log-grid for $a$.
+2. **Solve Individual:** Use Endogenous Grid Method (EGM) to fast-solve the Euler Equation for $a'(a,z)$.
+3. **Find Distribution:** Form the transition matrix $M$ using lotteries and find its stationary vector.
+4. **General Equilibrium:** Use Brent's method to find the market-clearing interest rate $r^*$.
+5. **Transitions:** Compute perfect foresight paths using backward induction and forward simulation.
+
+*Modern libraries (e.g., EconForge tools, Dolo, Sequence Space Jacobians)* automate many of these steps, allowing us to focus on the economics!
+

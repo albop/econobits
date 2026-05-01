@@ -1,0 +1,67 @@
+---
+title: "Solving the Aiyagari Model with Dolo.jl"
+author: "Pablo Winant"
+format:
+  html: default
+  ipynb: default
+jupyter: julia-1.12
+execute: 
+  enabled: false
+---
+
+## Introduction
+
+In this tutorial, we will quantitatively solve the **Aiyagari (1994)** heterogeneous agent model. Instead of writing custom value-function iteration or endogenous grid method (EGM) loops from scratch, we will learn how to leverage **Dolo.jl**. Dolo is a powerful Julia library that allows us to define the model concisely and rapidly solve for the individual agent's decision rules.
+
+## 1. The Model Definition
+
+The Aiyagari model considers an economy populated by a continuum of agents who face idiosyncratic labor income risk and face a borrowing constraint.
+
+We will use a standard Dolo model file, conventionally named `aiyagari.yaml`. Download it [here](ayiagari.yaml)
+
+### Question 1: Inspecting the YAML
+Assume you are provided with or have written the `aiyagari.yaml` file. Open the file and inspect its structure.
+- In the `symbols` section, identifying the state variables and control variables of the agent.
+- How is the borrowing constraint $a_t \geq \underline{a}$ implemented? Look at the `arbitrage` or `controls` block. How are complementarity conditions (KKT) specified in Dolo?
+- What is the assumed stochastic process for the idiosyncratic productivity shock $z_t$? (Check the `exogenous` block).
+
+## 2. Solving the Individual Problem
+
+In a general equilibrium setting, we must first be able to solve the individual agent's partial-equilibrium problem for **given, fixed prices**: an interest rate $r$ and wage $w$.
+
+### Question 2: Using Dolo.jl for Decision Rules
+In a new Julia script:
+1. Import the package and load the model using `model = yaml_import("aiyagari.yaml")`.
+2. Update the model's calibration dictionary so that the interest rate $r = 0.03$ and $w$ is the corresponding competitive wage (assuming a standard Cobb-Douglas production function).
+3. Solve for the agent's optimal decision rules using Time Iteration. 
+   
+   *(Hint: Use `sol = time_iteration(model)` or `improved_time_iteration(model)`).*
+4. Plot the optimal savings policy function $a'(a, z)$ against current assets $a$. Plot a separate line for each realization of the Markov shock $z$. Where is the policy function the most non-linear?
+
+## 3. The Stationary Distribution
+
+Once we have the optimal policies, we must compute how the continuum of agents is distributed across the state space $(a, z)$.
+
+### Question 3: The Ergodic Distribution
+1. Extract the evaluated policy rule from your Dolo solution. Since Dolo solves on a coarse grid with interpolation, you will likely need to evaluate the policy function over a much finer grid for $a$.
+2. Write a routine to form the transition matrix $M$ using the "lottery" approach (Young, 2010), assigning fractional mass to the nearest grid points.
+3. Find the stationary distribution $\Gamma(a, z)$ by solving for the dominant eigenvector of your transition matrix, or simply iterate $\Gamma_{k+1} = M \Gamma_k$ until convergence.
+4. Plot the marginal distribution of assets. Do you observe a mass point of agents exactly at the borrowing constraint?
+
+## 4. General Equilibrium
+
+The final step is to close the model by clearing the capital market. 
+- Aggregate capital supply is the sum over the stationary distribution: $K^s(r) = \sum_{a,z} a \cdot \Gamma(a,z)$. 
+- Capital demand $K^d(r)$ is given by substituting the firm's first-order condition.
+
+### Question 4: Clearing the Market
+You need to find the equilibrium rate $r^*$ such that $Excess Supply(r) = K^s(r) - K^d(r) = 0$.
+
+1. Using your code from Parts 2 and 3, write a wrapper function `excess_capital(r)` that:
+   - Updates the model calibration with the guessed $r$ and implied $w$.
+   - Solves for the policy function using Dolo.
+   - Computes the stationary distribution.
+   - Returns $K^s(r) - K^d(r)$.
+2. What are the natural theoretical bounds for the equilibrium interest rate $r^*$ in this model? (Consider the subjective discount factor $\beta$).
+3. Use a root-finding algorithm (like `Roots.find_zero` with the Bisection or Brent method) to find $r^*$.
+4. What is the final equilibrium interest rate and aggregate capital stock for this economy?

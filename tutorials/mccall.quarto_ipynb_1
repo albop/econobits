@@ -1,0 +1,186 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: McCall Model\n",
+        "author: Pablo Winant\n",
+        "format:\n",
+        "  html: default\n",
+        "  ipynb: default\n",
+        "jupyter: julia-1.12\n",
+        "execute: \n",
+        "  enabled: false\n",
+        "---\n",
+        "\n",
+        "### Job-Search Model\n",
+        "\n",
+        "- When unemployed in date, a job-seeker\n",
+        "  - consumes unemployment benefit $c_t = \\underline{c}$\n",
+        "  - receives in every date $t$ a job offer $w_t$\n",
+        "    - $w_t$ is i.i.d., \n",
+        "    - takes values $w_1, w_2, w_3$ with probabilities $p_1, p_2, p_3$\n",
+        "  - if job-seeker accepts, becomes employed at rate $w_t$ in the next period\n",
+        "  - else he stays unemployed\n",
+        "  \n",
+        "- When employed at rate $w$\n",
+        "  - worker consumes salary $c_t = w$\n",
+        "  - with small probability $\\lambda>0$ looses his job:\n",
+        "    - starts next period unemployed\n",
+        "  - otherwise stays employed at same rate\n",
+        "- Objective: $\\max E_0 \\left\\{ \\sum \\beta^t \\log(c_t) \\right\\}$\n",
+        "\n",
+        "@. __What are the states, the controls, the reward of this problem ? Write down the Bellman equation.__\n"
+      ],
+      "id": "0a1427fb"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#  your code here"
+      ],
+      "id": "cdc9125a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "@. __Define a named tuple for the model.__\n"
+      ],
+      "id": "d67994e2"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#  your code here"
+      ],
+      "id": "4aabeeab",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "@. __Define a function  `value_update(V_U::Vector{Float64}, V_E::Vector{Float64}, x::Vector{Bool}, p::Parameters)::Tuple{Vector, Vector}`, which takes in value functions tomorrow and a policy vector and return updated values for today.__"
+      ],
+      "id": "6308cbb8"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#  your code here"
+      ],
+      "id": "b63e6837",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "@. __Define a function `policy_eval(x::Vector{Bool}, p::Parameter)::Tuple{Vector, Vector}` which takes in a policy vector and returns the value(s) of following this policies forever. You can add relevant arguments to the function.__\n"
+      ],
+      "id": "0a7f1b21"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#  your code here"
+      ],
+      "id": "8a3323a4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "@. __Define a function `bellman_step(V_E::Vector, V_U::Vector, p::Parameters)::Tuple{Vector, Vector, Vector}` which returns updated values, together with improved policy rules.__\n"
+      ],
+      "id": "801bdb4b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#  your code here"
+      ],
+      "id": "25fcb55e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "@. __Implement Value Function Iteration__\n"
+      ],
+      "id": "7e769a82"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#  your code here"
+      ],
+      "id": "73136a4f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "@. __Implement Policy Iteration and compare rates of convergence.__\n"
+      ],
+      "id": "f6a51477"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#  your code here"
+      ],
+      "id": "472d7152",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "@. __Discuss the Effects of the Parameters__"
+      ],
+      "id": "38b149c4"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#  your code here"
+      ],
+      "id": "490b1949",
+      "execution_count": null,
+      "outputs": []
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "julia-1.12",
+      "language": "julia",
+      "display_name": "Julia 1.12",
+      "path": "/home/pablo/.local/share/jupyter/kernels/julia-1.12"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
