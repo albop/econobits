@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.32">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,9 +10,6 @@
 
 <title>Time Iteration - Consumption Saving – econobits</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -71,14 +68,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f67b63dbfc378573cfd6da3a14783f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-1cd7b8e680c3b9cc8632e22c6f4c6d56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -108,7 +106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -236,7 +234,7 @@ window.Quarto = {
 <ol class="example" type="1">
 <li><strong>Choose a structure <code>model</code> to represent the model parameters.</strong></li>
 </ol>
-<div id="66ef7fb1" class="cell">
+<div id="1229f4d4" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model = ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -249,25 +247,25 @@ window.Quarto = {
 <li><strong>Create a structure <code>approx</code> to represent the approximation space. This structure should contain the parameters, as well as a <code>points::Vector{Float64}</code> array coontaining the (regularly spaced) list of grid points.</strong></li>
 </ol>
 <p>To start with you can take <span class="math inline">\(w_{max}=5\)</span>, <span class="math inline">\(N=20\)</span>, <span class="math inline">\(p_0=0.95, p_1=0.03\)</span> but don’t hesitate to change these values later if needed.</p>
-<div id="9155f424" class="cell">
+<div id="2b2a0cbe" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># approx = ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="3" class="example" type="1">
 <li><strong>Define a method <code>φ_0(w::Float64)::Float64</code> for the initial guess. Plot it against <span class="math inline">\(w\)</span> in the approximation space.</strong></li>
 </ol>
-<div id="4c71504f" class="cell">
+<div id="95219ea3" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="4" class="example" type="1">
 <li><strong>Compute the values <code>c_0::{Float64}</code>of <code>φ_0()</code> on the grid <code>points</code></strong></li>
 </ol>
-<div id="d405702b" class="cell">
+<div id="e3aab692" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="5" class="example" type="1">
 <li><strong>Use the <code>Interpolations.jl</code> library to define a function <code>φ(w::Float64)</code> defined for any <code>w</code> using piecewise <em>linear</em> interpolation in such a way that it takes values <code>c_0</code> on the grid <code>points</code>.</strong></li>
 </ol>
-<div id="43ff24dd" class="cell">
+<div id="edb70305" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="6" class="example" type="1">
@@ -278,13 +276,13 @@ window.Quarto = {
 <li>the interpolated function <span class="math inline">\(φ\)</span></li>
 <li>its values <code>c_0</code> on the grid points</li>
 </ul>
-<div id="fd01326f" class="cell">
+<div id="bdf57bc0" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="7" class="example" type="1">
 <li><strong>Bonus: add to the graph the function obtained using cubic spline interpolation. What <em>could</em> be the problem?</strong></li>
 </ol>
-<div id="faf9b712" class="cell">
+<div id="ea0111bd" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -294,20 +292,20 @@ window.Quarto = {
 <li><strong>Represent the shock <span class="math inline">\(\epsilon\)</span> by two vectors <span class="math inline">\((e_1, ... e_q)\)</span> and <span class="math inline">\((l_1, ..., l_q)\)</span> with <span class="math inline">\(q=10\)</span> such that for a suitable function <span class="math inline">\(g\)</span> we can approximate <span class="math inline">\(E_{\epsilon} (g(\epsilon))\)</span> by <span class="math inline">\(\sum_{i=1}^q l_i e_i\)</span> .</strong></li>
 </ol>
 <p>(choose the method you want)</p>
-<div id="d797c33f" class="cell">
+<div id="eade60e6" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># e = ...</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># w = ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="9" class="example" type="1">
 <li><strong>Test that it works by computing <span class="math inline">\(E_{\epsilon} \left[ \epsilon^2 \right]\)</span>.</strong></li>
 </ol>
-<div id="38625dcd" class="cell">
+<div id="34a30836" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="10" class="example" type="1">
 <li><strong>Redefine <code>approx</code> so as to include the discretized shock</strong></li>
 </ol>
-<div id="dbb47a70" class="cell">
+<div id="4b816800" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -318,25 +316,25 @@ window.Quarto = {
 </ol>
 <p>It should be of the form <span class="math display">\[0 \leq \underbrace{E_t \left[ f(w_t, c_t, w_{t+1}, c_{t+1}, \epsilon_{t+1}) \right]}_{\Phi_t} \perp c_t \leq w_t\]</span></p>
 <p>where <span class="math inline">\(f\)</span> is a function to be explicited.</p>
-<div id="85d34f79" class="cell">
+<div id="e86c7f68" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="12" class="example" type="1">
 <li><strong>Define the function <code>Phi(w::Float64,c::Float64,φ::Fun, model, approx)</code> which approximates the residuals of the euler equation given the available income today, the consumption choice today, the consumption <em>function</em> tomorrow and the model/approx structures.</strong></li>
 </ol>
-<div id="d1e626ba" class="cell">
+<div id="7bfd4ca0" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="13" class="example" type="1">
 <li><strong>Overload <code>Phi</code> function with another method <code>Phi(w::Float64,c::Float64,φ::Fun, model, approx, slackness=true)</code> which uses the Fisher-Burmeister transform to incorporate the credit constraint.</strong></li>
 </ol>
-<div id="75334d2d" class="cell">
+<div id="72dab4a1" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="14" class="example" type="1">
 <li><strong>Plot the optization residuals (i.e.&nbsp;values of <span class="math inline">\(\Phi_t\)</span>) corresponding to the initial guess function with and without the complementarity constraints.</strong></li>
 </ol>
-<div id="51aafb69" class="cell">
+<div id="a340965b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -345,19 +343,19 @@ window.Quarto = {
 <ol start="15" class="example" type="1">
 <li><strong>(prep): Assuming the initial guess <span class="math inline">\(φ_0()\)</span> is the decision rule followed tomorrow, determine, for a given value <code>w</code> in the state-space, the optimal consumption choice made today. This can be achieved by feeding the appropriate function into the right nonlinear root-finder.</strong></li>
 </ol>
-<div id="e97bd05c" class="cell">
+<div id="4b0cea3e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="16" class="example" type="1">
 <li><strong>(prep): Find the vector of all the optimal consumption choices on the grid today, given the decision rule tomorrow.</strong></li>
 </ol>
-<div id="5c658e5c" class="cell">
+<div id="3c1e5d84" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="17" class="example" type="1">
 <li><strong>Plot the optimization residuals (i.e.&nbsp;values of <span class="math inline">\(\Phi_t\)</span>) for the initial guess function</strong></li>
 </ol>
-<div id="3a9e843d" class="cell">
+<div id="0cf3504e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="18" class="example" type="1">
@@ -377,7 +375,7 @@ window.Quarto = {
 <li>no: start again with <code>c1</code> as <code>c0</code></li>
 </ul></li>
 </ul>
-<div id="a117d001" class="cell">
+<div id="48840882" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># here is a placeholder implementation to help you structure your program.</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  feel free to modify or discard</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -421,7 +419,7 @@ window.Quarto = {
 <ol start="19" class="example" type="1">
 <li><strong>Check that the value returned by <code>time_iteration</code> is actually a solution to the system. How fast is the convergence? Graphical representation.</strong></li>
 </ol>
-<div id="6a628909" class="cell">
+<div id="25174c24" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -430,7 +428,7 @@ window.Quarto = {
 <ol start="20" class="example" type="1">
 <li><strong>(easy): perform some sensitivity analysis on the model to explain the effect of the main parameters</strong></li>
 </ol>
-<div id="ef64bdc5" class="cell">
+<div id="883d2701" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="21" class="example" type="1">

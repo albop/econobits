@@ -6,20 +6,17 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-067f8ab80d092ae3595f7402c2c9b667.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.32">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Pablo Winant">
-  <title>econobits – Time Iteration</title>
+  <title>econobits – Convergence of Sequences (1)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -32,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,7 +127,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Time Iteration</h1>
+  <h1 class="title">Convergence of Sequences (1)</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -141,346 +138,319 @@ Pablo Winant
 </div>
 
 </section>
-<section>
-<section id="approximate-dynamic-programming" class="title-slide slide level1 center">
-<h1>Approximate Dynamic Programming</h1>
+<section id="life-of-a-computational-economist" class="slide level2">
+<h2>Life of a computational economist</h2>
 
-</section>
-<section id="whats-new-today" class="slide level2">
-<h2>What’s new today?</h2>
+<img data-src="impossible.jpg" class="r-stretch"></section>
+<section id="life-of-a-computational-economist-1" class="slide level2">
+<h2>Life of a computational economist</h2>
+<p><video data-src="waiting_for_convergence.mp4" style="width:50.0%" controls=""><a href="waiting_for_convergence.mp4">Video</a></video></p>
 <ul>
-<li>The nature of the problem:
+<li><!-- .element: class="fragment" -->
+We spend <strong>a lot</strong> of time waiting for algorithms to converge!
 <ul>
-<li>Last time we did <em>discrete dynamic programming</em>: <span class="math inline">\(S\)</span> and <span class="math inline">\(X\)</span> finite</li>
-<li>Today both are continuous: <em>approximate dynamic programming</em>
-<ul>
-<li>today, we have continuous decision rules</li>
-<li>we will need to <strong>discretize</strong> and <strong>interpolate</strong></li>
-</ul></li>
-</ul></li>
-<li>The representation of the model
-<ul>
-<li>We used the Bellman representation</li>
-<li>Today we use first order representation (Euler and co.)</li>
-</ul></li>
-<li>The solution metod:
-<ul>
-<li>We will see the main <em>time-iteration</em> algorithms</li>
-</ul></li>
-</ul>
-</section></section>
-<section>
-<section id="first-order-representation-of-a-model" class="title-slide slide level1 center">
-<h1>First order representation of a model</h1>
-
-</section>
-<section id="whats-new-today-1" class="slide level2">
-<h2>What’s new today?</h2>
-<ul>
-<li>A few weeks ago, we did discrete dynamic programming
-<ul>
-<li>today, we have continuous decision rules</li>
-<li>we will need to <strong>interpolate</strong></li>
-</ul></li>
-<li>We were using Bellman representation
-<ul>
-<li>we’ll use first order representation (Euler and co.)</li>
-</ul></li>
-<li>We will see the main <em>time-iteration</em> algorithms
-<ul>
-<li>and mention some of its variants</li>
+<li><!-- .element: class="fragment" -->
+solution 1: program better</li>
+<li><!-- .element: class="fragment" -->
+solution 2: better algorithms</li>
+<li><!-- .element: class="fragment" -->
+even better: understand convergence properties (information about the model)</li>
 </ul></li>
 </ul>
 </section>
-<section id="generic-value-function-representation" class="slide level2">
-<h2>Generic Value Function Representation</h2>
+<section id="recursive-sequence" class="slide level2">
+<h2>Recursive sequence</h2>
+<p>Consider a function <span class="math inline">\(f: \mathbb{R}^n\rightarrow \mathbb{R}^n\)</span> and a recursive sequence <span class="math inline">\((x_n)\)</span> defined by <span class="math inline">\(x_0\in \mathbb{R}^n\)</span> and <span class="math inline">\(x_n = f(x_{n-1})\)</span>.</p>
+<p>We want to compute a fixed point of <span class="math inline">\(f\)</span> and study its properties.</p>
+<p>&nbsp;&nbsp;</p>
+<div class="fragment">
+<p><strong>Today</strong>: Some methods for the case <span class="math inline">\(n=1\)</span>.</p>
+<p>&nbsp;&nbsp;</p>
+</div>
+<div class="fragment">
+<p><strong>Another day</strong>:</p>
 <ul>
-<li>All variables of the model are vectors:
-<ul>
-<li>states <span class="math inline">\(s \in \mathcal{S} \subset R^{n_s}\)</span></li>
-<li>controls <span class="math inline">\(x \in \mathcal{F}(\mathcal{S}, R^{n_x})\)</span>
-<ul>
-<li>we assume bounds <span class="math inline">\(a(s)\leq x \leq b(s)\)</span></li>
-</ul></li>
-<li>shocks: <span class="math inline">\(\epsilon \sim \text{i.i.d. distrib}\)</span></li>
-</ul></li>
-<li>Transition: <span class="math display">\[s_{t+1} = g(s_t, x_t, \epsilon_{t+1})\]</span></li>
-<li>Value function: <span class="math display">\[V(s) = E_0 \sum_{t\geq 0} \beta^t \left[ U(s_t, x_t)\right]\]</span></li>
-<li>Solution is a function <span class="math inline">\(V()\)</span> (value) which is a fixed point of the Bellman-operator: <span class="math display">\[\forall s, V(s) = \max_{a(s)\leq x \leq b(s)} U(s,x) + \beta E \left[ V(g(s,x,\epsilon)) \right]\]</span></li>
-<li>The argmax, defines a decision rule <em>function</em>: <span class="math inline">\(x = \varphi(s)\)</span></li>
+<li>the matrix case: <span class="math inline">\(x_n = A^n x_0\)</span> where <span class="math inline">\(A\in \mathbb{R}^{n\times n}\)</span></li>
+<li>the finite nonlinear case: <span class="math inline">\(x_n = f(x_{n-1})\)</span></li>
 </ul>
+</div>
 </section>
-<section id="first-order-representation" class="slide level2">
-<h2>First order representation</h2>
+<section id="example-growth-model" class="slide level2">
+<h2>Example: growth model</h2>
 <div class="columns">
-<div class="column">
+<div class="column" style="width:40%;">
+<p><img class="fragment" src="solow_generated.png" width="100%" data-fragment-index="2"></p>
+<p>Solow growth model:</p>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td>capital accumulation</td>
+<td><span class="math inline">\(k_t = (1-\delta)k_{t-1} + i_{t-1}\)</span></td>
+</tr>
+<tr class="even">
+<td>production</td>
+<td><span class="math inline">\(y_t = k_t^\alpha\)</span></td>
+</tr>
+<tr class="odd">
+<td>consumption</td>
+<td><span class="math inline">\(c_t = (1-{\color{red}s})y_t\)</span></td>
+</tr>
+<tr class="even">
+<td>investment</td>
+<td><span class="math inline">\(i_t = s y_t\)</span></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:60%;">
+<div class="fragment">
+<p>For a given value of <span class="math inline">\({\color{red} s}\in\mathbb{R}^{+}\)</span> ( <span class="math inline">\({\color{red} s}\)</span> is a <strong>decision rule</strong>) <span class="math display">\[k_{t+1} = f(k_t, {\color{red} s})\]</span></p>
 <ul>
-<li>All variables of the model are vectors:
-<ul>
-<li>states <span class="math inline">\(s_t\)</span></li>
-<li>controls <span class="math inline">\(x_t\)</span>
-<ul>
-<li>we assume bounds <span class="math inline">\(a(s)\leq x \leq b(s)\)</span></li>
-</ul></li>
-<li>shocks: <span class="math inline">\(\epsilon_t\)</span> (i.i.d. random law)</li>
-</ul></li>
-<li>Transition: <span class="math display">\[s_{t+1} = g(s_t, x_t, \epsilon_{t+1})\]</span></li>
-<li>Decision rule: <span class="math display">\[x_t = \varphi(s_t)\]</span></li>
-<li>Arbitrage: <span class="math display">\[ E_t\left[ f(s_t, x_t, s_{t+1}, x_{t+1}) \right] = 0 \perp a(s_t) \leq x_t \leq b(s_t) \]</span></li>
+<li><strong>backward-looking</strong> iterations</li>
+<li>Solow hypothesis: saving rate is invariant</li>
 </ul>
-</div><div class="column">
+</div>
+<div class="fragment">
+<p><em>Questions</em>:</p>
 <ul>
-<li>These equations must be true for any <span class="math inline">\(s_t\)</span>.</li>
-<li>Remark: time subscript are conventional. They are used to precise:
-<ul>
-<li>when expectation is taken (w.r.t <span class="math inline">\(\epsilon_{t+1}\)</span>)</li>
-<li>to avoid repeating <span class="math inline">\(x_t=\varphi(s_t)\)</span> and <span class="math inline">\(x_{t+1} = \varphi(s_t)\)</span></li>
-</ul></li>
-<li>Sometimes there are bounds on the controls
-<ul>
-<li>we encode them with complementarity constraints</li>
-<li>more on it later</li>
-</ul></li>
+<li>What is the steady-state?</li>
+<li>Can we characterize the transition back the steady-state?</li>
+<li>Characterize the dynamics close to the steady-state?</li>
+<li>what is the optimal <span class="math inline">\(s\)</span> ?</li>
 </ul>
+</div>
 </div></div>
 </section>
-<section id="example-1-neoclassical-growth-model" class="slide level2">
-<h2>Example 1: neoclassical growth model</h2>
+<section id="another-example-linear-new-keynesian-model" class="slide level2">
+<h2>Another example: linear new keynesian model</h2>
 <div class="columns">
-<div class="column">
+<div class="column" style="width:45%;">
+<p>Basic New Keynesian model (<a href="https://www.crei.cat/wp-content/uploads/users/pages/ch3_slides_june2015(1).pdf">full derivation</a> if curious )</p>
 <ul>
-<li>capital accumulation: <span class="math display">\[k_t = (1-\delta)k_{t-1} + i_{t-1}\]</span></li>
-<li>production: <span class="math display">\[y_t = k_t^\alpha\]</span></li>
-<li>consumption: <span class="math display">\[c_t = (1-s_t) y_t\]</span> <span class="math display">\[i_t = s_t y_t\]</span></li>
-<li>optimality: <span class="math display">\[\beta E_t \left[ \frac{U^{\prime}(c_{t+1})}{U^{\prime}(c_{t})} (1-\delta + \alpha k_{t+1}^{\alpha-1}\alpha) \right]= 1\]</span></li>
-</ul>
-</div><div class="column">
-<ul>
-<li>states: <span class="math inline">\(k_t\)</span>, with one transition equation</li>
-<li>controls: <span class="math inline">\(y_t, c_t, i_t, s_t\)</span>, with four “arbitrage” equations
-<ul>
-<li>it is possible but not mandatory to reduce the number of variables/equations by simple susbtitutions</li>
-</ul></li>
-</ul>
-</div></div>
-</section>
-<section id="example-2-consumption-savings-model" class="slide level2">
-<h2>Example 2: consumption-savings model</h2>
-<div class="columns">
-<div class="column">
-<p>Simplest consumption/savings model:</p>
-<ul>
-<li>Transition: <span class="math display">\[w_t = \exp(\epsilon_t) + (w_{t-1} - c_{t-1}) \overline{r}\]</span></li>
-<li>Objective: <span class="math display">\[\max_{0\leq c_t \leq w_t} E_0 \left[ \sum \beta^t U(c_t) \right]\]</span></li>
-<li>First order conditions: <span class="math display">\[\beta E_t \left[  \frac{U^{\prime}(c_{t+1})}{U^{\prime}(c_t)} \overline{r} \right] - 1 \perp 0 \leq c_t \leq w_t\]</span></li>
-</ul>
-</div><div class="column">
-<ul>
-<li><p>F.O.C. reads as: <span class="math display">\[\beta E_t \left[  \frac{U^{\prime}(c_{t+1})}{U^{\prime}(c_t)} \overline{r} \right] - 1 \leq 0 \perp c_t \leq w_t\]</span> and <span class="math display">\[0 \leq \beta E_t \left[  \frac{U^{\prime}(c_{t+1})}{U^{\prime}(c_t)} \overline{r} \right] - 1  \perp 0 \leq c_t \]</span></p></li>
-<li><p>First one reads: <em>if my marginal utility of consumption today is higher than expected mg. utility of cons. tomorrow, I’d like to consume more, but I can’t because, consumption is bounded by income (and no-borrowing constraint).</em></p></li>
-<li><p>Second one reads: <em>only way I could tolerate higher utility in the present, than in the future, would be if I want dissave more than I can, or equivalently, consume less than zero</em>. This is never happening.</p></li>
-</ul>
-</div></div>
-</section>
-<section id="example-3-new-keynesian-with-without-zlb" class="slide level2">
-<h2>Example 3: new-keynesian with / without ZLB</h2>
-<div class="columns">
-<div class="column">
-<p>Consider the new keynesian model we have seen in the introduction:</p>
-<ul>
-<li>Assume <span class="math inline">\(z_t\)</span> is an autocorrelated shock: <span class="math display">\[z_t = \rho z_{t-1} + \epsilon_t\]</span></li>
-<li>New philips curve (PC):<span class="math display">\[\pi_t = \beta \mathbb{E}_t \pi_{t+1} + \kappa y_t\]</span></li>
+<li>new Phillips curve (PC):<span class="math display">\[\pi_t = \beta \mathbb{E}_t \pi_{t+1} + \kappa y_t\]</span></li>
 <li>dynamic investment-saving equation (IS):<span class="math display">\[y_t = \beta \mathbb{E}_t y_{t+1} - \frac{1}{\sigma}(i_t - \mathbb{E}_t(\pi_{t+1}) ) - {\color{green} z_t}\]</span></li>
-<li>Interest Rate Setting (taylor rule): <span class="math display">\[i_t = \alpha_{\pi} \pi_t + \alpha_{y} y_t\]</span></li>
+<li>interest rate setting (taylor rule): <span class="math display">\[i_t = \alpha_{\pi} \pi_t + \alpha_{y} y_t\]</span></li>
 </ul>
-</div><div class="column">
+<div class="fragment">
+<p>Solving the system: <span class="math inline">\(\begin{bmatrix}\pi_t \\\\ y_t \end{bmatrix} = {\color{red} c} z_t\)</span></p>
+</div>
+</div><div class="column" style="width:55%;">
+<div class="fragment">
+<p>The system is <em>forward looking</em>:</p>
 <ul>
-<li><p>The model satisfies the same specification with:</p>
-<ul>
-<li>one state <span class="math inline">\(z_t\)</span> and one transition equation</li>
-<li>three controls: <span class="math inline">\(\pi_t\)</span>, <span class="math inline">\(y_t\)</span> and <span class="math inline">\(i_t\)</span> with three “arbitrage” equation</li>
-</ul></li>
-<li><p>These are not real first order conditions as they are not derived from a maximization program</p>
-<ul>
-<li>unless one tries to microfound them…</li>
-</ul></li>
-<li><p>It is possible to add a zero-lower bound constraint by replacing IRS with: <span class="math display">\[ \alpha_{\pi} \pi_t + \alpha_{y} y_t \leq i_t \perp 0 \leq i_t\]</span></p></li>
+<li>take <span class="math inline">\(\begin{bmatrix}\pi_{t+1} \\\\ y_{t+1} \end{bmatrix} = {\color{red} {c_n}} z_{t+1}\)</span> → deduce <span class="math inline">\(\begin{bmatrix}\pi_{t} \\\\ y_{t} \end{bmatrix} = {\color{red} {c_{n+1}}} z_{t}\)</span></li>
 </ul>
+<p><span class="math inline">\(\mathcal{T}: \underbrace{c_{n}}_{t+1: \; \text{tomorrow}} \rightarrow \underbrace{c_{n+1}}_{t: \text{today}}\)</span> is the <strong>time-iteration</strong> operator (a.k.a. <strong>Coleman</strong> operator)</p>
+</div>
+<p>&nbsp;</p>
+<div class="fragment">
+<p><em>Questions</em>:</p>
+<ul>
+<li>What is the limit to <span class="math inline">\(c_{t+1} = \mathcal{T} c_n\)</span>?</li>
+<li>Under which conditions (on <span class="math inline">\(\alpha_{\pi}, \alpha_y\)</span>) is it convergent?
+<ul>
+<li>determinacy conditions</li>
+<li>interpretation: does the central bank manage to control inflation expectations?</li>
+</ul></li>
+</ul>
+</div>
 </div></div>
-</section></section>
-<section>
-<section id="time-iteration" class="title-slide slide level1 center">
-<h1>Time iteration</h1>
+</section>
+<section id="recursive-sequence-2" class="slide level2">
+<h2>Recursive sequence (2)</h2>
+<p>🤔 Wait: does a fixed point exist?</p>
+<div class="fragment">
+<ul>
+<li>we’re not very concerned by the existence problem here</li>
+<li>we’ll be happy with local conditions (existence, uniqueness) around a solution</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In theoretical work, there are many fixed-point theorems to choose from.</p>
+</div>
+<div class="fragment">
+<p>&nbsp;</p>
+<p>For example:</p>
+<p><br>
+</p>
+<p><em>Brouwer</em> fixed point: assume <span class="math inline">\(f\)</span> is continuous and there is an interval such that <span class="math inline">\(f([a,b])\subset[a,b]\)</span>. Then we know there exists <span class="math inline">\(x\)</span> in <span class="math inline">\([a,b]\)</span> such that <span class="math inline">\(f(x)=x\)</span>. (There can be many such points.)</p>
+</div>
+</section>
+<section id="example-growth-model-with-multiple-fixed-points" class="slide level2">
+<h2>Example: growth model with multiple fixed points</h2>
 
+<img data-src="solow_multiple_fixed_points.png" style="width:55.0%" class="r-stretch quarto-figure-center"><p class="caption">Multiple equilibria in the growth model</p><p>In the growth model, if we change the production function: <span class="math inline">\(y=k^{\alpha}\)</span> for a nonconvex/nonmonotonic one, we can get multiple fixed points.</p>
 </section>
-<section id="time-iteration-1" class="slide level2">
-<h2>Time iteration</h2>
+<section id="convergence" class="slide level2">
+<h2>Convergence</h2>
+<p>Given <span class="math inline">\(f: \mathbb{R} \rightarrow \mathbb{R}\)</span> consider the sequence <span class="math inline">\(x_n = f(x_{n-1})\)</span></p>
 <ul>
-<li>So we have the equation, <span class="math inline">\(\forall s_t\)</span></li>
+<li>How do we characterize behaviour around <span class="math inline">\(x\)</span> such that <span class="math inline">\(f(x)=x\)</span>?</li>
 </ul>
-<div class="r-stack">
-<div class="fragment current-visible" data-fragment-index="1">
-<p><span class="math display">\[ E_t\left[ f(s_t, x_t, s_{t+1}, x_{t+1}) \right] = 0 \perp a(s_t) \leq x_t \leq b(s_t)\]</span></p>
-</div>
-<div class="fragment current-visible" data-fragment-index="1">
-<p><span class="math display">\[ E_t\left[ f(s_t, x_t, s_{t+1}, x_{t+1}) \right] = 0\]</span></p>
-</div>
-</div>
-<p>where <span class="math display">\[s_{t+1} = g(s_t, x_t, \epsilon_{t+1})\]</span> <span class="math display">\[x_t = \varphi(s_t)\]</span> <span class="math display">\[x_{t+1} = \tilde{\varphi}(s_{t+1})\]</span></p>
+<div class="fragment">
 <ul>
-<li>Let’s leave the complementarity conditions aside for now</li>
-<li>In equilibrium <span class="math inline">\(\tilde{\varphi} = {\varphi}\)</span></li>
-</ul>
-</section>
-<section id="time-iteration-2" class="slide level2">
-<h2>Time iteration</h2>
+<li><p>Stability criterion:</p>
 <ul>
-<li>We can rewrite everything as one big functional equation: <span class="math display">\[\forall s, \Phi(\varphi, \tilde{\varphi})(s) = E\left[ f(s, \varphi(s), g(s,\varphi(s), \epsilon), \tilde{\varphi}(g(s,\varphi(s), \epsilon)) \right]\]</span></li>
-<li>A solution is <span class="math inline">\(\varphi\)</span> such that <span class="math inline">\(\Phi(\varphi, \varphi) = 0\)</span></li>
-<li>The Coleman operator <span class="math inline">\(\mathcal{T}\)</span> is defined implicitly by: <span class="math display">\[\Phi(\mathcal{T}(\varphi), \varphi)=0\]</span></li>
-<li>The core of the time iteration algorithm, consists in the recursion: <span class="math display">\[\varphi_{n+1} = \mathcal{T}(\varphi_n)\]</span></li>
-<li>It maps future decision rules to current decision rules
-<ul>
-<li>same as “linear time iterations”, remember?</li>
+<li>if <span class="math inline">\(|f^{\prime}(x)|&gt;1\)</span>: sequence is unstable and will not converge to <span class="math inline">\(x\)</span> except by chance</li>
+<li>if <span class="math inline">\(|f^{\prime}(x)|&lt;1\)</span>: <span class="math inline">\(x\)</span> is a stable fixed point</li>
+<li>if <span class="math inline">\(|f^{\prime}(x)|=1\)</span>: ??? (look at higher order terms, details ↓)</li>
 </ul></li>
-<li>Sounds fun but how do we implement it concretely?</li>
+</ul>
+</div>
+</section>
+<section id="convergence-cobweb-intuition" class="slide level2">
+<h2>Convergence (Cobweb intuition)</h2>
+<p>Think of the graph of <span class="math inline">\(y=f(x)\)</span> and the 45-degree line <span class="math inline">\(y=x\)</span>.</p>
+
+<img data-src="cobweb_intuition.png" style="width:85.0%" class="r-stretch"><ul>
+<li class="fragment">If <span class="math inline">\(0&lt;f'(x^*)&lt;1\)</span>: iterates approach <span class="math inline">\(x^*\)</span> monotonically.</li>
+<li class="fragment">If <span class="math inline">\(-1&lt;f'(x^*)&lt;0\)</span>: iterates approach <span class="math inline">\(x^*\)</span> but typically oscillate (alternating sides).</li>
+<li class="fragment">If <span class="math inline">\(|f'(x^*)|&gt;1\)</span>: you generically move away from <span class="math inline">\(x^*\)</span>.</li>
 </ul>
 </section>
-<section id="practical-implementation" class="slide level2">
-<h2>Practical implementation</h2>
+<section id="convergence-first-order-approximation" class="slide level2">
+<h2>Convergence (first order approximation)</h2>
+<p>To get the intuition about local convergence, assume you have an initial point <span class="math inline">\(x_n\)</span> close to the steady state and consider the following expression:</p>
+<p><span class="math display">\[x_{n+1} - x = f(x_n) - f(x) = f^{\prime}(x) (x_n-x) + o(x_n-x)\]</span></p>
+<p>If one sets aside the error term (which one can do with full mathematical rigour), the dynamics for very small perturbations are given by:</p>
+<p><span class="math display">\[|x_{n+1} - x| \approx  |f^{\prime}(x)| |x_n-x|\]</span></p>
+<p>When <span class="math inline">\(|f^{\prime}(x)|&lt;1\)</span>, the distance to the target decreases at each iteration and we have convergence.</p>
+<p>When <span class="math inline">\(|f^{\prime}(x)|&gt;1\)</span> there is local divergence.</p>
+<p>This is conform to Cobweb intuition.</p>
+</section>
+<section id="borderline-case-fx1" class="slide level2">
+<h2>Borderline case <span class="math inline">\(|f'(x^*)|=1\)</span></h2>
+<p>When <span class="math inline">\(|f'(x^*)|=1\)</span>, the linear approximation does not tell you whether you converge.</p>
 <ul>
-<li>We need to find a way to:
+<li class="fragment">You must look at higher-order terms (Taylor expansion), and behavior can depend on the side you start from.</li>
+<li class="fragment">In practice, treat this as a warning sign: add damping, change the iteration, or switch to a root-finding method.</li>
+</ul>
+</section>
+<section id="change-the-problem" class="slide level2">
+<h2>Change the problem</h2>
+<ul>
+<li><p>Sometimes, we are interested in tweaking the convergence speed: <span class="math display">\[x_{n+1} = (1-\lambda) x_n + \lambda f(x_n)\]</span></p>
+<ul>
+<li><span class="math inline">\(\lambda\)</span> is the learning rate:
+<ul>
+<li><span class="math inline">\(\lambda&gt;1\)</span>: acceleration</li>
+<li><span class="math inline">\(\lambda&lt;1\)</span>: dampening</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li class="fragment">We can also replace the function by another one <span class="math inline">\(g\)</span> such that <span class="math inline">\(g(x)=x\iff f(x)=x\)</span>, for instance: <span class="math display">\[g(x)=x-\frac{f(x)-x}{f^{\prime}(x)-1}\]</span>
+<ul>
+<li class="fragment">this is the Newton iteration</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="contraction-mapping-why-fixed-point-iteration-works" class="slide level2">
+<h2>Contraction mapping (why fixed-point iteration works)</h2>
+<p>Suppose there exists an interval <span class="math inline">\(I=[a,b]\)</span> such that <span class="math inline">\(f(I)\subseteq I\)</span> and <span class="math display">\[\sup_{x\in I} |f'(x)| \le L &lt; 1.\]</span></p>
+<ul>
+<li class="fragment">Then there is a unique fixed point <span class="math inline">\(x^*\in I\)</span>.</li>
+<li class="fragment">For any <span class="math inline">\(x_0\in I\)</span>, iterating <span class="math inline">\(x_{n+1}=f(x_n)\)</span> converges to <span class="math inline">\(x^*\)</span>.</li>
+<li class="fragment">The error shrinks at least linearly: <span class="math inline">\(|x_{n+1}-x^*|\le L\,|x_n-x^*|\)</span>.</li>
+</ul>
+<p>This is the one-dimensional version of the contraction logic used for many “time-iteration” operators in macro.</p>
+</section>
+<section id="dynamics-around-a-stable-point" class="slide level2">
+<h2>Dynamics around a stable point</h2>
+<ul>
+<li class="fragment">We can write successive approximation errors: <span class="math display">\[|x_t - x_{t-1}| =  | f(x_{t-1}) - f(x_{t-2})| \]</span> <span class="math display">\[|x_t - x_{t-1}| \sim |f^{\prime}(x_{t-1})| |x_{t-1} - x_{t-2}| \]</span></li>
+<li class="fragment">Ratio of successive approximation errors <span class="math display">\[\lambda_t =  \frac{ |x_{t} - x_{t-1}| } { |x_{t-1} - x_{t-2}|}\]</span></li>
+<li class="fragment">When the sequence converges: <span class="math display">\[\lambda_t \rightarrow | f^{\prime}(\overline{x}) |\]</span></li>
+</ul>
+</section>
+<section id="dynamics-around-a-stable-point-2" class="slide level2">
+<h2>Dynamics around a stable point (2)</h2>
+<p>How do we derive an error bound? Suppose that we have <span class="math inline">\(\overline{\lambda}&gt;|f^{\prime}(x_k)|\)</span> for all <span class="math inline">\(k\geq k_0\)</span>:</p>
+<p><span class="math display">\[|x_t - x| \leq |x_t - x_{t+1}| + |x_{t+1} - x_{t+2}| + |x_{t+2} - x_{t+3}| + ... \]</span></p>
+<p><span class="math display">\[|x_t - x| \leq |x_t - x_{t+1}| + |f(x_{t}) - f(x_{t+1})| + |f(x_{t+1}) - f(x_{t+2})| + ... \]</span></p>
+<p><span class="math display">\[|x_t - x| \leq |x_t - x_{t+1}| + \overline{\lambda} |x_t - x_{t+1}| + \overline{\lambda}^2 |x_t - x_{t+1}| + ... \]</span></p>
+<p><span class="math display">\[|x_t - x| \leq \frac{1} {1-\overline{\lambda}} | x_t - x_{t+1} |\]</span></p>
+</section>
+<section id="how-do-we-improve-convergence" class="slide level2">
+<h2>How do we improve convergence ?</h2>
+<p><span class="math display">\[\frac{|x_t - x_{t-1}|} {|x_{t-1} - x_{t-2}|} \sim |f^{\prime}(x_{t-1})|  \]</span></p>
+<p>corresponds to the case of <strong>linear</strong> convergence (kind of slow).</p>
+</section>
+<section id="aitkens-extrapolation" class="slide level2">
+<h2>Aitken’s extrapolation</h2>
+<p>When convergence is geometric, we have: <span class="math display">\[ \lim_{t\rightarrow \infty}\frac{ x_{t+1}-x}{x_t-x} = \lambda \in \mathbb{R}^{\star}\]</span></p>
+<p>Which implies:</p>
+<p><span class="math display">\[\frac{ x_{t+1}-x}{x_t-x} \sim \frac{ x_{t}-x}{x_{t-1}-x}\]</span></p>
+</section>
+<section id="aitkens-extrapolation-2" class="slide level2">
+<h2>Aitken’s extrapolation (2)</h2>
+<p>Take <span class="math inline">\(x_{t-1}, x_t\)</span> and <span class="math inline">\(x_{t+1}\)</span> as given and solve for <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[x = \frac{x_{t+1}x_{t-1} - x_{t}^2}{x_{t+1}-2x_{t} + x_{t-1}}\]</span></p>
+<p>or after some reordering</p>
+<p><span class="math display">\[x = x_{t-1} - \frac{(x_t-x_{t-1})^2}{x_{t+1}-2 x_t + x_{t-1}}\]</span></p>
+</section>
+<section id="steffensens-method" class="slide level2">
+<h2>Steffensen’s Method:</h2>
 <ol type="1">
-<li>compute expectations</li>
-<li>represent decision rules <span class="math inline">\(\varphi\)</span> and <span class="math inline">\(\varphi\)</span> with a finite number of parameters</li>
-</ol></li>
+<li>start with a guess <span class="math inline">\(x_0\)</span>, compute <span class="math inline">\(x_1=f(x_0)\)</span> and <span class="math inline">\(x_2=f(x_1)\)</span></li>
+<li>use Aitken’s guess for <span class="math inline">\(x^{\star}\)</span>. If required tolerance is met, stop.</li>
+<li>otherwise, set <span class="math inline">\(x_0 = x^{\star}\)</span> and go back to step 1.</li>
+</ol>
+<p>It can be shown that the sequence generated from Steffensen’s method converges <strong>quadratically</strong>, that is</p>
+<p><span class="math inline">\(\lim_{t\rightarrow\infty} \frac{x_{t+1}-x_t}{(x_t-x_{t-1})^2} \leq M  \in \mathbb{R}^{\star}\)</span></p>
+</section>
+<section id="convergence-speed" class="slide level2">
+<h2>Convergence speed</h2>
+<p>Rate of convergence of series <span class="math inline">\(x_t\)</span> towards <span class="math inline">\(x^{\star}\)</span> is:</p>
+<ul>
+<li>linear: <span class="math display">\[{\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|} = \mu \in R^+\]</span></li>
+<li>superlinear: <span class="math display">\[{\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|} = 0\]</span></li>
+<li>quadratic: <span class="math display">\[{\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|^{\color{red}2}} = \mu \in R^+\]</span></li>
 </ul>
 </section>
-<section id="practical-implementation-2" class="slide level2">
-<h2>Practical implementation (2)</h2>
+<section id="convergence-speed-1" class="slide level2">
+<h2>Convergence speed</h2>
+<p>Remark: in the case of linear convergence with <span class="math inline">\(\mu\in(0,1)\)</span>,</p>
+<p><span class="math display">\[\mu = {\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x^{\star}|}{|x_{t}-x^{\star}|} = {\lim}_{t\rightarrow\infty} \frac{|x_{t+1}-x_t|}{|x_t-x_{t-1}|}.\]</span></p>
+<p>Moreover, asymptotically one has the useful heuristic bound <span class="math display">\[|x_t-x^{\star}| \approx \frac{1}{1-\mu}\,|x_{t+1}-x_t|.\]</span></p>
+</section>
+<section id="damping-relaxation-in-practice" class="slide level2">
+<h2>Damping / relaxation in practice</h2>
+<p>Consider the relaxed iteration <span class="math display">\[x_{n+1}=g(x_n)=(1-\lambda)x_n+\lambda f(x_n).\]</span></p>
+<p>Locally around a fixed point <span class="math inline">\(x^*\)</span>, <span class="math display">\[g'(x^*) = 1-\lambda+\lambda f'(x^*).\]</span></p>
 <ul>
-<li>Computing expectations:
-<ul>
-<li>discretize shock <span class="math inline">\(\epsilon\)</span> with finite quantization <span class="math inline">\((w_i, e_i)_{i=1:K}\)</span></li>
-<li>replace optimality condition with: <span class="math display">\[\forall s, \Phi(\varphi, \tilde{\varphi})(s) = \sum_i w_i f(s, \varphi(s), g(s,\varphi(s), e_i), \tilde{\varphi}(g(s,\varphi(s), e_i)) \]</span></li>
-</ul></li>
-<li>… but we still can’t compute all the <span class="math inline">\(\varphi\)</span></li>
+<li class="fragment">If you can estimate <span class="math inline">\(f'(x^*)\approx a\)</span>, choose <span class="math inline">\(\lambda\)</span> to make <span class="math inline">\(|g'(x^*)|\)</span> small.</li>
+<li class="fragment">The “ideal” choice (unconstrained) is <span class="math inline">\(\lambda^* = \frac{1}{1-a}\)</span>, which gives <span class="math inline">\(g'(x^*)=0\)</span>.</li>
+<li class="fragment">In practice you often restrict <span class="math inline">\(\lambda\in(0,1]\)</span> (safeguard), so you clamp <span class="math inline">\(\lambda\)</span> to that range.</li>
 </ul>
 </section>
-<section id="approximating-decision-rules" class="slide level2">
-<h2>Approximating decision rules</h2>
+<section id="in-practice" class="slide level2">
+<h2>In practice</h2>
 <ul>
-<li>We’ll limit ourselves to <em>interpolating</em> functional spaces
+<li class="fragment">Problem: Suppose one is trying to find <span class="math inline">\(x\)</span> solving the model <span class="math inline">\(G(x)=0\)</span>
 <ul>
-<li>We define a finite grid <span class="math inline">\(\mathbf{s}=(s_1, ... s_N)\)</span> to approximate the state space (<span class="math inline">\(\mathbf{s}\)</span> is a finite vector of points)</li>
-<li>If we know the vector of values <span class="math inline">\(\mathbf{x}=(x_1, ..., x_N)\)</span> a function <span class="math inline">\(\varphi\)</span> takes on <span class="math inline">\(\mathbf{s}\)</span>, we approximate <span class="math inline">\(\varphi\)</span> at any <span class="math inline">\(s\)</span> using an interpolation scheme <span class="math inline">\(\mathcal{I}\)</span>: <span class="math display">\[\varphi(s) \approx \mathcal{I}(s, \mathbf{s}, \mathbf{x})\]</span></li>
+<li class="fragment">An iterative algorithm provides a function <span class="math inline">\(f\)</span> defining a recursive series <span class="math inline">\(x_{t+1}\)</span>.</li>
 </ul></li>
-<li>Now if we replace <span class="math inline">\(\varphi\)</span> by <span class="math inline">\(\mathcal{I}(s, \mathbf{s}, \mathbf{x})\)</span> and <span class="math inline">\(\tilde{\varphi}\)</span> by <span class="math inline">\(\mathcal{I}(s, \mathbf{s}, \mathbf{\tilde{x}})\)</span> the functional equation becomes: <span class="math display">\[\forall s,  \Phi(\varphi, \tilde{\varphi})(s) \approx F( \mathbf{x}, \mathbf{\tilde{x}} )(s) = \sum_i w_i f(s, x, \tilde{s}, \tilde{x})\]</span> where <span class="math display">\[x = \mathcal{I}(s, \mathbf{s}, \mathbf{x})\]</span> <span class="math display">\[\tilde{s} = g(s, x, e_i)\]</span> <span class="math display">\[\tilde{x} = \mathcal{I}(s, \mathbf{s}, \mathbf{\tilde{x}})\]</span></li>
-</ul>
-</section>
-<section id="pinning-down-decision-rules" class="slide level2">
-<h2>Pinning down decision rules</h2>
+<li class="fragment">The best practice consists in monitoring at the same time:
 <ul>
-<li>Note that this equation must be statisfied <span class="math inline">\(\forall s\)</span>.</li>
-<li>In order to pin-down the <span class="math inline">\(N\)</span> coefficients <span class="math inline">\(\mathbf{x}\)</span>, it is enough to satisfy the equations at <span class="math inline">\(N\)</span> different points.</li>
-<li>Hence we solve the square system: <span class="math display">\[\forall i\in [1,N], F( \mathbf{x}, \mathbf{\tilde{x}} )(s_i) = 0\]</span></li>
-<li>In vectorized form, this is just: <span class="math display">\[F( \mathbf{x}, \mathbf{\tilde{x}} )(\mathbf{s}) = 0\]</span></li>
-<li>Or, since grid <span class="math inline">\(\mathbf{s}\)</span> is fixed: <span class="math display">\[F( \mathbf{x}, \mathbf{\tilde{x}} ) = 0\]</span></li>
-<li>Now the vector of decisions today, at each point of the grid, is determined as a function of the vector of decisions tomorrow, on the same grid.</li>
-</ul>
-</section>
-<section id="recap" class="slide level2">
-<h2>Recap</h2>
+<li class="fragment">the success criterion: <span class="math display">\[\epsilon_n = |G(x_n)|\]</span>
 <ul>
-<li>Choose a finite grid for states <span class="math inline">\(\mathbf{s} = (s_1, ..., s_N)\)</span></li>
-<li>For a given vector of controls tomorrow <span class="math inline">\(\mathbf{\tilde{x}}\)</span>, one can compute theoptimality of a vector of controls today by computing the value of :<span class="math display">\[F( \mathbf{x}, \mathbf{\tilde{x}} ) = \sum_i w_i f(\mathbf{s}, \mathbf{x}, \tilde{\mathbf{s}}, \tilde{\mathbf{x}})\]</span> <span class="math display">\[\mathbf{\tilde{s}} = g(\mathbf{s}, \mathbf{x}, e_i)\]</span> <span class="math display">\[\mathbf{\tilde{x}} = \mathcal{I}(\mathbf{\tilde{s}}; \mathbf{s}, \mathbf{{x}})\]</span></li>
-<li>Note that because we use interpolating approximation: <span class="math inline">\(\forall i, x_i = \mathcal{I}(s, \mathbf{s}, \mathbf{x})\)</span></li>
-<li>We have enough to define an approximated time-iteration operator: implicitly defined by <span class="math display">\[F(T(\mathbf{x}), \mathbf{x}))\]</span></li>
-<li>We can then implement time-iteration, but…
+<li class="fragment"><!-- .element: class="fragment" -->
+have you found the solution?</li>
+</ul></li>
+<li class="fragment">the successive approximation errors <span class="math display">\[\eta_n = |x_{n+1} - x_n|\]</span>
 <ul>
-<li>how do we compute <span class="math inline">\(T(x)\)</span>?</li>
+<li class="fragment"><!-- .element: class="fragment" -->
+are you making progress?</li>
+</ul></li>
+<li class="fragment">the ratio of successive approximation errors <span class="math display">\[\lambda_n = \frac{\eta_n}{\eta_{n-1}}\]</span>
+<ul>
+<li class="fragment"><!-- .element: class="fragment" -->
+what kind of convergence? (if <span class="math inline">\(|\lambda_n|&lt;1\)</span>: OK, otherwise: ❓)</li>
+</ul></li>
 </ul></li>
 </ul>
-</section>
-<section id="computing-tmathbfx" class="slide level2">
-<h2>Computing <span class="math inline">\(T(\mathbf{x})\)</span></h2>
-<ul>
-<li>In each step, we have a guess, for decision rule tomorrow <span class="math inline">\(\mathbf{\tilde{x}}\)</span></li>
-<li>We can then find the decision rule today, by solving numerically for: <span class="math inline">\(\mathbf{x} \mapsto  F(\mathbf{x}, \mathbf{\tilde{x}})\)</span>
-<ul>
-<li>usually with some variant of a Newton method</li>
-</ul></li>
-<li>It is possible to solve for the values at each grid point separately…
-<ul>
-<li>for each <span class="math inline">\(i\)</span>, find optimal controls <span class="math inline">\(x_i\)</span> in state <span class="math inline">\(s_i\)</span> that satisfy <span class="math inline">\(F(x_i, \mathbf{\tilde{x}}) = 0\)</span></li>
-<li>all the problems are independent from each other</li>
-</ul></li>
-<li>…or to solve everything as a big system
-<ul>
-<li>the jacobian is block-diagonal: finding optimal value in state <span class="math inline">\(i\)</span> or in state <span class="math inline">\(j\)</span> today are two independent problems</li>
-</ul></li>
-</ul>
-
-<img data-src="block_diagonal.png" class="r-stretch"></section>
-<section id="time-iteration-algorithm" class="slide level2">
-<h2>Time iteration algorithm</h2>
-<ul>
-<li>Discretize state-space with grid <span class="math inline">\(\mathbf{s}=(s_1, ..., s_N)\)</span></li>
-<li>Choose initial values, for the vector of controls on the grid <span class="math inline">\(\mathbf{x}=(x_1, ..., x_N)\)</span></li>
-<li>Specify tolerance levels <span class="math inline">\(\eta&gt;0\)</span> and <span class="math inline">\(\epsilon&gt;0\)</span></li>
-<li>Given an intial guess <span class="math inline">\(\mathbf{x_n}\)</span>
-<ul>
-<li>find the zero <span class="math inline">\(\mathbf{x_{n+1}}\)</span> of function <span class="math inline">\(\mathbf{u}\mapsto F(u,\mathbf{x_n})\)</span>
-<ul>
-<li>that is, such that controls on the grid are optimal given controls tomorrow</li>
-<li>nonlinear solver can use <span class="math inline">\(\mathbf{x_n}\)</span> as initial guess</li>
-</ul></li>
-<li>compute norm <span class="math inline">\(\mathbf{\eta_n} = |\mathbf{x_n} - \mathbf{x_{n+1}}|\)</span></li>
-<li>if <span class="math inline">\(\eta_n&lt;\eta\)</span>, stop and return <span class="math inline">\(\mathbf{x_{n+1}}\)</span>
-<ul>
-<li>else, set <span class="math inline">\(\mathbf{x_n} \leftarrow \mathbf{x_{n+1}}\)</span> and continue</li>
-</ul></li>
-</ul></li>
-<li>Like usual, during the iterations, it is useful to look at <span class="math inline">\(\mathbf{\epsilon_n}=|F(\mathbf{x_n},\mathbf{x_n})|\)</span> and <span class="math inline">\(\lambda_n = \frac{\eta_n}{\eta_{n-1}}\)</span></li>
-</ul>
-</section>
-<section id="what-about-the-complementarities" class="slide level2">
-<h2>What about the complementarities ?</h2>
-<ul>
-<li>When there aren’t any occasionally binding constraint, we look for the of zero <span class="math inline">\(\mathbf{x_{n+1}}\)</span> of function <span class="math inline">\(\mathbf{u}\mapsto F(u,\mathbf{x_n})\)</span>.</li>
-<li>If we define the vector of constraints on all grid points as <span class="math inline">\(\mathbf{a}=(a(s_1), ..., a(s_N))\)</span> and <span class="math inline">\(\mathbf{b}=(b(s_1), ..., b(s_N))\)</span>, we can rewrite the system to solve as: <span class="math display">\[F(u) \perp \mathbf{a} \leq u \leq \mathbf{b}\]</span></li>
-<li>Then we can:
-<ul>
-<li>feed <span class="math inline">\(F\)</span>, <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> to an NCP solver (like nlsolve.jl)</li>
-<li>or transform this relation using Fisher-Burmeister function into a smooth nonlinear system</li>
-</ul></li>
-</ul>
-</section>
-<section id="time-iteration-variants" class="slide level2">
-<h2>Time iteration variants</h2>
-<p>You can check out:</p>
-<ul>
-<li>endogenous grid points:
-<ul>
-<li>mathematically equivalent to TI,</li>
-<li>much faster for models that have a particular structure (consumption saving models)</li>
-<li>no need for a nonlinear solver</li>
-</ul></li>
-<li>improved time iterations:
-<ul>
-<li>same as policy iterations for value function iterations</li>
-<li>convergence is equivalent to that of TI</li>
-<li>much faster but requires correct initial guess</li>
-</ul></li>
-<li>parameterized expectations
-<ul>
-<li>requires that all controls are determined as a function of expectations</li>
-</ul></li>
-</ul>
-<p>And <a href="https://github.com/EconForge/Dolo.jl">Dolo.jl</a> for a library that implements some of these algorithms.</p>
-</section></section>
-<section id="towards-ayiagari" class="title-slide slide level1 center">
-<h1>Towards Ayiagari</h1>
 
 
 </section>
@@ -581,7 +551,7 @@ Pablo Winant
         rtl: false,
 
         // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'grid',
+        navigationMode: 'linear',
 
         // Randomizes the order of slides each time the presentation loads
         shuffle: false,
